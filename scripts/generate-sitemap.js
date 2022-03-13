@@ -19,6 +19,7 @@ const siteMetadata = require('../data/siteMetadata')
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             ${pages
               .map((page) => {
+                const stat = fs.statSync(page)
                 const path = page
                   .replace('pages/', '/')
                   .replace('data/blog', '/blog')
@@ -34,8 +35,8 @@ const siteMetadata = require('../data/siteMetadata')
                 return `
                         <url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
-                        </url>
-                    `
+                            <lastmod>${stat.mtime.toISOString()} </lastmod>
+                        </url>`
               })
               .join('')}
         </urlset>
