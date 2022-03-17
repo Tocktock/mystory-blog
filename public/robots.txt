@@ -3,3 +3,5 @@ Allow: /
 
 User-agent: *
 Disallow: / 
+
+ Sitemap: https://mystory-blog.vercel.app/sitemap.xml 
