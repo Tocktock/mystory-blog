@@ -19,6 +19,8 @@ public/sitemap.xml
 *.xml
 # rss feed
 /public/feed.xml 
+/public/sitemap.xml
+/public/robots.txt
 
 # misc
 .DS_Store
@@ -34,3 +36,4 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+

@@ -32,8 +32,7 @@ const siteMetadata = require('../data/siteMetadata')
                 if (page === `pages/404.js` || page === `pages/blog/[...slug].js`) {
                   return
                 }
-                return `
-                        <url>
+                return `<url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
                             <lastmod>${stat.mtime.toISOString()}</lastmod>
                         </url>`

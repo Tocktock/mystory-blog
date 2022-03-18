@@ -1,7 +1,7 @@
-User-agent: Googlebot-news
+User-agent: Googlebot
 Allow: / 
 
 User-agent: *
 Disallow: / 
 
- Sitemap: https://mystory-blog.vercel.app/sitemap.xml 
+Sitemap: https://mystory-blog.vercel.app/sitemap.xml 
