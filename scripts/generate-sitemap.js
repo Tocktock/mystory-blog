@@ -34,11 +34,12 @@ const siteMetadata = require('../data/siteMetadata')
                 return `<url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
                             <lastmod>${stat.mtime.toISOString()}</lastmod>
-                        </url>`
+                        </url>
+                        `
               })
               .join('')}
         </urlset>
-    `
+    `.trimStart()
 
   const formatted = prettier.format(sitemap, {
     ...prettierConfig,
