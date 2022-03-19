@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <Head>
+        <meta name="naver-site-verification" content="06be50c772d69442b0da217191423394ba70d85a" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
