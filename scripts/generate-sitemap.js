@@ -14,8 +14,7 @@ const siteMetadata = require('../data/siteMetadata')
     '!pages/api',
   ])
 
-  const sitemap = `
-        <?xml version="1.0" encoding="UTF-8"?>
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             ${pages
               .map((page) => {
@@ -32,15 +31,15 @@ const siteMetadata = require('../data/siteMetadata')
                 if (page === `pages/404.js` || page === `pages/blog/[...slug].js`) {
                   return
                 }
-                return `
-                        <url>
+                return `<url>
                             <loc>${siteMetadata.siteUrl}${route}</loc>
-                            <lastmod>${stat.mtime.toISOString()} </lastmod>
-                        </url>`
+                            <lastmod>${stat.mtime.toISOString()}</lastmod>
+                        </url>
+                        `
               })
               .join('')}
         </urlset>
-    `
+    `.trimStart()
 
   const formatted = prettier.format(sitemap, {
     ...prettierConfig,
