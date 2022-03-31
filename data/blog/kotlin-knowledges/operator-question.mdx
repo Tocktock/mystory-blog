@@ -1,0 +1,127 @@
+---
+title: 'kotlin toString 을 사용하다 생긴 오류'
+date: '2022-03-31'
+tags: ['kotlin']
+draft: false
+summary: '코틀린에서 사용하는 toString() 은 종류가 하나가 아니다.'
+authors: ['manyang']
+layout: PostLayout
+---
+
+# 코틀린으로 코드를 작성하던 중 아래와 같은 상황에 마주했다.
+
+> 필자가 마주한 비슷한 예시입니다.
+
+```kotlin
+fun someFun(root : Root?) {
+    val nullableStr = root?.one.toString()
+    ...
+}
+
+data class Root(
+    val one: DepthOne?
+)
+
+data class DepthOne(
+    val two : DepthTwo?
+)
+
+```
+
+필자는 root 가 null 이라면 nullableStr 은 당연히 null 일 것이라는 생각을 하고 로직을 짜기 시작했다.
+하지만 바로 예상치 못한 행위가 발견되었으니.. 바로 root 의 타입이 null 이어도 nullableStr 의 타입은 null 이 아닌 것이다!
+심지어 root 의 타입이 null 이면 nullableStr 은 "null" 의 값이 들어가있었다...
+
+우여곡절 끝에 알아낸 사실은 nullableStr 의 타입은 String 이었다. String? 이 아니였다.
+필자가 의도한대로 작동시키기 위해서는 위 someFun 함수는 아래와 같이 바뀌어야한다.
+
+```kotlin
+fun someFun(root : Root?) {
+    val nullableStr = root?.one?.toString()
+    ...
+}
+```
+
+변경 전 코드의 toString() 은 Any? 타입의 확장함수 였고 변경 후 코드의 toString() 은 Any 타입의 내장함수였다..
+
+# 필자가 버그를 만든 이유.
+
+필자는 root?.one.toString() 이 코드에서 root 가 null 이라면 root 이후의 코드는 무시되고 null 이 반환될 것이라 판단했지만
+(root?.one).toString() 처럼 작동했다.
+
+사람이 살다보면 갑자기 단어가 낯설 때가 있다. 필자는 잘 쓰던 코틀린의 ? 오퍼레이터가 너무 낯설어 쓰기가 어려워졌다.
+
+# ? 오퍼레이터
+
+## 존재 이유
+
+코틀린 바이블인 _kotlin in action_ 에는 null 과 관련된 오류를 런타임이 아닌 컴파일 타임에 잡기 위해 ? 오퍼레이터와 비슷한 기능이 현대언어에 존재한다고 한다.
+
+```java
+int strLen(String s) {
+    return s.length();
+}
+```
+
+자바에서 위 strlen 함수는 파라메터로 null 이 들어오면 NullPointerException 이 발생한다. 런타임에 s 에 값이 전달 되었을 때가 되어야 알 수 있으므로 실행시간에 알 수 있다.
+런타임에 오류가 발생하면 일반적으로 컴파잍 타임에 발생하는 오류보다 추적이 더 어렵다.
+
+## 코틀린에서 ? 이란
+
+1. 타입뒤에 ? 이 나온다면 타입이 nullable 하다는 의미이고
+2. 변수 뒤에 나오는 ? 는 if not null 이라는 의미를 내포한다.
+
+2 번은 예를 들자면
+
+```kotlin
+str?.toUpperCase()
+// 위의 코드는 아래와 같다
+if(str != null) str.toUpperCase() else null
+```
+
+필자는 궁금했다. 왜
+
+```kotlin
+val nullableStr = root?.one.toString()
+// 이 코드는
+val nullableStr = if(root != null) one.toString() else null
+// 로 해석되지 않는지.
+```
+
+root?.one.toString() 이 자바에서 의미하는 바는 무엇일까?? java 로 decompile 을 해보니 필자가 원하는 모습이 아니였다.
+
+```java
+// val nullableStr = root?.one.toString()
+// 필자가 원한 모양은 아래와 같았지만...
+label27: {
+    if (depthOne != null) {
+    var10000 = depthOne.getOne();
+    if (var10000 != null) {
+            var2 = var10000.toString();
+            break label27;
+        }
+    }
+    var3 = null;
+}
+
+// 실제로 이렇게 decompile 이 되었다.
+String nullableStr = String.valueOf(root != null ? root.getOne() : null);
+```
+
+java 의 Sring.valueOf() 는 인자값이 null 일 경우 String 타입인 "null" 을 반환한다.
+왜 이렇게 되었을까를 추측해보니 String.valueOf 는 null 타입 또한 인자로 받을 수 있다.
+root?.one.toString() 에서 one 또한 nullable 하기 때문에 String.valueOf(root != null ? root.getOne() : null); 로 번역이 된 것이다.
+실제로 위의 코틀린 코드의 toString() 을 따라가보면 Any? 타입의 확장함수로 안내가 되고 있다.
+
+필자가 원하는 행위를 원한다면 아래 처럼 코드를 바꾸어야한다.
+
+```kotlin
+val nullableStr = root?.one?.toString()
+```
+
+위의 toString() 은 data class 에서 생성되는 toString() 메서드를 사용하게 되므로 필자가 예상한 대로 작동한다...
+
+## 결론..
+
+지금 와서 생각해보면 당연한 결과였다. 필자가 생각한 toString() 은 data class 의 내부메서드 이기에 null.toString() 은 원하는 상황이 아니였다.
+편리함에 익숙해진 나머지 코틀린이 작동하는 원리에 무뎌져 생긴 결과라고 생각한다. intelliJ 를 사용한다면 특정 함수들은 기울여진 상태로 표현된다. 이를 참고하면 더 좋을 것 같다.
