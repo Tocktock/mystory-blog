@@ -4,6 +4,7 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { getAllFilesFrontMatter } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
+import Head from 'next/head'
 
 import NewsletterForm from '@/components/NewsletterForm'
 
@@ -18,6 +19,10 @@ export async function getStaticProps() {
 export default function Home({ posts }) {
   return (
     <>
+      <Head>
+        <meta name="naver-site-verification" content="06be50c772d69442b0da217191423394ba70d85a" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+      </Head>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="pt-6 pb-8 space-y-2 md:space-y-5">
