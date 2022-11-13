@@ -1,0 +1,187 @@
+---
+title: 'Spring Jpa one to many 관계 Best Practices'
+date: '2022-11-13'
+tags: ['spring', 'jpa']
+draft: false
+summary: '양방향 OneToMany 는 옳은 선택이다.'
+authors: ['manyang']
+layout: PostLayout
+---
+
+# Spring Boot Persistence Best Practices 정리 글입니다.
+
+- 부모 테이블, 엔티티를 부모라고 하겠습니다.
+- 자식 테이블, 엔티티를 자식이라고 하겠습니다.
+
+# OneToMany 관계
+
+Spring Boot Persistence Best Practices 도서의 예제에 따라 저자와 책을 기준으로 정리하겠습니다.
+
+한 명의 저자는 여러 개의 책과 연관됩니다. 저자는 부모 테이블이, 책은 자식 테이블이 됩니다.
+코드로 보자면 아래와 같습니다.
+
+```kotlin
+@Entity
+@Table(name = "author")
+class Author(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val name: String,
+    val genre: String,
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "author")
+    val book: List<Book>
+)
+
+@Entity
+@Table(name = "book")
+class Book(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val title: String,
+    @ManyToOne
+    val author: Author
+)
+```
+
+## 항상 부모에서 자식에게 Cascade 관계를 설정하세요.
+
+```kotlin
+@OneToMany(cascade = CascadeType.ALL)
+```
+
+테이블 관계에서 부모 테이블이 자식 테이블에게 영향을 끼치는게 자연스럽습니다.
+
+## 부모 쪽에 mappedBy 를 설정하세요.
+
+```kotlin
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+```
+
+양방향 관계에서 OneToMany 어노테이션 설정값에 mappedBy 를 설정해주세요. 중간 테이블을 생기는 현상을 방지할 수 있습니다.
+
+> 단방향 ManyToOne 일 경우 mappedBy 는 생략해도 됩니다.
+
+## 부모 쪽에 orphanRemoval 설정을 해주세요.
+
+```kotlin
+@OneToMany(cascade = CascadeType.ALL, mappedBy = "author", orphanRemoval = true)
+```
+
+부모에서 자식을 참조하지 않고도 자식을 삭제할 수 있습니다.
+부모를 삭제하게 되면 엔티티와 연관관계를 맺고 있는 자식도 삭제하게 됩니다.
+
+아래 코드를 실행하면 book 테이블의 row 도 삭제되는 것을 알 수 있습니다.
+
+```kotlin
+@Test
+fun authorBookTest() {
+    val author = authorRepository.save(
+        Author(
+            id = null,
+            name = "tars",
+            genre = "SF",
+            book = mutableListOf()
+        )
+    )
+
+    val books = listOf(
+        Book(id = null, title = "super fantasy", author),
+        Book(id = null, "super sad", author)
+        )
+    bookRepository.saveAll(books)
+    authorRepository.deleteById(author.id!!)
+}
+--- 로그 ---
+Hibernate: insert into author (genre, name) values (?, ?)
+Hibernate: insert into book (author_id, title) values (?, ?)
+Hibernate: insert into book (author_id, title) values (?, ?)
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.id=?
+Hibernate: select b1_0.author_id,b1_0.id,b1_0.title from book b1_0 where b1_0.author_id=?
+Hibernate: delete from book where id=?
+Hibernate: delete from book where id=?
+Hibernate: delete from author where id=?
+```
+
+## Lazy Fetching 관련
+
+기본적으로 부모를 조회할 경우 관련된 자식을 바로 조회하지 않습니다. 반대로 자식을 조회할 경우 부모는 동시에 조회됩니다.
+이 경우 관계매핑 설정에서 fetch 값을 조절해 eager fetch 를 할지, lazy fetch 를 할지 정할 수 있습니다.
+lazy fetch 는 영속성 컨텍스트가 존재해야 사용할 수 있기 때문에 Transactional 스코프 안에서 사용할 수 있습니다.
+
+## toString 사용에 주의하세요.
+
+lazy fetch 를 적용한 경우, toString 메서드에 lazy fetch 대상이 있다면 toString 을 호출하는 것만으로도 대상이 fetch 됩니다.
+마찬가지로 엔티티를 data class 는 기본적으로 toString 메서드를 가지고 있기 때문에 lazy fetch 가 적용이 안될 수 있습니다.
+반드시 toString 을 사용해야하는 경우 toString 메서드를 오버라이딩 하여 lazy fetch 대상이 되는 엔티티를 제외하고 출력하도록 해야합니다.
+
+## 단방향 OneToMany 관계는 지양하는 것이 좋습니다.
+
+아래에서 단방향 OneToMany 의 단점을 알아보겠습니다.
+
+### 첫 번째 단점. 중간테이블 생성
+
+위의 mappedBy 와 이어지는 상황입니다. 단방향 OneToMany 로 사용한다면 자식에 외래키를 생성시킬 방법이 없어 중간단계 테이블이 생깁니다.
+예를들어 Author 엔티티에만 OneToMnay 를 작성하고 Book 엔티티에는 Author 와 연관관계 정보를 작성하지 않는다면 스프링을 통해 테이블 자동생성시 author_book 이라는 중간단계의 테이블이 생성됩니다.
+
+중간테이블 때문에 book 을 저장할 경우 author_book, book 두 개의 테이블에 statement 가 발생합니다. 단순하게 2 번의 insert statement 가 발생하는 것이 아닌 것이 더 큰 문제입니다.
+아래 예시는 기존에 book 을 한 권 가진 author 에 다른 한 권을 추가하는 경우입니다.
+
+```sql
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.id=?
+Hibernate: select b1_0.author_id,b1_1.id,b1_1.title from author_book b1_0 join book b1_1 on b1_1.id=b1_0.book_id where b1_0.author_id=?
+Hibernate: insert into book (title) values (?) ---- 1
+Hibernate: delete from author_book where author_id=? ---- 2
+Hibernate: insert into author_book (author_id, book_id) values (?, ?) ---- 3
+Hibernate: insert into author_book (author_id, book_id) values (?, ?) ---- 4
+```
+
+2, 3, 4 번을 보면 author_book 테이블에서 연관 정보를 삭제한 후에 기존에 존재하던 book 에 대한 정보와 새로운 book 에 대한 정보를 insert 하는 비효율적인 statement 가 발생합니다.
+이 저자가 수십권의 책을 가지고 있다면 더 비효율적이게 됩니다.
+
+중간테이블을 관리하지 않기 위해서는 양방향 관계와 OneToMany 설정에 mappedBy 옵션을 추가하는 것으로 방지할 수 있습니다.
+
+### 두 번째 단점. insert and update
+
+중간테이블을 생성하지 않는 방법으로 OneToMany 정보에 추가로 JoinColumn 정보를 추가해주면 됩니다.
+
+```kotlin
+@Entity
+@Table(name = "author")
+data class Author(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val name: String,
+    val genre: String,
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JoinColumn(name = "author_id")
+    val book: MutableList<Book>
+)
+```
+
+하지만 book 을 추가하는 경우에 book 테이블에 author_id 정보를 바로 넣는게 아니라 book 을 만든후 author_id 를 변경시키는 현상이 발생합니다.. 아래 예시를 보면 이해하기 쉽습니다.
+
+```kotlin
+@Transactional
+fun test() {
+    val author = authorRepository.findFirstByNameOrderByIdDesc("셰익스피어")!!
+    author.book.add(Book(null, "베니스의 상인"))
+    author.book.add(Book(null, "맥베스"))
+    author.book.add(Book(null, "햄릿의 비극"))
+}
+```
+
+위 코드는 아래와 같은 결과를 발생시킵니다.
+
+```sql
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.id=?
+Hibernate: select b1_0.author_id,b1_0.id,b1_0.title from book b1_0 where b1_0.author_id=?
+Hibernate: insert into book (title) values (?)
+Hibernate: insert into book (title) values (?)
+Hibernate: insert into book (title) values (?)
+Hibernate: update book set author_id=? where id=?
+Hibernate: update book set author_id=? where id=?
+Hibernate: update book set author_id=? where id=?
+```
+
+book 엔티티에 author 에 대한 정보가 없기 때문에 book 을 insert 할 때 author_id 컬럼이 입력되지 않습니다.
+book 을 delete 하는 경우에는 update and delete 를 하는 상황이 발생합니다. book 의 author_id 를 null 로 만든후 delete 하게 됩니다.
