@@ -1,0 +1,130 @@
+---
+title: 'Spring Jpa many to one 관계 Best Practices'
+date: '2022-11-20'
+tags: ['spring', 'jpa']
+draft: false
+summary: 'Spring Jpa 에서 OneToMany 관점에서 Best Practice 는 양방향 관계를 맺는 것이다. 다만 ManyToOne 관계에서는 단방향이어도 상관 없다.'
+authors: ['manyang']
+layout: PostLayout
+---
+
+# Spring Boot Persistence Best Practices 정리 글입니다.
+
+- 부모 테이블, 엔티티를 부모라고 하겠습니다.
+- 자식 테이블, 엔티티를 자식이라고 하겠습니다.
+
+# ManyToOne 관계
+
+Spring Boot Persistence Best Practices 도서의 예제에 따라 저자와 책을 기준으로 정리하겠습니다.
+
+> 이전 포스트의 예제와 같습니다.
+
+- OneToMany : 한 명의 저자는 여러 개의 책과 연관됩니다.
+- ManyToOne : 여러 권의 책을 쓴 한 명의 저자가 있다.
+
+```kotlin
+@Entity
+@Table(name = "author")
+class Author(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val name: String,
+    val genre: String,
+)
+
+@Entity
+@Table(name = "book")
+class Book(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    var title: String,
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    val author: Author
+)
+```
+
+## 단방향 ManyToOne 은 적절한가. insert, update 쿼리 살펴보기.
+
+ManyToOne 관계에서 외래키는 자식이 관리합니다. 이 것은 단방향이나 양뱡항이나 같습니다.
+
+Book 클래스에서는 Author 클래스를 알고 있기 때문에 직접적으로 author 를 지정하게 되면, insert 쿼리는 한 개만 생성됩니다. 마찬가지로 update, delete 도 하나의 쿼리만 생성됩니다. insert 와 update 하는 코드를 살펴보겠습니다.
+
+> 단방향 OneToMany 에서는 insert and update 가 수행되었습니다.
+
+```kotlin
+@Transactional
+fun addAndUpdateBook() {
+    val author = authorRepository.findFirstByNameOrderByIdDesc("셰익스피어")!!
+    val book = Book(title = "발견되지 않은 책", author = author)
+    bookRepository.save(book)
+    book.title = "발견되지 않은 책 수정판"
+    bookRepository.save(book)
+}
+```
+
+```sql
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.name=? order by a1_0.id desc fetch first ? rows only
+Hibernate: insert into book (author_id, title) values (?, ?)
+Hibernate: update book set author_id=?, title=? where id=?
+```
+
+## ManyToOne 에서의 쿼리 살펴보기.
+
+저자를 통해 책을 가져오는 쿼리는 JpaRepository 에서 지원해주는 기능을 이용하면 아래처럼 선언만 해도 작성이 가능합니다.
+
+```kotlin
+@Repository
+interface BookRepository : JpaRepository<Book, Long> {
+    fun findBooksByAuthor(author: Author): List<Book>
+}
+
+@Transactional
+fun fetchBooksByAuthor() {
+    val author = authorRepository.findFirstByNameOrderByIdDesc("셰익스피어")!!
+    bookRepository.findBooksByAuthor(author)
+}
+```
+
+```sql
+Hibernate: select b1_0.id,b1_0.author_id,b1_0.title from book b1_0 where b1_0.author_id=?
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.id=?
+```
+
+만약 저자의 Id 를 알고 있는 상황이고, 영속성 컨텍스트에 Author 가 없는 상황이라면 아래처럼 JPQL 쿼리를 작성하여 사용하면 select 는 한 번 발생하게 됩니다.
+
+```kotlin
+@Repository
+interface BookRepository : JpaRepository<Book, Long> {
+    @Query(value = "select b, a from Book b join fetch Author a on a.id = b.author.id where a.id = ?1")
+    fun findBooksByAuthorId(id: Long): List<Book>
+}
+
+@Transactional
+fun fetchBooksByAuthorFetchJoin() {
+    val book = bookRepository.findBooksByAuthorId(1L)
+}
+```
+
+```sql
+Hibernate: select b1_0.id,b1_0.author_id,b1_0.title,a1_0.id,a1_0.genre,a1_0.name from book b1_0 join author a1_0 on a1_0.id=b1_0.author_id where a1_0.id=?
+```
+
+JpaRepository 의 자동으로 쿼리를 생성해주는 기능을 이용한다면 select 가 두 번 발생하게 됩니다. 어느 쪽이 더 효율적인지 판단해서 사용하면 될 것 같습니다.
+
+```kotlin
+@Repository
+interface BookRepository : JpaRepository<Book, Long> {
+    fun findBooksByAuthor_Id(id: Long): List<Book>
+}
+
+@Transactional
+fun fetchBooksByAuthorFetchJoin() {
+    val book = bookRepository.findBooksByAuthorId(1L)
+}
+```
+
+```sql
+Hibernate: select b1_0.id,b1_0.author_id,b1_0.title from book b1_0 where b1_0.author_id=?
+Hibernate: select a1_0.id,a1_0.genre,a1_0.name from author a1_0 where a1_0.id=?
+```
