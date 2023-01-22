@@ -1,0 +1,161 @@
+---
+title: '우왕좌왕 Postgres 디비 마이그레이션 충돌기'
+date: '2023-01-22'
+tags: ['mysql', 'postgres', 'database']
+draft: false
+summary: '생각한 대부분의 문제는 이미 제기되어 있다. 그리고 그것을 해결하는 것은 의지와 시간에 달려있다.'
+authors: ['manyang']
+layout: PostLayout
+---
+
+## 왜 마이그레이션을 했는가
+
+공공연한 사실에 가깝지만, 오라클 mysql 을 제외하고는 mysql 진영은 진화가 더딥니다.
+postgres 진영은 지속적인 업데이트와 오라클에 견줄만한 gis 쿼리 기술도 가지고 있습니다. (postgres 관련 도서에서는 world 클래스라고 소개하고 있습니다.)
+
+기존에 Aurora Mysql 을 사용했었는데 mysql 관련 업데이트는 기술 서포트가 매우 약한 것 또한 이유였습니다.
+
+그 외에도 강력한 대규모 쿼리 서비스, 그리고 강력한 동시성 제어 등이 디비를 옮기는 주요 원인이었습니다.
+
+## Pgloader vs AWS DMS 어떤 것을 선택하지
+
+디비를 마이그레이션 하는 툴은 다양합니다.
+그중 후보군이 **AWS DMS**, **pgloader** 두 개였는데요.
+각각 이유를 설명해 보자면
+
+- **AWS DMS** : AWS 에서 지원하는 서비스로 AWS 디비와 호환성이 높고 gui 로 손쉽게 제어가 가능하다. 또한 데이터가 잘 옮겨졌는지 전수 비교해주는 기능도 존재한다. 그리고 유료이다.
+- **pgloader** : 이종의 디비 또는 동종의 디비에서 posgres 디비로 마이그레이션을 할 수 있게 해주는 툴이며 오픈소스이다. 그리고 무료이다.
+
+Aurora Mysql -> Aurora Postgres 로 옮기기 때문에 사용성도 좋고 호환성도 좋은 AWS DMS 사용하려고 했으나 pgloader 를 사용하게 되었습니다.
+
+그 이유는 AWS DMS 는 외래키, 인덱스를 옮겨주지 않으며 자잘한 커스터마이징이 쉽지 않다.. 였습니다. 실제로 DMS 문서를 보면 외래키, 인덱스는 AWS DMS 가 지원하지 않고 AWS SCT 를 사용해서 진행하라고
+안내하고 있습니다. AWS SCT 는 서비스가 아니라 툴이기 때문에 직접 다운받아 사용 해야하는 번거로움이 있어, 이중으로 작업할 바에 그냥 pgloader 를 사용하자로 의견이 모아졌습니다.
+
+(또 다른 이유는 제가 pgloader 를 사용할 줄 안다. 라는 이유가 있었습니다.)
+
+## Pgloader , 첫 발 부터 삐긋.
+
+pgloader 경험이 있던 저는 mac 에서
+
+```shell
+    $ brew install pgloader
+    $ pgloader command.load
+```
+
+를 바로 실행했고 처음엔 순조로웠으나, 어느 정도 진행이 되면 항상 디비 커넥션 에러가 떴습니다.
+한 참을 고생하다가 결국 pgloader 의 버그라고 생각했고 mac 에서 사용하는 대신 ubuntu 환경에서 실행하기로 했습니다.
+
+그리고 잘 실행이 되어서 1단계는 통과했습니다. 여기서만 끝나면 좋았을 것을...
+
+## Pgloader 진행중 발생한 문제들.
+
+로컬에서만 수행하던 저의 경험과는 달리 대용량의 데이터를 옮기면서 많은 문제가 발생했습니다.
+pgloader document 를 보면 관련 스크립트 파일에 대한 설명을 상당히 자세하게 알려줍니다. 이를 통해 대부분의 문제를 해결했습니다.
+
+### 메모리 관련 문제.
+
+제가 첫 번째로 마주한 오류는 메모리 관련 문제였는데요, **memory exhausted** 라는 에러를 내뱉으며 source 디비가 뻗었습니다.
+pgloader 스크립트에서 관련 설정은 **multi reader per thread**, **prefetch rows** 입니다. 기본적으로 **multi reader per thread** 가 on 이 되어있어 한 테이블을 여러 워커가 읽으면서 한 테이블에 상당한 메모리를 사용하게 됩니다.
+그리고 한 번에 읽는 row 의 수를 설정하는 **prefetch rows** 의 기본값은 100000 입니다. 이 것 또한 메모리에 큰 문제였습니다.
+
+각각의 설정은
+
+- multi reader per thread -> single reader per thread
+- prefetch rows 100000 -> prefetch rows 10000
+
+으로 설정했습니다. 이러면 동시성이 떨어져 약간 느려질 수 있지만 체감상 크게 와닿지는 않았습니다. 그리고 메모리 관련 문제가 해결되었습니다.
+
+### 타입 캐스팅 관련 문제
+
+pgloader 문서에는 상당히 자세하게 타입 캐스팅 룰을 서술하고 있습니다. 그리고 이 룰을 커스텀하면 기본적인 문제는 전부 해결 가능합니다.
+예를 들어 mysql 의 primary key 를 bigint auto_ingrement 설정했으면 기본적으로 postgres 의 bigserial 타입으로 옮겨가지만 다른 옵션과 겹쳐서 bigint auto_ingrement 인 경우에도 그냥 bigint 로 옮겨지는 경우가 있습니다.
+이 경우 다른 옵션을 경우의 수에 추가하여 bigserial 로 변환시키도록 할 수 있습니다.
+
+다만 제가 마주한 문제 중 하나는 기본 문서를 참고해서는 해결이 안 된 문제였습니다.
+
+mysql 에서 bit 그리고 default 값이 b'1' 이런 식으로 설정되어 있으면 옮겨가면서 **default 설정이 사라지는 것** 이었습니다.
+관련 이슈는 pgloader 깃허브에도 등록되어 있었습니다. [이슈](https://github.com/dimitri/pgloader/issues/1280)
+여기서 제시한 해결법은 pgloader 의 transformation.lisp 파일을 커스텀하여 default 값도 잘 옮겨가도록 룰을 추가하는 것이었습니다.
+기존의 (transformation.lisp)[https://github.com/dimitri/pgloader/blob/master/src/utils/transforms.lisp] 파일 끝부분에 이 내용을 추가하고
+command.load 파일에 타입캐스트 룰을 추가합니다.
+
+> transformation.lisp
+
+```lisp
+...
+(defun bits-to-boolean2 (bit-vector)
+  "When using MySQL, strange things will happen, like encoding booleans into
+   bit(1). Of course PostgreSQL wants 'f' and 't'."
+  (cond ((and bit-vector (= 1 (length bit-vector)))
+         (let ((bit (aref bit-vector 0)))
+           (etypecase bit
+             (fixnum    (if (= 0 bit) "f" "t"))
+             (character (if (= 0 (char-code bit)) "f" "t")))))
+        ((and bit-vector (= 4 (length bit-vector)))
+         (if (string= "b'0'" bit-vector) "f" "t"))
+        (t nil)))
+...
+```
+
+> command.load
+
+```
+CAST type bit when (= 1 precision) to boolean drop typemod using bits-to-boolean2
+```
+
+그리고 명령어를 실행할 때 transformation 파일을 지정해서 실행해주면 정상적으로 해결됩니다.
+
+```shell
+    $ pgloader --load-lisp-file transforms.lisp command.load
+```
+
+### 스프링부트에서 발생한 문제들
+
+스프링부트에서 ORM 을 사용하고 있고, 배포를 진행할 때 **정의한 엔티티 정보**와, **테이블의 정보**와 일치하는지 validate 를 진행하고 있습니다.
+이 때 validate 가 진행되면서 테이블을 찾을 수가 없다는 오류가 발생하여 properties 파일을 수정했습니다.
+
+```yaml
+spring.jpa.properties.hibernate.hbm2ddl.jdbc_metadata_extraction_strategy: individually
+spring.jpa.properties.hibernate.hbm2ddl.default_schema: yourschema
+```
+
+그리고 각각 엔티티에서 발생하는 CoumnDefinition 문제들은 직접 수정하면서 해결했습니다.
+특히 json 타입 문제는 라이브러리를 이용해서 수정했습니다.
+
+gradle 파일에는 아래 의존성을 추가했습니다..
+
+```groovy
+	implementation 'io.hypersistence:hypersistence-utils-hibernate-55:3.1.1'
+```
+
+파일 최상단에 TypeDef 어노테이션을 추가하고 json 컬럼에 hibernate 어노테이션을 추가했습니다.
+
+```kotlin
+@file:TypeDef(name = "json", typeClass = JsonType::class)
+import .....
+
+@Entity
+...
+    @Column(columnDefinition = "json", nullable = false)
+    @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
+    val myjson: Any,
+```
+
+### 그외 문제들
+
+mysql 에서 postgres 로 옮길 때 가장 큰 작업은 sql 쿼리 교정 작업이었습니다.
+postgres 는 standard sql 을 준수하기 때문에 mysql 에서 편의로 제공해주는 기능은 사용할 수 없습니다.
+예를 들어 mysql bit 타입은 1, 0 그리고 true, false 로 비교가 가능하지만 postgres 의 boolean 타입은 반드시 true, false 로 비교해야 합니다.
+
+마찬가지로 mysql 에서 지원하는 select 문의 if 문은 case when 으로 변경해야 하고, mysql 에서만 지원하는 함수는 모두 같은 기능을 하는 postgres 로 변경해야 했습니다.
+그 외에도 임의로 커스텀한 mysql 디비 세팅값은 postgres 에서 적용되지 않는 경우가 많아 일일이 쿼리를 교정해 주었습니다. 특히 group by 쿼리가 많았습니다.
+이렇게 진행하면서 쿼리 공부도 많이 하게 되고, 이것 때문에 쿼리 쪽에 문제가 있었구나 하고 깨닫는 경우가 많았습니다.
+
+## 마무리
+
+디비 전수조사 작업은 직접 파일을 작성하여 모든 테이블에서, 각각 데이터를 불러와 문자열 비교를 통해 수행하는 식으로 진행했습니다.
+
+## 출처
+
+- https://pgloader.readthedocs.io/en/latest/install.html
+- https://github.com/dimitri/pgloader
