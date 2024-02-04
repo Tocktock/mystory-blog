@@ -7,4 +7,4 @@ Allow:/
 User-agent: *
 Disallow: / 
 
-Sitemap: https://mystory-blog.vercel.app/sitemap.xml 
+Sitemap: https://ji-yong.com/sitemap.xml

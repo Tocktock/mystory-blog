@@ -5,7 +5,7 @@ const siteMetadata = {
   description: '개발과 일상의 블로그',
   language: 'kr',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://mystory-blog.vercel.app',
+  siteUrl: 'https://ji-yong.com',
   siteRepo: 'https://github.com/Tocktock/mystory-docs',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
@@ -18,7 +18,7 @@ const siteMetadata = {
   locale: 'kr',
   analytics: {
     // supports plausible, simpleAnalytics, umami or googleAnalytics
-    plausibleDataDomain: 'mystory-blog.vercel.app', // e.g. tailwind-nextjs-starter-blog.vercel.app
+    plausibleDataDomain: 'ji-yong.com', // e.g. tailwind-nextjs-starter-blog.vercel.app
     simpleAnalytics: true, // true or false
     umamiWebsiteId: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
     googleAnalyticsId: '178749172', // e.g. UA-000000-2 or G-XXXXXXX

@@ -7,6 +7,6 @@ const robotTXT =
   'Allow:/ \n\n' +
   'User-agent: *\n' +
   'Disallow: / \n\n' +
-  'Sitemap: https://mystory-blog.vercel.app/sitemap.xml \n'
+  'Sitemap: https://ji-yong.com/sitemap.xml \n'
 
 fs.writeFileSync('public/robots.txt', robotTXT)
