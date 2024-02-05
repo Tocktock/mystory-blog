@@ -23,11 +23,7 @@ const siteMetadata = {
     umamiWebsiteId: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
     googleAnalyticsId: '178749172', // e.g. UA-000000-2 or G-XXXXXXX
   },
-  newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo
-    // Please add your .env file and modify it according to your selection
-    provider: 'buttondown',
-  },
+  newsletter: '',
   comment: {
     // Select a provider and use the environment variables associated to it
     // https://vercel.com/docs/environment-variables
