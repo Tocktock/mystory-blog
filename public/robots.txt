@@ -1,10 +1,10 @@
 User-agent: Googlebot
-Allow: / 
+Allow: /
 
 User-agent: Yeti
-Allow:/ 
+Allow: /
 
 User-agent: *
-Disallow: / 
+Allow: /
 
 Sitemap: https://ji-yong.com/sitemap.xml
