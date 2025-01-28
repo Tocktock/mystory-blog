@@ -141,51 +141,170 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"stories": {
-"fifth-story.md": {
-	id: "fifth-story.md";
-  slug: "fifth-story";
+"agile/sabotaging-an-agile-transformation.md": {
+	id: "agile/sabotaging-an-agile-transformation.md";
+  slug: "agile/sabotaging-an-agile-transformation";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"first-story.md": {
-	id: "first-story.md";
-  slug: "first-story";
+"how-this-blog-was-created/deep-in-the-sea.md": {
+	id: "how-this-blog-was-created/deep-in-the-sea.md";
+  slug: "how-this-blog-was-created/deep-in-the-sea";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"fourth-story.md": {
-	id: "fourth-story.md";
-  slug: "fourth-story";
+"how-this-blog-was-created/how-indexjs-can-read-mdx.md": {
+	id: "how-this-blog-was-created/how-indexjs-can-read-mdx.md";
+  slug: "how-this-blog-was-created/how-indexjs-can-read-mdx";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"second-story.md": {
-	id: "second-story.md";
-  slug: "second-story";
+"how-this-blog-was-created/how-post-is-created.md": {
+	id: "how-this-blog-was-created/how-post-is-created.md";
+  slug: "how-this-blog-was-created/how-post-is-created";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"seventh-story.md": {
-	id: "seventh-story.md";
-  slug: "seventh-story";
+"kotlin-knowledges/operator-question.md": {
+	id: "kotlin-knowledges/operator-question.md";
+  slug: "kotlin-knowledges/operator-question";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"sixth-story.md": {
-	id: "sixth-story.md";
-  slug: "sixth-story";
+"kotlin-mapper/json-to-object.md": {
+	id: "kotlin-mapper/json-to-object.md";
+  slug: "kotlin-mapper/json-to-object";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">
 } & { render(): Render[".md"] };
-"third-story.md": {
-	id: "third-story.md";
-  slug: "third-story";
+"kotlin-mapper/object-to-json.md": {
+	id: "kotlin-mapper/object-to-json.md";
+  slug: "kotlin-mapper/object-to-json";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kotlin-mapper/reflections.md": {
+	id: "kotlin-mapper/reflections.md";
+  slug: "kotlin-mapper/reflections";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes-on-mac/k3s-with-multipass.md": {
+	id: "kubernetes-on-mac/k3s-with-multipass.md";
+  slug: "kubernetes-on-mac/k3s-with-multipass";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/1_container_and_private_repository.md": {
+	id: "kubernetes/1_container_and_private_repository.md";
+  slug: "kubernetes/1_container_and_private_repository";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/2_container_and_private_repository_practices.md": {
+	id: "kubernetes/2_container_and_private_repository_practices.md";
+  slug: "kubernetes/2_container_and_private_repository_practices";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/3._first_encounter_with_kubernetes.md": {
+	id: "kubernetes/3._first_encounter_with_kubernetes.md";
+  slug: "kubernetes/3_first_encounter_with_kubernetes";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/4.kubernetes_pod_deployment_service.md": {
+	id: "kubernetes/4.kubernetes_pod_deployment_service.md";
+  slug: "kubernetes/4kubernetes_pod_deployment_service";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/5-2.cicd_and_githubaction.md": {
+	id: "kubernetes/5-2.cicd_and_githubaction.md";
+  slug: "kubernetes/5-2cicd_and_githubaction";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/5.basic_for_ci_cd.md": {
+	id: "kubernetes/5.basic_for_ci_cd.md";
+  slug: "kubernetes/5basic_for_ci_cd";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/6.kubernetes_and_eks.md": {
+	id: "kubernetes/6.kubernetes_and_eks.md";
+  slug: "kubernetes/6kubernetes_and_eks";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"kubernetes/roadmap.md": {
+	id: "kubernetes/roadmap.md";
+  slug: "kubernetes/roadmap";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"mysql-to-postgres/how-to-use-pgloader.md": {
+	id: "mysql-to-postgres/how-to-use-pgloader.md";
+  slug: "mysql-to-postgres/how-to-use-pgloader";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"mysql-to-postgres/mysql-to-postgres-realworld.md": {
+	id: "mysql-to-postgres/mysql-to-postgres-realworld.md";
+  slug: "mysql-to-postgres/mysql-to-postgres-realworld";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"mysql-to-postgres/mysql-versus-postgres.md": {
+	id: "mysql-to-postgres/mysql-versus-postgres.md";
+  slug: "mysql-to-postgres/mysql-versus-postgres";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"spring-persistence/spring-persistence-1.md": {
+	id: "spring-persistence/spring-persistence-1.md";
+  slug: "spring-persistence/spring-persistence-1";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"spring-persistence/spring-persistence-2.md": {
+	id: "spring-persistence/spring-persistence-2.md";
+  slug: "spring-persistence/spring-persistence-2";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"spring/soap-with-retrofit.md": {
+	id: "spring/soap-with-retrofit.md";
+  slug: "spring/soap-with-retrofit";
+  body: string;
+  collection: "stories";
+  data: InferEntrySchema<"stories">
+} & { render(): Render[".md"] };
+"spring/spring-validate.md": {
+	id: "spring/spring-validate.md";
+  slug: "spring/spring-validate";
   body: string;
   collection: "stories";
   data: InferEntrySchema<"stories">

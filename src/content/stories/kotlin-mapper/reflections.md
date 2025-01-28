@@ -1,0 +1,118 @@
+---
+title: 'kotlin annotation and reflection'
+publishDate: 2022-03-13
+description: '코틀린 어노테이션과 리플렉션은 프로그램을 런타임에 분석하게 해주는 도구이다.'
+---
+
+### TLDR : 코틀린 어노테이션과 리플렉션을 사용하면 임의의 클래스의 동작을 제어할 수 있다.
+
+---
+
+# 코틀린에서 어노테이션과 리플렉션의 역할
+
+코틀린에서 코드를 작성하고 사용할 때 일반적으로 그 클래스나 함수 또는 프로퍼티의 정보를 알고 있어야 사용이 가능하다.
+코틀린 어노테이션과 리플렉션을 사용한다면 정보를 알지 못하더라도 처리를 할 수 있다.
+
+예를들어 Spring 을 사용해보았다면 아래와 같은 코드를 볼 수 있다.
+
+```kotlin
+@RestController
+class SomeController {
+
+    @GetMapping("/hello")
+    fun helloPoint(
+        @RequestBody body : HelloRequestDTO
+    ):HelloResponseDTO {
+        println(body)
+        return HelloResponseDTO(200, "hello my friend!!")
+    }
+}
+
+data class HelloRequestDTO(
+    val from : String,
+    val message: String,
+    val code : Int,
+)
+
+data class HelloResponseDTO(
+    val code : Int,
+    val message: String,
+)
+```
+
+@RequestBody 어노테이션은 http 요청을 할 때 포함된 json string 을 적당한 클래스로 생성, 매핑을 하여 우리가 사용할 수 있게 해준다.
+또한 이 요청은 HelloResponseDTO 타입을 리턴했을 때 해당 객체를 json 으로 변환해주는 작업도 수행한다. 이를 가능하게 하는 것이 리플렉션이다.
+이 어노테이션은 인자의 클래스 타입에 상관없이 적용이 가능하다.
+
+> 물론 어노테이션의 기능에 따라 다르다.
+
+# 코틀린 어노테이션 이란
+
+어노테이션 그 자체로는 큰 의미를 가지지 않는다.
+어노테이션의 역할은 어떤 기능을 수행하기 위해 점 찍어두는 역할을 한다.
+어노테이션을 선언하는 부분을 보면 이해하기 쉽다.
+
+```kotlin
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MyAnnotation(
+    val someInfo : String,
+)
+```
+
+어노테이션 선언부에는 어떤 곳에 어노테이션을 쓸 수 있는지 정의하는 부분과 어노테이션이 기능을 할 수 있는 시점을 정의할 수 있는
+이른바 Meta-annotations 을 부여할 수 있다. 그리고 어노테이션에 부가적인 정보를 위한 프로퍼티를 정의하는 부분이 있다.
+
+이 어노테이션에 기능을 정의하기 위해서는 리플렉션이라는 기능이 필요하다.
+
+# 코틀린 리플렉션 이란
+
+> 코틀린 리플렉션은 프로그램의 언어와 특성을 런타임에 분석할 수 있도록 해주는 도구이다.
+
+코틀린 리플렉션은 클래스, 프로퍼티 등의 타입, 이름, 리턴타입 등 원초적인 정보를 런타임에 알 수 있게 해준다.
+예를들어 위의 Spring 예시에서 HelloRequestDTO 의 프로퍼티의 이름들을 알고 싶다면 아래와 같이 작성하면 된다.
+
+```kotlin
+HelloRequestDTO::class.memberProperties.forEach {
+    println(it.name)
+}
+
+// 출력
+// code
+// from
+// message
+```
+
+::class 는 리플렉션의 중요한 요소인 KClass 를 표현하는 방법이다.
+
+# KClass 클래스 레퍼런스
+
+KClass 는 클래스에 대한 정보에 접근할 수 있게 해주며 _::_ 를 통해 사용할 수 있다.
+KClass 를 사용하면 클래스의 이름, 클래스의 이름, 생성자, 수퍼타입 등등 많은 정보에 접근할 수 있으며 클래스의 인스턴스를 생성할 수도 있다.
+
+KClass 는 클래스의 멤버들에 접근할 수 있다.
+멤버들은 KCallable 이라는 타입을 가지며 call 이라는 메서드를 호출할 수 있게해준다.
+이 call 의 경우 멤버가 함수면 함수를 호출하게 해주며 프로퍼티의 경우 getter.call 읉 통해 값을 가져올 수 있게 해준다..
+
+```kotlin
+val helloDTO = HelloRequestDTO(from = "browser", message = "hello", code = 200)
+helloDTO::class.memberProperties.forEach {
+    println("${it.name} : ${it.getter.call(helloDTO)}")
+}
+// 출력
+// code : 200
+// from : browser
+// message : hello
+```
+
+> 순서는 프로퍼티 name 의 사전순인 듯 하다.
+
+# 결론
+
+코틀린 어노테이션과 리플렉션을 사용하면 명시적이지 않은 타입에 대한 동작을 정의할 수 있게 된다.
+라이브러리 수준의 코드를 작성하게 된다면 매우 유용할 것으로 보인다.
+
+리플렉션으로 접근할 수 있는 개체들은 다양하고 사용법 또한 상이하기 때문에 직접 살펴보는 것이 많은 도움이 될 듯 하다.
+
+다음 포스트에서는 코틀린 어노테이션과 리플렉션을 활용해서 Json 을 오브젝트로 매핑하거나 오브젝트를 Json 으로 매핑하는
+간단한 코드를 작성해보고자 한다.

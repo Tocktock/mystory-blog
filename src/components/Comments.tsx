@@ -15,6 +15,14 @@ interface Comment {
   createdAt: string;
 }
 
+interface DiscussionResponse {
+  node: {
+    comments: {
+      nodes: Comment[];
+    };
+  };
+}
+
 export default function Comments({ discussionId }: CommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +39,7 @@ export default function Comments({ discussionId }: CommentsProps) {
         auth: import.meta.env.PUBLIC_GITHUB_TOKEN
       });
 
-      const response = await octokit.graphql(`
+      const response = await octokit.graphql<DiscussionResponse>(`
         query($discussionId: ID!) {
           node(id: $discussionId) {
             ... on Discussion {
