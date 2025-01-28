@@ -1,6 +1,0 @@
-chore: migrate blog posts from mdx to md
-
-- Move blog posts from data/blog to src/content/stories
-- Delete sample story files
-- Update file extensions from .mdx to .md
-- Remove spring-native-graalvm.mdx draft post 

@@ -1,0 +1,38 @@
+---
+title: 'Next.js 가 페이지 경로를 생성하는 방식'
+pubDate: 2022-01-12
+description: 'nextjs 가 제공하는 폴더 디렉토리 구조를 통해 페이지 경로를 제공한다.'
+---
+
+# Next.js 가 페이지 경로를 생성하는 방식
+
+이전 시간에 /pages/blog/[...slug].js 라는 파일을 보고 기절했었다.
+
+이번에는 이 파일에 무엇이 있고 저 대괄호는 무슨 뜻을 가지는지 한 번 살펴보자.
+
+## [...slug].js
+
+[...slug].js 파일에는 getStaticPath, getStaticProps, Blog 라는 함수가 존재한다.
+getStaticPath, getStaticProps 는 Next.js 의 함수이고 Blog 는 페이지 렌더링을 위한 함수이다.
+이제 함수의 역할을 알아보자.
+
+## getStaticPath 란
+
+getStaticPath 함수는 next 프로젝트 빌드시간에 생성할 page 의 path 와
+빌드 시간에 생성되지 않은 페이지에 대한 page 에 대한 설정 값을 반환한다.
+
+자세히 살펴보면 getStaticPath 함수는 paths 와 fallback 을 리턴한다.
+
+각 필드들은
+
+- paths : object 배열의 값을 가지며, params 라는 필드를 가진다.
+- fallback : true, false, "blocking" 중 하나의 값을 가진다.
+
+paths 는 빌드 시간에 생성할 페이지를 지정하는 정보이며, fallback 은 빌드 시간에 생성되지 않은 페이지에 대한 설정입니다.
+
+fallback 은 다음 값에 따라 행동이 다릅니다.
+
+- true : 유저가 해당 경로의 페이지를 요청했을 때 잠시 다른 정보를 유저에게 보여주고 해당 페이지를 렌더링합니다.
+  렌더링이 끝나게 되면 유저가 보는 페이지를 렌더링 된 페이지로 교체합니다. 렌더링 전 로딩중 과 같은 페이지를 보여줄 수 있습니다.
+- false : 빌드 시간에 생성되지 않은 경로 페이지에 대해 404 페이지를 리턴합니다.
+- blocking : true 와는 다르게 해당 경로의 페이지를 요청했을 때 paths 필드 외의 경로에 대해서는 렌더링이 끝난 후 페이지를 보여주게 됩니다.
