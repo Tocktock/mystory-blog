@@ -6,6 +6,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 
+const defaultImages = [
+	'/blog-placeholder-1.jpg',
+	'/blog-placeholder-2.jpg',
+	'/blog-placeholder-3.jpg',
+	'/blog-placeholder-4.jpg',
+];
+
+const getRandomImage = () => {
+	const randomIndex = Math.floor(Math.random() * defaultImages.length);
+	return defaultImages[randomIndex];
+};
+
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
@@ -94,7 +106,12 @@ const posts = (await getCollection('blog')).sort(
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
+									<img 
+										width={720} 
+										height={360} 
+										src={post.data.heroImage || getRandomImage()} 
+										alt="" 
+									/>
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />
