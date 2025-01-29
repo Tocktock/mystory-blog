@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   // ...other Astro config
 
-  site: 'https://example.com',
+  site: 'https://ji-yong.com',
   integrations: [mdx(), sitemap()],
   vite: {
     // If you’re using a virtual import, you could inject UTTERANCES_CONFIG
