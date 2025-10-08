@@ -6,7 +6,7 @@ This document helps AI agents and contributors quickly understand, extend, and s
 - Purpose: Personal blog + photo gallery for Ji Yong.
 - Framework: Astro 5 (TypeScript, Vite). Static site.
 - Content: Markdown/MDX via Astro Content Collections.
-- Comments: Utterances (GitHub issue-based) on post pages.
+- Comments: Giscus (GitHub Discussions) on post pages.
 - SEO: Centralized meta/head; RSS + sitemap generated.
 - Production URL: https://ji-yong.com
 
@@ -18,7 +18,7 @@ This document helps AI agents and contributors quickly understand, extend, and s
 - Tailwind: Dependencies present but NOT enabled in astro.config.mjs
 
 ## Repository Map (key paths)
-- astro.config.mjs — Site URL, integrations, Vite plugin injecting UTTERANCES_CONFIG
+- astro.config.mjs — Site URL, integrations
 - package.json — Scripts: dev, build, preview, astro
 - tsconfig.json — Extends astro/tsconfigs/strict, strictNullChecks: true
 - public/ — Images, fonts, favicon (served as-is)
@@ -31,7 +31,7 @@ This document helps AI agents and contributors quickly understand, extend, and s
     - index.astro — Home + gallery grid
     - about.astro — About page (uses BlogPost layout)
     - blog/index.astro — Post listing (sorted)
-    - blog/[...slug].astro — Dynamic post route + Utterances
+    - blog/[...slug].astro — Dynamic post route + Giscus
     - rss.xml.js — RSS endpoint using @astrojs/rss
 - .vscode/ — Editor recommendations + launch config
 - .serena/ — Local agent config/memories (ignored by Git)
@@ -57,15 +57,11 @@ heroImage: "/blog-placeholder-2.jpg"
 - Dynamic blog routes generated from content collection via getStaticPaths()
 - RSS: /rss.xml from src/pages/rss.xml.js
 
-## Comments (Utterances)
-- Virtual import: virtual:astro/config provides UTTERANCES_CONFIG
-- Provided by Vite plugin inside astro.config.mjs
-- Default config:
-  - repo: 'Tocktock/mystory-blog'
-  - issueTerm: 'title'
-  - label: 'comments'
-  - theme: 'github-light'
-- To change: edit the injected values in astro.config.mjs
+## Comments (Giscus)
+- Powered by the `GiscusComments.astro` component.
+- Configure via environment variables (`PUBLIC_GISCUS_REPO`, `PUBLIC_GISCUS_REPO_ID`, `PUBLIC_GISCUS_CATEGORY`, `PUBLIC_GISCUS_CATEGORY_ID`).
+- Optional overrides for mapping, language, theme, etc. are also available through `PUBLIC_GISCUS_*` env vars.
+- Without configuration the post layout renders a placeholder so builds succeed during setup.
 
 ## Commands
 - Install deps: npm install
@@ -89,7 +85,7 @@ heroImage: "/blog-placeholder-2.jpg"
 - Type checks: npm run astro -- check
 - SEO: Titles/descriptions accurate via BaseHead.astro
 - Feeds: /rss.xml renders; sitemap present
-- Comments: Utterances shows on post pages (if configured)
+- Comments: Giscus shows on post pages (if configured)
 
 ## Tailwind (optional)
 - Currently not enabled. To enable:
@@ -106,7 +102,7 @@ heroImage: "/blog-placeholder-2.jpg"
 
 ## Gotchas
 - Tailwind deps exist but are inactive. Don’t rely on utility classes unless Tailwind is enabled
-- UTTERANCES_CONFIG virtual import depends on the Vite plugin; removing or renaming it will break comments
+- Giscus depends on the `PUBLIC_GISCUS_*` environment variables being set in the deployment environment
 - RSS/sitemap need a correct site URL in astro.config.mjs for absolute URLs
 - Blog frontmatter is validated; missing required fields will fail at build/type-check time
 
@@ -126,4 +122,3 @@ heroImage: "/blog-placeholder-2.jpg"
 
 ## License
 - No license file present. Add one if open-sourcing.
-

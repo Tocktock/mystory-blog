@@ -85,6 +85,32 @@ Blog posts now accept an optional `lang` field in frontmatter. When omitted the 
 - Each blog post renders a card at `/og/<slug>.png`; these URLs are wired into the head metadata and BlogPosting JSON-LD.
 - Customize per-post visuals by adding a `heroImage` in frontmatter (used on-page and as a secondary image in structured data).
 
+### Comments (Giscus)
+
+Comments are powered by [Giscus](https://giscus.app).  Add the following environment variables to your `.env` (or deployment secrets) after enabling Giscus on the target GitHub repository Discussion category:
+
+```
+PUBLIC_GISCUS_REPO=Tocktock/mystory-blog
+PUBLIC_GISCUS_REPO_ID=<repo-id>
+PUBLIC_GISCUS_CATEGORY=<discussion-category-name>
+PUBLIC_GISCUS_CATEGORY_ID=<discussion-category-id>
+```
+
+Optional overrides (with defaults in brackets):
+
+```
+PUBLIC_GISCUS_MAPPING=title
+PUBLIC_GISCUS_LANG=ko
+PUBLIC_GISCUS_THEME=light
+PUBLIC_GISCUS_STRICT=1
+PUBLIC_GISCUS_REACTIONS_ENABLED=1
+PUBLIC_GISCUS_EMIT_METADATA=0
+PUBLIC_GISCUS_INPUT_POSITION=bottom
+PUBLIC_GISCUS_LOADING=lazy
+```
+
+If the required variables are not set, the post layout renders a placeholder message so you can merge safely before provisioning credentials.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
