@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ji-yong.com/sitemap-index.xml

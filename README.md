@@ -75,6 +75,10 @@ To establish a measurable baseline, Phase 0 introduces automated audits that run
 
 The audit scripts expect Chrome to be available locally (required by Lighthouse). Each check exits with a non-zero status if failures are detected, making it easy to wire into CI later.
 
+## 🧾 Content Frontmatter
+
+Blog posts now accept an optional `lang` field in frontmatter. When omitted the page defaults to Korean (`ko`), but you can set `lang: 'en'` for English posts to ensure the generated `<html lang>` attribute and structured data match the article’s language.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
