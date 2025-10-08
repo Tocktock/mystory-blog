@@ -3,6 +3,13 @@ import { resolve } from 'node:path';
 import { LinkChecker } from 'linkinator';
 
 const REPORT_PATH = resolve(process.cwd(), '.reports/linkinator/report.json');
+const LINKS_TO_SKIP = [
+  'https://fonts\\.gstatic\\.com/.*',
+  '^https?://localhost',
+  '^https?://127\\.0\\.0\\.1',
+  '^https?://k3s-worker1',
+  '^https://techblog\\.woowahan\\.com/.*',
+];
 
 async function run() {
   const checker = new LinkChecker({
@@ -14,7 +21,7 @@ async function run() {
   const result = await checker.check({
     path: 'http://127.0.0.1:4321',
     recurse: true,
-    skip: [/https:\/\/fonts\.gstatic\.com\//i],
+    linksToSkip: LINKS_TO_SKIP,
   });
 
   await writeFile(REPORT_PATH, JSON.stringify(result, null, 2), 'utf8');

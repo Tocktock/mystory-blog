@@ -23,7 +23,7 @@ Agile 문화를 방해하는 요소들을 'Sabotage'라 정의하고, 이를 억
 
 Agile 문화 도입한 팀에서도 어떻게 문화를 형성하느냐에 따라 효율의 차이는 날 수 있습니다. 상황에 따라 생산성은 최대 4배 까지 차이날 수 있다고 말합니다.
 
-![agile-process](/static/images/agile-process.png)
+> 참고 이미지: Fred George 의 애자일 사이클 다이어그램(Task → Design → Code/Test 반복 → Integrate).
 
 위 그림은 task 작업을 시작하고 완료하기까지의 cycle 을 간략히 그린 그림입니다.
 Task, Design 을 단계를 거치고 Code, Test 를 반복하며 개선해나갑니다.
