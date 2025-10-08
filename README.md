@@ -57,7 +57,23 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm run audit:web`       | Serve the production build then run Lighthouse, Axe, and Linkinator audits (reports in `.reports/`) |
+| `npm run audit:lighthouse`| Run Lighthouse (mobile, performance/accessibility/SEO) against `http://127.0.0.1:4321` |
+| `npm run audit:axe`       | Run axe-core accessibility checks against the preview server |
+| `npm run audit:links`     | Crawl the preview server and export link check results to `.reports/linkinator/report.json` |
+
+### Phase 0 Audit Toolkit
+
+To establish a measurable baseline, Phase 0 introduces automated audits that run against the production preview:
+
+1. Build the site: `npm run build`.
+2. Launch the preview server and full audit suite: `npm run audit:web`.
+3. Review generated artifacts under `.reports/`:
+   - `lighthouse/report.{html,json}` for performance and SEO scores.
+   - `axe/` JSON outputs for accessibility findings (process exits non-zero on violations).
+   - `linkinator/report.json` for the internal link crawl.
+
+The audit scripts expect Chrome to be available locally (required by Lighthouse). Each check exits with a non-zero status if failures are detected, making it easy to wire into CI later.
 
 ## 👀 Want to learn more?
 
