@@ -2,19 +2,21 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	lang?: 'ko' | 'en';
 }
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL);
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg', lang = 'ko' } = Astro.props as Props;
 const imageURL = new URL(image, siteURL);
+const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---
 
 <!-- Global Metadata -->
@@ -29,6 +31,8 @@ const imageURL = new URL(image, siteURL);
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+<meta name="author" content={SITE_AUTHOR} />
+<meta name="language" content={lang} />
 
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
@@ -48,6 +52,8 @@ const imageURL = new URL(image, siteURL);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content={locale} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -55,3 +61,4 @@ const imageURL = new URL(image, siteURL);
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageURL} />
+<meta name="twitter:creator" content={SITE_AUTHOR} />
