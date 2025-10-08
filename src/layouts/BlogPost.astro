@@ -6,20 +6,30 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'] & { lang?: string };
+type Props = CollectionEntry<'blog'>['data'] & { lang?: string; slug: string };
 
-const { title, description, pubDate, updatedDate, heroImage, lang: providedLang } = Astro.props as Props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  lang: providedLang,
+  slug,
+} = Astro.props as Props;
 const lang = providedLang ?? 'ko';
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
-const imageURL = heroImage ? new URL(heroImage, siteURL).toString() : undefined;
+const heroImageURL = heroImage ? new URL(heroImage, siteURL).toString() : undefined;
+const ogImageURL = new URL(`/og/${slug}.png`, siteURL).toString();
 const publishedISO = pubDate instanceof Date ? pubDate.toISOString() : new Date(pubDate).toISOString();
 const updatedISO = updatedDate
   ? updatedDate instanceof Date
     ? updatedDate.toISOString()
     : new Date(updatedDate).toISOString()
   : publishedISO;
+const jsonLdImages = heroImageURL ? [ogImageURL, heroImageURL] : [ogImageURL];
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
@@ -42,7 +52,7 @@ const articleJsonLd = {
     '@type': 'WebPage',
     '@id': canonicalURL,
   },
-  ...(imageURL ? { image: [imageURL] } : {}),
+  image: jsonLdImages,
 };
 
 const breadcrumbJsonLd = {
@@ -73,7 +83,7 @@ const breadcrumbJsonLd = {
 
 <html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} image={heroImage} lang={lang} />
+			<BaseHead title={title} description={description} image={ogImageURL} lang={lang} />
 		<script type="application/ld+json">
 			{JSON.stringify(articleJsonLd)}
 		</script>

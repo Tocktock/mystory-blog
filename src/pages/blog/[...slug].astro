@@ -20,7 +20,7 @@ const { Content } = await render(post);
 ---
 
 <!-- The main blog post layout -->
-<BlogPost {...post.data}>
+<BlogPost {...post.data} slug={post.slug}>
   <!-- Render the post's content -->
   <Content />
 

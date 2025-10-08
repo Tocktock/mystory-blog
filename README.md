@@ -79,6 +79,12 @@ The audit scripts expect Chrome to be available locally (required by Lighthouse)
 
 Blog posts now accept an optional `lang` field in frontmatter. When omitted the page defaults to Korean (`ko`), but you can set `lang: 'en'` for English posts to ensure the generated `<html lang>` attribute and structured data match the article’s language.
 
+### Open Graph Images
+
+- OpenGraph/Twitter previews are generated automatically at build time via [`astro-og-canvas`](https://github.com/delucis/astro-og-canvas).
+- Each blog post renders a card at `/og/<slug>.png`; these URLs are wired into the head metadata and BlogPosting JSON-LD.
+- Customize per-post visuals by adding a `heroImage` in frontmatter (used on-page and as a secondary image in structured data).
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
