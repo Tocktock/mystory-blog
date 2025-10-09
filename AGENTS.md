@@ -49,8 +49,10 @@ Create a new post
 title: "My Post"
 description: "Short summary"
 pubDate: 2025-01-01
-heroImage: "../../assets/placeholders/blog-placeholder-2.jpg"
+heroImage: "../../../assets/placeholders/blog-placeholder-2.jpg"
 ---
+
+- Custom hero artwork lives under `src/assets/heroes/`; reference it via `heroImage: "../../../assets/heroes/<file>.png"` from a post file.
 
 ## Routing
 - Pages under src/pages/ become routes automatically
