@@ -54,9 +54,8 @@ const personJsonLd = buildPersonJsonLd({
 
       <section class="gallery" aria-label="Cute Cat Gallery">
         {
-          galleryImages.map(({ image, alt }, index) => (
-            // @ts-expect-error valid key for list rendering
-            <article key={index} class="gallery__item">
+          galleryImages.map(({ image, alt }) => (
+            <article class="gallery__item">
               <Image
                 src={image}
                 alt={alt}
