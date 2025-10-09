@@ -39,7 +39,7 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
-	font-size: 20px;
+	font-size: clamp(18px, 1.8vw, 20px);
 	line-height: 1.7;
 }
 main {
@@ -59,19 +59,19 @@ h6 {
 	line-height: 1.2;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: clamp(2.8rem, 5vw, 3.4rem);
 }
 h2 {
-	font-size: 2.441em;
+	font-size: clamp(2.2rem, 3.6vw, 2.8rem);
 }
 h3 {
-	font-size: 1.953em;
+	font-size: clamp(1.8rem, 2.6vw, 2.2rem);
 }
 h4 {
-	font-size: 1.563em;
+	font-size: clamp(1.5rem, 2vw, 1.8rem);
 }
 h5 {
-	font-size: 1.25em;
+	font-size: clamp(1.2rem, 1.6vw, 1.4rem);
 }
 strong,
 b {
@@ -104,17 +104,25 @@ img {
 	height: auto;
 	border-radius: 8px;
 }
+code,
+pre {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
 code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	border-radius: 4px;
 }
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+	background-color: rgba(var(--gray-light), 0.6);
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
+	font: inherit;
+	white-space: pre;
 }
 blockquote {
 	border-left: 4px solid var(--accent);
@@ -127,9 +135,6 @@ hr {
 	border-top: 1px solid rgb(var(--gray-light));
 }
 @media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
 	main {
 		padding: 1em;
 	}
