@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "npx pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "preaudit:lighthouse": "node scripts/audit/prepare-reports.mjs",
@@ -28,6 +29,7 @@
     "@axe-core/cli": "^4.10.2",
     "lighthouse": "^12.8.2",
     "linkinator": "^7.1.3",
+    "pagefind": "^1.4.0",
     "start-server-and-test": "^2.1.2"
   }
 }

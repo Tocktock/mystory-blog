@@ -2,6 +2,10 @@
 title: '포스트의 데이터는 어디에? 그리고 어떻게?'
 pubDate: 2022-01-10
 description: '이 포스트의 데이터는 루트디렉토리/data/blog 폴더에 존재한다.'
+tags:
+  - astro
+  - blogging
+  - content
 ---
 
 # 이 블로그는 어떻게 만들어졌을까.
