@@ -2,6 +2,7 @@
 title: 2. 컨테이너와 개인 저장소의 세계 -2
 pubDate: 2024-01-14
 description: '깃허브 액션을 통해 AWS ECR 에 이미지를 푸쉬해봅시다.'
+heroImage: "../../../assets/heroes/kubernetes-repo-practices.png"
 ---
 
 # 컨테이너와 개인 저장소의 세계 -2

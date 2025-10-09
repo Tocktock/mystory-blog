@@ -2,6 +2,7 @@
 title: '코틀린 json serializer 만들어보기'
 pubDate: 2022-03-14
 description: '코틀린 Serializer 는 리플렉션을 통해 만들 수 있다.'
+heroImage: "../../../assets/heroes/kotlin-object-json.png"
 ---
 
 ## 지난포스트에서..

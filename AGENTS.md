@@ -44,15 +44,20 @@ Defined in src/content.config.ts (Zod):
 
 Create a new post
 1) Add src/content/blog/<topic>/<slug>.md
-2) Frontmatter example:
+2) Generate a hero image (optional but recommended):
+   - `python3 scripts/create_hero_image.py --slug new-post --title "Post Title" --subtitle "Optional subtitle"`
+   - Use `--palette <index>` to lock a specific gradient or `--dry-run` to preview a palette.
+   - The script writes `src/assets/heroes/<slug>.png`. If Pillow isn’t installed, run `pip install pillow`.
+3) Frontmatter example:
 ---
 title: "My Post"
 description: "Short summary"
 pubDate: 2025-01-01
-heroImage: "../../../assets/placeholders/blog-placeholder-2.jpg"
+heroImage: "../../../assets/heroes/new-post.png"
 ---
 
 - Custom hero artwork lives under `src/assets/heroes/`; reference it via `heroImage: "../../../assets/heroes/<file>.png"` from a post file.
+- Legacy placeholders remain available in `src/assets/placeholders/` if you need a temporary image.
 
 ## Routing
 - Pages under src/pages/ become routes automatically

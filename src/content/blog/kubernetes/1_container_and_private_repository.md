@@ -2,6 +2,7 @@
 title: 1. 컨테이너와 개인 저장소의 세계 -1
 pubDate: 2024-01-13
 description: '소프트웨어 개발에서 Docker와 컨테이너 기술의 마법에 대해 알아봅시다.'
+heroImage: "../../../assets/heroes/kubernetes-private-repo.png"
 ---
 
 # 컨테이너와 프라이빗 리포지토리의 세계.
