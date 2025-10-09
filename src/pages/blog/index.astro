@@ -5,12 +5,17 @@ import Footer from '../../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
+import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
+import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
+import placeholder4 from '../../assets/placeholders/blog-placeholder-4.jpg';
+import placeholder5 from '../../assets/placeholders/blog-placeholder-5.jpg';
 
 const defaultImages = [
-	'/blog-placeholder-2.jpg',
-	'/blog-placeholder-3.jpg',
-	'/blog-placeholder-4.jpg',
-	'/blog-placeholder-5.jpg',
+	placeholder2,
+	placeholder3,
+	placeholder4,
+	placeholder5,
 ];
 
 const getRandomImage = () => {
@@ -69,7 +74,7 @@ const posts = (await getCollection('blog')).sort(
 				background-color: rgba(var(--gray-light), 0.12);
 				transform: translateY(-2px);
 			}
-			.post-card img {
+			.post-card__image {
 				display: block;
 				width: 100%;
 				margin-bottom: 0.75rem;
@@ -132,11 +137,18 @@ const posts = (await getCollection('blog')).sort(
 						return (
 								<li class={cardClass}>
 									<a href={`/blog/${post.id}/`}>
-										<img
-											width={isFeatured ? 960 : 720}
-											height={isFeatured ? 480 : 360}
-											src={post.data.heroImage || getRandomImage()}
+										<Image
+											src={post.data.heroImage ?? getRandomImage()}
 											alt=""
+											widths={isFeatured ? [720, 960, 1200] : [480, 720, 960]}
+											sizes={
+												isFeatured
+													? '(max-width: 960px) 100vw, 960px'
+													: '(max-width: 960px) 100vw, 480px'
+											}
+											loading={index === 0 ? 'eager' : 'lazy'}
+											decoding="async"
+											class="post-card__image"
 										/>
 										<h2 class="post-card__title">{post.data.title}</h2>
 										<p class="post-card__date">

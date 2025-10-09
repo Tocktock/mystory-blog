@@ -39,7 +39,7 @@ This document helps AI agents and contributors quickly understand, extend, and s
 ## Content Model (blog)
 Defined in src/content.config.ts (Zod):
 - Required: title: string, description: string, pubDate: Date
-- Optional: updatedDate?: Date, heroImage?: string
+- Optional: updatedDate?: Date, heroImage?: ImageMetadata (uses `image()` helper)
 - Loader: glob('./src/content/blog/**/*.{md,mdx}')
 
 Create a new post
@@ -49,7 +49,7 @@ Create a new post
 title: "My Post"
 description: "Short summary"
 pubDate: 2025-01-01
-heroImage: "/blog-placeholder-2.jpg"
+heroImage: "../../assets/placeholders/blog-placeholder-2.jpg"
 ---
 
 ## Routing

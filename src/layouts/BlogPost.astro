@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { Image } from 'astro:assets';
 
 type Props = CollectionEntry<'blog'>['data'] & { lang?: string; slug: string };
 
@@ -21,7 +22,7 @@ const lang = providedLang ?? 'ko';
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
-const heroImageURL = heroImage ? new URL(heroImage, siteURL).toString() : undefined;
+const heroImageURL = heroImage ? new URL(heroImage.src, siteURL).toString() : undefined;
 const ogImageURL = new URL(`/og/${slug}.png`, siteURL).toString();
 const publishedISO = pubDate instanceof Date ? pubDate.toISOString() : new Date(pubDate).toISOString();
 const updatedISO = updatedDate
@@ -99,7 +100,7 @@ const breadcrumbJsonLd = {
 			.hero-image {
 				width: 100%;
 			}
-			.hero-image img {
+			.hero-image__media {
 				display: block;
 				margin: 0 auto;
 				border-radius: 12px;
@@ -135,9 +136,19 @@ const breadcrumbJsonLd = {
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				{heroImage && (
+					<div class="hero-image">
+						<Image
+							src={heroImage}
+							alt=""
+							widths={[720, 960, 1280]}
+							sizes="(max-width: 960px) 100vw, 960px"
+							class="hero-image__media"
+							loading="eager"
+							decoding="async"
+						/>
+					</div>
+				)}
 				<div class="prose">
 					<div class="title">
 						<div class="date">
