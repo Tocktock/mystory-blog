@@ -14,7 +14,7 @@ const toTagSlug = (label: string) => {
 	const sanitized = trimmed
 		.toLowerCase()
 		.replace(/\s+/g, '-')
-		.replace(/[\/]+/g, '-')
+		.replace(/[/]+/g, '-')
 		.replace(/-+/g, '-');
 	if (!sanitized) {
 		return null;

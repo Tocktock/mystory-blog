@@ -1,61 +1,30 @@
 ---
-const {
-  PUBLIC_GISCUS_REPO,
-  PUBLIC_GISCUS_REPO_ID,
-  PUBLIC_GISCUS_CATEGORY,
-  PUBLIC_GISCUS_CATEGORY_ID,
-  PUBLIC_GISCUS_MAPPING,
-  PUBLIC_GISCUS_LANG,
-  PUBLIC_GISCUS_THEME,
-  PUBLIC_GISCUS_STRICT,
-  PUBLIC_GISCUS_REACTIONS_ENABLED,
-  PUBLIC_GISCUS_EMIT_METADATA,
-  PUBLIC_GISCUS_INPUT_POSITION,
-  PUBLIC_GISCUS_LOADING,
-} = import.meta.env;
+import { buildGiscusConfig, getConfiguredGiscus } from '../utils/giscus';
 
-const giscusConfig = {
-  repo: PUBLIC_GISCUS_REPO,
-  repoId: PUBLIC_GISCUS_REPO_ID,
-  category: PUBLIC_GISCUS_CATEGORY,
-  categoryId: PUBLIC_GISCUS_CATEGORY_ID,
-  mapping: PUBLIC_GISCUS_MAPPING ?? 'title',
-  lang: PUBLIC_GISCUS_LANG ?? 'ko',
-  theme: PUBLIC_GISCUS_THEME ?? 'light',
-  strict: PUBLIC_GISCUS_STRICT ?? '1',
-  reactionsEnabled: PUBLIC_GISCUS_REACTIONS_ENABLED ?? '1',
-  emitMetadata: PUBLIC_GISCUS_EMIT_METADATA ?? '0',
-  inputPosition: PUBLIC_GISCUS_INPUT_POSITION ?? 'bottom',
-  loading: PUBLIC_GISCUS_LOADING ?? 'lazy',
-};
-
-const isConfigured = Boolean(
-  giscusConfig.repo &&
-    giscusConfig.repoId &&
-    giscusConfig.category &&
-    giscusConfig.categoryId,
-);
+const giscusConfig = buildGiscusConfig(import.meta.env);
+const configuredGiscus = getConfiguredGiscus(giscusConfig);
 ---
 
 <section id="comments" class="comments" aria-label="Post comments">
 	{
-		isConfigured ? (
+		configuredGiscus ? (
 			<>
 				<div class="giscus" />
 				<script
+					is:inline
 					src="https://giscus.app/client.js"
-					data-repo={giscusConfig.repo}
-					data-repo-id={giscusConfig.repoId}
-					data-category={giscusConfig.category}
-					data-category-id={giscusConfig.categoryId}
-					data-mapping={giscusConfig.mapping}
-					data-strict={giscusConfig.strict}
-					data-reactions-enabled={giscusConfig.reactionsEnabled}
-					data-emit-metadata={giscusConfig.emitMetadata}
-					data-input-position={giscusConfig.inputPosition}
-					data-theme={giscusConfig.theme}
-					data-lang={giscusConfig.lang}
-					data-loading={giscusConfig.loading}
+					data-repo={configuredGiscus.repo}
+					data-repo-id={configuredGiscus.repoId}
+					data-category={configuredGiscus.category}
+					data-category-id={configuredGiscus.categoryId}
+					data-mapping={configuredGiscus.mapping}
+					data-strict={configuredGiscus.strict}
+					data-reactions-enabled={configuredGiscus.reactionsEnabled}
+					data-emit-metadata={configuredGiscus.emitMetadata}
+					data-input-position={configuredGiscus.inputPosition}
+					data-theme={configuredGiscus.theme}
+					data-lang={configuredGiscus.lang}
+					data-loading={configuredGiscus.loading}
 					crossorigin="anonymous"
 					async
 				/>

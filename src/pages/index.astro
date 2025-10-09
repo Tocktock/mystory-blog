@@ -10,6 +10,7 @@ import galleryImage3 from '../assets/gallery/3.jpg';
 import galleryImage4 from '../assets/gallery/4.jpg';
 import galleryImage5 from '../assets/gallery/5.jpg';
 import galleryImage6 from '../assets/gallery/6.jpg';
+import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
 
 const galleryImages = [
 	{ image: galleryImage1, alt: 'Cat lounging near a window with soft lighting.' },
@@ -22,38 +23,26 @@ const galleryImages = [
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
-
-const websiteJsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	url: canonicalURL,
-	name: SITE_TITLE,
+export const websiteJsonLd = buildWebsiteJsonLd({
+	canonicalUrl: canonicalURL,
+	title: SITE_TITLE,
 	description: SITE_DESCRIPTION,
-	publisher: {
-		'@type': 'Person',
-		name: SITE_AUTHOR,
-	},
-};
-
-const personJsonLd = {
-	'@context': 'https://schema.org',
-	'@type': 'Person',
+	author: SITE_AUTHOR,
+});
+export const personJsonLd = buildPersonJsonLd({
+	canonicalUrl: canonicalURL,
 	name: SITE_AUTHOR,
 	description: SITE_DESCRIPTION,
-	url: canonicalURL,
-};
+});
+
 ---
 
 <!doctype html>
 <html lang="ko">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
-		<script type="application/ld+json">
-			{JSON.stringify(websiteJsonLd)}
-		</script>
-		<script type="application/ld+json">
-			{JSON.stringify(personJsonLd)}
-		</script>
+		<script type="application/ld+json" is:inline>{JSON.stringify(websiteJsonLd)}</script>
+		<script type="application/ld+json" is:inline>{JSON.stringify(personJsonLd)}</script>
 	</head>
 	<body>
 		<Header />
@@ -68,7 +57,7 @@ const personJsonLd = {
 
 		<section class="gallery" aria-label="Cute Cat Gallery">
 			{galleryImages.map(({ image, alt }, index) => (
-				// @ts-ignore - valid key for list rendering
+		// @ts-expect-error valid key for list rendering
 				<article key={index} class="gallery__item">
 					<Image
 						src={image}

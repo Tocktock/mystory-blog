@@ -152,7 +152,7 @@ const posts = (await getCollection('blog')).sort(
 										/>
 										<h2 class="post-card__title">{post.data.title}</h2>
 										<p class="post-card__date">
-											<time dateTime={pubDate.toISOString()}>
+					<time datetime={pubDate.toISOString()}>
 												<FormattedDate date={post.data.pubDate} />
 											</time>
 										</p>

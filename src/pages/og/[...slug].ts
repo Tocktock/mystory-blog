@@ -6,7 +6,7 @@ const collectionEntries = await getCollection('blog');
 
 const pages = Object.fromEntries(
   collectionEntries.map((entry) => {
-    const slug = entry.slug ?? entry.id.replace(/\.(md|mdx)$/, '');
+    const slug = entry.id;
 
     return [
       slug,
@@ -22,7 +22,7 @@ const pages = Object.fromEntries(
 export const { getStaticPaths, GET } = OGImageRoute({
   param: 'slug',
   pages,
-  getImageOptions: (path, page) => ({
+  getImageOptions: (_path, page) => ({
     title: page.title,
     description: page.description,
     dir: page.lang === 'ar' || page.lang === 'he' ? 'rtl' : 'ltr',

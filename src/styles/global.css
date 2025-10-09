@@ -162,6 +162,16 @@ hr {
 	}
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+}
+
 .sr-only {
 	border: 0;
 	padding: 0;

@@ -5,8 +5,8 @@ const today = new Date();
 <footer>
 	&copy; {today.getFullYear()} Park Ji Yong. All rights reserved.
 	<div class="social-links">
-		<a href="https://github.com/Tocktock" target="_blank">
-			<span class="sr-only">Go to Astro's GitHub repo</span>
+		<a href="https://github.com/Tocktock" target="_blank" rel="noopener noreferrer">
+			<span class="sr-only">Ji Yong's GitHub</span>
 			<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" astro-icon="social/github"
 				><path
 					fill="currentColor"
@@ -34,6 +34,11 @@ const today = new Date();
 		color: rgb(var(--gray));
 	}
 	.social-links a:hover {
+		color: rgb(var(--gray-dark));
+	}
+	.social-links a:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 4px;
 		color: rgb(var(--gray-dark));
 	}
 </style>

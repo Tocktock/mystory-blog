@@ -78,6 +78,10 @@ heroImage: "../../../assets/heroes/new-post.png"
 - Astro CLI passthrough: npm run astro -- <subcommand>
   - Type-check: npm run astro -- check
   - Add integration: npm run astro -- add
+- Linting: npm run lint (auto-fix with npm run lint:fix)
+- Prettier: npm run format:check / npm run format
+- Static analysis: npm run check (requires @astrojs/check + TypeScript)
+- End-to-end smoke tests: npm run test:e2e (ensure `npx playwright install chromium` has been run once locally)
 
 ## Coding Conventions
 - TypeScript strict; prefer explicit types in TS files
@@ -89,10 +93,12 @@ heroImage: "../../../assets/heroes/new-post.png"
 - Build succeeds: npm run build
 - Preview clickthrough: npm run preview → /, /blog, recent post, /about
 - Content schema: new/edited posts satisfy src/content.config.ts
-- Type checks: npm run astro -- check
+- Type checks: npm run check
+- Lint clean: npm run lint (and fix any errors)
 - SEO: Titles/descriptions accurate via BaseHead.astro
 - Feeds: /rss.xml renders; sitemap present
 - Comments: Giscus shows on post pages (if configured)
+- E2E smoke suite: npm run test:e2e (covers navigation, search, comments)
 
 ## Tailwind (optional)
 - Currently not enabled. To enable:
@@ -112,6 +118,7 @@ heroImage: "../../../assets/heroes/new-post.png"
 - Giscus depends on the `PUBLIC_GISCUS_*` environment variables being set in the deployment environment
 - RSS/sitemap need a correct site URL in astro.config.mjs for absolute URLs
 - Blog frontmatter is validated; missing required fields will fail at build/type-check time
+- CSP headers are defined in vercel.json. Extend the allowlist (script/img/connect sources) when adding new third-party resources.
 
 ## Tooling & Editors
 - VS Code: recommended extensions in .vscode/extensions.json

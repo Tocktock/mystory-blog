@@ -57,6 +57,12 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run lint`            | Run ESLint against `.ts`, `.tsx`, and `.astro` sources |
+| `npm run lint:fix`        | Attempt to automatically fix lint violations     |
+| `npm run format:check`    | Verify Prettier formatting                       |
+| `npm run format`          | Format the project with Prettier                 |
+| `npm run check`           | Static type/syntax analysis via `@astrojs/check` |
+| `npm run test:e2e`        | Build the site and execute Playwright smoke tests |
 | `npm run audit:web`       | Serve the production build then run Lighthouse, Axe, and Linkinator audits (reports in `.reports/`) |
 | `npm run audit:lighthouse`| Run Lighthouse (mobile, performance/accessibility/SEO) against `http://127.0.0.1:4321` |
 | `npm run audit:axe`       | Run axe-core accessibility checks against the preview server |
@@ -74,6 +80,13 @@ To establish a measurable baseline, Phase 0 introduces automated audits that run
    - `linkinator/report.json` for the internal link crawl.
 
 The audit scripts expect Chrome to be available locally (required by Lighthouse). Each check exits with a non-zero status if failures are detected, making it easy to wire into CI later.
+
+### Linting & Automated Tests
+
+- ESLint enforces TypeScript and Astro best practices via `npm run lint`; use `npm run lint:fix` for quick fixes.
+- Prettier keeps formatting consistent (`npm run format:check` / `npm run format`).
+- `npm run check` runs `@astrojs/check` for project-wide diagnostics.
+- Playwright smoke tests cover navigation, search, and comments. Install the Chromium browser one time with `npx playwright install chromium`, then run `npm run test:e2e` to build and execute the suite.
 
 ## 🧾 Content Frontmatter
 

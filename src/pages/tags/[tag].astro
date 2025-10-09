@@ -53,7 +53,7 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
             <a href={`/blog/${post.id}/`}>
               <h2>{post.data.title}</h2>
               <p>{post.data.description}</p>
-              <time dateTime={post.data.pubDate.toISOString()}>
+				<time datetime={post.data.pubDate.toISOString()}>
                 <FormattedDate date={post.data.pubDate} />
               </time>
             </a>
