@@ -19,6 +19,29 @@ const imageURL = new URL(image, siteURL);
 const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---
 
+<script is:inline>
+	(() => {
+		const storageKey = 'preferred-color-scheme';
+		const root = document.documentElement;
+		const prefersDarkQuery = '(prefers-color-scheme: dark)';
+
+		try {
+			const stored = localStorage.getItem(storageKey);
+			if (stored === 'dark' || stored === 'light') {
+				root.dataset.theme = stored;
+				return;
+			}
+		} catch (error) {
+			// Ignore storage access issues (e.g., private browsing)
+		}
+
+		const prefersDark = typeof window !== 'undefined' && window.matchMedia
+			? window.matchMedia(prefersDarkQuery).matches
+			: false;
+		root.dataset.theme = prefersDark ? 'dark' : 'light';
+	})();
+</script>
+
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />

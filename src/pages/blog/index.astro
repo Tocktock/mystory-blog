@@ -58,11 +58,15 @@ const posts = (await getCollection('blog')).sort(
 				padding: 0.5rem;
 				text-decoration: none;
 				border-radius: 12px;
-				transition: box-shadow 0.2s ease, transform 0.2s ease;
+				background: var(--surface-elevated);
+				color: rgb(var(--gray-dark));
+				box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.18);
+				transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 			}
 			.post-card a:focus-visible,
 			.post-card a:hover {
 				box-shadow: var(--box-shadow);
+				background-color: rgba(var(--gray-light), 0.12);
 				transform: translateY(-2px);
 			}
 			.post-card img {

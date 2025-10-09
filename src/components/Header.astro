@@ -12,48 +12,123 @@ const navLinks = [
 
 <header class="site-header">
 	<nav class="site-nav" aria-label="Primary">
-		<div class="nav-brand">
-			<p class="nav-title"><a href="/">{SITE_TITLE}</a></p>
+	<div class="nav-brand">
+		<p class="nav-title"><a href="/">{SITE_TITLE}</a></p>
+	</div>
+	<div class="nav-links" id="primary-navigation">
+		<ul>
+			{navLinks.map((link) => (
+				<li>
+					<HeaderLink href={link.href}>{link.label}</HeaderLink>
+				</li>
+			))}
+		</ul>
+		<div class="social-links">
+			<a href="https://github.com/Tocktock" target="_blank" rel="noreferrer">
+				<span class="sr-only">Go to Ji Yong's GitHub profile</span>
+				<svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24">
+					<path
+						fill="currentColor"
+						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+					></path>
+				</svg>
+			</a>
 		</div>
-		<button
-			class="nav-toggle"
-			type="button"
-			aria-controls="primary-navigation"
-			aria-expanded="false"
-			data-nav-toggle
-		>
-			<span class="sr-only">Toggle navigation</span>
-			<span class="nav-toggle__bar" aria-hidden="true"></span>
-		</button>
-		<div class="nav-links" id="primary-navigation">
-			<ul>
-				{navLinks.map((link) => (
-					<li>
-						<HeaderLink href={link.href}>{link.label}</HeaderLink>
-					</li>
-				))}
-			</ul>
-			<div class="social-links">
-				<a href="https://github.com/Tocktock" target="_blank" rel="noreferrer">
-					<span class="sr-only">Go to Ji Yong's GitHub profile</span>
-					<svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24">
-						<path
-							fill="currentColor"
-							d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-						></path>
-					</svg>
-				</a>
-			</div>
-		</div>
+	</div>
+	<button
+		class="theme-toggle"
+		type="button"
+		aria-label="Toggle dark mode"
+		aria-pressed="false"
+		data-theme-toggle
+	>
+		<span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀️</span>
+		<span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">🌙</span>
+	</button>
+	<button
+		class="nav-toggle"
+		type="button"
+		aria-controls="primary-navigation"
+		aria-expanded="false"
+		data-nav-toggle
+	>
+		<span class="sr-only">Toggle navigation</span>
+		<span class="nav-toggle__bar" aria-hidden="true"></span>
+	</button>
 	</nav>
 </header>
 <script is:inline>
   const header = document.querySelector('.site-header');
   const navToggle = document.querySelector('[data-nav-toggle]');
   const nav = document.getElementById('primary-navigation');
+  const themeToggle = document.querySelector('[data-theme-toggle]');
+  const themeStorageKey = 'preferred-color-scheme';
 
   if (header) {
     header.setAttribute('data-js-enabled', 'true');
+  }
+
+  const getStoredTheme = () => {
+    try {
+      const stored = localStorage.getItem(themeStorageKey);
+      if (stored === 'light' || stored === 'dark') {
+        return stored;
+      }
+    } catch (error) {
+      // Ignore storage access errors (e.g., private mode)
+    }
+    return null;
+  };
+
+  const prefersDark = typeof window !== 'undefined' && 'matchMedia' in window
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
+
+  const applyTheme = (value) => {
+    const nextTheme = value === 'dark' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = nextTheme;
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-pressed', String(nextTheme === 'dark'));
+      themeToggle.setAttribute(
+        'aria-label',
+        nextTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
+      );
+    }
+  };
+
+  const resolveTheme = () => {
+    const stored = getStoredTheme();
+    if (stored) {
+      return stored;
+    }
+    return prefersDark?.matches ? 'dark' : 'light';
+  };
+
+  const persistTheme = (value) => {
+    try {
+      localStorage.setItem(themeStorageKey, value);
+    } catch (error) {
+      // Ignore storage write failures
+    }
+  };
+
+  applyTheme(resolveTheme());
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      persistTheme(next);
+    });
+  }
+
+  if (prefersDark) {
+    prefersDark.addEventListener('change', (event) => {
+      if (!getStoredTheme()) {
+        applyTheme(event.matches ? 'dark' : 'light');
+      }
+    });
   }
 
   if (navToggle && nav) {
@@ -77,13 +152,16 @@ const navLinks = [
 	.site-header {
 		margin: 0;
 		padding: 0 1rem;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		background: var(--surface-elevated);
+		box-shadow: var(--box-shadow);
+		color: rgb(var(--black));
+		transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 	}
 	.site-nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
 		max-width: 960px;
 		margin: 0 auto;
 	}
@@ -116,7 +194,7 @@ const navLinks = [
 	}
 	.nav-toggle:focus-visible,
 	.nav-toggle:hover {
-		background: rgba(var(--gray-light), 0.6);
+		background: rgba(var(--gray-light), 0.25);
 	}
 	.nav-toggle__bar,
 	.nav-toggle__bar::before,
@@ -150,6 +228,7 @@ const navLinks = [
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		margin-left: auto;
 	}
 	.nav-links ul {
 		display: flex;
@@ -169,6 +248,8 @@ const navLinks = [
 		color: rgb(var(--black));
 		text-decoration: none;
 		border-bottom: none;
+		background-color: transparent;
+		transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 	}
 	.nav-links li a.active {
 		color: var(--accent);
@@ -177,7 +258,45 @@ const navLinks = [
 	}
 	.nav-links li a:hover,
 	.nav-links li a:focus-visible {
-		background: rgba(var(--gray-light), 0.6);
+		background: rgba(var(--gray-light), 0.25);
+	}
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		min-height: 2.75rem;
+		padding: 0.75rem 1rem;
+		margin-left: 0.5rem;
+		border-radius: 0.75rem;
+		border: 1px solid rgba(var(--gray-light), 0.3);
+		background: transparent;
+		color: rgb(var(--black));
+		cursor: pointer;
+		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+	.theme-toggle:hover,
+	.theme-toggle:focus-visible {
+		background: rgba(var(--gray-light), 0.25);
+		border-color: rgba(var(--gray-light), 0.45);
+	}
+	.theme-toggle:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 3px rgba(var(--accent), 0.35);
+	}
+	.theme-toggle__icon {
+		font-size: 1.1rem;
+		line-height: 1;
+	}
+	.theme-toggle__icon--moon {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .theme-toggle__icon--sun {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .theme-toggle__icon--moon {
+		display: inline;
 	}
 	.social-links a {
 		display: inline-flex;
@@ -191,11 +310,10 @@ const navLinks = [
 	}
 	.social-links a:hover,
 	.social-links a:focus-visible {
-		background: rgba(var(--gray-light), 0.6);
+		background: rgba(var(--gray-light), 0.25);
 	}
 	@media (max-width: 720px) {
 		.site-nav {
-			flex-wrap: wrap;
 			gap: 0.5rem;
 		}
 		.nav-toggle {
@@ -213,6 +331,10 @@ const navLinks = [
 		.site-header[data-js-enabled='true'] .nav-links.is-open {
 			max-height: 500px;
 		}
+		.nav-links {
+			margin-left: 0;
+			width: 100%;
+		}
 		.nav-links ul {
 			flex-direction: column;
 			gap: 0.25rem;
@@ -220,6 +342,9 @@ const navLinks = [
 		.nav-links li a {
 			justify-content: flex-start;
 			padding: 0.75rem 1.25rem;
+		}
+		.theme-toggle {
+			margin-left: 0;
 		}
 		.social-links {
 			display: flex;
