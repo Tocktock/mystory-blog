@@ -13,101 +13,102 @@ import galleryImage6 from '../assets/gallery/6.jpg';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
 
 const galleryImages = [
-	{ image: galleryImage1, alt: 'Cat lounging near a window with soft lighting.' },
-	{ image: galleryImage2, alt: 'Curious cat peeking through a fence.' },
-	{ image: galleryImage3, alt: 'Playful kitten reaching for a toy.' },
-	{ image: galleryImage4, alt: 'Cat resting comfortably on a blanket.' },
-	{ image: galleryImage5, alt: 'Two cats sharing a quiet moment together.' },
-	{ image: galleryImage6, alt: 'Cat gazing outside with bright eyes.' },
+  { image: galleryImage1, alt: 'Cat lounging near a window with soft lighting.' },
+  { image: galleryImage2, alt: 'Curious cat peeking through a fence.' },
+  { image: galleryImage3, alt: 'Playful kitten reaching for a toy.' },
+  { image: galleryImage4, alt: 'Cat resting comfortably on a blanket.' },
+  { image: galleryImage5, alt: 'Two cats sharing a quiet moment together.' },
+  { image: galleryImage6, alt: 'Cat gazing outside with bright eyes.' },
 ];
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
-export const websiteJsonLd = buildWebsiteJsonLd({
-	canonicalUrl: canonicalURL,
-	title: SITE_TITLE,
-	description: SITE_DESCRIPTION,
-	author: SITE_AUTHOR,
+const websiteJsonLd = buildWebsiteJsonLd({
+  canonicalUrl: canonicalURL,
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  author: SITE_AUTHOR,
 });
-export const personJsonLd = buildPersonJsonLd({
-	canonicalUrl: canonicalURL,
-	name: SITE_AUTHOR,
-	description: SITE_DESCRIPTION,
+const personJsonLd = buildPersonJsonLd({
+  canonicalUrl: canonicalURL,
+  name: SITE_AUTHOR,
+  description: SITE_DESCRIPTION,
 });
-
 ---
 
 <!doctype html>
 <html lang="ko">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
-		<script type="application/ld+json" is:inline>{JSON.stringify(websiteJsonLd)}</script>
-		<script type="application/ld+json" is:inline>{JSON.stringify(personJsonLd)}</script>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello!</h1>
-			<p>
-				This is Cute Cat Gallery,
-				Blog Post is on <a href="/blog">Blog</a>
-				About Me is on <a href="/about">About</a>
-			</p>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>🧑‍🚀 Hello!</h1>
+      <p>
+        This is Cute Cat Gallery, Blog Post is on <a href="/blog">Blog</a>
+        About Me is on <a href="/about">About</a>
+      </p>
 
-
-		<section class="gallery" aria-label="Cute Cat Gallery">
-			{galleryImages.map(({ image, alt }, index) => (
-		// @ts-expect-error valid key for list rendering
-				<article key={index} class="gallery__item">
-					<Image
-						src={image}
-						alt={alt}
-						widths={[320, 480, 640, 960]}
-						sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
-						loading="lazy"
-						class="gallery__image"
-					/>
-				</article>
-			))}
-		</section>
-		</main>
-		<Footer />
-	</body>
+      <section class="gallery" aria-label="Cute Cat Gallery">
+        {
+          galleryImages.map(({ image, alt }, index) => (
+            // @ts-expect-error valid key for list rendering
+            <article key={index} class="gallery__item">
+              <Image
+                src={image}
+                alt={alt}
+                widths={[320, 480, 640, 960]}
+                sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                loading="lazy"
+                class="gallery__image"
+              />
+            </article>
+          ))
+        }
+      </section>
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-	.gallery {
-		margin: 2rem 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 1.5rem;
-		padding: 1rem 0;
-	}
+  .gallery {
+    margin: 2rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
 
-	.gallery__item {
-		border-radius: 0.75rem;
-		overflow: hidden;
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
+  .gallery__item {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
 
-	.gallery__item:hover,
-	.gallery__item:focus-within {
-		transform: translateY(-4px);
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-	}
+  .gallery__item:hover,
+  .gallery__item:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
 
-	.gallery__image {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		aspect-ratio: 4 / 3;
-	}
+  .gallery__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
 
-	@media (max-width: 720px) {
-		.gallery {
-			gap: 1rem;
-		}
-	}
+  @media (max-width: 720px) {
+    .gallery {
+      gap: 1rem;
+    }
+  }
 </style>

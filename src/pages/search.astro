@@ -18,26 +18,26 @@ import '../styles/search.css';
         <h1 id="search-title">Search</h1>
         <p>Find posts by keyword or filter results using the built-in Pagefind interface.</p>
       </section>
-      <div id="search" class="search-page__results" />
+      <div id="search" class="search-page__results"></div>
     </main>
     <Footer />
     <script type="module" is:inline>
       const initSearch = async () => {
-		try {
-			await import('/pagefind/pagefind-ui.js');
-			const PagefindUI = window.PagefindUI;
-			if (typeof PagefindUI !== 'function') {
-				throw new Error('PagefindUI global is unavailable after loading the UI bundle.');
-			}
-			new PagefindUI({
-				element: '#search',
-				bundlePath: '/pagefind/',
-				showImages: true,
-				translations: {
-					placeholder: '검색어를 입력하세요…',
-					zero_results: '일치하는 결과가 없습니다.',
-				},
-			});
+        try {
+          const module = await import('/pagefind/pagefind-ui.js');
+          const PagefindUI = module?.PagefindUI ?? window.PagefindUI;
+          if (typeof PagefindUI !== 'function') {
+            throw new Error('PagefindUI script did not expose the PagefindUI constructor.');
+          }
+          new PagefindUI({
+            element: '#search',
+            bundlePath: '/pagefind/',
+            showImages: true,
+            translations: {
+              placeholder: '검색어를 입력하세요…',
+              zero_results: '일치하는 결과가 없습니다.',
+            },
+          });
         } catch (error) {
           const container = document.querySelector('#search');
           if (container) {
