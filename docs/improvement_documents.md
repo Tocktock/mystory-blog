@@ -227,7 +227,7 @@
 ---
 
 ### Phase 6 — Accessibility, Security, Quality Assurance
-
+`
 **Action Items**
 
 - **Screen reader copy:** Update the header GitHub icon `sr-only` text to “Ji Yong’s GitHub,” etc.
