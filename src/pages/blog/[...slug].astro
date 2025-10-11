@@ -20,7 +20,7 @@ const { Content } = await render(post);
 ---
 
 <!-- The main blog post layout -->
-<BlogPost {...post.data} slug={post.id}>
+<BlogPost {...post.data} slug={post.id} ogImage={`/og/${post.id}.png`}>
   <!-- Render the post's content -->
   <Content />
 

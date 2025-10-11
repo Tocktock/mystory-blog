@@ -8,7 +8,11 @@ import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
 
-type Props = CollectionEntry<'blog'>['data'] & { lang?: string; slug: string };
+type Props = CollectionEntry<'blog'>['data'] & {
+  lang?: string;
+  slug: string;
+  ogImage?: string;
+};
 
 const {
   title,
@@ -18,13 +22,15 @@ const {
   heroImage,
   lang: providedLang,
   slug,
+  ogImage,
 } = Astro.props as Props;
 const lang = providedLang ?? 'ko';
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 const heroImageURL = heroImage ? new URL(heroImage.src, siteURL).toString() : undefined;
-const ogImageURL = new URL(`/og/${slug}.png`, siteURL).toString();
+const ogImagePath = ogImage ?? (slug ? `/og/${slug}.png` : undefined);
+const ogImageURL = ogImagePath ? new URL(ogImagePath, siteURL).toString() : heroImageURL;
 const publishedISO =
   pubDate instanceof Date ? pubDate.toISOString() : new Date(pubDate).toISOString();
 const updatedISO = updatedDate
@@ -32,7 +38,10 @@ const updatedISO = updatedDate
     ? updatedDate.toISOString()
     : new Date(updatedDate).toISOString()
   : publishedISO;
-const jsonLdImages = heroImageURL ? [ogImageURL, heroImageURL] : [ogImageURL];
+const imageCandidates = [ogImageURL, heroImageURL].filter(
+  (value): value is string => typeof value === 'string',
+);
+const jsonLdImages = Array.from(new Set(imageCandidates));
 const breadcrumbItems = [
   { position: 1, name: SITE_TITLE, item: siteURL.toString() },
   { position: 2, name: 'Blog', item: new URL('/blog', siteURL).toString() },
