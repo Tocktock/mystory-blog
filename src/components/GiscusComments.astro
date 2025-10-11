@@ -46,6 +46,7 @@ const configuredGiscus = getConfiguredGiscus(giscusConfig);
 		margin-top: 3rem;
 		padding-top: 2rem;
 		border-top: 1px solid rgba(var(--gray-light), 0.35);
+		width: 100%;
 	}
 
 	.comments__placeholder {
@@ -62,5 +63,16 @@ const configuredGiscus = getConfiguredGiscus(giscusConfig);
 		margin-top: 1rem;
 		font-size: 0.85rem;
 		color: rgba(var(--gray), 0.75);
+	}
+
+	.giscus {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.giscus iframe {
+		width: 100% !important;
+		min-width: 0 !important;
 	}
 </style>
