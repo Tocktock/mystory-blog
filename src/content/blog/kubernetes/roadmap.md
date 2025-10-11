@@ -2,6 +2,10 @@
 title: 쿠버네티스를 정복하기위한 나의 여정
 pubDate: 2024-01-13
 description: '쿠버네티스 마스터리로의 여정: 백엔드 개발에서 CI/CD와 쿠버네티스 혁신을 통해 동료들의 배포 과정을 간소화하는 방법을 공유합니다.'
+heroImage: "../../../assets/heroes/kubernetes-roadmap.png"
+tags:
+  - kubernetes
+  - roadmap
 ---
 
 # 쿠버네티스를 정복하기위한 나의 여정
@@ -20,24 +24,24 @@ description: '쿠버네티스 마스터리로의 여정: 백엔드 개발에서 
 Docker 와 컨테이너 환경을 구축한 것이 기술 여정의 첫걸음이었습니다. Amazon ECR 같은 개인 저장소를 활용하는 방법을 배우며, 기술적인 이해뿐만 아니라 새로운 사고방식도 함께 익혔습니다.
 앞으로 다가올 대부분의 배포 프로세스는 컨테이너 환경에서 이루어질 것이기 때문에, 이 단계는 여정의 중요한 부분입니다.
 
-- [1. 컨테이너와 개인 저장소의 세계 -1](https://ji-yong.com/blog/kubernetes/1_container_and_private_repository)
-- [2. 컨테이너와 개인 저장소의 세계 -2](https://ji-yong.com/blog/kubernetes/2_container_and_private_repository_practices)
+- [1. 컨테이너와 개인 저장소의 세계 -1](/blog/kubernetes/1_container_and_private_repository)
+- [2. 컨테이너와 개인 저장소의 세계 -2](/blog/kubernetes/2_container_and_private_repository_practices)
 
 ### 쿠버네티스와 입문
 
 익숙해진 ECS 생태계를 떠나 쿠버네티스 학습을 선택한 것은 쿠버네티스가 제공하는 다양한 기능과 확장성을 경험하고 싶기 때문입니다.
 쿠버네티스 클러스터를 구축하고 노드를 직접 관리해보면서 GUI 로만 관리하던 ECS 배포 프로세스를 좀 더 이해할 수 있을 것이라 생각합니다.
 
-- [3. 쿠버네티스와의 첫 만남](https://ji-yong.com/blog/kubernetes/3._first_encounter_with_kubernetes)
-- [4. 쿠버네티스 Pod, Deployment, Service 와 예제.](https://ji-yong.com/blog/kubernetes/4.kubernetes_pod_deployment_service)
+- [3. 쿠버네티스와의 첫 만남](/blog/kubernetes/3_first_encounter_with_kubernetes)
+- [4. 쿠버네티스 Pod, Deployment, Service 와 예제.](/blog/kubernetes/4kubernetes_pod_deployment_service)
 
 ### CI/CD 맛보기
 
 앱을 배포할 때 적절한 CI/CD 파이프라인을 구축하는 것은 앱을 관리하고 확장하는데 중요한 요소입니다.
 깃허브액션, 젠킨스 등과 같은 도구를 활용한 안전한 배포를 이해하는 것은 쿠버네티스 운영뿐만 아니라 다양한 환경에서 필수요소입니다.
 
-- [5.1 CI/CD 와 Jenkins.](https://ji-yong.com/blog/kubernetes/5.basic_for_ci_cd)
-- [5.2 CI/CD 와 GitHub Action.](https://ji-yong.com/blog/kubernetes/5-2.cicd_and_githubaction)
+- [5.1 CI/CD 와 Jenkins.](/blog/kubernetes/5basic_for_ci_cd)
+- [5.2 CI/CD 와 GitHub Action.](/blog/kubernetes/5-2cicd_and_githubaction)
 
 ## 제2부: 실력 키우기
 

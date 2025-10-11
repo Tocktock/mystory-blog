@@ -2,6 +2,7 @@
 title: 'Next.js 가 페이지 경로를 생성하는 방식'
 pubDate: 2022-01-12
 description: 'nextjs 가 제공하는 폴더 디렉토리 구조를 통해 페이지 경로를 제공한다.'
+heroImage: "../../../assets/heroes/content-index-mdx.png"
 ---
 
 # Next.js 가 페이지 경로를 생성하는 방식

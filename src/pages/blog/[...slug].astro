@@ -2,7 +2,7 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
-import { UTTERANCES_CONFIG } from 'virtual:astro/config'; // Adjust import as necessary
+import GiscusComments from '../../components/GiscusComments.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -20,20 +20,9 @@ const { Content } = await render(post);
 ---
 
 <!-- The main blog post layout -->
-<BlogPost {...post.data}>
+<BlogPost {...post.data} slug={post.id} ogImage={`/og/${post.id}.png`}>
   <!-- Render the post's content -->
   <Content />
 
-  <!-- Utterances Comments Section -->
-  {UTTERANCES_CONFIG?.repo && (
-    <script
-      src="https://utteranc.es/client.js"
-      repo={UTTERANCES_CONFIG.repo}
-      issue-term={UTTERANCES_CONFIG.issueTerm ?? 'title'}
-      label={UTTERANCES_CONFIG.label ?? 'comments'}
-      theme={UTTERANCES_CONFIG.theme ?? 'github-light'}
-      crossorigin="anonymous"
-      async
-    />
-  )}
+  <GiscusComments />
 </BlogPost>

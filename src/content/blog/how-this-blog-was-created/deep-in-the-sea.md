@@ -2,6 +2,7 @@
 title: 'javascript 로 블로그 포스트 가져오기.'
 pubDate: 2022-01-13
 description: '함수와 함수와 함수와 함수였다.'
+heroImage: "../../../assets/heroes/content-deep-sea.png"
 ---
 
 # 함수와 함수와 함수와 함수.
@@ -35,7 +36,7 @@ const getAllFilesRecursively = (folder) =>
 
 ???
 
-![i-got-it](/static/images/i-got-it.png)
+> 🗒️ "I got it!" 메모 이미지가 있던 자리 — 함수 호출 흐름을 도식화한 메모를 상상해 보세요.
 
 ## 함수 뽀개기
 

@@ -1,0 +1,66 @@
+---
+import { buildGiscusConfig, getConfiguredGiscus } from '../utils/giscus';
+
+const giscusConfig = buildGiscusConfig(import.meta.env);
+const configuredGiscus = getConfiguredGiscus(giscusConfig);
+---
+
+<section id="comments" class="comments" aria-label="Post comments">
+	{
+		configuredGiscus ? (
+			<>
+				<div class="giscus" />
+				<script
+					is:inline
+					src="https://giscus.app/client.js"
+					data-repo={configuredGiscus.repo}
+					data-repo-id={configuredGiscus.repoId}
+					data-category={configuredGiscus.category}
+					data-category-id={configuredGiscus.categoryId}
+					data-mapping={configuredGiscus.mapping}
+					data-strict={configuredGiscus.strict}
+					data-reactions-enabled={configuredGiscus.reactionsEnabled}
+					data-emit-metadata={configuredGiscus.emitMetadata}
+					data-input-position={configuredGiscus.inputPosition}
+					data-theme={configuredGiscus.theme}
+					data-lang={configuredGiscus.lang}
+					data-loading={configuredGiscus.loading}
+					crossorigin="anonymous"
+					async
+				/>
+			</>
+		) : (
+			<p class="comments__placeholder" role="status">
+				Giscus comments are not configured yet. Define the required `PUBLIC_GISCUS_*`
+				environment variables to enable the discussion widget.
+			</p>
+		)
+	}
+	<noscript class="comments__noscript">
+		Enable JavaScript to view comments powered by Giscus.
+	</noscript>
+</section>
+
+<style>
+	.comments {
+		margin-top: 3rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(var(--gray-light), 0.35);
+	}
+
+	.comments__placeholder {
+		margin: 0;
+		padding: 1rem;
+		background: rgba(var(--gray-light), 0.15);
+		border-radius: 0.5rem;
+		font-size: 0.95rem;
+		color: rgb(var(--gray));
+	}
+
+	.comments__noscript {
+		display: inline-block;
+		margin-top: 1rem;
+		font-size: 0.85rem;
+		color: rgba(var(--gray), 0.75);
+	}
+</style>

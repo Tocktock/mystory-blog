@@ -4,82 +4,148 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { Image } from 'astro:assets';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & {
+  lang?: string;
+  slug: string;
+  ogImage?: string;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  lang: providedLang,
+  slug,
+  ogImage,
+} = Astro.props as Props;
+const lang = providedLang ?? 'ko';
+
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const heroImageURL = heroImage ? new URL(heroImage.src, siteURL).toString() : undefined;
+const ogImagePath = ogImage ?? (slug ? `/og/${slug}.png` : undefined);
+const ogImageURL = ogImagePath ? new URL(ogImagePath, siteURL).toString() : heroImageURL;
+const publishedISO =
+  pubDate instanceof Date ? pubDate.toISOString() : new Date(pubDate).toISOString();
+const updatedISO = updatedDate
+  ? updatedDate instanceof Date
+    ? updatedDate.toISOString()
+    : new Date(updatedDate).toISOString()
+  : publishedISO;
+const imageCandidates = [ogImageURL, heroImageURL].filter(
+  (value): value is string => typeof value === 'string',
+);
+const jsonLdImages = Array.from(new Set(imageCandidates));
+const breadcrumbItems = [
+  { position: 1, name: SITE_TITLE, item: siteURL.toString() },
+  { position: 2, name: 'Blog', item: new URL('/blog', siteURL).toString() },
+  { position: 3, name: title, item: canonicalURL },
+];
+const articleJsonLd = buildArticleJsonLd({
+  canonicalUrl: canonicalURL,
+  title,
+  description,
+  lang,
+  datePublished: publishedISO,
+  dateModified: updatedISO,
+  author: SITE_AUTHOR,
+  imageUrls: jsonLdImages,
+});
+const breadcrumbJsonLd = buildBreadcrumbJsonLd({
+  items: breadcrumbItems,
+});
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<html lang={lang}>
+  <head>
+    <BaseHead title={title} description={description} image={ogImageURL} lang={lang} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(articleJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image__media {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+      .date {
+        margin-bottom: 0.5em;
+        color: rgb(var(--gray));
+      }
+      .last-updated-on {
+        font-style: italic;
+      }
+    </style>
+  </head>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+  <body>
+    <Header />
+    <main>
+      <article>
+        {
+          heroImage && (
+            <div class="hero-image">
+              <Image
+                src={heroImage}
+                alt=""
+                widths={[720, 960, 1280]}
+                sizes="(max-width: 960px) 100vw, 960px"
+                class="hero-image__media"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          )
+        }
+        <div class="prose">
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div>
+            <h1>{title}</h1>
+            <hr />
+          </div>
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>

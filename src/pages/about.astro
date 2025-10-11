@@ -1,12 +1,15 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
+import aboutHero from '../assets/placeholders/blog-placeholder-about.jpg';
 ---
 
 <Layout
   title="About Me"
   description="Description About me"
   pubDate={new Date('Jan 01 2025')}
-  heroImage="/blog-placeholder-about.jpg"
+  tags={[]}
+  slug="about"
+  heroImage={aboutHero}
 >
   <h2>안녕하세요!</h2>
   <p>

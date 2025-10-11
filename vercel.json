@@ -1,0 +1,39 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://avatars.githubusercontent.com https://github.com https://github.githubassets.com https://user-images.githubusercontent.com https://camo.githubusercontent.com; font-src 'self'; connect-src 'self' https://giscus.app https://api.github.com; frame-src https://giscus.app; frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=31536000"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "max-age=31536000"
+        }
+      ]
+    }
+  ]
+}

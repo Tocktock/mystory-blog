@@ -5,15 +5,35 @@
  */
 
 :root {
+	color-scheme: light;
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
 	--gray-dark: 34, 41, 57;
+	--surface: #ffffff;
+	--surface-elevated: #ffffff;
 	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--body-background: linear-gradient(var(--gray-gradient)) no-repeat;
 	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
 		0 16px 32px rgba(var(--gray), 33%);
+	--code-bg: rgba(var(--gray-light), 0.6);
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--accent: #94a0ff;
+	--accent-dark: #6575ff;
+	--black: 239, 242, 248;
+	--gray: 168, 180, 208;
+	--gray-light: 96, 110, 150;
+	--gray-dark: 224, 231, 255;
+	--surface: #0b1120;
+	--surface-elevated: #1f2937;
+	--gray-gradient: rgba(15, 23, 42, 0.92), #0b1120;
+	--box-shadow: 0 2px 10px rgba(8, 15, 35, 0.6), 0 12px 32px rgba(8, 15, 35, 0.45);
+	--code-bg: rgba(36, 42, 64, 0.9);
 }
 @font-face {
 	font-family: 'Atkinson';
@@ -34,13 +54,15 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
+	background: var(--body-background);
+	background-color: var(--surface);
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
-	font-size: 20px;
+	font-size: clamp(18px, 1.8vw, 20px);
 	line-height: 1.7;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 main {
 	width: 720px;
@@ -59,19 +81,19 @@ h6 {
 	line-height: 1.2;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: clamp(2.8rem, 5vw, 3.4rem);
 }
 h2 {
-	font-size: 2.441em;
+	font-size: clamp(2.2rem, 3.6vw, 2.8rem);
 }
 h3 {
-	font-size: 1.953em;
+	font-size: clamp(1.8rem, 2.6vw, 2.2rem);
 }
 h4 {
-	font-size: 1.563em;
+	font-size: clamp(1.5rem, 2vw, 1.8rem);
 }
 h5 {
-	font-size: 1.25em;
+	font-size: clamp(1.2rem, 1.6vw, 1.4rem);
 }
 strong,
 b {
@@ -104,17 +126,25 @@ img {
 	height: auto;
 	border-radius: 8px;
 }
+code,
+pre {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	background-color: var(--code-bg);
+	border-radius: 4px;
 }
 pre {
 	padding: 1.5em;
 	border-radius: 8px;
+	background-color: var(--code-bg);
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
+	font: inherit;
+	white-space: pre;
 }
 blockquote {
 	border-left: 4px solid var(--accent);
@@ -127,12 +157,19 @@ hr {
 	border-top: 1px solid rgb(var(--gray-light));
 }
 @media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
 	main {
 		padding: 1em;
 	}
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
 }
 
 .sr-only {

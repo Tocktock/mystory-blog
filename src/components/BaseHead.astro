@@ -2,18 +2,46 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import placeholderOg from '../assets/placeholders/blog-placeholder-1.jpg';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	lang?: 'ko' | 'en';
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { title, description, image = placeholderOg.src, lang = 'ko' } = Astro.props as Props;
+const imageURL = new URL(image, siteURL);
+const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---
+
+<script is:inline>
+	(() => {
+		const storageKey = 'preferred-color-scheme';
+		const root = document.documentElement;
+		const prefersDarkQuery = '(prefers-color-scheme: dark)';
+
+		try {
+			const stored = localStorage.getItem(storageKey);
+			if (stored === 'dark' || stored === 'light') {
+				root.dataset.theme = stored;
+				return;
+			}
+		} catch (error) {
+			// Ignore storage access issues (e.g., private browsing)
+		}
+
+		const prefersDark = typeof window !== 'undefined' && window.matchMedia
+			? window.matchMedia(prefersDarkQuery).matches
+			: false;
+		root.dataset.theme = prefersDark ? 'dark' : 'light';
+	})();
+</script>
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
@@ -27,6 +55,8 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+<meta name="author" content={SITE_AUTHOR} />
+<meta name="language" content={lang} />
 
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
@@ -42,14 +72,17 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content={locale} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta property="twitter:image" content={imageURL} />
+<meta name="twitter:creator" content={SITE_AUTHOR} />

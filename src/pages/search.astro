@@ -1,0 +1,54 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/search.css';
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title="Search" description="Search Ji Yong’s blog posts" lang="ko" />
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  </head>
+  <body>
+    <Header />
+    <main class="search-page" aria-labelledby="search-title">
+      <section class="search-page__intro">
+        <h1 id="search-title">Search</h1>
+        <p>Find posts by keyword or filter results using the built-in Pagefind interface.</p>
+      </section>
+      <div id="search" class="search-page__results"></div>
+    </main>
+    <Footer />
+    <script type="module" is:inline>
+      const initSearch = async () => {
+        try {
+          const module = await import('/pagefind/pagefind-ui.js');
+          const PagefindUI = module?.PagefindUI ?? window.PagefindUI;
+          if (typeof PagefindUI !== 'function') {
+            throw new Error('PagefindUI script did not expose the PagefindUI constructor.');
+          }
+          new PagefindUI({
+            element: '#search',
+            bundlePath: '/pagefind/',
+            showImages: true,
+            translations: {
+              placeholder: '검색어를 입력하세요…',
+              zero_results: '일치하는 결과가 없습니다.',
+            },
+          });
+        } catch (error) {
+          const container = document.querySelector('#search');
+          if (container) {
+            container.innerHTML =
+              '<p class="search-page__fallback">Search index not found. Run <code>npm run build</code> to generate Pagefind assets.</p>';
+          }
+          console.warn('Pagefind UI failed to load. Did you run `npm run build`?', error);
+        }
+      };
+
+      initSearch();
+    </script>
+  </body>
+</html>

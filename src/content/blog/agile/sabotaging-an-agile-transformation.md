@@ -2,6 +2,7 @@
 title: 'Agile 문화를 방해하는 요소들'
 pubDate: 2022-09-12
 description: 'Agile 을 방해하는 요소는 매우 합니다. 하지만 Agile 을 방해하는 요소를 인정함으로 이를 억제할 수 있습니다.'
+heroImage: "../../../assets/heroes/agile-transformation.png"
 ---
 
 # 애자일을 방해하는 요소들
@@ -23,7 +24,7 @@ Agile 문화를 방해하는 요소들을 'Sabotage'라 정의하고, 이를 억
 
 Agile 문화 도입한 팀에서도 어떻게 문화를 형성하느냐에 따라 효율의 차이는 날 수 있습니다. 상황에 따라 생산성은 최대 4배 까지 차이날 수 있다고 말합니다.
 
-![agile-process](/static/images/agile-process.png)
+> 참고 이미지: Fred George 의 애자일 사이클 다이어그램(Task → Design → Code/Test 반복 → Integrate).
 
 위 그림은 task 작업을 시작하고 완료하기까지의 cycle 을 간략히 그린 그림입니다.
 Task, Design 을 단계를 거치고 Code, Test 를 반복하며 개선해나갑니다.
@@ -135,8 +136,6 @@ Title 은 사람에게 적용하면 그 사람이 무엇을 할 수 있음과 �
 ## 팀의 핵심전략 (Pod as a Mitigation Strategy)
 
 팀의 가장 근본적인 임무는 단순히 소프트웨어를 작성하는 것이 아니라. 그 소프트웨어가 사용자 스스로에게 도움이되어야 한다는 것입니다.
-
----
 
 ## 후기
 

@@ -2,6 +2,11 @@
 title: 'kotlin spring 에서 유용한 에러 반환하기.'
 pubDate: 2022-06-02
 description: 'Controller Advice 사용하여 모든 request life cycle 에 적용되는 에러 처리를 하자.'
+heroImage: "../../../assets/heroes/spring-validation.png"
+tags:
+  - spring
+  - kotlin
+  - validation
 ---
 
 ## 이 글을 쓰는 동기

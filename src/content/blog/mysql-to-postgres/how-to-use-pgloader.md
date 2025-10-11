@@ -2,6 +2,7 @@
 title: 'pgloader 를 사용하여 mysql 디비 postgres 로 마이그레이션하기'
 pubDate: 2022-07-31
 description: 'pgloader 를 사용하면 mysql 디비를 postgres 로 손쉽게 옮길 수 있다.'
+heroImage: "../../../assets/heroes/mysql2pg-pgloader.png"
 ---
 
 ## Pgloader 란

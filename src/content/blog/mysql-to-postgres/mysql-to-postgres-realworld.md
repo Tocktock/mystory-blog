@@ -2,6 +2,11 @@
 title: '우왕좌왕 Postgres 디비 마이그레이션 충돌기'
 pubDate: 2023-01-22
 description: '생각한 대부분의 문제는 이미 제기되어 있다. 그리고 그것을 해결하는 것은 의지와 시간에 달려있다.'
+heroImage: "../../../assets/heroes/mysql2pg-realworld.png"
+tags:
+  - database
+  - migration
+  - postgres
 ---
 
 ## 왜 마이그레이션을 했는가

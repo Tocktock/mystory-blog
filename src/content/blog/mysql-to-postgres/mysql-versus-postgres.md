@@ -2,6 +2,7 @@
 title: 'mysql vs postgres 짧은 비교'
 pubDate: 2022-07-25
 description: '일반적으로 postgres 는 mysql 에 비해 대용량 서비스에서 더 나은 성능을 제공한다.'
+heroImage: "../../../assets/heroes/mysql2pg-compare.png"
 ---
 
 ## Postgres 를 쓰는 이유

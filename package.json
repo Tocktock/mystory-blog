@@ -5,8 +5,22 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "npx pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "lint": "eslint . --ext .ts,.tsx,.astro --max-warnings=0",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:e2e": "npm run build && playwright test",
+    "preaudit:lighthouse": "node scripts/audit/prepare-reports.mjs",
+    "preaudit:axe": "node scripts/audit/prepare-reports.mjs",
+    "preaudit:links": "node scripts/audit/prepare-reports.mjs",
+    "audit:lighthouse": "lighthouse http://127.0.0.1:4321 --chrome-flags=--headless --only-categories=performance,accessibility,seo --output=json --output=html --output-path=.reports/lighthouse/report",
+    "audit:axe": "axe http://127.0.0.1:4321 --dir .reports/axe --exit",
+    "audit:links": "node scripts/audit/run-link-check.mjs",
+    "audit:web": "start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:links\""
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.7",
@@ -14,6 +28,26 @@
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.5",
     "astro": "^5.1.10",
+    "astro-og-canvas": "^0.7.1",
     "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@axe-core/cli": "^4.10.2",
+    "@eslint/js": "^9.37.0",
+    "@playwright/test": "^1.56.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "eslint": "^9.14.0",
+    "eslint-plugin-astro": "^1.3.1",
+    "globals": "^16.4.0",
+    "lighthouse": "^12.8.2",
+    "linkinator": "^7.1.3",
+    "pagefind": "^1.4.0",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "start-server-and-test": "^2.1.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.46.0"
   }
 }

@@ -1,0 +1,5 @@
+.astro/
+dist/
+node_modules/
+.reports/
+phase*-baseline-*.zip
