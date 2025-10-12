@@ -71,7 +71,8 @@ const configuredGiscus = getConfiguredGiscus(giscusConfig);
 		max-width: 100%;
 	}
 
-	.giscus iframe {
+	:global(iframe.giscus-frame) {
+		display: block;
 		width: 100% !important;
 		min-width: 0 !important;
 	}
