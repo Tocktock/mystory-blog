@@ -48,26 +48,23 @@ const personJsonLd = buildPersonJsonLd({
     <Header />
     <main>
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero__content">
-          <h1 id="hero-title">Ji Yong 그리고 고양이들의 공간</h1>
-          <p class="hero__lede">
-            길게 늘어진 하루를 나누는 이야기와 뭉냥이들의 순간을 담아요. Dive into bilingual posts about
-            life, engineering, and two very photogenic cats.
-          </p>
-          <div class="hero__actions">
-            <a class="hero__link hero__link--primary" href="/blog">블로그 보기</a>
-            <a class="hero__link" href="/about">About 페이지</a>
-          </div>
-        </div>
         <div class="hero__image">
           <Image
             src={heroImage}
             alt="Ji Yong smiling with two cats relaxing on their shelves."
-            widths={[480, 720, 960, 1184]}
-            sizes="(max-width: 960px) 100vw, 45vw"
+            widths={[640, 820, 960, 1184]}
+            sizes="(max-width: 1024px) 100vw, 65vw"
             loading="eager"
             decoding="async"
+            fetchpriority="high"
           />
+        </div>
+        <div class="hero__content">
+          <h1 id="hero-title" class="hero__title">Ji Yong 그리고 고양이들의 공간</h1>
+          <div class="hero__actions">
+            <a class="hero__link hero__link--primary" href="/blog">블로그 보기</a>
+            <a class="hero__link hero__link--secondary" href="/about">About 페이지</a>
+          </div>
         </div>
       </section>
 
@@ -103,22 +100,23 @@ const personJsonLd = buildPersonJsonLd({
 <style>
   .hero {
     display: grid;
-    gap: 2.5rem;
-    margin: 3rem 0 4rem;
-    align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2.5rem 0 4rem;
+    grid-template-columns: 1fr;
   }
 
   .hero__content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    align-items: flex-start;
+    gap: 1.25rem;
   }
 
-  .hero__lede {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: var(--color-text-muted, #4a4a4a);
+  .hero__title {
+    font-size: clamp(2rem, 4vw + 0.5rem, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0;
   }
 
   .hero__actions {
@@ -157,9 +155,13 @@ const personJsonLd = buildPersonJsonLd({
     color: #fff;
   }
 
+  .hero__link--secondary {
+    background-color: transparent;
+  }
+
   .hero__image {
     position: relative;
-    border-radius: 1.25rem;
+    border-radius: 1rem;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   }
@@ -168,6 +170,7 @@ const personJsonLd = buildPersonJsonLd({
     width: 100%;
     height: 100%;
     object-fit: cover;
+    aspect-ratio: 4 / 3;
   }
 
   .gallery {
@@ -221,7 +224,7 @@ const personJsonLd = buildPersonJsonLd({
   @media (max-width: 720px) {
     .hero {
       margin: 2rem 0 3rem;
-      gap: 2rem;
+      gap: 1.75rem;
     }
 
     .hero__actions {
@@ -231,6 +234,14 @@ const personJsonLd = buildPersonJsonLd({
 
     .gallery__grid {
       gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
     }
   }
 </style>
