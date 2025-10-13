@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR } from '../consts';
 import { Image } from 'astro:assets';
+import heroImage from '../assets/gallery/main.jpg';
 import galleryImage1 from '../assets/gallery/1.jpg';
 import galleryImage2 from '../assets/gallery/2.jpg';
 import galleryImage3 from '../assets/gallery/3.jpg';
@@ -46,40 +47,152 @@ const personJsonLd = buildPersonJsonLd({
   <body>
     <Header />
     <main>
-      <h1>🧑‍🚀 Hello!</h1>
-      <p>
-        This is Cute Cat Gallery, Blog Post is on <a href="/blog">Blog</a>
-        About Me is on <a href="/about">About</a>
-      </p>
-
-      <section class="gallery" aria-label="Cute Cat Gallery">
-        {
-          galleryImages.map(({ image, alt }) => (
-            <article class="gallery__item">
-              <Image
-                src={image}
-                alt={alt}
-                widths={[320, 480, 640, 960]}
-                sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                loading="lazy"
-                class="gallery__image"
-              />
-            </article>
-          ))
-        }
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__content">
+          <h1 id="hero-title">Ji Yong 그리고 고양이들의 공간</h1>
+          <p class="hero__lede">
+            길게 늘어진 하루를 나누는 이야기와 뭉냥이들의 순간을 담아요. Dive into bilingual posts about
+            life, engineering, and two very photogenic cats.
+          </p>
+          <div class="hero__actions">
+            <a class="hero__link hero__link--primary" href="/blog">블로그 보기</a>
+            <a class="hero__link" href="/about">About 페이지</a>
+          </div>
+        </div>
+        <div class="hero__image">
+          <Image
+            src={heroImage}
+            alt="Ji Yong smiling with two cats relaxing on their shelves."
+            widths={[480, 720, 960, 1184]}
+            sizes="(max-width: 960px) 100vw, 45vw"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
       </section>
+
+      <section class="gallery" aria-labelledby="gallery-title">
+        <div class="gallery__header">
+          <h2 id="gallery-title">Latest Cat Moments</h2>
+          <p class="gallery__description">
+            Snapshots from daily adventures, updated whenever the cats demand attention.
+          </p>
+        </div>
+        <div class="gallery__grid">
+          {
+            galleryImages.map(({ image, alt }) => (
+              <article class="gallery__item">
+                <Image
+                  src={image}
+                  alt={alt}
+                  widths={[320, 480, 640, 960]}
+                  sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  class="gallery__image"
+                />
+              </article>
+            ))
+          }
+        </div>
+      </section>
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
 
 <style>
+  .hero {
+    display: grid;
+    gap: 2.5rem;
+    margin: 3rem 0 4rem;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .hero__lede {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-muted, #4a4a4a);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .hero__link:hover,
+  .hero__link:focus-visible {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .hero__link--primary {
+    background-color: var(--color-accent, #111827);
+    color: #fff;
+    border-color: var(--color-accent, #111827);
+  }
+
+  .hero__link--primary:hover,
+  .hero__link--primary:focus-visible {
+    background-color: var(--color-accent-strong, #0b1220);
+    color: #fff;
+  }
+
+  .hero__image {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .hero__image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .gallery {
-    margin: 2rem 0;
+    margin: 2rem 0 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .gallery__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .gallery__description {
+    color: var(--color-text-muted, #4a4a4a);
+    font-size: 0.95rem;
+  }
+
+  .gallery__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-    padding: 1rem 0;
   }
 
   .gallery__item {
@@ -106,7 +219,17 @@ const personJsonLd = buildPersonJsonLd({
   }
 
   @media (max-width: 720px) {
-    .gallery {
+    .hero {
+      margin: 2rem 0 3rem;
+      gap: 2rem;
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .gallery__grid {
       gap: 1rem;
     }
   }
