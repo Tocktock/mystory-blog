@@ -53,28 +53,25 @@ const personJsonLd = buildPersonJsonLd({
             src={heroImage}
             alt="Ji Yong smiling with two cats relaxing on their shelves."
             widths={[640, 820, 960, 1184]}
-            sizes="(max-width: 1024px) 100vw, 65vw"
+            sizes="100vw"
             loading="eager"
             decoding="async"
             fetchpriority="high"
           />
-        </div>
-        <div class="hero__content">
-          <h1 id="hero-title" class="hero__title">Ji Yong 그리고 고양이들의 공간</h1>
-          <div class="hero__actions">
-            <a class="hero__link hero__link--primary" href="/blog">블로그 보기</a>
-            <a class="hero__link hero__link--secondary" href="/about">About 페이지</a>
+          <div class="hero__overlay">
+            <div class="hero__overlay-inner">
+              <h1 id="hero-title" class="hero__title">지용, 만냥구름 공간</h1>
+            </div>
           </div>
+        </div>
+        <div class="hero__buttons">
+          <a class="hero__button hero__button--primary" href="/blog">Latest Posts</a>
+          <a class="hero__button" href="/about">About</a>
+          <a class="hero__button" href="#cat-gallery">see more cat pic</a>
         </div>
       </section>
 
-      <section class="gallery" aria-labelledby="gallery-title">
-        <div class="gallery__header">
-          <h2 id="gallery-title">Latest Cat Moments</h2>
-          <p class="gallery__description">
-            Snapshots from daily adventures, updated whenever the cats demand attention.
-          </p>
-        </div>
+      <section class="gallery" id="cat-gallery" aria-label="Cat photo gallery">
         <div class="gallery__grid">
           {
             galleryImages.map(({ image, alt }) => (
@@ -99,37 +96,29 @@ const personJsonLd = buildPersonJsonLd({
 
 <style>
   .hero {
-    display: grid;
-    gap: 2rem;
-    margin: 2.5rem 0 4rem;
-    grid-template-columns: 1fr;
-  }
-
-  .hero__content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1.25rem;
+    gap: 1.75rem;
+    margin: 2.5rem 0 4rem;
   }
 
   .hero__title {
-    font-size: clamp(2rem, 4vw + 0.5rem, 4rem);
-    line-height: 1.05;
-    letter-spacing: -0.015em;
+    font-size: clamp(2.5rem, 4vw + 0.75rem, 3.9rem);
+    font-weight: 700;
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
     margin: 0;
+    max-width: 42ch;
+    color: inherit;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
   }
 
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .hero__link {
+  .hero__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.65rem 1.4rem;
+    padding: 0.6rem 1.35rem;
     border-radius: 999px;
     border: 1px solid currentColor;
     font-weight: 600;
@@ -138,25 +127,21 @@ const personJsonLd = buildPersonJsonLd({
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  .hero__link:hover,
-  .hero__link:focus-visible {
-    background-color: rgba(0, 0, 0, 0.06);
+  .hero__button:hover,
+  .hero__button:focus-visible {
+    background-color: rgba(0, 0, 0, 0.08);
   }
 
-  .hero__link--primary {
+  .hero__button--primary {
     background-color: var(--color-accent, #111827);
     color: #fff;
     border-color: var(--color-accent, #111827);
   }
 
-  .hero__link--primary:hover,
-  .hero__link--primary:focus-visible {
+  .hero__button--primary:hover,
+  .hero__button--primary:focus-visible {
     background-color: var(--color-accent-strong, #0b1220);
     color: #fff;
-  }
-
-  .hero__link--secondary {
-    background-color: transparent;
   }
 
   .hero__image {
@@ -173,23 +158,37 @@ const personJsonLd = buildPersonJsonLd({
     aspect-ratio: 4 / 3;
   }
 
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.65) 100%);
+  }
+
+  .hero__overlay-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    color: #fff;
+    max-width: 48ch;
+  }
+
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-start;
+    max-width: 48ch;
+  }
+
   .gallery {
     margin: 2rem 0 4rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     padding: 1rem 0;
-  }
-
-  .gallery__header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .gallery__description {
-    color: var(--color-text-muted, #4a4a4a);
-    font-size: 0.95rem;
   }
 
   .gallery__grid {
@@ -224,12 +223,7 @@ const personJsonLd = buildPersonJsonLd({
   @media (max-width: 720px) {
     .hero {
       margin: 2rem 0 3rem;
-      gap: 1.75rem;
-    }
-
-    .hero__actions {
-      flex-direction: column;
-      align-items: stretch;
+      gap: 1.5rem;
     }
 
     .gallery__grid {
@@ -238,10 +232,13 @@ const personJsonLd = buildPersonJsonLd({
   }
 
   @media (min-width: 1024px) {
-    .hero {
-      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-      align-items: center;
-      gap: 3rem;
+    .hero__overlay-inner {
+      padding: 2.75rem;
+      max-width: 32rem;
+    }
+
+    .hero__title {
+      font-size: clamp(2.5rem, 4vw, 3.75rem);
     }
   }
 </style>
