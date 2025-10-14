@@ -52,7 +52,10 @@ const personJsonLd = buildPersonJsonLd({
         <div class="hero__buttons">
           <a class="hero__button hero__button--primary" href="/blog">Latest Posts</a>
           <a class="hero__button" href="/about">About</a>
-          <a class="hero__button" href="/cat-pics">Cat’s pic</a>
+          <a class="hero__button hero__button--secondary" href="/cat-pics">
+            Cat Pics
+            <span aria-hidden="true" class="hero__button-icon">›</span>
+          </a>
         </div>
       </section>
       <Footer />
@@ -111,6 +114,30 @@ const personJsonLd = buildPersonJsonLd({
   .hero__button--primary:focus-visible {
     background-color: var(--color-accent-strong, #0b1220);
     color: #fff;
+  }
+
+  .hero__button--secondary {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.32);
+    color: #fff;
+  }
+
+  .hero__button--secondary:hover,
+  .hero__button--secondary:focus-visible {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero__button-icon {
+    margin-left: 0.5rem;
+    font-size: 1.1em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .hero__button--secondary:hover .hero__button-icon,
+  .hero__button--secondary:focus-visible .hero__button-icon {
+    transform: translateX(2px);
   }
 
   .hero__image {
