@@ -4,22 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR } from '../consts';
 import { Image } from 'astro:assets';
-import galleryImage1 from '../assets/gallery/1.jpg';
-import galleryImage2 from '../assets/gallery/2.jpg';
-import galleryImage3 from '../assets/gallery/3.jpg';
-import galleryImage4 from '../assets/gallery/4.jpg';
-import galleryImage5 from '../assets/gallery/5.jpg';
-import galleryImage6 from '../assets/gallery/6.jpg';
+import heroImage from '../assets/gallery/main.jpg';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
-
-const galleryImages = [
-  { image: galleryImage1, alt: 'Cat lounging near a window with soft lighting.' },
-  { image: galleryImage2, alt: 'Curious cat peeking through a fence.' },
-  { image: galleryImage3, alt: 'Playful kitten reaching for a toy.' },
-  { image: galleryImage4, alt: 'Cat resting comfortably on a blanket.' },
-  { image: galleryImage5, alt: 'Two cats sharing a quiet moment together.' },
-  { image: galleryImage6, alt: 'Cat gazing outside with bright eyes.' },
-];
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
@@ -46,68 +32,208 @@ const personJsonLd = buildPersonJsonLd({
   <body>
     <Header />
     <main>
-      <h1>🧑‍🚀 Hello!</h1>
-      <p>
-        This is Cute Cat Gallery, Blog Post is on <a href="/blog">Blog</a>
-        About Me is on <a href="/about">About</a>
-      </p>
-
-      <section class="gallery" aria-label="Cute Cat Gallery">
-        {
-          galleryImages.map(({ image, alt }) => (
-            <article class="gallery__item">
-              <Image
-                src={image}
-                alt={alt}
-                widths={[320, 480, 640, 960]}
-                sizes="(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                loading="lazy"
-                class="gallery__image"
-              />
-            </article>
-          ))
-        }
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__image">
+          <Image
+            src={heroImage}
+            alt="Ji Yong smiling with two cats relaxing on their shelves."
+            widths={[640, 820, 960, 1184]}
+            sizes="100vw"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <div class="hero__overlay">
+            <div class="hero__overlay-inner">
+              <h1 id="hero-title" class="hero__title">지용, 만냥구름 공간</h1>
+            </div>
+          </div>
+        </div>
+        <div class="hero__buttons">
+          <a class="hero__button hero__button--primary" href="/blog">Latest Posts</a>
+          <a class="hero__button" href="/about">About</a>
+          <a class="hero__button hero__button--secondary" href="/cat-pics">
+            Cat Pics
+            <span aria-hidden="true" class="hero__button-icon">›</span>
+          </a>
+        </div>
       </section>
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
 
 <style>
-  .gallery {
-    margin: 2rem 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
-    padding: 1rem 0;
+    margin: 2.25rem 0 3.5rem;
+    padding: 0 1rem;
   }
 
-  .gallery__item {
-    border-radius: 0.75rem;
+  .hero__title {
+    font-size: clamp(1.65rem, 5vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 34ch;
+    color: inherit;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+  }
+
+  .hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.58rem 1.35rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    text-align: center;
+  }
+
+  .hero__button:hover,
+  .hero__button:focus-visible {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .hero__button--primary {
+    background-color: var(--color-accent, #111827);
+    color: #fff;
+    border-color: var(--color-accent, #111827);
+  }
+
+  .hero__button--primary:hover,
+  .hero__button--primary:focus-visible {
+    background-color: var(--color-accent-strong, #0b1220);
+    color: #fff;
+  }
+
+  .hero__button--secondary {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.32);
+    color: #fff;
+  }
+
+  .hero__button--secondary:hover,
+  .hero__button--secondary:focus-visible {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero__button-icon {
+    margin-left: 0.5rem;
+    font-size: 1.1em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .hero__button--secondary:hover .hero__button-icon,
+  .hero__button--secondary:focus-visible .hero__button-icon {
+    transform: translateX(2px);
+  }
+
+  .hero__image {
+    position: relative;
+    border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   }
 
-  .gallery__item:hover,
-  .gallery__item:focus-within {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-  }
-
-  .gallery__image {
-    display: block;
+  .hero__image :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     aspect-ratio: 4 / 3;
   }
 
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.65) 100%);
+  }
+
+  .hero__overlay-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    color: #fff;
+    max-width: 40ch;
+  }
+
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    width: 100%;
+  }
+
   @media (max-width: 720px) {
-    .gallery {
-      gap: 1rem;
+    .hero {
+      margin: 1.75rem 0 3rem;
+      gap: 1.4rem;
+    }
+
+    .hero__overlay-inner {
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero__buttons {
+      justify-content: center;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      margin: 3rem 0 4.5rem;
+      padding: 0 1.5rem;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+
+    .hero__buttons {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+    }
+
+    .hero__overlay-inner {
+      max-width: 36ch;
+    }
+
+    .hero__title {
+      font-size: clamp(2.1rem, 3.2vw + 0.3rem, 3.2rem);
+      max-width: 30ch;
+      line-height: 1.15;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__overlay-inner {
+      padding: 2.75rem;
+      max-width: 32rem;
+    }
+
+    .hero__title {
+      font-size: clamp(2.5rem, 2.2vw + 1rem, 3.6rem);
+      max-width: 28ch;
+      line-height: 1.13;
+    }
+
+    .hero__buttons {
+      gap: 0.85rem;
     }
   }
 </style>
