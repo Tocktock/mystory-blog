@@ -11,8 +11,10 @@ import aboutHero from '../assets/placeholders/blog-placeholder-about.jpg';
   slug="about"
   heroImage={aboutHero}
 >
-  <p><strong>Interview with JiYong</strong></p>
-  <hr />
+  <header class="about-header">
+    <p><strong>Interview with JiYong</strong></p>
+    <hr />
+  </header>
   <section aria-labelledby="q1">
     <h2 id="q1">💬 Q1. 일을 할 때 가장 중요하게 생각하는 원칙은 무엇인가요?</h2>
     <p>
@@ -183,3 +185,21 @@ import aboutHero from '../assets/placeholders/blog-placeholder-about.jpg';
     </p>
   </section>
 </Layout>
+
+<style>
+  .about-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-header p {
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .about-header hr {
+    margin: 0 auto;
+    max-width: 8rem;
+  }
+</style>
