@@ -25,6 +25,10 @@ const {
   ogImage,
 } = Astro.props as Props;
 const lang = providedLang ?? 'ko';
+const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
+const heroWidths = heroImage
+  ? [360, 480, 720, 960, 1280].filter((width) => width <= heroImage.width)
+  : [];
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
@@ -71,16 +75,33 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
       main {
         width: calc(100% - 2em);
         max-width: 100%;
-        margin: 0;
+        margin: 0 auto;
       }
       .hero-image {
         width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      .hero-image__frame {
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+      }
+      @supports (aspect-ratio: 1 / 1) {
+        .hero-image__frame {
+          aspect-ratio: 16 / 9;
+        }
       }
       .hero-image__media {
         display: block;
-        margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
+        width: 100%;
+        height: auto;
+      }
+      @supports (aspect-ratio: 1 / 1) {
+        .hero-image__media {
+          height: 100%;
+          object-fit: cover;
+        }
       }
       .prose {
         width: 720px;
@@ -115,15 +136,19 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
         {
           heroImage && (
             <div class="hero-image">
-              <Image
-                src={heroImage}
-                alt=""
-                widths={[720, 960, 1280]}
-                sizes="(max-width: 960px) 100vw, 960px"
-                class="hero-image__media"
-                loading="eager"
-                decoding="async"
-              />
+              <div class="hero-image__frame">
+                <Image
+                  src={heroImage}
+                  alt=""
+                  width={heroBaseWidth}
+                  widths={heroWidths}
+                  sizes="(max-width: 960px) calc(100vw - 2em), 960px"
+                  class="hero-image__media"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </div>
             </div>
           )
         }

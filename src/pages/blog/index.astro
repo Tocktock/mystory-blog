@@ -140,6 +140,7 @@ const posts = (await getCollection('blog')).sort(
 										<Image
 											src={post.data.heroImage ?? getRandomImage()}
 											alt=""
+											width={isFeatured ? 960 : 480}
 											widths={isFeatured ? [720, 960, 1200] : [480, 720, 960]}
 											sizes={
 												isFeatured
