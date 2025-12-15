@@ -13,6 +13,8 @@
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "hero:photo": "node scripts/prepare_hero_photo.mjs",
+    "hero:audit": "node scripts/audit_hero_images.mjs",
     "test:e2e": "npm run build && playwright test",
     "preaudit:lighthouse": "node scripts/audit/prepare-reports.mjs",
     "preaudit:axe": "node scripts/audit/prepare-reports.mjs",
