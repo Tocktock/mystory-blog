@@ -5,6 +5,7 @@ export interface WebsiteJsonLdInput {
 	title: string;
 	description: string;
 	author: string;
+	searchUrlTemplate?: string;
 }
 
 export function buildWebsiteJsonLd({
@@ -12,8 +13,9 @@ export function buildWebsiteJsonLd({
 	title,
 	description,
 	author,
+	searchUrlTemplate,
 }: WebsiteJsonLdInput): JsonLdNode {
-	return {
+	const node: JsonLdNode = {
 		'@context': 'https://schema.org',
 		'@type': 'WebSite',
 		url: canonicalUrl,
@@ -24,6 +26,16 @@ export function buildWebsiteJsonLd({
 			name: author,
 		},
 	};
+
+	if (searchUrlTemplate) {
+		node.potentialAction = {
+			'@type': 'SearchAction',
+			target: searchUrlTemplate,
+			'query-input': 'required name=search_term_string',
+		};
+	}
+
+	return node;
 }
 
 export interface PersonJsonLdInput {
@@ -38,6 +50,31 @@ export function buildPersonJsonLd({ canonicalUrl, name, description }: PersonJso
 		'@type': 'Person',
 		name,
 		description,
+		url: canonicalUrl,
+	};
+}
+
+export interface WebPageJsonLdInput {
+	canonicalUrl: string;
+	title: string;
+	description: string;
+	lang: string;
+	type?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'SearchResultsPage' | 'ImageGallery';
+}
+
+export function buildWebPageJsonLd({
+	canonicalUrl,
+	title,
+	description,
+	lang,
+	type = 'WebPage',
+}: WebPageJsonLdInput): JsonLdNode {
+	return {
+		'@context': 'https://schema.org',
+		'@type': type,
+		name: title,
+		description,
+		inLanguage: lang,
 		url: canonicalUrl,
 	};
 }
@@ -107,6 +144,32 @@ export function buildBreadcrumbJsonLd({ items }: BreadcrumbJsonLdInput): JsonLdN
 			position,
 			name,
 			item,
+		})),
+	};
+}
+
+export interface ItemListItem {
+	name: string;
+	url: string;
+	description?: string;
+}
+
+export interface ItemListJsonLdInput {
+	name: string;
+	items: readonly ItemListItem[];
+}
+
+export function buildItemListJsonLd({ name, items }: ItemListJsonLdInput): JsonLdNode {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'ItemList',
+		name,
+		itemListElement: items.map((item, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			url: item.url,
+			name: item.name,
+			...(item.description ? { description: item.description } : {}),
 		})),
 	};
 }

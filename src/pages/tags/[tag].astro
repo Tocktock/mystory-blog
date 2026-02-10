@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { collectTags, type TagEntry } from '../../utils/tags';
+import { buildItemListJsonLd, buildWebPageJsonLd } from '../../utils/jsonld';
 import '../../styles/tag-detail.css';
 
 type Props = {
@@ -23,6 +24,23 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props as Props;
 const tagPosts = tag.posts as CollectionEntry<'blog'>[];
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const pageJsonLd = buildWebPageJsonLd({
+	canonicalUrl: canonicalURL,
+	title: `${tag.label} posts`,
+	description: `Posts filed under ${tag.label}`,
+	lang: 'ko',
+	type: 'CollectionPage',
+});
+const postListJsonLd = buildItemListJsonLd({
+	name: `${tag.label} Posts`,
+	items: tagPosts.map((post) => ({
+		name: post.data.title,
+		url: new URL(`/blog/${post.id}/`, siteURL).toString(),
+		description: post.data.description,
+	})),
+});
 ---
 
 <!doctype html>
@@ -33,10 +51,12 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
       description={`Posts filed under ${tag.label}`}
       lang="ko"
     />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(pageJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(postListJsonLd)} />
   </head>
   <body>
     <Header />
-    <main class="tag-detail" aria-labelledby="tag-detail-title">
+    <main id="main-content" data-pagefind-body class="tag-detail" aria-labelledby="tag-detail-title">
       <header class="tag-detail__header">
         <p class="tag-detail__breadcrumbs">
           <a href="/tags/">Tags</a>
@@ -53,9 +73,9 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
             <a href={`/blog/${post.id}/`}>
               <h2>{post.data.title}</h2>
               <p>{post.data.description}</p>
-				<time datetime={post.data.pubDate.toISOString()}>
-                <FormattedDate date={post.data.pubDate} />
-              </time>
+					<time datetime={post.data.pubDate.toISOString()}>
+	                <FormattedDate date={post.data.pubDate} lang="ko" />
+	              </time>
             </a>
           </li>
         ))}

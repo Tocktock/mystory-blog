@@ -1,5 +1,6 @@
 ---
 title: 'Spring Jpa ManyToOne 관계 알아보기'
+lang: 'ko'
 pubDate: 2022-11-20
 description: 'Spring Jpa 에서 OneToMany 관점에서 Best Practice 는 양방향 관계를 맺는 것이다. 다만 ManyToOne 관계에서는 단방향이어도 상관 없다.'
 heroImage: "../../../assets/heroes/spring-persistence-advanced.png"

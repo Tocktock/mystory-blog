@@ -4,20 +4,40 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
 import { collectTags } from '../../utils/tags';
+import { buildItemListJsonLd, buildWebPageJsonLd } from '../../utils/jsonld';
 import '../../styles/tags.css';
 
 const posts = await getCollection('blog');
 const tags = collectTags(posts);
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const pageJsonLd = buildWebPageJsonLd({
+	canonicalUrl: canonicalURL,
+	title: 'All Tags',
+	description: 'Browse posts by topic',
+	lang: 'ko',
+	type: 'CollectionPage',
+});
+const tagListJsonLd = buildItemListJsonLd({
+	name: 'Blog Tags',
+	items: tags.map((tag) => ({
+		name: tag.label,
+		url: new URL(`/tags/${tag.slug}/`, siteURL).toString(),
+		description: `${tag.posts.length} posts`,
+	})),
+});
 ---
 
 <!doctype html>
 <html lang="ko">
   <head>
     <BaseHead title="All Tags" description="Browse posts by topic" lang="ko" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(pageJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(tagListJsonLd)} />
   </head>
   <body>
     <Header />
-    <main class="tags-page" aria-labelledby="tags-title">
+    <main id="main-content" data-pagefind-body class="tags-page" aria-labelledby="tags-title">
       <section class="tags-page__intro">
         <h1 id="tags-title">Tags</h1>
         <p>Explore posts grouped by topic.</p>

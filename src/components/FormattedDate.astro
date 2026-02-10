@@ -1,17 +1,25 @@
 ---
 interface Props {
 	date: Date;
+	lang?: string;
 }
 
-const { date } = Astro.props;
+const { date, lang = 'ko' } = Astro.props as Props;
+const locale = lang.startsWith('en') ? 'en-US' : 'ko-KR';
+const formatOptions: Intl.DateTimeFormatOptions =
+	locale === 'ko-KR'
+		? {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			}
+		: {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric',
+			};
 ---
 
 <time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
+	{date.toLocaleDateString(locale, formatOptions)}
 </time>

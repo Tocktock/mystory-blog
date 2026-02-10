@@ -1,5 +1,6 @@
 ---
 title: 'Agile 문화를 방해하는 요소들'
+lang: 'ko'
 pubDate: 2022-09-12
 description: 'Agile 을 방해하는 요소는 매우 합니다. 하지만 Agile 을 방해하는 요소를 인정함으로 이를 억제할 수 있습니다.'
 heroImage: "../../../assets/heroes/agile-transformation.png"

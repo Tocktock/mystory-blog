@@ -131,8 +131,8 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 
   <body>
     <Header />
-    <main>
-      <article>
+	    <main id="main-content" data-pagefind-body>
+	      <article>
         {
           heroImage && (
             <div class="hero-image">
@@ -154,15 +154,15 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
         }
         <div class="prose">
           <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
+	            <div class="date">
+	              <FormattedDate date={pubDate} lang={lang} />
+	              {
+	                updatedDate && (
+	                  <div class="last-updated-on">
+	                    Last updated on <FormattedDate date={updatedDate} lang={lang} />
+	                  </div>
+	                )
+	              }
             </div>
             <h1>{title}</h1>
             <hr />

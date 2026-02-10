@@ -1,5 +1,6 @@
 ---
 title: 'javascript 로 블로그 포스트 가져오기.'
+lang: 'ko'
 pubDate: 2022-01-13
 description: '함수와 함수와 함수와 함수였다.'
 heroImage: "../../../assets/heroes/content-deep-sea.png"

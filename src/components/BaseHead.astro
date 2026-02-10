@@ -10,14 +10,39 @@ interface Props {
 	description: string;
 	image?: string;
 	lang?: 'ko' | 'en';
+	alternates?: Array<{
+		hrefLang: string;
+		href: string;
+	}>;
 }
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL);
 
-const { title, description, image = placeholderOg.src, lang = 'ko' } = Astro.props as Props;
+const {
+	title,
+	description,
+	image = placeholderOg.src,
+	lang = 'ko',
+	alternates = [],
+} = Astro.props as Props;
 const imageURL = new URL(image, siteURL);
 const locale = lang === 'en' ? 'en_US' : 'ko_KR';
+const normalizedLang = lang === 'en' ? 'en' : 'ko';
+const canonicalHref = canonicalURL.toString();
+const alternateLinks = [
+	{ hrefLang: normalizedLang, href: canonicalHref },
+	{ hrefLang: 'x-default', href: canonicalHref },
+	...alternates.map((alternate) => ({
+		hrefLang: alternate.hrefLang,
+		href: new URL(alternate.href, siteURL).toString(),
+	})),
+].filter(
+	(link, index, links) =>
+		links.findIndex(
+			(candidate) => candidate.hrefLang === link.hrefLang && candidate.href === link.href,
+		) === index,
+);
 ---
 
 <script is:inline>
@@ -64,6 +89,11 @@ const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+{
+	alternateLinks.map((link) => (
+		<link rel="alternate" hreflang={link.hrefLang} href={link.href} />
+	))
+}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

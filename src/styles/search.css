@@ -26,6 +26,14 @@
 	box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.2);
 }
 
+.search-page__label {
+	display: inline-block;
+	margin: 0 0 0.75rem;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: rgb(var(--black));
+}
+
 .search-page__fallback {
 	margin: 0;
 	font-size: 0.95rem;

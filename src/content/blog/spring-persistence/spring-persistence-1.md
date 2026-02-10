@@ -1,5 +1,6 @@
 ---
 title: 'Spring Jpa OneToMany 관계 Best Practice'
+lang: 'ko'
 pubDate: 2022-11-13
 description: '단방향 OneToMany 보다는 양방향 OneToMany 가 일반적으로 좋은 선택이다.'
 heroImage: "../../../assets/heroes/spring-persistence-core.png"

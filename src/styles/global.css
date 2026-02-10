@@ -172,6 +172,25 @@ summary:focus-visible {
 	outline-offset: 3px;
 }
 
+.skip-link {
+	position: absolute;
+	left: 1rem;
+	top: 0.75rem;
+	z-index: 1000;
+	padding: 0.5rem 0.9rem;
+	border-radius: 0.5rem;
+	background: rgb(var(--black));
+	color: var(--surface);
+	font-size: 0.9rem;
+	text-decoration: none;
+	transform: translateY(-180%);
+	transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
 .sr-only {
 	border: 0;
 	padding: 0;

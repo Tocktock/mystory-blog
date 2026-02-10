@@ -1,5 +1,6 @@
 ---
 title: 'kotlin toString 을 사용하다 생긴 오류'
+lang: 'ko'
 pubDate: 2022-03-31
 description: '코틀린에서 사용하는 toString() 은 종류가 하나가 아니다.'
 heroImage: "../../../assets/heroes/kotlin-operator.png"

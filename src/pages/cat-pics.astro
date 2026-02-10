@@ -5,42 +5,64 @@ import Footer from '../components/Footer.astro';
 import { Image } from 'astro:assets';
 import { SITE_TITLE } from '../consts';
 import { catPhotos } from '../data/catGallery';
+import { buildItemListJsonLd, buildWebPageJsonLd } from '../utils/jsonld';
 
 const PAGE_TITLE = `Cat Pics | ${SITE_TITLE}`;
 const PAGE_DESCRIPTION = 'Snapshots from Ji Yong and the cats — a gallery of cozy, curious, and playful moments.';
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const pageJsonLd = buildWebPageJsonLd({
+  canonicalUrl: canonicalURL,
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  lang: 'ko',
+  type: 'ImageGallery',
+});
+const imageListJsonLd = buildItemListJsonLd({
+  name: 'Cat Gallery',
+  items: catPhotos.map((photo, index) => ({
+    name: `Cat photo ${index + 1}`,
+    url: new URL(photo.image.src, siteURL).toString(),
+    description: photo.alt,
+  })),
+});
 ---
 
 <!doctype html>
 <html lang="ko">
   <head>
     <BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(pageJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(imageListJsonLd)} />
   </head>
   <body>
     <Header />
-    <main class="page" aria-labelledby="cat-pics-title">
-      <header class="page__hero">
-        <h1 id="cat-pics-title" class="page__title">냥이 사진 모음</h1>
-        <p class="page__intro">숨은 하품, 창밖 관찰, 그리고 만냥구름의 일상을 담은 사진들을 모았어요.</p>
-      </header>
+    <main id="main-content" class="page" aria-labelledby="cat-pics-title">
+      <div data-pagefind-body>
+        <header class="page__hero">
+          <h1 id="cat-pics-title" class="page__title">냥이 사진 모음</h1>
+          <p class="page__intro">숨은 하품, 창밖 관찰, 그리고 만냥구름의 일상을 담은 사진들을 모았어요.</p>
+        </header>
 
-      <section class="gallery" aria-label="Cat photo gallery">
-        <div class="gallery__grid">
-          {
-            catPhotos.map(({ image, alt }) => (
-              <article class="gallery__item">
-                <Image
-                  src={image}
-                  alt={alt}
-                  widths={[320, 480, 640, 960, 1280]}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="lazy"
-                  class="gallery__image"
-                />
-              </article>
-            ))
-          }
-        </div>
-      </section>
+        <section class="gallery" aria-label="Cat photo gallery">
+          <div class="gallery__grid">
+            {
+              catPhotos.map(({ image, alt }) => (
+                <article class="gallery__item">
+                  <Image
+                    src={image}
+                    alt={alt}
+                    widths={[320, 480, 640, 960, 1280]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
+                    class="gallery__image"
+                  />
+                </article>
+              ))
+            }
+          </div>
+        </section>
+      </div>
       <Footer />
     </main>
   </body>

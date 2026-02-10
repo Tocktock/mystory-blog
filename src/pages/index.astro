@@ -14,6 +14,7 @@ const websiteJsonLd = buildWebsiteJsonLd({
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
   author: SITE_AUTHOR,
+  searchUrlTemplate: new URL('/search/?q={search_term_string}', siteURL).toString(),
 });
 const personJsonLd = buildPersonJsonLd({
   canonicalUrl: canonicalURL,
@@ -31,8 +32,8 @@ const personJsonLd = buildPersonJsonLd({
   </head>
   <body>
     <Header />
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
+    <main id="main-content">
+      <section class="hero" data-pagefind-body aria-labelledby="hero-title">
         <div class="hero__image">
           <Image
             src={heroImage}

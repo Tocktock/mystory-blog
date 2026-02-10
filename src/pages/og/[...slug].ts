@@ -25,6 +25,10 @@ export const { getStaticPaths, GET } = OGImageRoute({
   getImageOptions: (_path, page) => ({
     title: page.title,
     description: page.description,
+    fonts: [
+      './public/fonts/atkinson-regular.woff',
+      './public/fonts/atkinson-bold.woff',
+    ],
     dir: page.lang === 'ar' || page.lang === 'he' ? 'rtl' : 'ltr',
     bgGradient: [
       [12, 18, 44],
@@ -39,10 +43,12 @@ export const { getStaticPaths, GET } = OGImageRoute({
       title: {
         size: 72,
         lineHeight: 80,
+        families: ['Atkinson'],
       },
       description: {
         size: 40,
         lineHeight: 46,
+        families: ['Atkinson'],
       },
     },
   }),
