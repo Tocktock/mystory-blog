@@ -6,7 +6,7 @@ export type TagEntry = {
 	posts: CollectionEntry<'blog'>[];
 };
 
-const toTagSlug = (label: string) => {
+export const toTagSlug = (label: string) => {
 	const trimmed = label.trim();
 	if (!trimmed) {
 		return null;

@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
+import PostMeta from '../components/records/PostMeta.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & {
   lang?: string;
@@ -14,6 +15,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   ogImage?: string;
   sectionName?: string;
   sectionPath?: string;
+  showPostMeta?: boolean;
 };
 
 const {
@@ -25,10 +27,15 @@ const {
   lang: providedLang,
   slug,
   ogImage,
+  category,
+  tags = [],
+  series: seriesSlug,
   sectionName = '기록',
   sectionPath = '/records',
+  showPostMeta: providedShowPostMeta,
 } = Astro.props as Props;
 const lang = providedLang ?? 'ko';
+const showPostMeta = providedShowPostMeta ?? sectionPath === '/records';
 const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
 const heroWidths = heroImage
   ? [360, 480, 720, 960, 1280].filter((width) => width <= heroImage.width)
@@ -169,6 +176,11 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
               }
             </div>
             <h1>{title}</h1>
+            {
+              showPostMeta && (
+                <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />
+              )
+            }
             <hr />
           </div>
           <slot />

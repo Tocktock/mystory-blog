@@ -1,0 +1,235 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from '../FormattedDate.astro';
+import { getSeries } from '../../data/series';
+import { routes } from '../../utils/routes';
+import { sortSeriesPosts } from '../../utils/seriesPosts';
+
+interface Props {
+	seriesSlug?: string;
+	currentId: string;
+	posts?: CollectionEntry<'blog'>[];
+}
+
+const { seriesSlug, currentId, posts = [] } = Astro.props as Props;
+
+const seriesEntry = getSeries(seriesSlug);
+const sortedPosts = [...posts].sort(sortSeriesPosts);
+const currentIndex = sortedPosts.findIndex((post) => post.id === currentId);
+const currentPosition = currentIndex >= 0 ? currentIndex + 1 : undefined;
+const previousPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : undefined;
+const nextPost =
+	currentIndex >= 0 && currentIndex < sortedPosts.length - 1
+		? sortedPosts[currentIndex + 1]
+		: undefined;
+---
+
+{
+	seriesEntry && sortedPosts.length > 0 && (
+		<section class="series-progress" aria-labelledby="series-progress-title">
+			<div class="series-progress__header">
+				<p class="series-progress__eyebrow">Series</p>
+				<h2 id="series-progress-title">{seriesEntry.title}</h2>
+				<p>
+					이 글은 "{seriesEntry.title}" 시리즈의{' '}
+					{currentPosition ? `${currentPosition}번째` : '한'} 기록입니다.
+				</p>
+			</div>
+
+			{(previousPost || nextPost) && (
+				<nav class="series-progress__nav" aria-label="시리즈 이전 다음 기록">
+					{previousPost ? (
+						<a href={routes.record(previousPost.id)} class="series-progress__nav-link">
+							<span>이전 기록</span>
+							<strong>{previousPost.data.title}</strong>
+						</a>
+					) : (
+						<span class="series-progress__nav-link series-progress__nav-link--empty">
+							<span>이전 기록</span>
+							<strong>첫 번째 기록입니다</strong>
+						</span>
+					)}
+
+					{nextPost ? (
+						<a href={routes.record(nextPost.id)} class="series-progress__nav-link">
+							<span>다음 기록</span>
+							<strong>{nextPost.data.title}</strong>
+						</a>
+					) : (
+						<span class="series-progress__nav-link series-progress__nav-link--empty">
+							<span>다음 기록</span>
+							<strong>마지막 기록입니다</strong>
+						</span>
+					)}
+				</nav>
+			)}
+
+			<ol class="series-progress__list">
+				{sortedPosts.map((post, index) => {
+					const isCurrent = post.id === currentId;
+					const order = post.data.seriesOrder ?? index + 1;
+
+					return (
+						<li class:list={['series-progress__item', { 'series-progress__item--current': isCurrent }]}>
+							<a href={routes.record(post.id)} aria-current={isCurrent ? 'page' : undefined}>
+								<span class="series-progress__order">{String(order).padStart(2, '0')}</span>
+								<span class="series-progress__content">
+									<strong>{post.data.title}</strong>
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+							</a>
+						</li>
+					);
+				})}
+			</ol>
+
+			<a class="series-progress__all" href={routes.seriesDetail(seriesEntry.slug)}>
+				시리즈 전체 보기
+			</a>
+		</section>
+	)
+}
+
+<style>
+	.series-progress {
+		margin: 3rem 0 0;
+		padding: 1.5rem;
+		border-radius: 1rem;
+		background: var(--surface-elevated);
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
+	}
+
+	.series-progress__header {
+		margin-bottom: 1.25rem;
+	}
+
+	.series-progress__eyebrow {
+		margin: 0 0 0.35rem;
+		color: var(--accent);
+		font-size: 0.82rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.series-progress__header h2 {
+		margin-bottom: 0.65rem;
+		font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+	}
+
+	.series-progress__header p {
+		margin: 0;
+		color: rgb(var(--gray));
+		line-height: 1.65;
+	}
+
+	.series-progress__nav {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.series-progress__nav-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.9rem;
+		border-radius: 0.85rem;
+		background: rgba(var(--gray-light), 0.16);
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+	}
+
+	.series-progress__nav-link span {
+		color: rgb(var(--gray));
+		font-size: 0.82rem;
+		font-weight: 700;
+	}
+
+	.series-progress__nav-link strong {
+		line-height: 1.35;
+	}
+
+	.series-progress__nav-link:hover,
+	.series-progress__nav-link:focus-visible {
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent);
+	}
+
+	.series-progress__nav-link--empty {
+		opacity: 0.68;
+	}
+
+	.series-progress__list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.series-progress__item a {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.75rem;
+		align-items: center;
+		padding: 0.75rem;
+		border-radius: 0.85rem;
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+	}
+
+	.series-progress__item a:hover,
+	.series-progress__item a:focus-visible,
+	.series-progress__item--current a {
+		background: rgba(var(--accent), 0.12);
+	}
+
+	.series-progress__order {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.82rem;
+		font-weight: 800;
+	}
+
+	.series-progress__content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		min-width: 0;
+	}
+
+	.series-progress__content strong {
+		line-height: 1.35;
+	}
+
+	.series-progress__content time {
+		color: rgb(var(--gray));
+		font-size: 0.88rem;
+	}
+
+	.series-progress__all {
+		display: inline-flex;
+		margin-top: 1.25rem;
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	@media (max-width: 640px) {
+		.series-progress {
+			padding: 1.1rem;
+		}
+
+		.series-progress__nav {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

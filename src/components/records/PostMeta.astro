@@ -1,0 +1,145 @@
+---
+import { getCategory } from '../../data/categories';
+import { getSeries } from '../../data/series';
+import { routes } from '../../utils/routes';
+import { toTagSlug } from '../../utils/tags';
+
+interface Props {
+	category?: string;
+	tags?: string[];
+	seriesSlug?: string;
+}
+
+const { category, tags = [], seriesSlug } = Astro.props as Props;
+
+const categoryEntry = getCategory(category);
+const seriesEntry = getSeries(seriesSlug);
+const tagLinks = tags
+	.map((label) => ({ label, slug: toTagSlug(label) }))
+	.filter((entry): entry is { label: string; slug: string } => Boolean(entry.slug));
+---
+
+<div class="post-meta" aria-label="기록 정보">
+	<ul class="post-meta__list">
+		<li>
+			<span class="post-meta__label">분류</span>
+			<a class="post-meta__pill" href={routes.category(categoryEntry.slug)}>
+				{categoryEntry.label}
+			</a>
+		</li>
+
+		{
+			seriesEntry && (
+				<li>
+					<span class="post-meta__label">시리즈</span>
+					<a class="post-meta__pill post-meta__pill--series" href={routes.seriesDetail(seriesEntry.slug)}>
+						{seriesEntry.title}
+					</a>
+				</li>
+			)
+		}
+
+		{
+			tagLinks.length > 0 && (
+				<li class="post-meta__tags">
+					<span class="post-meta__label">태그</span>
+					<div class="post-meta__tag-list">
+						{tagLinks.map((tag) => (
+							<a class="post-meta__tag" href={routes.tag(tag.slug)}>
+								#{tag.label}
+							</a>
+						))}
+					</div>
+				</li>
+			)
+		}
+	</ul>
+</div>
+
+<style>
+	.post-meta {
+		display: flex;
+		justify-content: center;
+		margin: 1rem auto 1.25rem;
+	}
+
+	.post-meta__list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.65rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.post-meta__list li {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.post-meta__label {
+		color: rgb(var(--gray));
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+	}
+
+	.post-meta__pill,
+	.post-meta__tag {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 999px;
+		text-decoration: none;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.post-meta__pill {
+		padding: 0.25rem 0.65rem;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.86rem;
+	}
+
+	.post-meta__pill--series {
+		background: rgba(var(--gray-light), 0.26);
+		color: rgb(var(--gray-dark));
+	}
+
+	.post-meta__tag-list {
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+
+	.post-meta__tag {
+		padding: 0.22rem 0.55rem;
+		background: rgba(var(--gray-light), 0.22);
+		color: rgb(var(--gray-dark));
+		font-size: 0.82rem;
+	}
+
+	.post-meta__pill:hover,
+	.post-meta__pill:focus-visible,
+	.post-meta__tag:hover,
+	.post-meta__tag:focus-visible {
+		background: rgba(var(--accent), 0.16);
+		color: var(--accent);
+	}
+
+	@media (max-width: 640px) {
+		.post-meta,
+		.post-meta__list {
+			justify-content: flex-start;
+		}
+
+		.post-meta__list li,
+		.post-meta__tags {
+			width: 100%;
+			justify-content: flex-start;
+		}
+	}
+</style>
