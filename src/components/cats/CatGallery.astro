@@ -1,0 +1,136 @@
+---
+import CatPhotoCard from './CatPhotoCard.astro';
+import { catMoodLabels, type CatMood, type CatPhoto } from '../../data/catGallery';
+
+interface Props {
+	photos: CatPhoto[];
+}
+
+const { photos } = Astro.props as Props;
+
+const moodGroups = (Object.entries(catMoodLabels) as [CatMood, string][])
+	.map(([mood, label]) => ({
+		mood,
+		label,
+		photos: photos.filter((photo) => photo.mood === mood),
+	}))
+	.filter((group) => group.photos.length > 0);
+---
+
+<section class="cat-gallery" aria-labelledby="cat-gallery-title">
+	<header class="cat-gallery__header">
+		<p class="cat-gallery__eyebrow">Photo Album</p>
+		<h2 id="cat-gallery-title">사진첩</h2>
+		<p>낮잠, 창밖 관찰, 책상 점령처럼 만냥구름의 작은 순간들을 모았습니다.</p>
+
+		<nav class="cat-gallery__nav" aria-label="사진첩 분류">
+			{moodGroups.map((group) => <a href={`#cat-mood-${group.mood}`}>{group.label}</a>)}
+		</nav>
+	</header>
+
+	<div class="cat-gallery__groups">
+		{
+			moodGroups.map((group) => (
+				<section
+					id={`cat-mood-${group.mood}`}
+					class="cat-gallery__group"
+					aria-labelledby={`cat-mood-title-${group.mood}`}
+				>
+					<h3 id={`cat-mood-title-${group.mood}`}>{group.label}</h3>
+					<div class="cat-gallery__grid">
+						{group.photos.map((photo) => <CatPhotoCard photo={photo} />)}
+					</div>
+				</section>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.cat-gallery {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.cat-gallery__header {
+		max-width: 48rem;
+	}
+
+	.cat-gallery__eyebrow {
+		margin: 0 0 0.35rem;
+		color: var(--accent);
+		font-size: 0.85rem;
+		font-weight: 800;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.cat-gallery h2 {
+		margin-bottom: 0.75rem;
+		font-size: 2.65rem;
+	}
+
+	.cat-gallery__header p {
+		margin: 0;
+		color: rgb(var(--gray));
+		line-height: 1.75;
+		text-wrap: balance;
+	}
+
+	.cat-gallery__nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.cat-gallery__nav a {
+		display: inline-flex;
+		padding: 0.35rem 0.7rem;
+		border-radius: 999px;
+		background: var(--surface-elevated);
+		color: rgb(var(--gray-dark));
+		font-size: 0.9rem;
+		font-weight: 800;
+		text-decoration: none;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+	}
+
+	.cat-gallery__nav a:hover,
+	.cat-gallery__nav a:focus-visible {
+		color: var(--accent);
+		box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.42);
+	}
+
+	.cat-gallery__groups {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.cat-gallery__group {
+		scroll-margin-top: 6rem;
+	}
+
+	.cat-gallery__group h3 {
+		margin-bottom: 1rem;
+		font-size: 1.8rem;
+	}
+
+	.cat-gallery__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1rem;
+	}
+
+	@media (max-width: 720px) {
+		.cat-gallery h2 {
+			font-size: 2.15rem;
+		}
+
+		.cat-gallery__group h3 {
+			font-size: 1.55rem;
+		}
+	}
+</style>

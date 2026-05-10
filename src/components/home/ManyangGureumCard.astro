@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import { catPhotos } from '../../data/catGallery';
 import { routes } from '../../utils/routes';
 
-const featuredPhoto = catPhotos[0];
+const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
+const caption = featuredPhoto?.caption ?? '오늘도 기록실 어딘가를 차지하고 있습니다.';
 ---
 
 <section class="manyang-card" aria-labelledby="manyang-card-title">
@@ -11,8 +12,8 @@ const featuredPhoto = catPhotos[0];
 		<p class="manyang-card__eyebrow">Manyang & Gureum</p>
 		<h2 id="manyang-card-title">만냥구름 한 컷</h2>
 		<p>
-			오늘도 기록실 어딘가를 차지하고 있습니다. 창밖을 보거나, 책상 근처를 맴돌거나,
-			조용히 옆자리를 내어주는 순간들을 모아둡니다.
+			{caption} 창밖을 보거나, 책상 근처를 맴돌거나, 조용히 옆자리를 내어주는 순간들을
+			모아둡니다.
 		</p>
 		<a href={routes.manyangGureum}>
 			만냥구름 보러가기

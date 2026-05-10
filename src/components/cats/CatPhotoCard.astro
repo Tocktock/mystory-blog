@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import { catMap } from '../../data/cats';
+import { catMoodLabels, type CatPhoto } from '../../data/catGallery';
+
+interface Props {
+	photo: CatPhoto;
+}
+
+const { photo } = Astro.props as Props;
+const catNames = photo.cats.map((catId) => catMap[catId].name);
+const moodLabel = catMoodLabels[photo.mood];
+---
+
+<figure class="cat-photo">
+	<div class="cat-photo__frame">
+		<Image
+			src={photo.image}
+			alt={photo.alt}
+			widths={[320, 480, 640, 960, 1280]}
+			sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+			loading="eager"
+			decoding="async"
+			class="cat-photo__image"
+		/>
+	</div>
+	<figcaption class="cat-photo__caption">
+		<span class="cat-photo__mood">{moodLabel}</span>
+		<strong>{photo.caption}</strong>
+		<span class="cat-photo__cats">{catNames.join(' · ')}</span>
+	</figcaption>
+</figure>
+
+<style>
+	.cat-photo {
+		margin: 0;
+		overflow: hidden;
+		border-radius: 8px;
+		background: var(--surface-elevated);
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.cat-photo:hover,
+	.cat-photo:focus-within {
+		transform: translateY(-3px);
+		box-shadow: var(--box-shadow);
+	}
+
+	.cat-photo__frame {
+		overflow: hidden;
+	}
+
+	.cat-photo__image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		aspect-ratio: 4 / 3;
+		border-radius: 0;
+		object-fit: cover;
+		transition: transform 0.25s ease;
+	}
+
+	.cat-photo:hover .cat-photo__image {
+		transform: scale(1.025);
+	}
+
+	.cat-photo__caption {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		padding: 0.9rem;
+	}
+
+	.cat-photo__mood {
+		display: inline-flex;
+		width: fit-content;
+		padding: 0.18rem 0.5rem;
+		border-radius: 999px;
+		background: rgba(var(--accent-rgb), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.78rem;
+		font-weight: 800;
+	}
+
+	.cat-photo__caption strong {
+		color: rgb(var(--gray-dark));
+		line-height: 1.45;
+	}
+
+	.cat-photo__cats {
+		color: rgb(var(--gray));
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+</style>
