@@ -21,7 +21,7 @@ const moodGroups = (Object.entries(catMoodLabels) as [CatMood, string][])
 	<header class="cat-gallery__header">
 		<p class="cat-gallery__eyebrow">Photo Album</p>
 		<h2 id="cat-gallery-title">사진첩</h2>
-		<p>낮잠, 창밖 관찰, 책상 점령처럼 만냥구름의 작은 순간들을 모았습니다.</p>
+		<p>이불 위 휴식, 낮잠, 나란히 머무는 순간처럼 만냥구름의 작은 시간을 모았습니다.</p>
 
 		<nav class="cat-gallery__nav" aria-label="사진첩 분류">
 			{moodGroups.map((group) => <a href={`#cat-mood-${group.mood}`}>{group.label}</a>)}
