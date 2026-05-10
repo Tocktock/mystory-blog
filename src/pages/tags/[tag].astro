@@ -50,7 +50,7 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
       <ul class="tag-detail__list">
         {tagPosts.map((post) => (
           <li>
-            <a href={`/blog/${post.id}/`}>
+            <a href={`/records/${post.id}/`}>
               <h2>{post.data.title}</h2>
               <p>{post.data.description}</p>
 				<time datetime={post.data.pubDate.toISOString()}>

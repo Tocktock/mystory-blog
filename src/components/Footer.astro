@@ -1,9 +1,12 @@
 ---
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
 const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Park Ji Yong. All rights reserved.
+	<p class="footer__copyright">&copy; {today.getFullYear()} Park Ji Yong. {SITE_TITLE}.</p>
+	<p class="footer__tagline">{SITE_DESCRIPTION}</p>
 	<div class="social-links">
 		<a href="https://github.com/Tocktock" target="_blank" rel="noopener noreferrer">
 			<span class="sr-only">Ji Yong's GitHub</span>
@@ -22,6 +25,14 @@ const today = new Date();
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
 		color: rgb(var(--gray));
 		text-align: center;
+	}
+	.footer__copyright,
+	.footer__tagline {
+		margin: 0;
+	}
+	.footer__tagline {
+		margin-top: 0.5rem;
+		font-size: 0.95rem;
 	}
 	.social-links {
 		display: flex;

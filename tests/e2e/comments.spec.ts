@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test('giscus discussion widget renders on blog posts', async ({ page }) => {
-  await page.goto('/blog');
+test('giscus discussion widget renders on record posts', async ({ page }) => {
+  await page.goto('/records');
 
-  const firstPostLink = page.locator('.post-card a').first();
+  const firstPostLink = page.locator('.record-card a').first();
   await expect(firstPostLink).toBeVisible();
 
   const targetHref = await firstPostLink.getAttribute('href');

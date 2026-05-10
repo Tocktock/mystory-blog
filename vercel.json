@@ -1,4 +1,21 @@
 {
+  "redirects": [
+    {
+      "source": "/blog",
+      "destination": "/records",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/records/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cat-pics",
+      "destination": "/manyang-gureum",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

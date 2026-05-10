@@ -139,7 +139,7 @@ const dryRun = Boolean(args['dry-run']);
 
 try {
   await fs.access(input);
-} catch (error) {
+} catch {
   usage({ error: `Input not found: ${input}` });
 }
 

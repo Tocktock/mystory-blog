@@ -1,28 +1,34 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { render } from 'astro:content';
-import GiscusComments from '../../components/GiscusComments.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }));
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: {
+			destination: `/records/${post.id}/`,
+		},
+	}));
 }
 
-type Props = CollectionEntry<'blog'>;
-
-// Get the current blog post's frontmatter and content
-const post = Astro.props;
-const { Content } = await render(post);
+const { destination } = Astro.props as { destination: string };
 ---
 
-<!-- The main blog post layout -->
-<BlogPost {...post.data} slug={post.id} ogImage={`/og/${post.id}.png`}>
-  <!-- Render the post's content -->
-  <Content />
-
-  <GiscusComments />
-</BlogPost>
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta http-equiv="refresh" content={`0;url=${destination}`} />
+		<link rel="canonical" href={destination} />
+		<title>기록으로 이동합니다</title>
+	</head>
+	<body>
+		<main>
+			<p>
+				기록 페이지로 이동합니다.
+				<a href={destination}>이동하지 않으면 여기를 눌러주세요.</a>
+			</p>
+		</main>
+	</body>
+</html>

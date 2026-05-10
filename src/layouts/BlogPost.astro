@@ -12,6 +12,8 @@ type Props = CollectionEntry<'blog'>['data'] & {
   lang?: string;
   slug: string;
   ogImage?: string;
+  sectionName?: string;
+  sectionPath?: string;
 };
 
 const {
@@ -23,6 +25,8 @@ const {
   lang: providedLang,
   slug,
   ogImage,
+  sectionName = '기록',
+  sectionPath = '/records',
 } = Astro.props as Props;
 const lang = providedLang ?? 'ko';
 const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
@@ -48,7 +52,7 @@ const imageCandidates = [ogImageURL, heroImageURL].filter(
 const jsonLdImages = Array.from(new Set(imageCandidates));
 const breadcrumbItems = [
   { position: 1, name: SITE_TITLE, item: siteURL.toString() },
-  { position: 2, name: 'Blog', item: new URL('/blog', siteURL).toString() },
+  { position: 2, name: sectionName, item: new URL(sectionPath, siteURL).toString() },
   { position: 3, name: title, item: canonicalURL },
 ];
 const articleJsonLd = buildArticleJsonLd({

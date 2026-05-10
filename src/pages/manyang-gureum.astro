@@ -1,0 +1,134 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import { SITE_TITLE } from '../consts';
+import { catPhotos } from '../data/catGallery';
+
+const PAGE_TITLE = `만냥구름 | ${SITE_TITLE}`;
+const PAGE_DESCRIPTION =
+	'기록실을 함께 쓰는 만냥이와 구름이의 사진, 기억, 작은 순간들을 모아둔 공간입니다.';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
+	</head>
+	<body>
+		<Header />
+		<main class="page" aria-labelledby="manyang-gureum-title">
+			<header class="page__hero">
+				<p class="page__eyebrow">Manyang & Gureum</p>
+				<h1 id="manyang-gureum-title" class="page__title">만냥구름</h1>
+				<p class="page__intro">
+					기록실을 함께 쓰는 두 고양이입니다. 숨은 하품, 창밖 관찰, 책상 점령, 그리고
+					조용히 곁을 차지하는 순간들을 모았습니다.
+				</p>
+			</header>
+
+			<section class="gallery" aria-label="Manyang and Gureum photo gallery">
+				<div class="gallery__grid">
+					{
+						catPhotos.map(({ image, alt }) => (
+							<article class="gallery__item">
+								<Image
+									src={image}
+									alt={alt}
+									widths={[320, 480, 640, 960, 1280]}
+									sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+									loading="lazy"
+									class="gallery__image"
+								/>
+							</article>
+						))
+					}
+				</div>
+			</section>
+			<Footer />
+		</main>
+	</body>
+</html>
+
+<style>
+	.page {
+		margin: 0 auto;
+		padding: 3rem 1.5rem 4rem;
+		max-width: 1080px;
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	.page__hero {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		max-width: 60ch;
+	}
+
+	.page__eyebrow {
+		margin: 0;
+		color: var(--accent);
+		font-size: 0.9rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.page__title {
+		margin: 0;
+		font-size: clamp(2.5rem, 3vw + 1rem, 3.75rem);
+		line-height: 1.15;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
+	}
+
+	.page__intro {
+		margin: 0;
+		font-size: clamp(1rem, 1vw + 0.85rem, 1.2rem);
+		line-height: 1.6;
+		color: var(--color-text-muted, #4a4a4a);
+	}
+
+	.gallery__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.gallery__item {
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.gallery__item:hover,
+	.gallery__item:focus-within {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+	}
+
+	.gallery__image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		aspect-ratio: 4 / 3;
+	}
+
+	@media (max-width: 720px) {
+		.page {
+			padding: 2.5rem 1.25rem 3rem;
+			gap: 2rem;
+		}
+
+		.gallery__grid {
+			gap: 1.25rem;
+		}
+	}
+</style>

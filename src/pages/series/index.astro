@@ -1,0 +1,130 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+const seriesPreview = [
+	{
+		title: 'AI Agent 실험실',
+		description: 'Agent를 만들고 실험하며 배운 것들을 모을 책장입니다.',
+	},
+	{
+		title: 'Backend 설계 노트',
+		description: '서버, 구조, 문제 해결에 대한 기록을 모을 책장입니다.',
+	},
+	{
+		title: '문제를 다시 푸는 법',
+		description: '삽질, 디버깅, 트러블슈팅 회고를 모을 책장입니다.',
+	},
+	{
+		title: '만냥구름 관찰일지',
+		description: '고양이와 함께 살며 배운 관찰의 기록을 모을 책장입니다.',
+	},
+];
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`시리즈 | ${SITE_TITLE}`}
+			description="기록실 책장에 꽂아둘 긴 기록들을 준비하고 있습니다."
+			lang="ko"
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="series-page" aria-labelledby="series-title">
+			<header class="series-page__header">
+				<p class="series-page__eyebrow">Bookshelf</p>
+				<h1 id="series-title">시리즈</h1>
+				<p>
+					기록실 책장에 꽂아둘 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의
+					이야기를 시리즈로 정리할 예정입니다.
+				</p>
+			</header>
+
+			<section aria-label="준비 중인 시리즈">
+				<div class="series-grid">
+					{
+						seriesPreview.map((item) => (
+							<article class="series-card">
+								<p class="series-card__status">준비 중</p>
+								<h2>{item.title}</h2>
+								<p>{item.description}</p>
+							</article>
+						))
+					}
+				</div>
+			</section>
+			<Footer />
+		</main>
+	</body>
+</html>
+
+<style>
+	.series-page {
+		width: 960px;
+	}
+
+	.series-page__header {
+		max-width: 42rem;
+		margin: 0 auto 2.5rem;
+		text-align: center;
+	}
+
+	.series-page__eyebrow {
+		margin: 0 0 0.35rem;
+		color: var(--accent);
+		font-size: 0.9rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.series-page__header h1 {
+		margin-bottom: 1rem;
+	}
+
+	.series-page__header p {
+		margin: 0;
+		color: rgb(var(--gray));
+		line-height: 1.75;
+		text-wrap: balance;
+	}
+
+	.series-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.25rem;
+	}
+
+	.series-card {
+		padding: 1.25rem;
+		border-radius: 1rem;
+		background: var(--surface-elevated);
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
+	}
+
+	.series-card__status {
+		display: inline-flex;
+		margin: 0 0 0.75rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.82rem;
+		font-weight: 700;
+	}
+
+	.series-card h2 {
+		margin-bottom: 0.75rem;
+		font-size: clamp(1.35rem, 2vw, 1.7rem);
+	}
+
+	.series-card p {
+		margin: 0;
+		color: rgb(var(--gray));
+	}
+</style>
