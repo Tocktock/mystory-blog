@@ -15,6 +15,9 @@ const blog = defineCollection({
 			heroImage: image().optional(),
 			lang: z.enum(['ko', 'en']).optional(),
 			tags: z.array(z.string()).default([]),
+			category: z.enum(['tech', 'life', 'thought', 'project', 'cats']).default('thought'),
+			series: z.string().optional(),
+			seriesOrder: z.number().int().positive().optional(),
 		}),
 });
 

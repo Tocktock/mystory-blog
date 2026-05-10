@@ -4,7 +4,9 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 import { collectTags, type TagEntry } from '../../utils/tags';
+import { routes } from '../../utils/routes';
 import '../../styles/tag-detail.css';
 
 type Props = {
@@ -29,8 +31,8 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
 <html lang="ko">
   <head>
     <BaseHead
-      title={`${tag.label} posts`}
-      description={`Posts filed under ${tag.label}`}
+      title={`${tag.label} 기록 | ${SITE_TITLE}`}
+      description={`${tag.label} 태그가 붙은 기록입니다.`}
       lang="ko"
     />
   </head>
@@ -39,23 +41,21 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
     <main class="tag-detail" aria-labelledby="tag-detail-title">
       <header class="tag-detail__header">
         <p class="tag-detail__breadcrumbs">
-          <a href="/tags/">Tags</a>
+          <a href={routes.tags}>태그</a>
           <span aria-hidden="true">/</span>
           <span>{tag.label}</span>
         </p>
         <h1 id="tag-detail-title">{tag.label}</h1>
-        <p class="tag-detail__count">{tagPosts.length} posts</p>
+        <p class="tag-detail__count">{tagPosts.length}개 기록</p>
       </header>
 
       <ul class="tag-detail__list">
         {tagPosts.map((post) => (
           <li>
-            <a href={`/records/${post.id}/`}>
+            <a href={routes.record(post.id)}>
               <h2>{post.data.title}</h2>
               <p>{post.data.description}</p>
-				<time datetime={post.data.pubDate.toISOString()}>
-                <FormattedDate date={post.data.pubDate} />
-              </time>
+              <FormattedDate date={post.data.pubDate} />
             </a>
           </li>
         ))}

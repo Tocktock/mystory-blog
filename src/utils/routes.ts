@@ -9,4 +9,5 @@ export const routes = {
 	search: '/search',
 	tags: '/tags',
 	tag: (slug: string) => `/tags/${slug}/`,
+	category: (slug: string) => `/categories/${slug}/`,
 } as const;

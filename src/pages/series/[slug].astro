@@ -1,0 +1,238 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
+import { getCategory } from '../../data/categories';
+import { seriesList, type SeriesEntry } from '../../data/series';
+import { routes } from '../../utils/routes';
+
+type Props = {
+	seriesItem: SeriesEntry;
+	posts: CollectionEntry<'blog'>[];
+};
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+
+	return seriesList.map((seriesItem) => ({
+		params: { slug: seriesItem.slug },
+		props: {
+			seriesItem,
+			posts: posts
+				.filter((post) => post.data.series === seriesItem.slug)
+				.sort((a, b) => {
+					const aOrder = a.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+					const bOrder = b.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+
+					if (aOrder !== bOrder) {
+						return aOrder - bOrder;
+					}
+
+					return a.data.pubDate.valueOf() - b.data.pubDate.valueOf();
+				}),
+		},
+	}));
+}
+
+const { seriesItem, posts } = Astro.props as Props;
+const category = getCategory(seriesItem.category);
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`${seriesItem.title} | ${SITE_TITLE}`}
+			description={seriesItem.description}
+			lang="ko"
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="series-detail" aria-labelledby="series-detail-title">
+			<header class="series-detail__header">
+				<p class="series-detail__breadcrumbs">
+					<a href={routes.series}>시리즈</a>
+					<span aria-hidden="true">/</span>
+					<span>{seriesItem.title}</span>
+				</p>
+				<p class="series-detail__category">{category.label}</p>
+				<h1 id="series-detail-title">{seriesItem.title}</h1>
+				<p>{seriesItem.description}</p>
+			</header>
+
+			{
+				posts.length > 0 ? (
+					<ol class="series-detail__list">
+						{posts.map((post, index) => {
+							const orderLabel = post.data.seriesOrder ?? index + 1;
+
+							return (
+								<li class="series-detail__item">
+									<a href={routes.record(post.id)}>
+										<span class="series-detail__order">{String(orderLabel).padStart(2, '0')}</span>
+										<div>
+											<h2>{post.data.title}</h2>
+											<p>{post.data.description}</p>
+											<FormattedDate date={post.data.pubDate} />
+										</div>
+									</a>
+								</li>
+							);
+						})}
+					</ol>
+				) : (
+					<section class="series-detail__empty" aria-label="시리즈 기록 없음">
+						<h2>아직 책장에 꽂힌 기록이 없어요.</h2>
+						<p>이 시리즈는 앞으로 채워질 예정입니다.</p>
+						<a href={routes.records}>전체 기록 보기</a>
+					</section>
+				)
+			}
+			<Footer />
+		</main>
+	</body>
+</html>
+
+<style>
+	.series-detail {
+		width: 840px;
+	}
+
+	.series-detail__header {
+		max-width: 42rem;
+		margin: 0 auto 2.5rem;
+		text-align: center;
+	}
+
+	.series-detail__breadcrumbs {
+		display: inline-flex;
+		gap: 0.5rem;
+		margin: 0 0 0.75rem;
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+	}
+
+	.series-detail__breadcrumbs a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.series-detail__category {
+		display: inline-flex;
+		margin: 0 0 0.85rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+
+	.series-detail__header h1 {
+		margin-bottom: 1rem;
+	}
+
+	.series-detail__header p:last-child {
+		margin: 0;
+		color: rgb(var(--gray));
+		line-height: 1.75;
+		text-wrap: balance;
+	}
+
+	.series-detail__list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.series-detail__item a {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1rem;
+		padding: 1.25rem;
+		border-radius: 1rem;
+		background: var(--surface-elevated);
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.series-detail__item a:hover,
+	.series-detail__item a:focus-visible {
+		box-shadow: var(--box-shadow);
+		transform: translateY(-2px);
+	}
+
+	.series-detail__order {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.9rem;
+		font-weight: 800;
+	}
+
+	.series-detail__item h2 {
+		margin-bottom: 0.5rem;
+		font-size: clamp(1.35rem, 2vw, 1.7rem);
+	}
+
+	.series-detail__item p {
+		margin: 0 0 0.65rem;
+		color: rgb(var(--gray));
+		line-height: 1.6;
+	}
+
+	.series-detail__item time {
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+	}
+
+	.series-detail__empty {
+		max-width: 34rem;
+		margin: 0 auto;
+		padding: 2rem;
+		border-radius: 1rem;
+		background: var(--surface-elevated);
+		text-align: center;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
+	}
+
+	.series-detail__empty h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.series-detail__empty p {
+		margin: 0 0 1rem;
+		color: rgb(var(--gray));
+	}
+
+	.series-detail__empty a {
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	@media (max-width: 840px) {
+		.series-detail {
+			width: 100%;
+		}
+
+		.series-detail__item a {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,242 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
+import { categoryList, type Category } from '../../data/categories';
+import { getSeries } from '../../data/series';
+import { routes } from '../../utils/routes';
+import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
+import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
+import placeholder4 from '../../assets/placeholders/blog-placeholder-4.jpg';
+import placeholder5 from '../../assets/placeholders/blog-placeholder-5.jpg';
+
+type Props = {
+	category: Category;
+	posts: CollectionEntry<'blog'>[];
+};
+
+const defaultImages = [placeholder2, placeholder3, placeholder4, placeholder5];
+
+const getRandomImage = () => {
+	const randomIndex = Math.floor(Math.random() * defaultImages.length);
+	return defaultImages[randomIndex];
+};
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+
+	return categoryList.map((category) => ({
+		params: { slug: category.slug },
+		props: {
+			category,
+			posts: posts
+				.filter((post) => post.data.category === category.slug)
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+		},
+	}));
+}
+
+const { category, posts } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`${category.label} 기록 | ${SITE_TITLE}`}
+			description={category.description}
+			lang="ko"
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="category-page" aria-labelledby="category-title">
+			<header class="category-page__header">
+				<p class="category-page__breadcrumbs">
+					<a href={routes.records}>기록</a>
+					<span aria-hidden="true">/</span>
+					<span>{category.label}</span>
+				</p>
+				<h1 id="category-title">{category.label}</h1>
+				<p>{category.description}</p>
+			</header>
+
+			{
+				posts.length > 0 ? (
+					<ul class="category-page__list">
+						{posts.map((post) => {
+							const seriesEntry = getSeries(post.data.series);
+
+							return (
+								<li class="category-card">
+									<a href={routes.record(post.id)}>
+										<Image
+											src={post.data.heroImage ?? getRandomImage()}
+											alt=""
+											width={480}
+											widths={[360, 480, 720, 960]}
+											sizes="(max-width: 960px) 100vw, 480px"
+											loading="lazy"
+											decoding="async"
+											class="category-card__image"
+										/>
+										<div class="category-card__body">
+											{seriesEntry && <p class="category-card__series">{seriesEntry.title}</p>}
+											<h2>{post.data.title}</h2>
+											<p>{post.data.description}</p>
+											<FormattedDate date={post.data.pubDate} />
+										</div>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				) : (
+					<section class="category-page__empty" aria-label="기록 없음">
+						<h2>아직 이 책장은 비어 있어요.</h2>
+						<p>이 카테고리의 기록은 천천히 채워질 예정입니다.</p>
+						<a href={routes.records}>전체 기록 보기</a>
+					</section>
+				)
+			}
+			<Footer />
+		</main>
+	</body>
+</html>
+
+<style>
+	.category-page {
+		width: 960px;
+	}
+
+	.category-page__header {
+		max-width: 42rem;
+		margin: 0 auto 2rem;
+		text-align: center;
+	}
+
+	.category-page__breadcrumbs {
+		display: inline-flex;
+		gap: 0.5rem;
+		margin: 0 0 0.75rem;
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+	}
+
+	.category-page__breadcrumbs a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.category-page__header h1 {
+		margin-bottom: 1rem;
+	}
+
+	.category-page__header p:last-child {
+		margin: 0;
+		color: rgb(var(--gray));
+		line-height: 1.75;
+		text-wrap: balance;
+	}
+
+	.category-page__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.category-card a {
+		display: block;
+		height: 100%;
+		padding: 0.5rem;
+		border-radius: 16px;
+		background: var(--surface-elevated);
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.18);
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.category-card a:hover,
+	.category-card a:focus-visible {
+		box-shadow: var(--box-shadow);
+		transform: translateY(-2px);
+	}
+
+	.category-card__image {
+		display: block;
+		width: 100%;
+		margin-bottom: 0.75rem;
+		border-radius: 14px;
+	}
+
+	.category-card__body {
+		padding: 0.25rem 0.25rem 0.5rem;
+	}
+
+	.category-card__series {
+		display: inline-flex;
+		margin: 0 0 0.65rem;
+		padding: 0.2rem 0.5rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.78rem;
+		font-weight: 700;
+	}
+
+	.category-card h2 {
+		margin-bottom: 0.5rem;
+		font-size: clamp(1.35rem, 2vw, 1.7rem);
+	}
+
+	.category-card p {
+		margin: 0 0 0.75rem;
+		color: rgb(var(--gray));
+		line-height: 1.6;
+	}
+
+	.category-card time {
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+	}
+
+	.category-page__empty {
+		max-width: 34rem;
+		margin: 0 auto;
+		padding: 2rem;
+		border-radius: 1rem;
+		background: var(--surface-elevated);
+		text-align: center;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
+	}
+
+	.category-page__empty h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.category-page__empty p {
+		margin: 0 0 1rem;
+		color: rgb(var(--gray));
+	}
+
+	.category-page__empty a {
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	@media (max-width: 960px) {
+		.category-page {
+			width: 100%;
+		}
+	}
+</style>

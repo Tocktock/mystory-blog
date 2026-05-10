@@ -10,6 +10,8 @@ import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
 import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
 import placeholder4 from '../../assets/placeholders/blog-placeholder-4.jpg';
 import placeholder5 from '../../assets/placeholders/blog-placeholder-5.jpg';
+import { categoryList, getCategory } from '../../data/categories';
+import { getSeries } from '../../data/series';
 import { routes } from '../../utils/routes';
 
 const defaultImages = [placeholder2, placeholder3, placeholder4, placeholder5];
@@ -46,12 +48,26 @@ const posts = (await getCollection('blog')).sort(
 					</p>
 				</header>
 
+				<nav class="records-index__categories" aria-label="기록 카테고리">
+					<a class="records-index__category-link records-index__category-link--active" href={routes.records}>
+						전체
+					</a>
+					{
+						categoryList.map((category) => (
+							<a class="records-index__category-link" href={routes.category(category.slug)}>
+								{category.label}
+							</a>
+						))
+					}
+				</nav>
+
 				<ul class="record-grid">
 					{
 						posts.map((post, index) => {
 							const isFeatured = index === 0;
-							const pubDate =
-								post.data.pubDate instanceof Date ? post.data.pubDate : new Date(post.data.pubDate);
+							const category = getCategory(post.data.category);
+							const seriesEntry = getSeries(post.data.series);
+
 							return (
 								<li class:list={['record-card', { 'record-card--featured': isFeatured }]}>
 									<a href={routes.record(post.id)}>
@@ -70,12 +86,14 @@ const posts = (await getCollection('blog')).sort(
 											class="record-card__image"
 										/>
 										<div class="record-card__body">
+											<div class="record-card__meta">
+												<span class="record-card__category">{category.label}</span>
+												{seriesEntry && <span class="record-card__series">{seriesEntry.title}</span>}
+											</div>
 											<h2 class="record-card__title">{post.data.title}</h2>
 											<p class="record-card__description">{post.data.description}</p>
 											<p class="record-card__date">
-												<time datetime={pubDate.toISOString()}>
-													<FormattedDate date={post.data.pubDate} />
-												</time>
+												<FormattedDate date={post.data.pubDate} />
 											</p>
 											{
 												post.data.tags.length > 0 && (
@@ -136,6 +154,35 @@ const posts = (await getCollection('blog')).sort(
 		text-wrap: balance;
 	}
 
+	.records-index__categories {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.6rem;
+		margin: 0 0 2rem;
+	}
+
+	.records-index__category-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.45rem 0.8rem;
+		border-radius: 999px;
+		border: 1px solid rgba(var(--gray-light), 0.5);
+		background: var(--surface-elevated);
+		color: rgb(var(--gray-dark));
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.records-index__category-link:hover,
+	.records-index__category-link:focus-visible,
+	.records-index__category-link--active {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+
 	.record-grid {
 		display: flex;
 		flex-wrap: wrap;
@@ -184,6 +231,34 @@ const posts = (await getCollection('blog')).sort(
 
 	.record-card__body {
 		padding: 0.25rem 0.25rem 0.5rem;
+	}
+
+	.record-card__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem;
+		margin-bottom: 0.65rem;
+	}
+
+	.record-card__category,
+	.record-card__series {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.5rem;
+		border-radius: 999px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1.2;
+	}
+
+	.record-card__category {
+		background: rgba(var(--accent), 0.12);
+		color: var(--accent-dark);
+	}
+
+	.record-card__series {
+		background: rgba(var(--gray-light), 0.26);
+		color: rgb(var(--gray-dark));
 	}
 
 	.record-card__title {
