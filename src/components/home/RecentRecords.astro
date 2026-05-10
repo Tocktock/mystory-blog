@@ -10,224 +10,317 @@ import { getSeries } from '../../data/series';
 import { routes } from '../../utils/routes';
 
 interface Props {
-	posts: CollectionEntry<'blog'>[];
+  posts: CollectionEntry<'blog'>[];
 }
 
 const { posts } = Astro.props as Props;
 const fallbackImages = [placeholder2, placeholder3, placeholder4];
 const getFallbackImage = (index: number) => fallbackImages[index % fallbackImages.length];
+const [featuredPost, ...secondaryPosts] = posts;
 ---
 
 <section class="recent-records" aria-labelledby="recent-records-title">
-	<div class="recent-records__header">
-		<div>
-			<p class="recent-records__eyebrow">Latest Records</p>
-			<h2 id="recent-records-title">최근 기록</h2>
-			<p>요즘 배우고 만들고 남긴 것들입니다.</p>
-		</div>
-		<a class="recent-records__all" href={routes.records}>
-			전체 기록 보기
-			<span aria-hidden="true">›</span>
-		</a>
-	</div>
+  <div class="recent-records__header">
+    <div>
+      <p class="recent-records__eyebrow">Latest Records</p>
+      <h2 id="recent-records-title">최근 기록</h2>
+    </div>
+    <p>요즘 배우고 만들고 남긴 것들을 넓은 기록 한 편과 이어지는 목록으로 읽습니다.</p>
+    <a class="recent-records__all" href={routes.records}>
+      전체 기록 보기
+      <span aria-hidden="true">›</span>
+    </a>
+  </div>
 
-	{
-		posts.length > 0 ? (
-			<ul class="recent-records__list">
-				{posts.map((post, index) => {
-					const category = getCategory(post.data.category);
-					const seriesEntry = getSeries(post.data.series);
+  {
+    featuredPost ? (
+      <div class="recent-records__layout">
+        {(() => {
+          const category = getCategory(featuredPost.data.category);
+          const seriesEntry = getSeries(featuredPost.data.series);
 
-					return (
-						<li class="recent-record">
-							<a href={routes.record(post.id)}>
-								<Image
-									src={post.data.heroImage ?? getFallbackImage(index)}
-									alt=""
-									width={420}
-									widths={[320, 420, 640, 840]}
-									sizes="(max-width: 760px) 100vw, 33vw"
-									loading="lazy"
-									decoding="async"
-									class="recent-record__image"
-								/>
-								<div class="recent-record__body">
-									<div class="recent-record__meta">
-										<span>{category.label}</span>
-										{seriesEntry && <span>{seriesEntry.title}</span>}
-									</div>
-									<h3>{post.data.title}</h3>
-									<p>{post.data.description}</p>
-									<FormattedDate date={post.data.pubDate} />
-								</div>
-							</a>
-						</li>
-					);
-				})}
-			</ul>
-		) : (
-			<div class="recent-records__empty">
-				<p>아직 보여줄 기록이 없어요. 기록실 책장은 곧 채워질 예정입니다.</p>
-			</div>
-		)
-	}
+          return (
+            <article class="recent-record recent-record--featured">
+              <a href={routes.record(featuredPost.id)}>
+                <Image
+                  src={featuredPost.data.heroImage ?? getFallbackImage(0)}
+                  alt=""
+                  width={720}
+                  widths={[480, 720, 960, 1280]}
+                  sizes="(max-width: 960px) 100vw, 56vw"
+                  loading="lazy"
+                  decoding="async"
+                  class="recent-record__image"
+                />
+                <div class="recent-record__body">
+                  <div class="recent-record__meta">
+                    <span>{category.label}</span>
+                    {seriesEntry && <span>{seriesEntry.title}</span>}
+                  </div>
+                  <h3>{featuredPost.data.title}</h3>
+                  <p>{featuredPost.data.description}</p>
+                  <FormattedDate date={featuredPost.data.pubDate} />
+                </div>
+              </a>
+            </article>
+          );
+        })()}
+
+        <ul class="recent-records__list" aria-label="최근 기록 목록">
+          {secondaryPosts.map((post, index) => {
+            const category = getCategory(post.data.category);
+            const seriesEntry = getSeries(post.data.series);
+
+            return (
+              <li class="recent-record">
+                <a href={routes.record(post.id)}>
+                  <Image
+                    src={post.data.heroImage ?? getFallbackImage(index + 1)}
+                    alt=""
+                    width={220}
+                    widths={[220, 320, 480]}
+                    sizes="(max-width: 760px) 28vw, 13rem"
+                    loading="lazy"
+                    decoding="async"
+                    class="recent-record__image"
+                  />
+                  <div class="recent-record__body">
+                    <div class="recent-record__meta">
+                      <span>{category.label}</span>
+                      {seriesEntry && <span>{seriesEntry.title}</span>}
+                    </div>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                    <FormattedDate date={post.data.pubDate} />
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ) : (
+      <div class="recent-records__empty">
+        <p>아직 보여줄 기록이 없어요. 기록실 책장은 곧 채워질 예정입니다.</p>
+      </div>
+    )
+  }
 </section>
 
 <style>
-	.recent-records {
-		width: min(1040px, calc(100% - 2rem));
-		margin: 4rem auto 0;
-	}
+  .recent-records {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 5rem auto 0;
+  }
 
-	.recent-records__header {
-		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-bottom: 1.5rem;
-	}
+  .recent-records__header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.42fr) auto;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 1.5rem;
+  }
 
-	.recent-records__eyebrow {
-		margin: 0 0 0.35rem;
-		color: var(--accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
+  .recent-records__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
 
-	.recent-records h2 {
-		margin-bottom: 0.75rem;
-		font-size: 2.7rem;
-	}
+  .recent-records h2 {
+    margin-bottom: 0;
+    font-size: 3rem;
+    line-height: 1.05;
+  }
 
-	.recent-records__header p:last-child {
-		margin: 0;
-		color: rgb(var(--gray));
-	}
+  .recent-records__header p {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.7;
+    text-wrap: balance;
+  }
 
-	.recent-records__all {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.35rem;
-		flex-shrink: 0;
-		color: var(--accent);
-		font-weight: 800;
-		text-decoration: none;
-	}
+  .recent-records__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    justify-self: end;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
 
-	.recent-records__all span {
-		font-size: 1.2em;
-		line-height: 1;
-	}
+  .recent-records__all span {
+    font-size: 1.2em;
+    line-height: 1;
+  }
 
-	.recent-records__list {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 1rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+  .recent-records__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.78fr);
+    gap: 1rem;
+    align-items: stretch;
+  }
 
-	.recent-record a {
-		display: block;
-		height: 100%;
-		padding: 0.5rem;
-		border-radius: 8px;
-		background: var(--surface-elevated);
-		color: rgb(var(--gray-dark));
-		text-decoration: none;
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
+  .recent-records__list {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	.recent-record a:hover,
-	.recent-record a:focus-visible {
-		box-shadow: var(--box-shadow);
-		transform: translateY(-4px);
-	}
+  .recent-record a {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    height: 100%;
+    padding: 0.65rem;
+    border-radius: 8px;
+    background: var(--surface-elevated);
+    color: rgb(var(--gray-dark));
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+    transition:
+      transform 0.24s ease,
+      box-shadow 0.24s ease;
+  }
 
-	.recent-record a:active {
-		transform: translateY(-1px);
-	}
+  .recent-record--featured a {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding: 0.75rem;
+  }
 
-	.recent-record__image {
-		display: block;
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		border-radius: 6px;
-		object-fit: cover;
-	}
+  .recent-record a:hover,
+  .recent-record a:focus-visible {
+    box-shadow: var(--box-shadow);
+    transform: translateY(-4px);
+  }
 
-	.recent-record__body {
-		padding: 0.8rem 0.35rem 0.45rem;
-	}
+  .recent-record a:active {
+    transform: translateY(-1px);
+  }
 
-	.recent-record__meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.35rem;
-		margin-bottom: 0.65rem;
-	}
+  .recent-record__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 6px;
+    object-fit: cover;
+  }
 
-	.recent-record__meta span {
-		display: inline-flex;
-		padding: 0.18rem 0.5rem;
-		border-radius: 999px;
-		background: rgba(var(--accent-rgb), 0.12);
-		color: var(--accent-dark);
-		font-size: 0.76rem;
-		font-weight: 800;
-	}
+  .recent-record--featured .recent-record__image {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
 
-	.recent-record h3 {
-		margin-bottom: 0.5rem;
-		font-size: 1.45rem;
-	}
+  .recent-record__body {
+    min-width: 0;
+    padding: 0.15rem 0.1rem;
+  }
 
-	.recent-record p {
-		margin: 0 0 0.75rem;
-		color: rgb(var(--gray));
-		font-size: 0.95rem;
-		line-height: 1.6;
-	}
+  .recent-record--featured .recent-record__body {
+    padding: 1rem 0.35rem 0.45rem;
+  }
 
-	.recent-record time {
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
-	}
+  .recent-record__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.65rem;
+  }
 
-	.recent-records__empty {
-		padding: 1.5rem;
-		border-radius: 8px;
-		background: var(--surface-elevated);
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-	}
+  .recent-record__meta span {
+    display: inline-flex;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
 
-	.recent-records__empty p {
-		margin: 0;
-		color: rgb(var(--gray));
-	}
+  .recent-record h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    line-height: 1.18;
+  }
 
-	@media (max-width: 960px) {
-		.recent-records__list {
-			grid-template-columns: 1fr;
-		}
-	}
+  .recent-record--featured h3 {
+    font-size: 2rem;
+  }
 
-	@media (max-width: 720px) {
-		.recent-records {
-			margin-top: 3rem;
-		}
+  .recent-record p {
+    display: -webkit-box;
+    margin: 0 0 0.75rem;
+    overflow: hidden;
+    color: rgb(var(--gray));
+    font-size: 0.95rem;
+    line-height: 1.6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 
-		.recent-records h2 {
-			font-size: 2.15rem;
-		}
+  .recent-record--featured p {
+    max-width: 42rem;
+    -webkit-line-clamp: 3;
+  }
 
-		.recent-records__header {
-			align-items: flex-start;
-			flex-direction: column;
-		}
-	}
+  .recent-record time {
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+  }
+
+  .recent-records__empty {
+    padding: 1.5rem;
+    border-radius: 8px;
+    background: var(--surface-elevated);
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  }
+
+  .recent-records__empty p {
+    margin: 0;
+    color: rgb(var(--gray));
+  }
+
+  @media (max-width: 960px) {
+    .recent-records__header,
+    .recent-records__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .recent-records__all {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .recent-records {
+      margin-top: 3.5rem;
+    }
+
+    .recent-records h2 {
+      font-size: 2.25rem;
+    }
+
+    .recent-record a {
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+    .recent-record--featured a {
+      display: grid;
+    }
+
+    .recent-record--featured h3 {
+      font-size: 1.35rem;
+    }
+  }
 </style>

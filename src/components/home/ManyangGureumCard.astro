@@ -8,123 +8,148 @@ const caption = featuredPhoto?.caption ?? '오늘도 기록실 어딘가를 차�
 ---
 
 <section class="manyang-card" aria-labelledby="manyang-card-title">
-	<div class="manyang-card__content">
-		<p class="manyang-card__eyebrow">Manyang & Gureum</p>
-		<h2 id="manyang-card-title">만냥구름 한 컷</h2>
-		<p>
-			{caption} 창밖을 보거나, 책상 근처를 맴돌거나, 조용히 옆자리를 내어주는 순간들을
-			모아둡니다.
-		</p>
-		<a href={routes.manyangGureum}>
-			만냥구름 보러가기
-			<span aria-hidden="true">›</span>
-		</a>
-	</div>
+  <div class="manyang-card__content">
+    <p class="manyang-card__eyebrow">Manyang & Gureum</p>
+    <h2 id="manyang-card-title">만냥구름 한 컷</h2>
+    <p>
+      {caption} 창밖을 보거나, 책상 근처를 맴돌거나, 조용히 옆자리를 내어주는 순간들을 모아둡니다.
+    </p>
+    <a href={routes.manyangGureum}>
+      만냥구름 보러가기
+      <span aria-hidden="true">›</span>
+    </a>
+  </div>
 
-	{
-		featuredPhoto && (
-			<div class="manyang-card__photo">
-				<Image
-					src={featuredPhoto.image}
-					alt={featuredPhoto.alt}
-					widths={[360, 520, 720, 960]}
-					sizes="(max-width: 860px) 100vw, 480px"
-					loading="lazy"
-					decoding="async"
-				/>
-			</div>
-		)
-	}
+  {
+    featuredPhoto && (
+      <figure class="manyang-card__photo">
+        <Image
+          src={featuredPhoto.image}
+          alt={featuredPhoto.alt}
+          widths={[360, 520, 720, 960]}
+          sizes="(max-width: 860px) 100vw, 480px"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>{featuredPhoto.caption}</figcaption>
+      </figure>
+    )
+  }
 </section>
 
 <style>
-	.manyang-card {
-		display: grid;
-		grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.7fr);
-		gap: 1.5rem;
-		align-items: center;
-		width: min(1040px, calc(100% - 2rem));
-		margin: 4rem auto 0;
-		padding: 1.25rem;
-		border-radius: 12px;
-		background:
-			linear-gradient(135deg, rgba(var(--accent-rgb), 0.11), transparent 38%),
-			linear-gradient(180deg, var(--surface-elevated), rgba(var(--sage-rgb), 0.08));
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34), var(--box-shadow);
-	}
+  .manyang-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(280px, 0.72fr);
+    gap: 1.5rem;
+    align-items: end;
+    width: min(1120px, calc(100% - 2rem));
+    margin: 5rem auto 0;
+    padding: 1rem;
+    border-radius: 12px;
+    background:
+      linear-gradient(135deg, rgba(var(--clay-rgb), 0.13), transparent 36%),
+      linear-gradient(180deg, var(--surface-elevated), rgba(var(--sage-rgb), 0.08));
+    box-shadow:
+      0 0 0 1px rgba(var(--gray-light), 0.34),
+      var(--box-shadow);
+  }
 
-	.manyang-card__content {
-		padding: 1.5rem;
-	}
+  .manyang-card__content {
+    padding: 2rem;
+  }
 
-	.manyang-card__eyebrow {
-		margin: 0 0 0.35rem;
-		color: var(--accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
+  .manyang-card__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
 
-	.manyang-card h2 {
-		margin-bottom: 0.75rem;
-		font-size: 2.7rem;
-	}
+  .manyang-card h2 {
+    max-width: 9ch;
+    margin-bottom: 0.75rem;
+    font-size: 3rem;
+    line-height: 1.05;
+  }
 
-	.manyang-card p {
-		max-width: 38rem;
-		margin: 0;
-		color: rgb(var(--gray));
-		line-height: 1.75;
-		text-wrap: balance;
-	}
+  .manyang-card p {
+    max-width: 38rem;
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    text-wrap: balance;
+  }
 
-	.manyang-card a {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.35rem;
-		margin-top: 1.25rem;
-		color: var(--accent);
-		font-weight: 800;
-		text-decoration: none;
-	}
+  .manyang-card a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 1.25rem;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
 
-	.manyang-card a span {
-		font-size: 1.2em;
-		line-height: 1;
-	}
+  .manyang-card a:hover,
+  .manyang-card a:focus-visible {
+    color: var(--accent-dark);
+    transform: translateX(2px);
+  }
 
-	.manyang-card__photo {
-		overflow: hidden;
-		border-radius: 8px;
-		box-shadow: 0 12px 36px rgba(74, 47, 34, 0.18);
-		transform: rotate(1deg);
-	}
+  .manyang-card a span {
+    font-size: 1.2em;
+    line-height: 1;
+  }
 
-	.manyang-card__photo :global(img) {
-		display: block;
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		border-radius: 0;
-		object-fit: cover;
-	}
+  .manyang-card__photo {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: 0 12px 36px rgba(74, 47, 34, 0.18);
+    transform: rotate(1deg) translateY(-0.5rem);
+  }
 
-	@media (max-width: 860px) {
-		.manyang-card {
-			grid-template-columns: 1fr;
-			margin-top: 3rem;
-		}
+  .manyang-card__photo :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    object-fit: cover;
+  }
 
-		.manyang-card h2 {
-			font-size: 2.15rem;
-		}
+  .manyang-card__photo figcaption {
+    margin: 0;
+    padding: 0.8rem 0.9rem;
+    color: rgb(var(--gray));
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
 
-		.manyang-card__content {
-			padding: 0.5rem;
-		}
+  @media (max-width: 860px) {
+    .manyang-card {
+      grid-template-columns: 1fr;
+      margin-top: 3.5rem;
+    }
 
-		.manyang-card__photo {
-			transform: none;
-		}
-	}
+    .manyang-card h2 {
+      max-width: none;
+      font-size: 2.25rem;
+    }
+
+    .manyang-card__content {
+      padding: 1rem;
+    }
+
+    .manyang-card__photo {
+      transform: none;
+    }
+  }
 </style>

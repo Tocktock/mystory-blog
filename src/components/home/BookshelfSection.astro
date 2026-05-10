@@ -2,202 +2,279 @@
 import { routes } from '../../utils/routes';
 
 const shelves = [
-	{
-		title: 'AI & Agent',
-		description: '도구를 만들고 실험하며 남긴 기록',
-		href: routes.series,
-		label: '시리즈 보기',
-		tone: 'warm',
-	},
-	{
-		title: 'Backend',
-		description: '서버, 구조, 문제 해결에 대한 노트',
-		href: routes.category('tech'),
-		label: '기술 기록 보기',
-		tone: 'ink',
-	},
-	{
-		title: '생각과 일상',
-		description: '몰입, 관찰, 배움, 살아가는 방식에 대한 글',
-		href: routes.category('thought'),
-		label: '생각 보기',
-		tone: 'sage',
-	},
-	{
-		title: '만냥구름',
-		description: '기록실을 함께 쓰는 두 고양이의 순간들',
-		href: routes.manyangGureum,
-		label: '만냥구름 보기',
-		tone: 'soft',
-	},
+  {
+    title: 'AI & Agent',
+    description: '도구를 만들고 실험하며 남긴 기록',
+    href: routes.series,
+    label: '시리즈 보기',
+    tone: 'warm',
+    size: 'feature',
+    note: '실험과 판단을 한곳에 모읍니다.',
+  },
+  {
+    title: 'Backend',
+    description: '서버, 구조, 문제 해결에 대한 노트',
+    href: routes.category('tech'),
+    label: '기술 기록 보기',
+    tone: 'ink',
+    size: 'standard',
+    note: '구조를 다시 읽습니다.',
+  },
+  {
+    title: '생각과 일상',
+    description: '몰입, 관찰, 배움, 살아가는 방식에 대한 글',
+    href: routes.category('thought'),
+    label: '생각 보기',
+    tone: 'sage',
+    size: 'standard',
+    note: '일하는 방식과 생활을 같이 둡니다.',
+  },
+  {
+    title: '만냥구름',
+    description: '기록실을 함께 쓰는 두 고양이의 순간들',
+    href: routes.manyangGureum,
+    label: '만냥구름 보기',
+    tone: 'soft',
+    size: 'wide',
+    note: '조용한 관찰도 기록입니다.',
+  },
 ];
 ---
 
 <section class="bookshelf" aria-labelledby="bookshelf-title">
-	<div class="bookshelf__header">
-		<p class="bookshelf__eyebrow">Bookshelf</p>
-		<h2 id="bookshelf-title">기록실 책장</h2>
-		<p>기술과 생각, 일상과 만냥구름을 각각의 책장에 천천히 꽂아둡니다.</p>
-	</div>
+  <div class="bookshelf__header">
+    <p class="bookshelf__eyebrow">Bookshelf</p>
+    <h2 id="bookshelf-title">기록실 책장</h2>
+    <p>기술과 생각, 일상과 만냥구름을 같은 공간 안에서 다른 리듬으로 정리합니다.</p>
+  </div>
 
-	<div class="bookshelf__grid">
-		{
-			shelves.map((shelf) => (
-				<a class:list={['bookshelf__card', `bookshelf__card--${shelf.tone}`]} href={shelf.href}>
-					<span class="bookshelf__card-mark" aria-hidden="true" />
-					<h3>{shelf.title}</h3>
-					<p>{shelf.description}</p>
-					<span class="bookshelf__link">
-						{shelf.label}
-						<span aria-hidden="true">›</span>
-					</span>
-				</a>
-			))
-		}
-	</div>
+  <div class="bookshelf__grid">
+    {
+      shelves.map((shelf) => (
+        <a
+          class:list={[
+            'bookshelf__card',
+            `bookshelf__card--${shelf.tone}`,
+            `bookshelf__card--${shelf.size}`,
+          ]}
+          href={shelf.href}
+        >
+          <span class="bookshelf__card-mark" aria-hidden="true" />
+          <span class="bookshelf__note">{shelf.note}</span>
+          <div>
+            <h3>{shelf.title}</h3>
+            <p>{shelf.description}</p>
+          </div>
+          <span class="bookshelf__link">
+            {shelf.label}
+            <span aria-hidden="true">›</span>
+          </span>
+        </a>
+      ))
+    }
+  </div>
 </section>
 
 <style>
-	.bookshelf {
-		width: min(1040px, calc(100% - 2rem));
-		margin: 4rem auto 0;
-	}
+  .bookshelf {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 5rem auto 0;
+  }
 
-	.bookshelf__header {
-		max-width: 42rem;
-		margin-bottom: 1.5rem;
-	}
+  .bookshelf__header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.48fr);
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 1.5rem;
+  }
 
-	.bookshelf__eyebrow {
-		margin: 0 0 0.35rem;
-		color: var(--accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
+  .bookshelf__eyebrow {
+    grid-column: 1 / -1;
+    margin: 0 0 -1.4rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
 
-	.bookshelf h2 {
-		margin-bottom: 0.75rem;
-		font-size: 2.7rem;
-	}
+  .bookshelf h2 {
+    margin-bottom: 0;
+    font-size: 3rem;
+    line-height: 1.05;
+  }
 
-	.bookshelf__header p:last-child {
-		margin: 0;
-		color: rgb(var(--gray));
-		line-height: 1.75;
-		text-wrap: balance;
-	}
+  .bookshelf__header p:last-child {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    text-wrap: balance;
+  }
 
-	.bookshelf__grid {
-		display: grid;
-		grid-template-columns: 1.1fr 0.9fr;
-		gap: 1rem;
-	}
+  .bookshelf__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    grid-auto-rows: minmax(12rem, auto);
+    gap: 1rem;
+  }
 
-	.bookshelf__card {
-		position: relative;
-		display: flex;
-		min-height: 13.5rem;
-		flex-direction: column;
-		justify-content: space-between;
-		padding: 1.2rem;
-		overflow: hidden;
-		border-radius: 8px;
-		background:
-			linear-gradient(180deg, rgba(var(--shelf-tone), 0.1), transparent 48%),
-			var(--surface-elevated);
-		color: rgb(var(--gray-dark));
-		text-decoration: none;
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
+  .bookshelf__card {
+    position: relative;
+    display: flex;
+    min-height: 13rem;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    overflow: hidden;
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(var(--shelf-tone), 0.16), transparent 42%),
+      var(--surface-elevated);
+    color: rgb(var(--gray-dark));
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+    transition:
+      transform 0.24s ease,
+      box-shadow 0.24s ease,
+      background-color 0.24s ease;
+  }
 
-	.bookshelf__card--warm {
-		--shelf-tone: var(--accent-rgb);
-	}
+  .bookshelf__card--feature {
+    grid-row: span 2;
+    min-height: 27rem;
+  }
 
-	.bookshelf__card--ink {
-		--shelf-tone: var(--ink-rgb);
-	}
+  .bookshelf__card--wide {
+    grid-column: span 2;
+    min-height: 11rem;
+  }
 
-	.bookshelf__card--sage {
-		--shelf-tone: var(--sage-rgb);
-	}
+  .bookshelf__card--warm {
+    --shelf-tone: var(--accent-rgb);
+  }
 
-	.bookshelf__card--soft {
-		--shelf-tone: var(--clay-rgb);
-	}
+  .bookshelf__card--ink {
+    --shelf-tone: var(--ink-rgb);
+  }
 
-	.bookshelf__card:hover,
-	.bookshelf__card:focus-visible {
-		box-shadow: var(--box-shadow);
-		transform: translateY(-4px);
-	}
+  .bookshelf__card--sage {
+    --shelf-tone: var(--sage-rgb);
+  }
 
-	.bookshelf__card:active {
-		transform: translateY(-1px);
-	}
+  .bookshelf__card--soft {
+    --shelf-tone: var(--clay-rgb);
+  }
 
-	.bookshelf__card-mark {
-		position: absolute;
-		top: 0;
-		left: 1.2rem;
-		width: 2.2rem;
-		height: 4.2rem;
-		border-radius: 0 0 999px 999px;
-		background: rgba(var(--shelf-tone), 0.2);
-	}
+  .bookshelf__card:hover,
+  .bookshelf__card:focus-visible {
+    box-shadow: var(--box-shadow);
+    transform: translateY(-4px);
+  }
 
-	.bookshelf__card h3 {
-		position: relative;
-		margin: 3.2rem 0 0.7rem;
-		font-size: 1.6rem;
-	}
+  .bookshelf__card:active {
+    transform: translateY(-1px);
+  }
 
-	.bookshelf__card p {
-		position: relative;
-		margin: 0;
-		color: rgb(var(--gray));
-		line-height: 1.65;
-	}
+  .bookshelf__card-mark {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 1px solid rgba(var(--shelf-tone), 0.22);
+    border-radius: 999px;
+    background: rgba(var(--shelf-tone), 0.12);
+    box-shadow: inset 0 0 0 0.55rem rgba(var(--shelf-tone), 0.1);
+  }
 
-	.bookshelf__link {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.35rem;
-		margin-top: 1rem;
-		color: var(--accent);
-		font-weight: 800;
-	}
+  .bookshelf__note {
+    max-width: 14rem;
+    color: rgba(var(--gray-dark), 0.66);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
 
-	.bookshelf__link span {
-		font-size: 1.2em;
-		line-height: 1;
-	}
+  .bookshelf__card h3 {
+    max-width: 12ch;
+    margin: 2.4rem 0 0.7rem;
+    font-size: 2rem;
+    line-height: 1.08;
+  }
 
-	@media (max-width: 960px) {
-		.bookshelf__grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
+  .bookshelf__card--feature h3 {
+    font-size: 3.2rem;
+  }
 
-	@media (max-width: 640px) {
-		.bookshelf {
-			margin-top: 3rem;
-		}
+  .bookshelf__card--wide h3 {
+    max-width: none;
+    margin-top: 1.2rem;
+  }
 
-		.bookshelf h2 {
-			font-size: 2.15rem;
-		}
+  .bookshelf__card p {
+    max-width: 24rem;
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.65;
+  }
 
-		.bookshelf__grid {
-			grid-template-columns: 1fr;
-		}
+  .bookshelf__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 1rem;
+    color: var(--accent);
+    font-weight: 800;
+  }
 
-		.bookshelf__card {
-			min-height: 12rem;
-		}
-	}
+  .bookshelf__link span {
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+  @media (max-width: 960px) {
+    .bookshelf__header {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .bookshelf__eyebrow {
+      margin-bottom: 0;
+    }
+
+    .bookshelf__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bookshelf__card--feature,
+    .bookshelf__card--wide {
+      grid-column: auto;
+      grid-row: auto;
+      min-height: 13rem;
+    }
+
+    .bookshelf__card--feature h3 {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bookshelf {
+      margin-top: 3.5rem;
+    }
+
+    .bookshelf h2 {
+      font-size: 2.25rem;
+    }
+
+    .bookshelf__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bookshelf__card {
+      min-height: 12rem;
+    }
+  }
 </style>

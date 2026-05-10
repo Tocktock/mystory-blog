@@ -8,57 +8,89 @@ import BookshelfSection from '../components/home/BookshelfSection.astro';
 import RecentRecords from '../components/home/RecentRecords.astro';
 import ManyangGureumCard from '../components/home/ManyangGureumCard.astro';
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { seriesList } from '../data/series';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
 
-const posts = (await getCollection('blog'))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 3);
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const posts = allPosts.slice(0, 4);
+const activeSeriesCount = new Set(
+  allPosts.map((post) => post.data.series).filter((series): series is string => Boolean(series)),
+).size;
+const latestDateLabel = allPosts[0]
+  ? new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }).format(allPosts[0].data.pubDate)
+  : '준비 중';
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 const websiteJsonLd = buildWebsiteJsonLd({
-	canonicalUrl: canonicalURL,
-	title: SITE_TITLE,
-	description: SITE_DESCRIPTION,
-	author: SITE_AUTHOR,
+  canonicalUrl: canonicalURL,
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  author: SITE_AUTHOR,
 });
 const personJsonLd = buildPersonJsonLd({
-	canonicalUrl: canonicalURL,
-	name: SITE_AUTHOR,
-	description: SITE_DESCRIPTION,
+  canonicalUrl: canonicalURL,
+  name: SITE_AUTHOR,
+  description: SITE_DESCRIPTION,
 });
 ---
 
 <!doctype html>
 <html lang="ko">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
-		<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteJsonLd)} />
-		<script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
-	</head>
-	<body>
-		<Header />
-		<main class="home-page">
-			<HeroSection />
-			<BookshelfSection />
-			<RecentRecords posts={posts} />
-			<ManyangGureumCard />
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
+  </head>
+  <body>
+    <Header />
+    <main class="home-page">
+      <HeroSection
+        recordCount={allPosts.length}
+        seriesCount={seriesList.length}
+        activeSeriesCount={activeSeriesCount}
+        latestDateLabel={latestDateLabel}
+      />
+      <BookshelfSection />
+      <RecentRecords posts={posts} />
+      <ManyangGureumCard />
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-	.home-page {
-		width: 100%;
-		max-width: none;
-		padding: 2rem 0 4.5rem;
-	}
+  .home-page {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    padding: 1.25rem 0 5.5rem;
+    overflow: clip;
+  }
 
-	@media (max-width: 720px) {
-		.home-page {
-			padding-top: 0;
-			padding-bottom: 3rem;
-		}
-	}
+  .home-page::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background-image:
+      linear-gradient(rgba(var(--gray-light), 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--gray-light), 0.16) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 42rem);
+    pointer-events: none;
+  }
+
+  @media (max-width: 720px) {
+    .home-page {
+      padding-top: 0;
+      padding-bottom: 3rem;
+    }
+  }
 </style>
