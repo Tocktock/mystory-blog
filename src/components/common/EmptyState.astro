@@ -1,0 +1,168 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  href?: string;
+  linkLabel?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  compact?: boolean;
+}
+
+const {
+  eyebrow = 'Empty Drawer',
+  title,
+  description,
+  href,
+  linkLabel,
+  image,
+  imageAlt = '',
+  compact = false,
+} = Astro.props as Props;
+const hasImage = Boolean(image);
+---
+
+<section
+  class:list={[
+    'empty-state',
+    {
+      'empty-state--compact': compact,
+      'empty-state--with-image': hasImage,
+    },
+  ]}
+  aria-label={title}
+>
+  <div class="empty-state__content">
+    <p class="empty-state__eyebrow">{eyebrow}</p>
+    <h2>{title}</h2>
+    <p>{description}</p>
+    {
+      href && linkLabel && (
+        <a href={href}>
+          {linkLabel}
+          <span aria-hidden="true">›</span>
+        </a>
+      )
+    }
+  </div>
+
+  {
+    image && (
+      <div class="empty-state__image-frame">
+        <Image
+          src={image}
+          alt={imageAlt}
+          widths={[320, 480, 640, 960]}
+          sizes="(max-width: 720px) 100vw, 360px"
+          loading="lazy"
+          decoding="async"
+          class="empty-state__image"
+        />
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .empty-state {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: center;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb), 0.12), transparent 42%),
+      var(--surface-elevated);
+    box-shadow:
+      0 0 0 1px rgba(var(--gray-light), 0.34),
+      var(--box-shadow);
+  }
+
+  .empty-state--with-image {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.62fr);
+    max-width: 58rem;
+  }
+
+  .empty-state--compact {
+    padding: 1.25rem;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  }
+
+  .empty-state__content {
+    padding: 0.25rem;
+  }
+
+  .empty-state__eyebrow {
+    margin: 0 0 0.45rem;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .empty-state h2 {
+    margin-bottom: 0.75rem;
+    font-size: 2.2rem;
+    line-height: 1.16;
+  }
+
+  .empty-state p {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    text-wrap: balance;
+  }
+
+  .empty-state a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 1.1rem;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .empty-state a:hover,
+  .empty-state a:focus-visible {
+    color: var(--accent-dark);
+  }
+
+  .empty-state a span {
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+  .empty-state__image-frame {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(74, 47, 34, 0.16);
+  }
+
+  .empty-state__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  @media (max-width: 720px) {
+    .empty-state,
+    .empty-state--with-image {
+      grid-template-columns: 1fr;
+    }
+
+    .empty-state h2 {
+      font-size: 1.75rem;
+    }
+  }
+</style>

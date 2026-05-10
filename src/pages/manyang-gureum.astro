@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import EmptyState from '../components/common/EmptyState.astro';
 import CatGallery from '../components/cats/CatGallery.astro';
 import CatProfileCard from '../components/cats/CatProfileCard.astro';
 import { SITE_TITLE } from '../consts';
@@ -14,318 +15,310 @@ import { routes } from '../utils/routes';
 
 const PAGE_TITLE = `만냥구름 | ${SITE_TITLE}`;
 const PAGE_DESCRIPTION =
-	'기록실을 함께 쓰는 만냥이와 구름이의 사진, 기억, 작은 순간들을 모아둔 공간입니다.';
+  '기록실을 함께 쓰는 만냥이와 구름이의 사진, 기억, 작은 순간들을 모아둔 공간입니다.';
 
 const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
 
 const observationPosts = (await getCollection('blog'))
-	.filter((post) => post.data.category === 'cats')
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 4);
+  .filter((post) => post.data.category === 'cats')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
 ---
 
 <!doctype html>
 <html lang="ko">
-	<head>
-		<BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
-	</head>
-	<body>
-		<Header />
-		<main class="manyang-page" aria-labelledby="manyang-gureum-title">
-			<header class="manyang-hero">
-				<div class="manyang-hero__content">
-					<p class="manyang-hero__eyebrow">Manyang & Gureum</p>
-					<h1 id="manyang-gureum-title">만냥구름</h1>
-					<p>
-						기록실을 함께 쓰는 두 고양이입니다. 숨은 하품, 창밖 관찰, 책상 점령, 그리고
-						조용히 곁을 차지하는 순간들을 모았습니다.
-					</p>
-					<div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
-						<a href="#cat-profiles">둘 소개 보기</a>
-						<a href="#cat-gallery">사진첩 보기</a>
-						<a href="#cat-notes">관찰일지 보기</a>
-					</div>
-				</div>
+  <head>
+    <BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
+  </head>
+  <body>
+    <Header />
+    <main class="manyang-page" aria-labelledby="manyang-gureum-title">
+      <header class="manyang-hero">
+        <div class="manyang-hero__content">
+          <p class="manyang-hero__eyebrow">Manyang & Gureum</p>
+          <h1 id="manyang-gureum-title">만냥구름</h1>
+          <p>
+            기록실을 함께 쓰는 두 고양이입니다. 숨은 하품, 창밖 관찰, 책상 점령, 그리고 조용히 곁을
+            차지하는 순간들을 모았습니다.
+          </p>
+          <div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
+            <a href="#cat-profiles">둘 소개 보기</a>
+            <a href="#cat-gallery">사진첩 보기</a>
+            <a href="#cat-notes">관찰일지 보기</a>
+          </div>
+        </div>
 
-				{
-					featuredPhoto && (
-						<figure class="manyang-hero__photo">
-							<Image
-								src={featuredPhoto.image}
-								alt={featuredPhoto.alt}
-								widths={[420, 640, 820, 960, 1280]}
-								sizes="(max-width: 860px) 100vw, 520px"
-								loading="eager"
-								decoding="async"
-							/>
-							<figcaption>{featuredPhoto.caption}</figcaption>
-						</figure>
-					)
-				}
-			</header>
+        {
+          featuredPhoto && (
+            <figure class="manyang-hero__photo">
+              <Image
+                src={featuredPhoto.image}
+                alt={featuredPhoto.alt}
+                widths={[420, 640, 820, 960, 1280]}
+                sizes="(max-width: 860px) 100vw, 520px"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption>{featuredPhoto.caption}</figcaption>
+            </figure>
+          )
+        }
+      </header>
 
-			<section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
-				<div class="section-heading">
-					<p>Roommates</p>
-					<h2 id="cat-profiles-title">기록실을 함께 쓰는 친구들</h2>
-				</div>
-				<div class="cat-profiles__grid">
-					{cats.map((cat) => <CatProfileCard cat={cat} />)}
-				</div>
-			</section>
+      <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
+        <div class="section-heading">
+          <p>Roommates</p>
+          <h2 id="cat-profiles-title">기록실을 함께 쓰는 친구들</h2>
+        </div>
+        <div class="cat-profiles__grid">
+          {cats.map((cat) => <CatProfileCard cat={cat} />)}
+        </div>
+      </section>
 
-			<div id="cat-gallery">
-				<CatGallery photos={catPhotos} />
-			</div>
+      <div id="cat-gallery">
+        <CatGallery photos={catPhotos} />
+      </div>
 
-			<section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
-				<div class="section-heading">
-					<p>Observation Log</p>
-					<h2 id="cat-notes-title">만냥구름 관찰일지</h2>
-				</div>
+      <section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
+        <div class="section-heading">
+          <p>Observation Log</p>
+          <h2 id="cat-notes-title">만냥구름 관찰일지</h2>
+        </div>
 
-				{
-					observationPosts.length > 0 ? (
-						<ul class="cat-notes__list">
-							{observationPosts.map((post) => (
-								<li>
-									<a href={routes.record(post.id)}>
-										<h3>{post.data.title}</h3>
-										<p>{post.data.description}</p>
-										<time datetime={post.data.pubDate.toISOString()}>
-											<FormattedDate date={post.data.pubDate} />
-										</time>
-									</a>
-								</li>
-							))}
-						</ul>
-					) : (
-						<div class="cat-notes__empty">
-							<h3>아직 관찰일지는 비어 있어요.</h3>
-							<p>만냥이와 구름이를 보며 배운 것들은 앞으로 천천히 기록할 예정입니다.</p>
-							<a href={routes.records}>전체 기록 보기</a>
-						</div>
-					)
-				}
-			</section>
-			<Footer />
-		</main>
-	</body>
+        {
+          observationPosts.length > 0 ? (
+            <ul class="cat-notes__list">
+              {observationPosts.map((post) => (
+                <li>
+                  <a href={routes.record(post.id)}>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                    <time datetime={post.data.pubDate.toISOString()}>
+                      <FormattedDate date={post.data.pubDate} />
+                    </time>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState
+              title="아직 관찰일지는 비어 있어요"
+              description="만냥이와 구름이를 보며 배운 것들은 앞으로 천천히 기록할 예정입니다."
+              href={routes.records}
+              linkLabel="전체 기록 보기"
+              compact
+            />
+          )
+        }
+      </section>
+      <Footer />
+    </main>
+  </body>
 </html>
 
 <style>
-	.manyang-page {
-		width: min(1080px, calc(100% - 2rem));
-		max-width: none;
-		padding: 3rem 0 4.5rem;
-	}
+  .manyang-page {
+    width: min(1080px, calc(100% - 2rem));
+    max-width: none;
+    padding: 3rem 0 4.5rem;
+  }
 
-	.manyang-hero {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
-		gap: 1.5rem;
-		align-items: center;
-		margin-bottom: 4rem;
-		padding: 1.25rem;
-		border-radius: 12px;
-		background:
-			linear-gradient(135deg, rgba(var(--accent-rgb), 0.13), transparent 36%),
-			linear-gradient(180deg, var(--surface-elevated), rgba(var(--sage-rgb), 0.08));
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34), var(--box-shadow);
-	}
+  .manyang-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 4rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb), 0.13), transparent 36%),
+      linear-gradient(180deg, var(--surface-elevated), rgba(var(--sage-rgb), 0.08));
+    box-shadow:
+      0 0 0 1px rgba(var(--gray-light), 0.34),
+      var(--box-shadow);
+  }
 
-	.manyang-hero__content {
-		padding: 2rem;
-	}
+  .manyang-hero__content {
+    padding: 2rem;
+  }
 
-	.manyang-hero__eyebrow,
-	.section-heading p {
-		margin: 0 0 0.35rem;
-		color: var(--accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		letter-spacing: 0;
-		text-transform: uppercase;
-	}
+  .manyang-hero__eyebrow,
+  .section-heading p {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
 
-	.manyang-hero h1 {
-		margin-bottom: 1rem;
-		font-size: 5rem;
-		line-height: 1.02;
-	}
+  .manyang-hero h1 {
+    margin-bottom: 1rem;
+    font-size: 5rem;
+    line-height: 1.02;
+  }
 
-	.manyang-hero__content > p {
-		max-width: 42rem;
-		margin: 0;
-		color: rgb(var(--gray));
-		font-size: 1.2rem;
-		line-height: 1.75;
-		text-wrap: balance;
-	}
+  .manyang-hero__content > p {
+    max-width: 42rem;
+    margin: 0;
+    color: rgb(var(--gray));
+    font-size: 1.2rem;
+    line-height: 1.75;
+    text-wrap: balance;
+  }
 
-	.manyang-hero__actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.6rem;
-		margin-top: 1.4rem;
-	}
+  .manyang-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+  }
 
-	.manyang-hero__actions a {
-		display: inline-flex;
-		padding: 0.45rem 0.85rem;
-		border-radius: 999px;
-		background: rgba(var(--accent-rgb), 0.12);
-		color: var(--accent-dark);
-		font-size: 0.9rem;
-		font-weight: 800;
-		text-decoration: none;
-	}
+  .manyang-hero__actions a {
+    display: inline-flex;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-dark);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
 
-	.manyang-hero__actions a:hover,
-	.manyang-hero__actions a:focus-visible {
-		background: rgba(var(--accent-rgb), 0.18);
-		color: var(--accent);
-	}
+  .manyang-hero__actions a:hover,
+  .manyang-hero__actions a:focus-visible {
+    background: rgba(var(--accent-rgb), 0.18);
+    color: var(--accent);
+  }
 
-	.manyang-hero__photo {
-		margin: 0;
-		overflow: hidden;
-		border-radius: 8px;
-		background: var(--surface);
-		box-shadow: 0 12px 36px rgba(74, 47, 34, 0.18);
-		transform: rotate(1deg);
-	}
+  .manyang-hero__photo {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: 0 12px 36px rgba(74, 47, 34, 0.18);
+    transform: rotate(1deg);
+  }
 
-	.manyang-hero__photo :global(img) {
-		display: block;
-		width: 100%;
-		aspect-ratio: 4 / 3;
-		border-radius: 0;
-		object-fit: cover;
-	}
+  .manyang-hero__photo :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    object-fit: cover;
+  }
 
-	.manyang-hero__photo figcaption {
-		padding: 0.8rem 0.9rem;
-		color: rgb(var(--gray));
-		font-size: 0.92rem;
-		font-weight: 700;
-	}
+  .manyang-hero__photo figcaption {
+    padding: 0.8rem 0.9rem;
+    color: rgb(var(--gray));
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
 
-	.section-heading {
-		max-width: 48rem;
-		margin-bottom: 1.5rem;
-	}
+  .section-heading {
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+  }
 
-	.section-heading h2 {
-		margin: 0;
-		font-size: 2.65rem;
-	}
+  .section-heading h2 {
+    margin: 0;
+    font-size: 2.65rem;
+  }
 
-	.cat-profiles,
-	.cat-notes {
-		margin-top: 4rem;
-	}
+  .cat-profiles,
+  .cat-notes {
+    margin-top: 4rem;
+  }
 
-	.cat-profiles__grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1.25rem;
-	}
+  .cat-profiles__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 
-	.cat-notes__list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 1rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+  .cat-notes__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	.cat-notes__list a,
-	.cat-notes__empty {
-		display: block;
-		height: 100%;
-		padding: 1.1rem;
-		border-radius: 8px;
-		background: var(--surface-elevated);
-		color: rgb(var(--gray-dark));
-		text-decoration: none;
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-	}
+  .cat-notes__list a {
+    display: block;
+    height: 100%;
+    padding: 1.1rem;
+    border-radius: 8px;
+    background: var(--surface-elevated);
+    color: rgb(var(--gray-dark));
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  }
 
-	.cat-notes__list a {
-		transition:
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
-	}
+  .cat-notes__list a {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
 
-	.cat-notes__list a:hover,
-	.cat-notes__list a:focus-visible {
-		transform: translateY(-2px);
-		box-shadow: var(--box-shadow);
-	}
+  .cat-notes__list a:hover,
+  .cat-notes__list a:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+  }
 
-	.cat-notes__list h3,
-	.cat-notes__empty h3 {
-		margin-bottom: 0.65rem;
-		font-size: 1.45rem;
-	}
+  .cat-notes__list h3 {
+    margin-bottom: 0.65rem;
+    font-size: 1.45rem;
+  }
 
-	.cat-notes__list p,
-	.cat-notes__empty p {
-		margin: 0 0 0.85rem;
-		color: rgb(var(--gray));
-		line-height: 1.6;
-	}
+  .cat-notes__list p {
+    margin: 0 0 0.85rem;
+    color: rgb(var(--gray));
+    line-height: 1.6;
+  }
 
-	.cat-notes__list time {
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
-	}
+  .cat-notes__list time {
+    color: rgb(var(--gray));
+    font-size: 0.9rem;
+  }
 
-	.cat-notes__empty {
-		max-width: 36rem;
-	}
+  @media (max-width: 860px) {
+    .manyang-page {
+      width: min(100% - 1.5rem, 1080px);
+      padding-top: 2rem;
+    }
 
-	.cat-notes__empty a {
-		font-weight: 800;
-		text-decoration: none;
-	}
+    .manyang-hero {
+      grid-template-columns: 1fr;
+      margin-bottom: 3rem;
+    }
 
-	@media (max-width: 860px) {
-		.manyang-page {
-			width: min(100% - 1.5rem, 1080px);
-			padding-top: 2rem;
-		}
+    .manyang-hero__content {
+      padding: 0.75rem;
+    }
 
-		.manyang-hero {
-			grid-template-columns: 1fr;
-			margin-bottom: 3rem;
-		}
+    .manyang-hero h1 {
+      font-size: 3.15rem;
+    }
 
-		.manyang-hero__content {
-			padding: 0.75rem;
-		}
+    .manyang-hero__content > p {
+      font-size: 1.05rem;
+    }
 
-		.manyang-hero h1 {
-			font-size: 3.15rem;
-		}
+    .manyang-hero__photo {
+      transform: none;
+    }
 
-		.manyang-hero__content > p {
-			font-size: 1.05rem;
-		}
+    .section-heading h2 {
+      font-size: 2.15rem;
+    }
 
-		.manyang-hero__photo {
-			transform: none;
-		}
-
-		.section-heading h2 {
-			font-size: 2.15rem;
-		}
-
-		.cat-profiles,
-		.cat-notes {
-			margin-top: 3rem;
-		}
-	}
+    .cat-profiles,
+    .cat-notes {
+      margin-top: 3rem;
+    }
+  }
 </style>

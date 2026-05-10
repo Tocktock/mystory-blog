@@ -1,0 +1,77 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import EmptyState from '../components/common/EmptyState.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { catPhotos } from '../data/catGallery';
+import { routes } from '../utils/routes';
+
+const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'desk') ?? catPhotos[0];
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead
+      title={`비어 있는 서랍 | ${SITE_TITLE}`}
+      description="찾으려던 기록이 없거나, 구름이가 어딘가에 숨겨둔 것 같아요."
+      lang="ko"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="not-found-page">
+      <h1 class="sr-only">비어 있는 서랍입니다</h1>
+      <EmptyState
+        eyebrow="404"
+        title="비어 있는 서랍입니다"
+        description="찾으려던 기록이 없거나, 구름이가 어딘가에 숨겨둔 것 같아요. 기록실의 다른 서랍을 열어볼까요?"
+        href={routes.records}
+        linkLabel="기록으로 돌아가기"
+        image={emptyDrawerPhoto?.image}
+        imageAlt={emptyDrawerPhoto?.alt}
+      />
+      <nav class="not-found-page__links" aria-label="도움 링크">
+        <a href={routes.search}>검색하기</a>
+        <a href={routes.manyangGureum}>만냥구름 보러가기</a>
+      </nav>
+      <Footer />
+    </main>
+  </body>
+</html>
+
+<style>
+  .not-found-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    justify-content: center;
+    width: min(960px, calc(100% - 2rem));
+    max-width: none;
+    min-height: 62vh;
+  }
+
+  .not-found-page__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .not-found-page__links a {
+    display: inline-flex;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: var(--surface-elevated);
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  }
+
+  .not-found-page__links a:hover,
+  .not-found-page__links a:focus-visible {
+    box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.42);
+  }
+</style>
