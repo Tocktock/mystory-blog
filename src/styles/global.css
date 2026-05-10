@@ -5,100 +5,86 @@
  */
 
 :root {
-  color-scheme: light;
-  --accent: #8a5a3c;
-  --accent-rgb: 138, 90, 60;
-  --accent-dark: #3a2a1f;
-  --warm-accent: #d6a66f;
-  --warm-accent-rgb: 214, 166, 111;
-  --olive: #7a7a4a;
-  --olive-rgb: 122, 122, 74;
-  --ink-rgb: 58, 42, 31;
-  --sage-rgb: 122, 122, 74;
-  --clay-rgb: 138, 90, 60;
-  --black: 58, 42, 31;
-  --gray: 122, 102, 84;
-  --gray-light: 229, 214, 196;
-  --gray-dark: 58, 42, 31;
-  --surface: #f7f0e6;
-  --surface-elevated: #fff9f0;
-  --surface-deep: #efe0cc;
-  --color-text-muted: #7a6654;
-  --color-line: #e5d6c4;
-  --gray-gradient: rgba(247, 240, 230, 0.94), #fff9f0;
-  --body-background:
-    linear-gradient(180deg, rgba(var(--warm-accent-rgb), 0.1) 0%, transparent 22rem),
-    linear-gradient(var(--gray-gradient)) no-repeat;
-  --box-shadow: 0 18px 50px rgba(58, 42, 31, 0.11), 0 3px 10px rgba(58, 42, 31, 0.07);
-  --paper-shadow: 0 12px 34px rgba(58, 42, 31, 0.1), 0 1px 0 rgba(255, 249, 240, 0.8) inset;
-  --code-bg: rgba(var(--gray-light), 0.55);
+	color-scheme: light;
+	--accent: #8a5a3c;
+	--accent-rgb: 138, 90, 60;
+	--accent-dark: #4a2f22;
+	--ink-rgb: 46, 58, 61;
+	--sage-rgb: 105, 123, 91;
+	--clay-rgb: 176, 112, 72;
+	--black: 54, 43, 35;
+	--gray: 121, 102, 84;
+	--gray-light: 228, 215, 198;
+	--gray-dark: 54, 43, 35;
+	--surface: #f6efe4;
+	--surface-elevated: #fffaf2;
+	--color-text-muted: #796654;
+	--color-line: #e4d7c6;
+	--gray-gradient: rgba(246, 239, 228, 0.92), #fffaf2;
+	--body-background:
+		linear-gradient(180deg, rgba(105, 123, 91, 0.08) 0%, transparent 22rem),
+		linear-gradient(var(--gray-gradient)) no-repeat;
+	--box-shadow: 0 10px 30px rgba(74, 47, 34, 0.12), 0 2px 8px rgba(74, 47, 34, 0.08);
+	--code-bg: rgba(var(--gray-light), 0.55);
 }
 
 :root[data-theme='dark'] {
-  color-scheme: dark;
-  --accent: #d6a66f;
-  --accent-rgb: 214, 166, 111;
-  --accent-dark: #f3c98f;
-  --warm-accent: #d6a66f;
-  --warm-accent-rgb: 214, 166, 111;
-  --olive: #b0ae79;
-  --olive-rgb: 176, 174, 121;
-  --ink-rgb: 243, 231, 216;
-  --sage-rgb: 176, 174, 121;
-  --clay-rgb: 214, 166, 111;
-  --black: 243, 231, 216;
-  --gray: 199, 180, 158;
-  --gray-light: 74, 56, 44;
-  --gray-dark: 243, 231, 216;
-  --surface: #1f1712;
-  --surface-elevated: #2a2019;
-  --surface-deep: #4a382c;
-  --color-text-muted: #c7b49e;
-  --color-line: #4a382c;
-  --gray-gradient: rgba(31, 23, 18, 0.92), #2a2019;
-  --body-background:
-    linear-gradient(180deg, rgba(var(--warm-accent-rgb), 0.08) 0%, transparent 22rem),
-    linear-gradient(var(--gray-gradient)) no-repeat;
-  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.28);
-  --paper-shadow: 0 18px 50px rgba(0, 0, 0, 0.34), 0 1px 0 rgba(255, 249, 240, 0.06) inset;
-  --code-bg: rgba(var(--gray-light), 0.8);
+	color-scheme: dark;
+	--accent: #d6a66f;
+	--accent-rgb: 214, 166, 111;
+	--accent-dark: #f3c98f;
+	--ink-rgb: 196, 210, 207;
+	--sage-rgb: 145, 163, 126;
+	--clay-rgb: 201, 139, 94;
+	--black: 243, 231, 216;
+	--gray: 199, 180, 158;
+	--gray-light: 74, 56, 44;
+	--gray-dark: 243, 231, 216;
+	--surface: #1f1712;
+	--surface-elevated: #2a2019;
+	--color-text-muted: #c7b49e;
+	--color-line: #4a382c;
+	--gray-gradient: rgba(31, 23, 18, 0.92), #2a2019;
+	--body-background:
+		linear-gradient(180deg, rgba(145, 163, 126, 0.08) 0%, transparent 22rem),
+		linear-gradient(var(--gray-gradient)) no-repeat;
+	--box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.28);
+	--code-bg: rgba(var(--gray-light), 0.8);
 }
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Atkinson';
+	src: url('/fonts/atkinson-regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Atkinson';
+	src: url('/fonts/atkinson-bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
 }
 body {
-  font-family: 'Atkinson', sans-serif;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  background: var(--body-background);
-  background-color: var(--surface);
-  background-size: 100% 600px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  color: rgb(var(--gray-dark));
-  font-size: 18px;
-  line-height: 1.7;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+	font-family: 'Atkinson', sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	background: var(--body-background);
+	background-color: var(--surface);
+	background-size: 100% 600px;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	color: rgb(var(--gray-dark));
+	font-size: 18px;
+	line-height: 1.7;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 main {
-  width: 720px;
-  max-width: calc(100% - 2em);
-  margin: auto;
-  padding: 3em 1em;
+	width: 720px;
+	max-width: calc(100% - 2em);
+	margin: auto;
+	padding: 3em 1em;
 }
 h1,
 h2,
@@ -106,102 +92,102 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0 0 0.5rem 0;
-  color: rgb(var(--black));
-  line-height: 1.2;
+	margin: 0 0 0.5rem 0;
+	color: rgb(var(--black));
+	line-height: 1.2;
 }
 h1 {
-  font-size: 3.2rem;
+	font-size: 3.2rem;
 }
 h2 {
-  font-size: 2.6rem;
+	font-size: 2.6rem;
 }
 h3 {
-  font-size: 2rem;
+	font-size: 2rem;
 }
 h4 {
-  font-size: 1.55rem;
+	font-size: 1.55rem;
 }
 h5 {
-  font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 strong,
 b {
-  font-weight: 700;
+	font-weight: 700;
 }
 a {
-  color: var(--accent);
+	color: var(--accent);
 }
 a:hover {
-  color: var(--accent);
+	color: var(--accent);
 }
 p {
-  margin-bottom: 1em;
+	margin-bottom: 1em;
 }
 .prose p {
-  margin-bottom: 2em;
+	margin-bottom: 2em;
 }
 textarea {
-  width: 100%;
-  font-size: 16px;
+	width: 100%;
+	font-size: 16px;
 }
 input {
-  font-size: 16px;
+	font-size: 16px;
 }
 table {
-  width: 100%;
+	width: 100%;
 }
 img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
 }
 code,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 code {
-  padding: 2px 5px;
-  background-color: var(--code-bg);
-  border-radius: 4px;
+	padding: 2px 5px;
+	background-color: var(--code-bg);
+	border-radius: 4px;
 }
 pre {
-  padding: 1.5em;
-  border-radius: 8px;
-  background-color: var(--code-bg);
-  overflow-x: auto;
+	padding: 1.5em;
+	border-radius: 8px;
+	background-color: var(--code-bg);
+	overflow-x: auto;
 }
 pre > code {
-  all: unset;
-  font: inherit;
-  white-space: pre;
+	all: unset;
+	font: inherit;
+	white-space: pre;
 }
 blockquote {
-  border-left: 4px solid var(--accent);
-  padding: 0 0 0 20px;
-  margin: 0px;
-  font-size: 1.333em;
+	border-left: 4px solid var(--accent);
+	padding: 0 0 0 20px;
+	margin: 0px;
+	font-size: 1.333em;
 }
 hr {
-  border: none;
-  border-top: 1px solid rgb(var(--gray-light));
+	border: none;
+	border-top: 1px solid rgb(var(--gray-light));
 }
 @media (max-width: 720px) {
-  main {
-    padding: 1em;
-  }
+	main {
+		padding: 1em;
+	}
 
-  h1 {
-    font-size: 2.55rem;
-  }
+	h1 {
+		font-size: 2.55rem;
+	}
 
-  h2 {
-    font-size: 2.1rem;
-  }
+	h2 {
+		font-size: 2.1rem;
+	}
 
-  h3 {
-    font-size: 1.65rem;
-  }
+	h3 {
+		font-size: 1.65rem;
+	}
 }
 
 a:focus-visible,
@@ -210,24 +196,24 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
 }
 
 .sr-only {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-  clip: rect(1px 1px 1px 1px);
-  /* maybe deprecated but we need to support legacy browsers */
-  clip: rect(1px, 1px, 1px, 1px);
-  /* modern browsers, clip-path works inwards from each corner */
-  clip-path: inset(50%);
-  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-  white-space: nowrap;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
+	clip: rect(1px 1px 1px 1px);
+	/* maybe deprecated but we need to support legacy browsers */
+	clip: rect(1px, 1px, 1px, 1px);
+	/* modern browsers, clip-path works inwards from each corner */
+	clip-path: inset(50%);
+	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
+	white-space: nowrap;
 }

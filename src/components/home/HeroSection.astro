@@ -103,11 +103,11 @@ const heroStats = [
     background:
       linear-gradient(
         90deg,
-        rgba(58, 42, 31, 0.42) 0%,
-        rgba(58, 42, 31, 0.18) 46%,
-        rgba(58, 42, 31, 0.03) 100%
+        rgba(36, 28, 22, 0.82) 0%,
+        rgba(36, 28, 22, 0.5) 45%,
+        rgba(36, 28, 22, 0.12) 100%
       ),
-      linear-gradient(180deg, rgba(58, 42, 31, 0.02) 0%, rgba(58, 42, 31, 0.32) 100%);
+      linear-gradient(180deg, rgba(36, 28, 22, 0.12) 0%, rgba(36, 28, 22, 0.74) 100%);
   }
 
   .home-hero__layout {
@@ -117,31 +117,18 @@ const heroStats = [
     align-items: end;
     width: 100%;
     padding: 3.25rem;
-    color: rgb(var(--gray-dark));
+    color: #fff9f0;
   }
 
   .home-hero__content {
     max-width: 43rem;
-    padding: 1.55rem 1.65rem 1.65rem;
-    border: 1px solid rgba(var(--gray-light), 0.78);
-    border-left: 0.42rem solid rgba(var(--accent-rgb), 0.72);
-    border-radius: 10px;
-    background:
-      linear-gradient(180deg, rgba(255, 249, 240, 0.94), rgba(255, 249, 240, 0.86)),
-      var(--surface-elevated);
-    box-shadow: var(--paper-shadow);
-    backdrop-filter: blur(6px);
-  }
-  :global(:root[data-theme='dark']) .home-hero__content {
-    background:
-      linear-gradient(180deg, rgba(42, 32, 25, 0.94), rgba(42, 32, 25, 0.86)),
-      var(--surface-elevated);
+    padding-bottom: 1rem;
   }
 
   .home-hero__eyebrow,
   .home-hero__index-title {
     margin: 0 0 0.75rem;
-    color: var(--accent);
+    color: rgba(255, 249, 240, 0.78);
     font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0;
@@ -151,18 +138,20 @@ const heroStats = [
   .home-hero h1 {
     max-width: 10ch;
     margin: 0 0 1rem;
-    color: rgb(var(--black));
+    color: inherit;
     font-size: 6.2rem;
     line-height: 0.98;
     text-wrap: balance;
+    text-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
   }
 
   .home-hero__description {
     max-width: 34rem;
     margin: 0;
-    color: rgb(var(--gray));
+    color: rgba(255, 249, 240, 0.92);
     font-size: 1.18rem;
     line-height: 1.78;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
     text-wrap: balance;
   }
 
@@ -180,13 +169,14 @@ const heroStats = [
     gap: 0.4rem;
     min-height: 2.85rem;
     padding: 0.65rem 1.15rem;
-    border: 1px solid rgba(var(--accent-rgb), 0.32);
-    border-radius: 8px;
-    background: rgba(var(--gray-light), 0.18);
-    color: rgb(var(--gray-dark));
+    border: 1px solid rgba(255, 249, 240, 0.42);
+    border-radius: 999px;
+    background: rgba(255, 249, 240, 0.12);
+    color: #fff9f0;
     font-weight: 800;
     text-decoration: none;
-    box-shadow: inset 0 1px 0 rgba(255, 249, 240, 0.55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(12px);
     transition:
       background-color 0.24s ease,
       color 0.24s ease,
@@ -195,8 +185,7 @@ const heroStats = [
 
   .home-hero__button:hover,
   .home-hero__button:focus-visible {
-    background: rgba(var(--accent-rgb), 0.12);
-    color: var(--accent-dark);
+    background: rgba(255, 249, 240, 0.22);
     transform: translateY(-2px);
   }
 
@@ -205,17 +194,15 @@ const heroStats = [
   }
 
   .home-hero__button--primary {
-    border-color: var(--accent-dark);
-    background: var(--accent-dark);
-    color: var(--surface-elevated);
-    box-shadow: 0 8px 18px rgba(58, 42, 31, 0.18);
+    border-color: #fff9f0;
+    background: #fff9f0;
+    color: #4a2f22;
   }
 
   .home-hero__button--primary:hover,
   .home-hero__button--primary:focus-visible {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--surface-elevated);
+    background: #f7f0e6;
+    color: #4a2f22;
   }
 
   .home-hero__button--soft span {
@@ -225,18 +212,13 @@ const heroStats = [
 
   .home-hero__index {
     padding: 1rem;
-    border: 1px solid rgba(var(--gray-light), 0.74);
+    border: 1px solid rgba(255, 249, 240, 0.18);
     border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba(255, 249, 240, 0.9), rgba(255, 249, 240, 0.78)),
-      var(--surface-elevated);
-    box-shadow: var(--paper-shadow);
-    backdrop-filter: blur(8px);
-  }
-  :global(:root[data-theme='dark']) .home-hero__index {
-    background:
-      linear-gradient(180deg, rgba(42, 32, 25, 0.9), rgba(42, 32, 25, 0.78)),
-      var(--surface-elevated);
+    background: rgba(255, 249, 240, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 18px 40px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(14px);
   }
 
   .home-hero__index dl {
@@ -251,11 +233,11 @@ const heroStats = [
     justify-content: space-between;
     gap: 1rem;
     padding: 0.8rem 0;
-    border-top: 1px solid rgba(var(--gray-light), 0.62);
+    border-top: 1px solid rgba(255, 249, 240, 0.2);
   }
 
   .home-hero__index dt {
-    color: rgb(var(--gray));
+    color: rgba(255, 249, 240, 0.68);
     font-size: 0.8rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -263,7 +245,7 @@ const heroStats = [
 
   .home-hero__index dd {
     margin: 0;
-    color: rgb(var(--black));
+    color: #fff9f0;
     font-size: 1.25rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
@@ -300,25 +282,20 @@ const heroStats = [
     }
 
     .home-hero__media {
-      min-height: 84dvh;
+      min-height: 82dvh;
       border-radius: 0;
     }
 
     .home-hero__overlay {
-      background: linear-gradient(180deg, rgba(58, 42, 31, 0.04) 0%, rgba(58, 42, 31, 0.36) 100%);
+      background: linear-gradient(180deg, rgba(36, 28, 22, 0.18) 0%, rgba(36, 28, 22, 0.86) 100%);
     }
 
     .home-hero__layout {
-      padding: 1rem;
+      padding: 1.25rem;
     }
 
     .home-hero h1 {
       font-size: 3.2rem;
-    }
-
-    .home-hero__content {
-      padding: 1.2rem;
-      border-left-width: 0.32rem;
     }
 
     .home-hero__description {
