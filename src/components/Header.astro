@@ -285,7 +285,7 @@ import { navLinks } from '../data/siteNavigation';
 	}
 	.theme-toggle:focus-visible {
 		outline: none;
-		box-shadow: 0 0 0 3px rgba(var(--accent), 0.35);
+		box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.35);
 	}
 	.theme-toggle__icon {
 		font-size: 1.1rem;
@@ -321,9 +321,16 @@ import { navLinks } from '../data/siteNavigation';
 	@media (max-width: 720px) {
 		.site-nav {
 			gap: 0.5rem;
+			justify-content: space-between;
+		}
+		.nav-brand {
+			order: 1;
+			flex: 1 1 auto;
+			min-width: 0;
 		}
 		.nav-toggle {
 			display: inline-flex;
+			order: 3;
 		}
 		.site-header[data-js-enabled='true'] .nav-links {
 			width: 100%;
@@ -338,6 +345,7 @@ import { navLinks } from '../data/siteNavigation';
 			max-height: 500px;
 		}
 		.nav-links {
+			order: 4;
 			margin-left: 0;
 			width: 100%;
 		}
@@ -350,6 +358,7 @@ import { navLinks } from '../data/siteNavigation';
 			padding: 0.75rem 1.25rem;
 		}
 		.theme-toggle {
+			order: 2;
 			margin-left: 0;
 		}
 		.social-links {

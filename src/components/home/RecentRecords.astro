@@ -1,0 +1,233 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import FormattedDate from '../FormattedDate.astro';
+import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
+import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
+import placeholder4 from '../../assets/placeholders/blog-placeholder-4.jpg';
+import { getCategory } from '../../data/categories';
+import { getSeries } from '../../data/series';
+import { routes } from '../../utils/routes';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props as Props;
+const fallbackImages = [placeholder2, placeholder3, placeholder4];
+const getFallbackImage = (index: number) => fallbackImages[index % fallbackImages.length];
+---
+
+<section class="recent-records" aria-labelledby="recent-records-title">
+	<div class="recent-records__header">
+		<div>
+			<p class="recent-records__eyebrow">Latest Records</p>
+			<h2 id="recent-records-title">최근 기록</h2>
+			<p>요즘 배우고 만들고 남긴 것들입니다.</p>
+		</div>
+		<a class="recent-records__all" href={routes.records}>
+			전체 기록 보기
+			<span aria-hidden="true">›</span>
+		</a>
+	</div>
+
+	{
+		posts.length > 0 ? (
+			<ul class="recent-records__list">
+				{posts.map((post, index) => {
+					const category = getCategory(post.data.category);
+					const seriesEntry = getSeries(post.data.series);
+
+					return (
+						<li class="recent-record">
+							<a href={routes.record(post.id)}>
+								<Image
+									src={post.data.heroImage ?? getFallbackImage(index)}
+									alt=""
+									width={420}
+									widths={[320, 420, 640, 840]}
+									sizes="(max-width: 760px) 100vw, 33vw"
+									loading="lazy"
+									decoding="async"
+									class="recent-record__image"
+								/>
+								<div class="recent-record__body">
+									<div class="recent-record__meta">
+										<span>{category.label}</span>
+										{seriesEntry && <span>{seriesEntry.title}</span>}
+									</div>
+									<h3>{post.data.title}</h3>
+									<p>{post.data.description}</p>
+									<FormattedDate date={post.data.pubDate} />
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+		) : (
+			<div class="recent-records__empty">
+				<p>아직 보여줄 기록이 없어요. 기록실 책장은 곧 채워질 예정입니다.</p>
+			</div>
+		)
+	}
+</section>
+
+<style>
+	.recent-records {
+		width: min(1040px, calc(100% - 2rem));
+		margin: 4rem auto 0;
+	}
+
+	.recent-records__header {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.recent-records__eyebrow {
+		margin: 0 0 0.35rem;
+		color: var(--accent);
+		font-size: 0.85rem;
+		font-weight: 800;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.recent-records h2 {
+		margin-bottom: 0.75rem;
+		font-size: 2.7rem;
+	}
+
+	.recent-records__header p:last-child {
+		margin: 0;
+		color: rgb(var(--gray));
+	}
+
+	.recent-records__all {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		flex-shrink: 0;
+		color: var(--accent);
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	.recent-records__all span {
+		font-size: 1.2em;
+		line-height: 1;
+	}
+
+	.recent-records__list {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.recent-record a {
+		display: block;
+		height: 100%;
+		padding: 0.5rem;
+		border-radius: 8px;
+		background: var(--surface-elevated);
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.recent-record a:hover,
+	.recent-record a:focus-visible {
+		box-shadow: var(--box-shadow);
+		transform: translateY(-4px);
+	}
+
+	.recent-record a:active {
+		transform: translateY(-1px);
+	}
+
+	.recent-record__image {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		border-radius: 6px;
+		object-fit: cover;
+	}
+
+	.recent-record__body {
+		padding: 0.8rem 0.35rem 0.45rem;
+	}
+
+	.recent-record__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-bottom: 0.65rem;
+	}
+
+	.recent-record__meta span {
+		display: inline-flex;
+		padding: 0.18rem 0.5rem;
+		border-radius: 999px;
+		background: rgba(var(--accent-rgb), 0.12);
+		color: var(--accent-dark);
+		font-size: 0.76rem;
+		font-weight: 800;
+	}
+
+	.recent-record h3 {
+		margin-bottom: 0.5rem;
+		font-size: 1.45rem;
+	}
+
+	.recent-record p {
+		margin: 0 0 0.75rem;
+		color: rgb(var(--gray));
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.recent-record time {
+		color: rgb(var(--gray));
+		font-size: 0.9rem;
+	}
+
+	.recent-records__empty {
+		padding: 1.5rem;
+		border-radius: 8px;
+		background: var(--surface-elevated);
+		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+	}
+
+	.recent-records__empty p {
+		margin: 0;
+		color: rgb(var(--gray));
+	}
+
+	@media (max-width: 960px) {
+		.recent-records__list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.recent-records {
+			margin-top: 3rem;
+		}
+
+		.recent-records h2 {
+			font-size: 2.15rem;
+		}
+
+		.recent-records__header {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

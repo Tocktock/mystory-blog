@@ -6,34 +6,50 @@
 
 :root {
 	color-scheme: light;
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--surface: #ffffff;
-	--surface-elevated: #ffffff;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--body-background: linear-gradient(var(--gray-gradient)) no-repeat;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-	--code-bg: rgba(var(--gray-light), 0.6);
+	--accent: #8a5a3c;
+	--accent-rgb: 138, 90, 60;
+	--accent-dark: #4a2f22;
+	--ink-rgb: 46, 58, 61;
+	--sage-rgb: 105, 123, 91;
+	--clay-rgb: 176, 112, 72;
+	--black: 54, 43, 35;
+	--gray: 121, 102, 84;
+	--gray-light: 228, 215, 198;
+	--gray-dark: 54, 43, 35;
+	--surface: #f6efe4;
+	--surface-elevated: #fffaf2;
+	--color-text-muted: #796654;
+	--color-line: #e4d7c6;
+	--gray-gradient: rgba(246, 239, 228, 0.92), #fffaf2;
+	--body-background:
+		linear-gradient(180deg, rgba(105, 123, 91, 0.08) 0%, transparent 22rem),
+		linear-gradient(var(--gray-gradient)) no-repeat;
+	--box-shadow: 0 10px 30px rgba(74, 47, 34, 0.12), 0 2px 8px rgba(74, 47, 34, 0.08);
+	--code-bg: rgba(var(--gray-light), 0.55);
 }
 
 :root[data-theme='dark'] {
 	color-scheme: dark;
-	--accent: #94a0ff;
-	--accent-dark: #6575ff;
-	--black: 239, 242, 248;
-	--gray: 168, 180, 208;
-	--gray-light: 96, 110, 150;
-	--gray-dark: 224, 231, 255;
-	--surface: #0b1120;
-	--surface-elevated: #1f2937;
-	--gray-gradient: rgba(15, 23, 42, 0.92), #0b1120;
-	--box-shadow: 0 2px 10px rgba(8, 15, 35, 0.6), 0 12px 32px rgba(8, 15, 35, 0.45);
-	--code-bg: rgba(36, 42, 64, 0.9);
+	--accent: #d6a66f;
+	--accent-rgb: 214, 166, 111;
+	--accent-dark: #f3c98f;
+	--ink-rgb: 196, 210, 207;
+	--sage-rgb: 145, 163, 126;
+	--clay-rgb: 201, 139, 94;
+	--black: 243, 231, 216;
+	--gray: 199, 180, 158;
+	--gray-light: 74, 56, 44;
+	--gray-dark: 243, 231, 216;
+	--surface: #1f1712;
+	--surface-elevated: #2a2019;
+	--color-text-muted: #c7b49e;
+	--color-line: #4a382c;
+	--gray-gradient: rgba(31, 23, 18, 0.92), #2a2019;
+	--body-background:
+		linear-gradient(180deg, rgba(145, 163, 126, 0.08) 0%, transparent 22rem),
+		linear-gradient(var(--gray-gradient)) no-repeat;
+	--box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.28);
+	--code-bg: rgba(var(--gray-light), 0.8);
 }
 @font-face {
 	font-family: 'Atkinson';
@@ -60,7 +76,7 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
-	font-size: clamp(18px, 1.8vw, 20px);
+	font-size: 18px;
 	line-height: 1.7;
 	transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -81,19 +97,19 @@ h6 {
 	line-height: 1.2;
 }
 h1 {
-	font-size: clamp(2.8rem, 5vw, 3.4rem);
+	font-size: 3.2rem;
 }
 h2 {
-	font-size: clamp(2.2rem, 3.6vw, 2.8rem);
+	font-size: 2.6rem;
 }
 h3 {
-	font-size: clamp(1.8rem, 2.6vw, 2.2rem);
+	font-size: 2rem;
 }
 h4 {
-	font-size: clamp(1.5rem, 2vw, 1.8rem);
+	font-size: 1.55rem;
 }
 h5 {
-	font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+	font-size: 1.25rem;
 }
 strong,
 b {
@@ -159,6 +175,18 @@ hr {
 @media (max-width: 720px) {
 	main {
 		padding: 1em;
+	}
+
+	h1 {
+		font-size: 2.55rem;
+	}
+
+	h2 {
+		font-size: 2.1rem;
+	}
+
+	h3 {
+		font-size: 1.65rem;
 	}
 }
 

@@ -1,0 +1,203 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/gallery/main.jpg';
+import { routes } from '../../utils/routes';
+---
+
+<section class="home-hero" aria-labelledby="home-hero-title">
+	<div class="home-hero__media">
+		<Image
+			src={heroImage}
+			alt="지용과 고양이들이 함께 머무는 따뜻한 기록실 분위기의 사진"
+			widths={[640, 820, 960, 1184, 1440]}
+			sizes="(max-width: 960px) 100vw, 1120px"
+			loading="eager"
+			decoding="async"
+			fetchpriority="high"
+			class="home-hero__image"
+		/>
+		<div class="home-hero__overlay">
+			<div class="home-hero__content">
+				<p class="home-hero__eyebrow">Ji Yong's Record Room</p>
+				<h1 id="home-hero-title">지용의 기록실</h1>
+				<p class="home-hero__description">
+					AI, Backend, Agent, 그리고 만냥구름. 배우고 만들고 사랑하는 것들을 기록합니다.
+				</p>
+				<div class="home-hero__actions" aria-label="홈 주요 이동">
+					<a class="home-hero__button home-hero__button--primary" href={routes.records}>기록 보기</a>
+					<a class="home-hero__button" href={routes.series}>시리즈 보기</a>
+					<a class="home-hero__button home-hero__button--soft" href={routes.manyangGureum}>
+						만냥구름 만나기
+						<span aria-hidden="true">›</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-hero {
+		width: min(1120px, 100%);
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+
+	.home-hero__media {
+		position: relative;
+		overflow: hidden;
+		border-radius: 18px;
+		background: var(--surface-elevated);
+		box-shadow: var(--box-shadow);
+	}
+
+	.home-hero__image {
+		display: block;
+		width: 100%;
+		height: min(72vh, 680px);
+		min-height: 440px;
+		object-fit: cover;
+	}
+
+	.home-hero__overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: flex-end;
+		background:
+			linear-gradient(180deg, rgba(43, 35, 28, 0.04) 0%, rgba(43, 35, 28, 0.74) 100%),
+			linear-gradient(90deg, rgba(43, 35, 28, 0.68) 0%, rgba(43, 35, 28, 0.08) 72%);
+	}
+
+	.home-hero__content {
+		max-width: 46rem;
+		padding: 3rem;
+		color: #fff9f0;
+	}
+
+	.home-hero__eyebrow {
+		margin: 0 0 0.75rem;
+		color: rgba(255, 249, 240, 0.82);
+		font-size: 0.85rem;
+		font-weight: 800;
+		letter-spacing: 0;
+		text-transform: uppercase;
+	}
+
+	.home-hero h1 {
+		margin: 0 0 1rem;
+		color: inherit;
+		font-size: 5rem;
+		letter-spacing: 0;
+		line-height: 1.02;
+		text-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+		text-wrap: balance;
+	}
+
+	.home-hero__description {
+		max-width: 34rem;
+		margin: 0;
+		color: rgba(255, 249, 240, 0.94);
+		font-size: 1.2rem;
+		line-height: 1.75;
+		text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+		text-wrap: balance;
+	}
+
+	.home-hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.home-hero__button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+		min-height: 2.85rem;
+		padding: 0.65rem 1.15rem;
+		border: 1px solid rgba(255, 249, 240, 0.42);
+		border-radius: 999px;
+		background: rgba(255, 249, 240, 0.12);
+		color: #fff9f0;
+		font-weight: 800;
+		text-decoration: none;
+		backdrop-filter: blur(12px);
+		transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+	}
+
+	.home-hero__button:hover,
+	.home-hero__button:focus-visible {
+		background: rgba(255, 249, 240, 0.2);
+		transform: translateY(-2px);
+	}
+
+	.home-hero__button:active {
+		transform: translateY(0);
+	}
+
+	.home-hero__button--primary {
+		border-color: #fff9f0;
+		background: #fff9f0;
+		color: #4a2f22;
+	}
+
+	.home-hero__button--primary:hover,
+	.home-hero__button--primary:focus-visible {
+		background: #f7f0e6;
+		color: #4a2f22;
+	}
+
+	.home-hero__button--soft span {
+		font-size: 1.2em;
+		line-height: 1;
+	}
+
+	@media (max-width: 920px) {
+		.home-hero h1 {
+			font-size: 3.5rem;
+		}
+
+		.home-hero__content {
+			padding: 2rem;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.home-hero {
+			padding: 0;
+		}
+
+		.home-hero__media {
+			border-radius: 0;
+		}
+
+		.home-hero__image {
+			height: 72vh;
+			min-height: 520px;
+		}
+
+		.home-hero__overlay {
+			background: linear-gradient(180deg, rgba(43, 35, 28, 0.1) 0%, rgba(43, 35, 28, 0.82) 100%);
+		}
+
+		.home-hero__content {
+			padding: 1.5rem;
+		}
+
+		.home-hero h1 {
+			font-size: 2.75rem;
+		}
+
+		.home-hero__description {
+			font-size: 1.05rem;
+		}
+
+		.home-hero__actions {
+			flex-direction: column;
+			align-items: stretch;
+		}
+	}
+</style>
