@@ -3,6 +3,9 @@ title: 'spring 에서 retrofit 으로 soap 통신 하기.'
 pubDate: 2022-04-14
 description: 'Custom soap converter 를 사용하면 soap xmlns 통신이 충분히 가능하다x'
 heroImage: "../../../assets/heroes/spring-soap.png"
+category: 'tech'
+series: 'spring-backend-notes'
+seriesOrder: 2
 ---
 
 ## 이 글을 쓰는 동기

@@ -4,6 +4,9 @@ pubDate: 2026-05-10
 description: 'AI Advisor 회고 이후, AI가 개발문화를 바꾸는 시대에 엔지니어와 리더가 무엇을 책임져야 하는지 개인적인 경험을 바탕으로 정리한 글입니다.'
 heroImage: "../../../assets/heroes/ai-concern-26-05-10.jpeg"
 lang: 'ko'
+category: 'thought'
+series: 'ai-working-notes'
+seriesOrder: 2
 tags:
   - meta
   - ai

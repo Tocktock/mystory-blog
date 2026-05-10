@@ -3,6 +3,9 @@ title: '회사에서 AI Advisor로 보낸 3개월 회고'
 pubDate: 2025-11-15
 description: '회사에서 AI Advisor 역할로 3개월간 선행 실험을 진행하며 겪었던 착각과 실패, 그리고 그 과정에서 얻은 배움과 앞으로의 가능성을 정리한 회고입니다.'
 lang: 'ko'
+category: 'thought'
+series: 'ai-working-notes'
+seriesOrder: 1
 tags:
   - meta
   - ai

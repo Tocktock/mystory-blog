@@ -4,6 +4,9 @@ pubDate: 2025-12-10
 description: '3km도 제대로 못 뛰던 내가 100일 동안 300km를 달리고, 제27회 국제신문 부산마라톤대회 하프를 꼴찌로 완주한 회고.'
 heroImage: "../../../assets/heroes/marathon-1.jpeg"
 lang: 'ko'
+category: 'life'
+series: 'running-log'
+seriesOrder: 1
 tags:
   - running
   - marathon
