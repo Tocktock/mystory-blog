@@ -36,6 +36,7 @@ const {
 } = Astro.props as Props;
 const lang = providedLang ?? 'ko';
 const showPostMeta = providedShowPostMeta ?? sectionPath === '/records';
+const isRecordPost = sectionPath === '/records';
 const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
 const heroWidths = heroImage
   ? [360, 480, 720, 960, 1280].filter((width) => width <= heroImage.width)
@@ -83,7 +84,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     <script type="application/ld+json" is:inline set:html={JSON.stringify(articleJsonLd)} />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
     <style>
-      main {
+      main.blog-post-page {
         width: calc(100% - 2em);
         max-width: 100%;
         margin: 0 auto;
@@ -114,12 +115,18 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
           object-fit: cover;
         }
       }
-      .prose {
+      .blog-post-article {
+        width: 100%;
+      }
+      .post-content {
         width: 720px;
         max-width: calc(100% - 2em);
         margin: auto;
         padding: 1em;
         color: rgb(var(--gray-dark));
+      }
+      .post-content p {
+        margin-bottom: 2em;
       }
       .title {
         margin-bottom: 1em;
@@ -137,13 +144,305 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
       .last-updated-on {
         font-style: italic;
       }
+
+      body.blog-post-shell--record {
+        --blog-bg: #0b0a09;
+        --blog-bg-soft: #12100e;
+        --blog-bg-elevated: #17130f;
+        --blog-text: #f3eee7;
+        --blog-text-muted: #b8aa9a;
+        --blog-text-subtle: #8f8173;
+        --blog-accent: #d8a760;
+        --blog-accent-soft: rgba(216, 167, 96, 0.16);
+        --blog-border: rgba(255, 255, 255, 0.075);
+        --accent: var(--blog-accent);
+        --accent-rgb: 216, 167, 96;
+        --accent-dark: #f0c37f;
+        --black: 255, 248, 237;
+        --gray: 184, 170, 154;
+        --gray-light: 255, 255, 255;
+        --gray-dark: 243, 238, 231;
+        --surface: var(--blog-bg);
+        --surface-elevated: var(--blog-bg-elevated);
+        --color-text-muted: var(--blog-text-muted);
+        --color-line: var(--blog-border);
+        --gray-gradient: rgba(11, 10, 9, 0.94), #090807;
+        --code-bg: rgba(255, 255, 255, 0.07);
+        --box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28), 0 2px 12px rgba(0, 0, 0, 0.22);
+        min-height: 100dvh;
+        background:
+          radial-gradient(circle at top center, rgba(216, 167, 96, 0.11), transparent 360px),
+          linear-gradient(180deg, #12100e 0%, #0d0b0a 54%, #090807 100%);
+        background-color: var(--blog-bg);
+        color: var(--blog-text);
+      }
+      body.blog-post-shell--record::selection {
+        background: rgba(216, 167, 96, 0.28);
+        color: #fff8ed;
+      }
+      .blog-post-shell--record .blog-post-page {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: clamp(2.25rem, 5vw, 4rem) 1.25rem clamp(4.5rem, 8vw, 7rem);
+        background: transparent;
+      }
+      .blog-post-shell--record .hero-image {
+        max-width: 1060px;
+        margin: 0 auto clamp(2.75rem, 5vw, 4.75rem);
+      }
+      .blog-post-shell--record .hero-image__frame {
+        border: 1px solid var(--blog-border);
+        border-radius: 18px;
+        background: var(--blog-bg-soft);
+        box-shadow: var(--box-shadow);
+      }
+      .blog-post-shell--record .blog-post-article {
+        background: transparent;
+      }
+      .blog-post-shell--record .post-content {
+        width: auto;
+        max-width: 760px;
+        padding: 0 0 1rem;
+        color: var(--blog-text);
+      }
+      .blog-post-shell--record .title {
+        margin-bottom: clamp(2rem, 4vw, 3.25rem);
+        padding: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+        border-bottom: 1px solid var(--blog-border);
+        line-height: 1.15;
+      }
+      .blog-post-shell--record .title h1 {
+        max-width: 16ch;
+        margin: 0 auto 0.65em;
+        color: #fff8ed;
+        font-size: clamp(2.45rem, 6vw, 4.7rem);
+        line-height: 1.08;
+        letter-spacing: 0;
+        text-wrap: balance;
+      }
+      .blog-post-shell--record .date {
+        margin-bottom: 0.85rem;
+        color: var(--blog-text-muted);
+        font-size: 0.98rem;
+        font-variant-numeric: tabular-nums;
+      }
+      :global(.blog-post-shell--record .post-content > section),
+      :global(.blog-post-shell--record .post-content > div:not(.title)) {
+        background: transparent;
+      }
+      :global(.blog-post-shell--record .post-content > section) {
+        margin: 0;
+        padding: clamp(2.75rem, 5vw, 3.75rem) 0;
+        border-top: 1px solid var(--blog-border);
+      }
+      :global(.blog-post-shell--record .post-content > .title + section),
+      :global(.blog-post-shell--record .post-content > hr + section) {
+        border-top: 0;
+      }
+      :global(.blog-post-shell--record .post-content > section > :first-child) {
+        margin-top: 0;
+      }
+      :global(.blog-post-shell--record .post-content > section > :last-child) {
+        margin-bottom: 0;
+      }
+      :global(.blog-post-shell--record .post-content h1),
+      :global(.blog-post-shell--record .post-content h2),
+      :global(.blog-post-shell--record .post-content h3),
+      :global(.blog-post-shell--record .post-content h4) {
+        color: #fff8ed;
+        letter-spacing: 0;
+        text-wrap: balance;
+      }
+      :global(.blog-post-shell--record .post-content > h1) {
+        margin: 3rem 0 1.25rem;
+        font-size: clamp(2rem, 4.5vw, 3rem);
+        line-height: 1.18;
+      }
+      :global(.blog-post-shell--record .post-content h2) {
+        margin: 4.5rem 0 1.25rem;
+        padding-top: 2.2rem;
+        border-top: 1px solid var(--blog-border);
+        font-size: clamp(1.75rem, 3.7vw, 2.6rem);
+        line-height: 1.24;
+      }
+      :global(.blog-post-shell--record .post-content section h2),
+      :global(.blog-post-shell--record .post-content blockquote h2) {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+      :global(.blog-post-shell--record .post-content h3) {
+        margin: 3rem 0 1rem;
+        color: rgba(255, 248, 237, 0.94);
+        font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+        line-height: 1.3;
+      }
+      :global(.blog-post-shell--record .post-content h4) {
+        margin: 2.25rem 0 0.85rem;
+        font-size: 1.2rem;
+        line-height: 1.35;
+      }
+      :global(.blog-post-shell--record .post-content p),
+      :global(.blog-post-shell--record .post-content li) {
+        color: rgba(243, 238, 231, 0.9);
+        line-height: 1.85;
+      }
+      :global(.blog-post-shell--record .post-content p) {
+        margin: 1rem 0;
+      }
+      :global(.blog-post-shell--record .post-content ul),
+      :global(.blog-post-shell--record .post-content ol) {
+        margin: 1.25rem 0 1.75rem;
+        padding-left: 1.35rem;
+      }
+      :global(.blog-post-shell--record .post-content li + li) {
+        margin-top: 0.45rem;
+      }
+      :global(.blog-post-shell--record .post-content a) {
+        color: var(--blog-accent);
+        text-decoration-line: underline;
+        text-decoration-color: rgba(216, 167, 96, 0.42);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+        transition:
+          color 0.2s ease,
+          text-decoration-color 0.2s ease;
+      }
+      :global(.blog-post-shell--record .post-content a:hover),
+      :global(.blog-post-shell--record .post-content a:focus-visible) {
+        color: #f0c37f;
+        text-decoration-color: rgba(240, 195, 127, 0.7);
+      }
+      :global(.blog-post-shell--record .post-content strong),
+      :global(.blog-post-shell--record .post-content b) {
+        color: #fff8ed;
+      }
+      :global(.blog-post-shell--record .post-content hr) {
+        width: 100%;
+        margin: clamp(2.25rem, 5vw, 3.75rem) 0;
+        border: 0;
+        border-top: 1px solid var(--blog-border);
+      }
+      :global(.blog-post-shell--record .post-content blockquote) {
+        margin: 2rem 0;
+        padding: 1.5rem 1.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-left: 3px solid rgba(216, 167, 96, 0.58);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--blog-text);
+        font-size: 1.05rem;
+        line-height: 1.78;
+      }
+      :global(.blog-post-shell--record .post-content blockquote > :first-child) {
+        margin-top: 0;
+      }
+      :global(.blog-post-shell--record .post-content blockquote > :last-child) {
+        margin-bottom: 0;
+      }
+      :global(.blog-post-shell--record .post-content :not(pre) > code) {
+        padding: 0.15em 0.35em;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: rgba(255, 255, 255, 0.07);
+        color: #ffe0a8;
+      }
+      :global(.blog-post-shell--record .post-content pre) {
+        margin: 1.75rem 0 2.25rem;
+        padding: 1.35rem 1.45rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.025)),
+          var(--blog-bg-elevated);
+        color: rgba(243, 238, 231, 0.92);
+        overflow-x: auto;
+      }
+      :global(.blog-post-shell--record .post-content pre > code) {
+        color: inherit;
+      }
+      :global(.blog-post-shell--record .post-content img) {
+        display: block;
+        margin: 2rem auto;
+        border: 1px solid var(--blog-border);
+        border-radius: 14px;
+      }
+      :global(.blog-post-shell--record .post-content table) {
+        display: block;
+        width: 100%;
+        margin: 2rem 0;
+        border-collapse: collapse;
+        overflow-x: auto;
+      }
+      :global(.blog-post-shell--record .post-content th),
+      :global(.blog-post-shell--record .post-content td) {
+        padding: 0.8rem 0.9rem;
+        border-bottom: 1px solid var(--blog-border);
+        color: rgba(243, 238, 231, 0.88);
+        text-align: left;
+      }
+      :global(.blog-post-shell--record .post-content th) {
+        color: #fff8ed;
+        font-weight: 700;
+      }
+      :global(.blog-post-shell--record .post-content .callout) {
+        margin: 2rem 0;
+        padding: 1.5rem 1.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.045);
+      }
+      :global(.blog-post-shell--record .post-content .series-progress) {
+        margin-top: clamp(3.25rem, 6vw, 4.5rem);
+      }
+      @media (max-width: 640px) {
+        .blog-post-shell--record .blog-post-page {
+          padding: 1.25rem 1rem 4.5rem;
+        }
+        .blog-post-shell--record .hero-image {
+          margin-bottom: 2.5rem;
+        }
+        .blog-post-shell--record .hero-image__frame {
+          border-radius: 14px;
+        }
+        .blog-post-shell--record .title {
+          margin-bottom: 2rem;
+          padding-bottom: 1.65rem;
+          text-align: left;
+        }
+        .blog-post-shell--record .title h1 {
+          max-width: none;
+          margin-right: 0;
+          margin-left: 0;
+          font-size: clamp(2.15rem, 12vw, 3.1rem);
+        }
+        :global(.blog-post-shell--record .post-content > section) {
+          padding: 2.5rem 0;
+        }
+        :global(.blog-post-shell--record .post-content h2) {
+          margin-top: 3.5rem;
+          padding-top: 1.8rem;
+        }
+        :global(.blog-post-shell--record .post-content blockquote),
+        :global(.blog-post-shell--record .post-content .callout) {
+          padding: 1.2rem 1.25rem;
+          border-radius: 14px;
+        }
+        :global(.blog-post-shell--record .post-content pre) {
+          margin-right: -0.25rem;
+          margin-left: -0.25rem;
+          padding: 1.1rem;
+          border-radius: 12px;
+        }
+      }
     </style>
   </head>
 
-  <body>
+  <body class:list={['blog-post-shell', { 'blog-post-shell--record': isRecordPost }]}>
     <Header />
-    <main>
-      <article>
+    <main class="blog-post-page">
+      <article class="blog-post-article">
         {
           heroImage && (
             <div class="hero-image">
@@ -163,7 +462,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
             </div>
           )
         }
-        <div class="prose">
+        <div class="post-content">
           <div class="title">
             <div class="date">
               <FormattedDate date={pubDate} />
@@ -176,11 +475,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
               }
             </div>
             <h1>{title}</h1>
-            {
-              showPostMeta && (
-                <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />
-              )
-            }
+            {showPostMeta && <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />}
             <hr />
           </div>
           <slot />

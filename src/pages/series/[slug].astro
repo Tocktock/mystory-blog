@@ -9,7 +9,7 @@ import { SITE_TITLE } from '../../consts';
 import { getCategory } from '../../data/categories';
 import { seriesList, type SeriesEntry } from '../../data/series';
 import { routes } from '../../utils/routes';
-import { sortSeriesPosts } from '../../utils/seriesPosts';
+import { sortSeriesPostsByLatest } from '../../utils/seriesPosts';
 
 type Props = {
   seriesItem: SeriesEntry;
@@ -23,7 +23,9 @@ export async function getStaticPaths() {
     params: { slug: seriesItem.slug },
     props: {
       seriesItem,
-      posts: posts.filter((post) => post.data.series === seriesItem.slug).sort(sortSeriesPosts),
+      posts: posts
+        .filter((post) => post.data.series === seriesItem.slug)
+        .sort(sortSeriesPostsByLatest),
     },
   }));
 }
