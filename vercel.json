@@ -1,5 +1,21 @@
 {
+  "trailingSlash": true,
   "redirects": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/records/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*/",
+      "destination": "/records/:path*/",
+      "permanent": true
+    },
     {
       "source": "/blog",
       "destination": "/records",
@@ -13,6 +29,11 @@
     {
       "source": "/cat-pics",
       "destination": "/manyang-gureum",
+      "permanent": true
+    },
+    {
+      "source": "/cat-pics/",
+      "destination": "/manyang-gureum/",
       "permanent": true
     }
   ],
