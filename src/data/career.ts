@@ -1,9 +1,9 @@
 export const careerProfile = {
   eyebrow: 'JIYONG PARK',
-  role: 'Backend SW Engineer',
-  thesis: '운영과 가까운 백엔드를 만들고 있습니다.',
+  role: 'Backend SW Engineer · Platform / AI Systems',
+  thesis: '제품과 운영 사이의 복잡한 흐름을 백엔드로 정리합니다.',
   summary: [
-    '최근에는 화물 물류 도메인에서 운송관리, 차주 매칭, 정산, 지도 검색처럼 실제 업무 흐름과 맞닿은 기능을 다뤄왔습니다.',
+    '최근에는 화물 물류 도메인에서 운송관리, 차주 매칭, 데이터 전환, 배포·관측성, LLM 기반 업무 자동화를 다뤄왔습니다.',
     '공개 가능한 작업을 중심으로, 제가 맡았던 일과 그 과정의 고민을 정리했습니다.',
   ],
   workStyle:
@@ -16,7 +16,7 @@ export const careerProfile = {
     },
     {
       label: '맡고 있는 분야',
-      value: '운송관리 도메인, 차주 매칭, 성능 최적화, 업무 자동화',
+      value: '운송관리 도메인, 차주 매칭, 데이터 전환, 플랫폼 운영',
     },
     {
       label: '주요 스택',
@@ -24,10 +24,14 @@ export const careerProfile = {
     },
     {
       label: '관심 있는 주제',
-      value: '운영 자동화, LLM/RAG 기반 업무 도구',
+      value: '운영 자동화, 데이터 플랫폼, LLM 기반 업무 도구',
     },
   ],
   actions: [
+    {
+      label: '대표 작업',
+      href: '#company-work',
+    },
     {
       label: 'GitHub',
       href: 'https://github.com/Tocktock',
@@ -46,7 +50,8 @@ export const careerEntries = [
     role: 'Backend SW Engineer',
     position: 'Lead',
     period: '2021 - 현재',
-    summary: '제품팀에서 운송관리 도메인과 운영 도구에 필요한 백엔드 개발을 맡고 있습니다.',
+    summary:
+      '제품팀에서 운송관리 도메인, 차주 매칭, 운영 도구, 데이터 조회, 배포·관측성 개선에 필요한 백엔드 개발을 맡고 있습니다.',
     details: [
       {
         title: '조직',
@@ -64,8 +69,8 @@ export const careerEntries = [
       },
     ],
     highlights: [
-      '운송관리, 차주 매칭, 성능 최적화, 업무 자동화처럼 운영과 가까운 기능을 다뤘습니다.',
-      '일부 도메인에서는 설계와 운영 기준을 정리하는 역할도 함께 맡았습니다.',
+      '기능 구현뿐 아니라 도메인 상태 기준, API 조회 흐름, 운영자가 확인하는 데이터 기준을 함께 다뤘습니다.',
+      '일부 도메인에서는 설계와 운영 기준 정리, 배포 이후의 관측 흐름 개선까지 맡았습니다.',
     ],
     projects: [] as Array<{ title: string; href: string }>,
   },
@@ -74,32 +79,36 @@ export const careerEntries = [
 export const companyWorkAreas = [
   {
     number: '01',
-    label: '제품 도메인',
-    title: '운송관리 흐름을 하나의 기준으로 맞췄습니다.',
+    label: 'AI 제품 시스템',
+    title: '비정형 운송 요청을 표준 오더 데이터로 변환했습니다.',
     proofs: [
       {
-        label: '다룬 범위',
-        value: '운송 요청 · 차주 매칭 · 배차 · 기사 앱 · 운영 도구',
+        label: '처리 범위',
+        value: '일정 · 경로 · 주소 · 차량 옵션',
+      },
+      {
+        label: '운영 기준',
+        value: '필드 단위 실패 처리 · 요청/응답 저장',
       },
     ],
     summary: [
-      '운송 요청, 차주 매칭, 배차, 기사 앱, 운영 도구가 같은 운송 정보를 기준으로 움직이도록 Dispatch의 상태와 데이터 흐름을 맞췄습니다.',
-      '신규 제품 출범 과정에서도 이 기준을 사용할 수 있도록 관련 API와 조회 흐름을 함께 정리했습니다.',
+      '기업 고객의 자연어 운송 요청에서 일정, 경로, 주소, 차량 옵션, 작업 조건을 추출해 표준 오더 스키마로 조합하는 LLM 기반 자동완성 흐름을 설계·구현했습니다.',
+      '주소 DB 보정, 누락 옵션 제안, 필드 단위 실패 처리, 요청·응답 저장을 함께 구성해 품질 개선에 필요한 데이터를 남겼습니다.',
     ],
     items: [
-      '운송 요청 → 차주 매칭 → 배차로 이어지는 상태 흐름 정리',
-      '기사 앱과 운영 도구가 함께 보는 운송 기준 데이터 정리',
-      '신규 제품에서 사용할 운송관리 API와 조회 흐름 정리',
+      '정보 추출 영역 분리와 병렬 처리 흐름 구성',
+      '주소 보정과 누락 옵션 제안 흐름 설계',
+      '부분 실패를 허용하는 필드 단위 결과 처리',
     ],
   },
   {
     number: '02',
     label: '데이터와 성능',
-    title: '메인 DB를 PostgreSQL로 옮기고 지도 검색을 개선했습니다.',
+    title: 'PostgreSQL 전환과 지도 검색 성능을 안정화했습니다.',
     proofs: [
       {
-        label: '지도 검색 안정화',
-        value: '1초 이상 요청 0건',
+        label: '지도 검색',
+        value: '운영 관찰 구간 1초 이상 요청 0건',
       },
       {
         label: '관찰 구간 최대 응답',
@@ -107,10 +116,10 @@ export const companyWorkAreas = [
       },
     ],
     summary: [
-      '메인 DB 마이그레이션 과정에서 타임존, SQL, 인덱스, 비동기 조회처럼 서비스 동작과 연결된 문제를 다뤘습니다.',
-      'PostgreSQL 전환 이후 지도 검색 쿼리와 인덱스를 정리하고, 실제 요청 기준으로 응답 시간을 확인하며 개선했습니다.',
+      'Aurora MySQL에서 PostgreSQL로 전환하는 과정에서 SQL 호환성, 타입 매핑, 타임존, 공간정보, 인덱스 문제를 점검하고 정비했습니다.',
+      '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 관찰 구간에서 1초 이상 요청을 0건으로 줄이고, 최대 응답 시간을 약 239ms 수준으로 안정화했습니다.',
     ],
-    items: ['DB 전환 절차와 SQL 호환성 검증', '지도 검색 쿼리와 응답 안정성 검증'],
+    items: ['DB 전환 절차와 애플리케이션 SQL 호환성 검증', '공간 쿼리 실행계획과 인덱스 개선'],
     links: [
       {
         label: '마이그레이션 상세 기록',
@@ -120,30 +129,51 @@ export const companyWorkAreas = [
   },
   {
     number: '03',
-    label: '운영과 자동화',
-    title: '배포, 로그, 사내 데이터 활용 기준을 정리했습니다.',
+    label: '플랫폼 운영',
+    title: '배포와 관측성 기준을 ECS 중심으로 전환했습니다.',
     proofs: [
       {
-        label: '운영 영역',
-        value: 'ECS · CI/CD · APM',
+        label: '배포 전환',
+        value: 'Docker · ECS · GitHub Actions',
+      },
+      {
+        label: '관측/로그',
+        value: 'Datadog APM · Filebeat → OpenSearch',
       },
     ],
     summary: [
-      '서비스를 운영하면서 배포, 로그, 데이터 확인 방식이 여러 곳에 흩어져 있었습니다.',
-      'ECS, CI/CD, APM, 로그 수집, Metabase/n8n/CLI 기반 조회 흐름을 정리해 개발자와 운영자가 필요한 정보를 더 쉽게 확인할 수 있도록 했습니다.',
+      'JAR 직접 실행 기반으로 운영되던 서비스를 Docker/ECS 기반 배포 흐름으로 전환하고, GitHub Actions CI/CD, Datadog APM, Filebeat→OpenSearch 로그 수집을 연결했습니다.',
+      '배포 이후의 상태, 장애, 로그를 개발자와 운영자가 같은 기준으로 확인할 수 있도록 운영 기준을 표준화했습니다.',
     ],
-    items: ['배포·로그·관측성 운영 기준 정리', '사내 데이터 조회와 자동화 흐름 정리'],
+    items: [
+      'Docker/ECS 기반 배포 흐름 전환',
+      'CI/CD 자동화와 환경별 배포 기준 정리',
+      'APM과 중앙 로그 수집 파이프라인 구성',
+    ],
+  },
+  {
+    number: '04',
+    label: '운송 도메인',
+    title: '운송 실행 흐름을 Dispatch 기준으로 정리했습니다.',
+    proofs: [
+      {
+        label: '다룬 범위',
+        value: '운송 요청 · 차주 매칭 · 배차 · 기사 앱 · 운영 도구',
+      },
+    ],
+    summary: [
+      '운송 요청, 차주 매칭, 배차, 기사 앱, 운영 도구가 서로 다른 기준으로 운송 상태를 해석하던 문제를 Dispatch 중심의 상태 흐름과 기준 데이터로 정리했습니다.',
+      '새로운 운송관리 흐름에서도 같은 기준을 재사용할 수 있도록 운송관리 API와 조회 흐름을 함께 정비했습니다.',
+    ],
+    items: [
+      '운송 요청 → 차주 매칭 → 배차로 이어지는 상태 흐름 정리',
+      '기사 앱과 운영 도구가 함께 보는 운송 기준 데이터 정리',
+      '신규 제품 흐름에서 사용할 운송관리 API와 조회 흐름 정리',
+    ],
   },
 ] as const;
 
 export const otherWorkItems = [
-  {
-    area: 'AI / 자동화',
-    period: '2024',
-    title: 'LLM 기반 오더폼 자동완성 시스템',
-    description:
-      '운송 등록에 필요한 입력값을 LLM으로 보완해 오더폼 작성 과정의 반복 입력을 줄이는 흐름을 실험했습니다.',
-  },
   {
     area: '데이터·지표 가시화',
     title: 'Metabase 기반 비즈니스 지표 대시보드',
@@ -169,12 +199,6 @@ export const otherWorkItems = [
     title: '차주용 커뮤니티·어드민 플랫폼',
     description:
       '차주 대상 기능과 내부 운영 화면이 함께 움직이도록 API와 관리 도구를 연결했습니다.',
-  },
-  {
-    area: '운영·관측성',
-    title: 'Self-hosted JAR -> Container 기반 ECS 전환 — CI/CD·Datadog·OpenSearch',
-    description:
-      'JAR 직접 실행 서비스를 ECS 컨테이너 기반으로 전환하고, CI/CD와 Datadog APM, OpenSearch 로그 수집 체계를 구축했습니다.',
   },
 ] as const;
 
