@@ -4,7 +4,7 @@ import { careerEntries, careerProfile } from '../../data/career';
 const entries = careerEntries.map((entry) => ({
   ...entry,
   detailLine: entry.details
-    .flatMap((group) => group.items.map((item) => `${item.label} ${item.value}`))
+    .flatMap((group) => group.items.map((item) => `${item.label}: ${item.value}`))
     .join(' · '),
 }));
 ---
