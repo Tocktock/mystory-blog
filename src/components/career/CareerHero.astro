@@ -1,0 +1,222 @@
+---
+import { careerProfile } from '../../data/career';
+
+const heroActions = careerProfile.actions.map((action) => ({
+  label: action.label,
+  href: 'href' in action ? action.href : undefined,
+  external: 'external' in action ? action.external : undefined,
+}));
+---
+
+<section class="career-hero" aria-labelledby="career-title">
+  <div class="career-hero__layout">
+    <div class="career-hero__content">
+      <div class="career-hero__identity">
+        <p class="career-hero__eyebrow">{careerProfile.eyebrow}</p>
+        <p class="career-hero__role">{careerProfile.role}</p>
+      </div>
+      <h1 id="career-title">{careerProfile.thesis}</h1>
+      <div class="career-hero__summary">
+        {careerProfile.summary.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+    <aside class="career-hero__panel" aria-label="이력 요약">
+      <dl>
+        {
+          careerProfile.overview.map((item) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="career-hero__meta">{careerProfile.meta.join(' · ')}</p>
+      <nav class="career-hero__actions" aria-label="주요 링크">
+        {
+          heroActions.map((action) => (
+            <a
+              href={action.href}
+              data-external={action.external ? 'true' : 'false'}
+              target={action.external ? '_blank' : undefined}
+              rel={action.external ? 'noopener noreferrer' : undefined}
+            >
+              {action.label}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .career-hero {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 6rem) 0 clamp(3rem, 6vw, 4.8rem);
+  }
+
+  .career-hero__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.38fr);
+    gap: clamp(2.5rem, 7vw, 5rem);
+    align-items: end;
+  }
+
+  .career-hero__content {
+    max-width: 46rem;
+  }
+
+  .career-hero__identity {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid color-mix(in srgb, var(--career-line) 72%, transparent);
+  }
+
+  .career-hero__eyebrow {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .career-hero__role {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+    font-weight: 700;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+
+  .career-hero h1 {
+    max-width: 13ch;
+    margin: clamp(2rem, 5vw, 3.3rem) 0 0;
+    color: var(--career-ink);
+    font-size: clamp(2.85rem, 5.2vw, 4.1rem);
+    line-height: 1.08;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+
+  .career-hero__summary {
+    max-width: 43rem;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .career-hero__summary p {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: clamp(1.02rem, 1.7vw, 1.13rem);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .career-hero__summary p + p {
+    margin-top: 0.7rem;
+  }
+
+  .career-hero__panel {
+    display: grid;
+    gap: 1.35rem;
+    padding: 1.35rem 0 0;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .career-hero__panel dl {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .career-hero__panel div {
+    display: grid;
+    gap: 0.35rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--career-line) 78%, transparent);
+  }
+
+  .career-hero__panel dt {
+    color: var(--career-muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
+  .career-hero__panel dd {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: 0.96rem;
+    font-weight: 800;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+
+  .career-hero__meta {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.65;
+    word-break: keep-all;
+  }
+
+  .career-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .career-hero__actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--career-accent-strong);
+    font-size: 0.96rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .career-hero__actions a::after {
+    content: '→';
+    transition: transform 0.2s ease;
+  }
+
+  .career-hero__actions a[data-external='true']::after {
+    content: '↗';
+  }
+
+  .career-hero__actions a:hover,
+  .career-hero__actions a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  .career-hero__actions a:hover::after,
+  .career-hero__actions a:focus-visible::after {
+    transform: translateX(2px);
+  }
+
+  .career-hero__actions a[data-external='true']:hover::after,
+  .career-hero__actions a[data-external='true']:focus-visible::after {
+    transform: translate(2px, -2px);
+  }
+
+  @media (max-width: 860px) {
+    .career-hero__layout {
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 7vw, 3rem);
+    }
+
+    .career-hero__panel {
+      max-width: 42rem;
+    }
+  }
+</style>

@@ -1,0 +1,112 @@
+---
+import { nowNext } from '../../data/career';
+
+const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
+---
+
+<section class="now-next" aria-labelledby="now-next-title">
+  <header class="now-next__header">
+    <p>개인적으로 만드는 도구</p>
+    <h2 id="now-next-title">{nowNext.title}</h2>
+  </header>
+  <div class="now-next__body">
+    {nowNext.description.map((paragraph) => <p>{paragraph}</p>)}
+    {
+      nowNextLinks.length > 0 ? (
+        <nav class="now-next__links" aria-label="현재 프로젝트 링크">
+          {nowNextLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      ) : null
+    }
+  </div>
+</section>
+
+<style>
+  .now-next {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.34fr) minmax(0, 1fr);
+    gap: clamp(1.2rem, 4vw, 3rem);
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .now-next__header p {
+    margin: 0 0 0.65rem;
+    color: var(--career-muted-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .now-next h2 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    letter-spacing: 0;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
+  }
+
+  .now-next__body {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 47rem;
+  }
+
+  .now-next__body p {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: clamp(1.06rem, 1.8vw, 1.18rem);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .now-next__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.35rem;
+  }
+
+  .now-next__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--career-accent-strong);
+    font-weight: 700;
+    line-height: 1.45;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .now-next__links a::after {
+    content: '↗';
+  }
+
+  .now-next__links a:hover,
+  .now-next__links a:focus-visible {
+    transform: translate(2px, -2px);
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  @media (max-width: 760px) {
+    .now-next {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,253 @@
+---
+import { companyWorkAreas } from '../../data/career';
+---
+
+<section class="company-work" id="company-work" aria-labelledby="company-work-title">
+  <header class="company-work__header">
+    <h2 id="company-work-title">대표 작업</h2>
+    <p>회사에서 맡았던 일 중 공개 가능한 범위의 작업을 몇 가지 골랐습니다.</p>
+  </header>
+  <div class="company-work__list">
+    {
+      companyWorkAreas.map((area) => (
+        <article class="company-work__row">
+          <div class="company-work__index" aria-label={`${area.number} ${area.label}`}>
+            <span>{area.number}</span>
+            <strong>{area.label}</strong>
+          </div>
+          <div class="company-work__body">
+            <h3>{area.title}</h3>
+            <div class="company-work__summary">
+              {area.summary.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </div>
+            <ul class="company-work__items">
+              {area.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <div class="company-work__meta">
+              <dl class="company-work__proofs">
+                {area.proofs.map((proof) => (
+                  <div>
+                    <dt>{proof.label}</dt>
+                    <dd>{proof.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              {'links' in area && area.links ? (
+                <nav class="company-work__links" aria-label={`${area.title} 관련 링크`}>
+                  {area.links.map((link) => (
+                    <a href={link.href}>{link.label}</a>
+                  ))}
+                </nav>
+              ) : null}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .company-work {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .company-work__header {
+    max-width: 45rem;
+    margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
+  }
+
+  .company-work h2 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0;
+  }
+
+  .company-work__header p {
+    margin: 1rem 0 0;
+    color: var(--career-muted);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .company-work__list {
+    display: grid;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .company-work__row {
+    display: grid;
+    grid-template-columns: minmax(9.5rem, 0.18fr) minmax(0, 1fr);
+    gap: clamp(1.2rem, 4vw, 3rem);
+    padding: clamp(1.8rem, 4.5vw, 3rem) 0;
+    border-bottom: 1px solid var(--career-line);
+  }
+
+  .company-work__index {
+    display: grid;
+    align-content: start;
+    gap: 0.3rem;
+    color: var(--career-muted-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
+  .company-work__index strong {
+    color: var(--career-ink);
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+  }
+
+  .company-work__body {
+    min-width: 0;
+  }
+
+  .company-work__body h3 {
+    max-width: 28ch;
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
+    line-height: 1.22;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+
+  .company-work__summary {
+    display: grid;
+    gap: 0.55rem;
+    max-width: 45rem;
+    margin-top: 1rem;
+  }
+
+  .company-work__summary p {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: clamp(1.04rem, 1.75vw, 1.12rem);
+    line-height: 1.72;
+    word-break: keep-all;
+  }
+
+  .company-work__items {
+    display: grid;
+    gap: 0.55rem;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .company-work__items li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--career-ink);
+    font-size: 0.96rem;
+    font-weight: 700;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+
+  .company-work__items li::before {
+    position: absolute;
+    top: 0.72em;
+    left: 0;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--career-accent);
+    content: '';
+  }
+
+  .company-work__meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem clamp(1.2rem, 4vw, 2rem);
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .company-work__proofs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, max-content));
+    gap: 0.85rem clamp(1rem, 3vw, 1.75rem);
+    justify-content: start;
+    margin: 0;
+  }
+
+  .company-work__proofs div {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .company-work__proofs dt {
+    margin: 0;
+    color: var(--career-muted-strong);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.45;
+  }
+
+  .company-work__proofs dd {
+    margin: 0;
+    color: var(--career-accent-strong);
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+
+  .company-work__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    justify-content: end;
+  }
+
+  .company-work__links a {
+    color: var(--career-accent-strong);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .company-work__links a::after {
+    content: ' →';
+  }
+
+  .company-work__links a:hover,
+  .company-work__links a:focus-visible {
+    transform: translateX(4px);
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+  }
+
+  @media (max-width: 820px) {
+    .company-work__row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .company-work__meta {
+      align-items: start;
+      grid-template-columns: 1fr;
+    }
+
+    .company-work__links {
+      justify-content: start;
+    }
+  }
+</style>

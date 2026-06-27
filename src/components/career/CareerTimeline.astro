@@ -1,0 +1,167 @@
+---
+import { careerEntries, careerProfile } from '../../data/career';
+
+const entries = careerEntries.map((entry) => ({
+  ...entry,
+  detailLine: entry.details
+    .flatMap((group) => group.items.map((item) => `${item.label} ${item.value}`))
+    .join(' · '),
+}));
+---
+
+<section class="career-timeline" aria-labelledby="career-timeline-title">
+  <header class="career-timeline__header">
+    <h2 id="career-timeline-title">경력</h2>
+  </header>
+  <div class="career-timeline__list">
+    {
+      entries.map((entry) => (
+        <article class="career-timeline__entry">
+          <div class="career-timeline__meta">
+            <p>{entry.period}</p>
+            <h3>{entry.company}</h3>
+            <span>
+              {entry.role} · {entry.position}
+            </span>
+          </div>
+          <div class="career-timeline__body">
+            <p class="career-timeline__summary">{entry.summary}</p>
+            <p class="career-timeline__principle">{careerProfile.workStyle}</p>
+            <p class="career-timeline__detail-line">{entry.detailLine}</p>
+            {entry.highlights.length > 0 ? (
+              <ul>
+                {entry.highlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .career-timeline {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .career-timeline__header {
+    display: block;
+    margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
+  }
+
+  .career-timeline h2 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0;
+  }
+
+  .career-timeline__list {
+    display: grid;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .career-timeline__entry {
+    display: grid;
+    grid-template-columns: minmax(17rem, 0.36fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding: clamp(2rem, 5vw, 3rem) 0;
+    border-bottom: 1px solid var(--career-line);
+  }
+
+  .career-timeline__meta p {
+    margin: 0 0 0.9rem;
+    color: var(--career-muted-strong);
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .career-timeline__meta h3 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+
+  .career-timeline__meta span {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--career-accent-strong);
+    font-weight: 700;
+  }
+
+  .career-timeline__summary {
+    max-width: 44rem;
+    margin: 0 0 0.75rem;
+    color: var(--career-ink);
+    font-size: clamp(1.08rem, 1.8vw, 1.22rem);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .career-timeline__principle {
+    max-width: 44rem;
+    margin: 0 0 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--career-accent);
+    color: var(--career-ink);
+    font-size: clamp(1rem, 1.7vw, 1.12rem);
+    font-weight: 700;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+
+  .career-timeline__detail-line {
+    max-width: 48rem;
+    margin: 0 0 1.35rem;
+    color: var(--career-muted-strong);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.65;
+  }
+
+  .career-timeline ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .career-timeline li {
+    position: relative;
+    padding-left: 1.15rem;
+    color: var(--career-muted);
+    font-size: 1rem;
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .career-timeline li::before {
+    position: absolute;
+    top: 0.78em;
+    left: 0;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--career-accent);
+    content: '';
+  }
+
+  @media (max-width: 760px) {
+    .career-timeline__entry {
+      grid-template-columns: 1fr;
+    }
+
+    .career-timeline__entry {
+      gap: 1.25rem;
+    }
+  }
+</style>

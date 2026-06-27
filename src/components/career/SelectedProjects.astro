@@ -1,0 +1,117 @@
+---
+import { selectedProjects } from '../../data/selectedProjects';
+---
+
+<section class="selected-projects" id="selected-projects" aria-labelledby="selected-projects-title">
+  <header class="selected-projects__header">
+    <h2 id="selected-projects-title">글과 기록</h2>
+  </header>
+  <div class="selected-projects__list">
+    {
+      selectedProjects.map((project) => (
+        <a
+          class="selected-projects__item"
+          href={project.href}
+          target={'external' in project && project.external ? '_blank' : undefined}
+          rel={'external' in project && project.external ? 'noopener noreferrer' : undefined}
+        >
+          <span class="selected-projects__meta">{project.meta}</span>
+          <span class="selected-projects__text">
+            <strong>{project.title}</strong>
+            <p>{project.description}</p>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .selected-projects {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .selected-projects__header {
+    max-width: 42rem;
+    margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
+  }
+
+  .selected-projects h2 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0;
+  }
+
+  .selected-projects__list {
+    display: grid;
+    border-top: 1px solid var(--career-line);
+  }
+
+  .selected-projects__item {
+    display: grid;
+    grid-template-columns: minmax(9.5rem, 0.18fr) minmax(0, 1fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--career-line);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .selected-projects__item:hover strong,
+  .selected-projects__item:focus-visible strong {
+    color: var(--career-accent-strong);
+  }
+
+  .selected-projects__meta {
+    color: var(--career-muted-strong);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  .selected-projects__text {
+    min-width: 0;
+  }
+
+  .selected-projects__text strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--career-ink);
+    font-size: clamp(1.05rem, 2vw, 1.28rem);
+    font-weight: 800;
+    line-height: 1.35;
+    word-break: keep-all;
+  }
+
+  .selected-projects__text strong::after {
+    color: var(--career-accent-strong);
+    content: '→';
+    transition: transform 0.2s ease;
+  }
+
+  .selected-projects__item:hover .selected-projects__text strong::after,
+  .selected-projects__item:focus-visible .selected-projects__text strong::after {
+    transform: translateX(4px);
+  }
+
+  .selected-projects__text p {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+
+  @media (max-width: 680px) {
+    .selected-projects__item {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

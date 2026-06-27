@@ -1,0 +1,24 @@
+---
+import CareerHero from '../components/career/CareerHero.astro';
+import CareerTimeline from '../components/career/CareerTimeline.astro';
+import CompanyWork from '../components/career/CompanyWork.astro';
+import NowNext from '../components/career/NowNext.astro';
+import OtherWork from '../components/career/OtherWork.astro';
+import SelectedProjects from '../components/career/SelectedProjects.astro';
+import CareerLinks from '../components/career/CareerLinks.astro';
+import CareerLayout from '../layouts/CareerLayout.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<CareerLayout
+  title={`이력 | ${SITE_TITLE}`}
+  description="Backend와 Platform 영역에서 JiYong이 맡아온 문제, 역량, 프로젝트 기록을 정리한 이력 페이지입니다."
+>
+  <CareerHero />
+  <CompanyWork />
+  <OtherWork />
+  <CareerTimeline />
+  <SelectedProjects />
+  <NowNext />
+  <CareerLinks />
+</CareerLayout>
