@@ -178,13 +178,13 @@ export const otherWorkItems = [
     area: '데이터·지표 가시화',
     title: 'Metabase 기반 비즈니스 지표 대시보드',
     description:
-      '전사적으로 관리할 매출·주문 등 주요 지표를 self-hosted Metabase로 시각화해 운영 현황과 제품 성과를 확인할 수 있도록 구성했습니다.',
+      'Self-hosted Metabase 분석 환경을 운영·확장하며 매출·주문 등 주요 비즈니스 지표를 대시보드화했습니다.',
   },
   {
     area: '데이터·지표 가시화',
     title: '디비딥 Text to SQL 기능 구현',
     description:
-      'n8n·LangGraph·Metabase를 연결한 디비딥에서 자연어로 필요한 지표를 조회할 수 있도록 Text-to-SQL 기능을 구현했습니다. self-hosted n8n과 LangGraph 기반 워크플로우를 구성해 지표 생성, Metabase 연동, 데이터 수집 흐름을 자동화하고 반복 업무의 처리 효율을 개선했습니다.',
+      '사내 자연어 지표 조회 도구 디비딥을 공동 개발하며 n8n 기반 워크플로우, 쿼리 카탈로그, SQL 생성·검증, Metabase 연동 흐름을 구성했습니다.',
   },
   {
     area: '운송관리 / 매칭',
