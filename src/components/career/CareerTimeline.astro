@@ -3,9 +3,7 @@ import { careerEntries, careerProfile } from '../../data/career';
 
 const entries = careerEntries.map((entry) => ({
   ...entry,
-  detailLine: entry.details
-    .flatMap((group) => group.items.map((item) => `${item.label}: ${item.value}`))
-    .join(' · '),
+  details: entry.details.flatMap((group) => group.items),
 }));
 ---
 
@@ -29,16 +27,36 @@ const entries = careerEntries.map((entry) => ({
             </span>
           </div>
           <div class="career-timeline__body">
-            <p class="career-timeline__summary">{entry.summary}</p>
-            <p class="career-timeline__principle">{careerProfile.workStyle}</p>
-            <p class="career-timeline__detail-line">{entry.detailLine}</p>
-            {entry.highlights.length > 0 ? (
-              <ul>
-                {entry.highlights.map((highlight) => (
-                  <li>{highlight}</li>
+            <section class="career-timeline__section">
+              <h4>맡은 일</h4>
+              <p>{entry.summary}</p>
+            </section>
+            <section class="career-timeline__section">
+              <h4>주요 범위</h4>
+              <dl class="career-timeline__facts">
+                {entry.details.map((detail) => (
+                  <div>
+                    <dt>{detail.label}</dt>
+                    <dd>{detail.value}</dd>
+                  </div>
                 ))}
-              </ul>
-            ) : null}
+              </dl>
+            </section>
+            <section class="career-timeline__section">
+              <h4>작업 방식</h4>
+              <p>
+                <strong>일하는 기준</strong>
+                {' '}
+                {careerProfile.workStyle}
+              </p>
+              {entry.highlights.length > 0 ? (
+                <ul>
+                  {entry.highlights.map((highlight) => (
+                    <li>{highlight}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
           </div>
         </article>
       ))
@@ -65,7 +83,7 @@ const entries = careerEntries.map((entry) => ({
 
   .career-timeline__entry {
     display: grid;
-    grid-template-columns: minmax(17rem, 0.36fr) minmax(0, 1fr);
+    grid-template-columns: minmax(15rem, 0.32fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 4rem);
     padding: clamp(2rem, 5vw, 3rem) 0;
   }
@@ -75,9 +93,11 @@ const entries = careerEntries.map((entry) => ({
   }
 
   .career-timeline__meta p {
-    margin: 0 0 0.9rem;
+    margin: 0 0 0.75rem;
     color: var(--career-muted-strong);
-    font-size: 0.95rem;
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
   }
 
@@ -91,55 +111,92 @@ const entries = careerEntries.map((entry) => ({
 
   .career-timeline__meta span {
     display: block;
-    margin-top: 0.35rem;
-    color: var(--career-accent-strong);
+    margin-top: 0.55rem;
+    color: var(--career-muted-strong);
+    font-size: 0.98rem;
     font-weight: 700;
+    line-height: 1.55;
+    word-break: keep-all;
   }
 
-  .career-timeline__summary {
-    max-width: 44rem;
-    margin: 0 0 0.75rem;
-    color: var(--career-ink);
-    font-size: clamp(1.08rem, 1.8vw, 1.22rem);
+  .career-timeline__body {
+    display: grid;
+    gap: 1.3rem;
+    max-width: 48rem;
+  }
+
+  .career-timeline__section {
+    display: grid;
+    margin: 0;
+    gap: 0.55rem;
+  }
+
+  .career-timeline__section h4 {
+    margin: 0;
+    color: var(--career-accent-strong);
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+  }
+
+  .career-timeline__section p {
+    margin: 0;
+    color: var(--career-muted);
+    font-size: clamp(1rem, 1.7vw, 1.1rem);
     line-height: 1.75;
     word-break: keep-all;
   }
 
-  .career-timeline__principle {
-    max-width: 44rem;
-    margin: 0 0 1rem;
-    padding-left: 1rem;
-    border-left: 2px solid var(--career-accent);
+  .career-timeline__section p strong {
     color: var(--career-ink);
-    font-size: clamp(1rem, 1.7vw, 1.12rem);
-    font-weight: 700;
-    line-height: 1.7;
-    word-break: keep-all;
+    font-weight: 900;
   }
 
-  .career-timeline__detail-line {
-    max-width: 48rem;
-    margin: 0 0 1.35rem;
+  .career-timeline__facts {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+  }
+
+  .career-timeline__facts div {
+    display: grid;
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    gap: 0.8rem;
+    align-items: baseline;
+  }
+
+  .career-timeline__facts dt {
+    margin: 0;
     color: var(--career-muted-strong);
-    font-size: 0.92rem;
-    font-weight: 700;
-    line-height: 1.65;
+    font-size: 0.86rem;
+    font-weight: 900;
+    line-height: 1.55;
+  }
+
+  .career-timeline__facts dd {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.6;
+    word-break: keep-all;
   }
 
   .career-timeline ul {
     display: grid;
-    gap: 0.75rem;
-    margin: 0;
+    gap: 0.45rem;
+    margin: 0.15rem 0 0;
     padding: 0;
     list-style: none;
   }
 
   .career-timeline li {
     position: relative;
-    padding-left: 1.15rem;
+    padding-left: 0.95rem;
     color: var(--career-muted);
-    font-size: 1rem;
-    line-height: 1.75;
+    font-size: 0.98rem;
+    line-height: 1.68;
     word-break: keep-all;
   }
 
@@ -147,8 +204,8 @@ const entries = careerEntries.map((entry) => ({
     position: absolute;
     top: 0.78em;
     left: 0;
-    width: 0.35rem;
-    height: 0.35rem;
+    width: 0.28rem;
+    height: 0.28rem;
     border-radius: 999px;
     background: var(--career-accent);
     content: '';
@@ -161,6 +218,11 @@ const entries = careerEntries.map((entry) => ({
 
     .career-timeline__entry {
       gap: 1.25rem;
+    }
+
+    .career-timeline__facts div {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
     }
   }
 </style>
