@@ -9,11 +9,13 @@ import { seriesList } from '../../data/series';
 import { routes } from '../../utils/routes';
 
 const posts = await getCollection('blog');
-const seriesCards = seriesList.map((item) => ({
-	...item,
-	categoryMeta: getCategory(item.category),
-	posts: posts.filter((post) => post.data.series === item.slug),
-}));
+const seriesCards = seriesList
+	.map((item) => ({
+		...item,
+		categoryMeta: getCategory(item.category),
+		posts: posts.filter((post) => post.data.series === item.slug),
+	}))
+	.filter((item) => item.posts.length > 0);
 ---
 
 <!doctype html>
@@ -44,7 +46,7 @@ const seriesCards = seriesList.map((item) => ({
 							<a class="series-card" href={routes.seriesDetail(item.slug)}>
 								<div class="series-card__meta">
 									<span>{item.categoryMeta.label}</span>
-									<span>{item.posts.length > 0 ? `${item.posts.length}개 기록` : '준비 중'}</span>
+									<span>{item.posts.length}개 기록</span>
 								</div>
 								<h2>{item.title}</h2>
 								<p>{item.description}</p>

@@ -24,6 +24,8 @@ const getRandomImage = () => {
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const activeCategorySlugs = new Set(posts.map((post) => post.data.category));
+const activeCategories = categoryList.filter((category) => activeCategorySlugs.has(category.slug));
 ---
 
 <!doctype html>
@@ -53,7 +55,7 @@ const posts = (await getCollection('blog')).sort(
 						전체
 					</a>
 					{
-						categoryList.map((category) => (
+						activeCategories.map((category) => (
 							<a class="records-index__category-link" href={routes.category(category.slug)}>
 								{category.label}
 							</a>
