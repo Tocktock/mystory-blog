@@ -179,7 +179,11 @@ export const companyWorkAreas: readonly CompanyWorkArea[] = [
     proofs: [
       {
         label: '지도 검색 API',
-        value: '운영 로그 기준 지연 요청 제거',
+        value: '1초 이상 요청 520건 → 0건',
+      },
+      {
+        label: '관찰 구간 최대 응답',
+        value: '약 239ms',
       },
       {
         label: '성능 개선',
@@ -188,7 +192,7 @@ export const companyWorkAreas: readonly CompanyWorkArea[] = [
     ],
     summary: [
       'Aurora MySQL에서 PostgreSQL로 전환하는 과정에서 SQL 호환성, 타입 매핑, 타임존, 공간정보, 인덱스 이슈를 점검하고 애플리케이션 쿼리와 실행계획을 정비했습니다.',
-      '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 로그에서 반복적으로 보이던 지연 요청을 줄였습니다.',
+      '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 관찰 구간 기준 1초 이상 요청을 520건에서 0건으로 줄이고, 같은 구간 최대 응답을 약 239ms로 안정화했습니다.',
     ],
     items: ['DB 전환 절차와 애플리케이션 SQL 호환성 검증', '공간 쿼리 실행계획과 인덱스 개선'],
     links: [
