@@ -54,7 +54,6 @@ import { otherWorkItems } from '../../data/career';
 
   .other-work__list {
     display: grid;
-    border-top: 1px solid var(--career-line);
   }
 
   .other-work__item {
@@ -62,7 +61,10 @@ import { otherWorkItems } from '../../data/career';
     grid-template-columns: minmax(9.5rem, 0.18fr) minmax(0, 1fr);
     gap: clamp(1.2rem, 4vw, 3rem);
     padding: 1.15rem 0;
-    border-bottom: 1px solid var(--career-line);
+  }
+
+  .other-work__item + .other-work__item {
+    border-top: 1px solid color-mix(in srgb, var(--career-line) 74%, transparent);
   }
 
   .other-work__meta {

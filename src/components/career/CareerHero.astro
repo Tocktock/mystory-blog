@@ -50,6 +50,84 @@ const heroActions = careerProfile.actions.map((action) => ({
   </div>
 </section>
 
+<script>
+  const careerHeroActions = document.querySelector('.career-hero__actions');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let careerHeroScrollFrame = 0;
+
+  const focusCareerSection = (target: HTMLElement) => {
+    if (!target.hasAttribute('tabindex')) {
+      target.setAttribute('tabindex', '-1');
+    }
+    target.focus({ preventScroll: true });
+  };
+
+  const updateCareerHash = (hash: string) => {
+    if (window.location.hash !== hash) {
+      history.pushState(null, '', hash);
+    }
+  };
+
+  const scrollCareerSection = (target: HTMLElement, hash: string) => {
+    cancelAnimationFrame(careerHeroScrollFrame);
+
+    const topOffset = 28;
+    const start = window.scrollY;
+    const destination = Math.max(0, start + target.getBoundingClientRect().top - topOffset);
+    const distance = destination - start;
+
+    if (reducedMotion.matches || Math.abs(distance) < 8) {
+      window.scrollTo(0, destination);
+      updateCareerHash(hash);
+      focusCareerSection(target);
+      return;
+    }
+
+    const duration = Math.min(420, Math.max(240, Math.abs(distance) * 0.22));
+    const startedAt = performance.now();
+    const easeOutCubic = (progress: number) => 1 - Math.pow(1 - progress, 3);
+
+    const tick = (currentTime: number) => {
+      const progress = Math.min((currentTime - startedAt) / duration, 1);
+      window.scrollTo(0, start + distance * easeOutCubic(progress));
+
+      if (progress < 1) {
+        careerHeroScrollFrame = requestAnimationFrame(tick);
+        return;
+      }
+
+      updateCareerHash(hash);
+      focusCareerSection(target);
+    };
+
+    careerHeroScrollFrame = requestAnimationFrame(tick);
+  };
+
+  careerHeroActions?.addEventListener('click', (event) => {
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+
+    const link = event.target.closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!link || !careerHeroActions.contains(link)) {
+      return;
+    }
+
+    const hash = link.getAttribute('href');
+    if (!hash || hash === '#') {
+      return;
+    }
+
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+    scrollCareerSection(target, hash);
+  });
+</script>
+
 <style>
   .career-hero {
     width: min(1120px, calc(100% - 2rem));
@@ -61,7 +139,7 @@ const heroActions = careerProfile.actions.map((action) => ({
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.38fr);
     gap: clamp(2.5rem, 7vw, 5rem);
-    align-items: end;
+    align-items: start;
   }
 
   .career-hero__content {
@@ -71,7 +149,7 @@ const heroActions = careerProfile.actions.map((action) => ({
   .career-hero__identity {
     display: grid;
     gap: 0.6rem;
-    padding-top: 0.35rem;
+    padding-top: 1.35rem;
     border-top: 1px solid color-mix(in srgb, var(--career-line) 72%, transparent);
   }
 
@@ -129,15 +207,13 @@ const heroActions = careerProfile.actions.map((action) => ({
 
   .career-hero__panel dl {
     display: grid;
-    gap: 1rem;
+    gap: 1.15rem;
     margin: 0;
   }
 
   .career-hero__panel div {
     display: grid;
     gap: 0.35rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--career-line) 78%, transparent);
   }
 
   .career-hero__panel dt {
@@ -167,46 +243,52 @@ const heroActions = careerProfile.actions.map((action) => ({
   }
 
   .career-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
+    width: min(100%, 18rem);
     margin: 0;
   }
 
   .career-hero__actions a {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    color: var(--career-accent-strong);
-    font-size: 0.96rem;
-    font-weight: 700;
-    line-height: 1.4;
+    justify-content: center;
+    min-height: 1.8rem;
+    padding: 0.32rem 0.58rem;
+    border: 1px solid color-mix(in srgb, var(--career-line) 76%, transparent);
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--career-ink) 3%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--career-ink) 6%, transparent);
+    color: color-mix(in srgb, var(--career-ink) 82%, var(--career-muted));
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1;
     text-decoration: none;
-  }
-
-  .career-hero__actions a::after {
-    content: '→';
-    transition: transform 0.2s ease;
-  }
-
-  .career-hero__actions a[data-external='true']::after {
-    content: '↗';
+    white-space: nowrap;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .career-hero__actions a:hover,
   .career-hero__actions a:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 0.22em;
+    border-color: color-mix(in srgb, var(--career-accent-strong) 42%, var(--career-line));
+    background: color-mix(in srgb, var(--career-accent-strong) 10%, transparent);
+    color: var(--career-accent-strong);
+    transform: translateY(-1px);
   }
 
-  .career-hero__actions a:hover::after,
-  .career-hero__actions a:focus-visible::after {
-    transform: translateX(2px);
+  .career-hero__actions a:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--career-accent-strong) 54%, transparent);
+    outline-offset: 3px;
   }
 
-  .career-hero__actions a[data-external='true']:hover::after,
-  .career-hero__actions a[data-external='true']:focus-visible::after {
-    transform: translate(2px, -2px);
+  .career-hero__actions a:active {
+    transform: translateY(0);
   }
 
   @media (max-width: 860px) {

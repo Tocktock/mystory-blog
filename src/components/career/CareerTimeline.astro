@@ -64,7 +64,6 @@ const entries = careerEntries.map((entry) => ({
 
   .career-timeline__list {
     display: grid;
-    border-top: 1px solid var(--career-line);
   }
 
   .career-timeline__entry {
@@ -72,7 +71,10 @@ const entries = careerEntries.map((entry) => ({
     grid-template-columns: minmax(17rem, 0.36fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 4rem);
     padding: clamp(2rem, 5vw, 3rem) 0;
-    border-bottom: 1px solid var(--career-line);
+  }
+
+  .career-timeline__entry + .career-timeline__entry {
+    border-top: 1px solid color-mix(in srgb, var(--career-line) 78%, transparent);
   }
 
   .career-timeline__meta p {
