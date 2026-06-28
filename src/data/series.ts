@@ -17,6 +17,24 @@ export const series = {
     description: '서버, 구조, 문제 해결에 대한 기록',
     category: 'tech',
   },
+  'nestjs-blog': {
+    slug: 'nestjs-blog',
+    title: 'NestJS 블로그 만들기',
+    description: 'NestJS로 블로그 API를 만들며 정리한 백엔드 학습 기록',
+    category: 'tech',
+  },
+  'react-redux': {
+    slug: 'react-redux',
+    title: 'react-redux',
+    description: 'React와 Redux 상태 관리를 공부하며 정리한 기록',
+    category: 'tech',
+  },
+  algorithms: {
+    slug: 'algorithms',
+    title: 'Algorithms',
+    description: '알고리즘 문제를 풀며 정리한 접근과 풀이 기록',
+    category: 'tech',
+  },
   'spring-backend-notes': {
     slug: 'spring-backend-notes',
     title: 'Spring Backend 노트',
@@ -51,6 +69,12 @@ export const series = {
     slug: 'devops-lab',
     title: 'DevOps 실험실',
     description: '로컬 Kubernetes와 운영 환경을 실험하며 남긴 기록',
+    category: 'tech',
+  },
+  elasticsearch: {
+    slug: 'elasticsearch',
+    title: 'Elasticsearch',
+    description: 'Elasticsearch를 배우고 실습하며 정리한 기록',
     category: 'tech',
   },
   'record-room-making': {
