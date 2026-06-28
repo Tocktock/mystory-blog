@@ -1,0 +1,110 @@
+---
+import { otherWorkItems } from '../../data/career';
+---
+
+<section class="other-work career-section" id="other-work" aria-labelledby="other-work-title">
+  <header class="other-work__header">
+    <h2 id="other-work-title">제품·데이터·플랫폼 작업</h2>
+    <p>대표 작업 밖에서도 이어서 다룬 제품, 데이터 자동화, 운영 도구 관련 작업입니다.</p>
+  </header>
+  <div class="other-work__list">
+    {
+      otherWorkItems.map((item) => (
+        <article class="other-work__item">
+          <div class="other-work__meta">
+            <span class="other-work__area">{item.area}</span>
+            {item.period ? <span class="other-work__period">{item.period}</span> : null}
+          </div>
+          <div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .other-work__header {
+    max-width: 45rem;
+    margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
+  }
+
+  .other-work h2 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0;
+  }
+
+  .other-work__header p {
+    margin: 1rem 0 0;
+    color: var(--career-muted);
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .other-work__list {
+    display: grid;
+  }
+
+  .other-work__item {
+    display: grid;
+    grid-template-columns: minmax(9.5rem, 0.18fr) minmax(0, 1fr);
+    gap: clamp(1.2rem, 4vw, 3rem);
+    padding: 1.15rem 0;
+  }
+
+  .other-work__item + .other-work__item {
+    border-top: 1px solid color-mix(in srgb, var(--career-line) 74%, transparent);
+  }
+
+  .other-work__meta {
+    display: grid;
+    align-content: start;
+    gap: 0.25rem;
+    color: var(--career-muted-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+  }
+
+  .other-work__period {
+    color: var(--career-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .other-work__item div {
+    min-width: 0;
+  }
+
+  .other-work__item h3 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(1.02rem, 1.8vw, 1.2rem);
+    line-height: 1.4;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+
+  .other-work__item p {
+    max-width: 48rem;
+    margin: 0.35rem 0 0;
+    color: var(--career-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+
+  @media (max-width: 680px) {
+    .other-work__item {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+  }
+</style>

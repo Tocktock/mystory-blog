@@ -1,0 +1,24 @@
+---
+import CareerHero from '../components/career/CareerHero.astro';
+import CareerTimeline from '../components/career/CareerTimeline.astro';
+import CompanyWork from '../components/career/CompanyWork.astro';
+import NowNext from '../components/career/NowNext.astro';
+import OtherWork from '../components/career/OtherWork.astro';
+import SelectedProjects from '../components/career/SelectedProjects.astro';
+import CareerLinks from '../components/career/CareerLinks.astro';
+import CareerLayout from '../layouts/CareerLayout.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<CareerLayout
+  title={`이력 | ${SITE_TITLE}`}
+  description="화물 물류 도메인에서 JiYong이 다뤄온 백엔드, 플랫폼 운영, 데이터 전환, AI 업무 자동화 작업을 정리한 이력 페이지입니다."
+>
+  <CareerHero />
+  <CompanyWork />
+  <OtherWork />
+  <CareerTimeline />
+  <SelectedProjects />
+  <NowNext />
+  <CareerLinks />
+</CareerLayout>

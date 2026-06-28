@@ -10,6 +10,7 @@ import ManyangGureumCard from '../components/home/ManyangGureumCard.astro';
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { seriesList } from '../data/series';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
+import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -45,8 +46,8 @@ const personJsonLd = buildPersonJsonLd({
 <html lang="ko">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteJsonLd)} />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(websiteJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(personJsonLd)} />
   </head>
   <body>
     <Header />

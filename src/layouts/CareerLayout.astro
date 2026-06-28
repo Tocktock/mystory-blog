@@ -1,0 +1,130 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { buildBreadcrumbJsonLd, buildPersonJsonLd } from '../utils/jsonld';
+import { routes } from '../utils/routes';
+import { serializeJsonLd } from '../utils/serializeJsonLd';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props as Props;
+const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const personJsonLd = buildPersonJsonLd({
+  canonicalUrl: canonicalURL,
+  name: SITE_AUTHOR,
+  description,
+});
+const breadcrumbJsonLd = buildBreadcrumbJsonLd({
+  items: [
+    { position: 1, name: SITE_TITLE, item: siteURL.toString() },
+    { position: 2, name: '이력', item: new URL(routes.career, siteURL).toString() },
+  ],
+});
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title={title} description={description} lang="ko" />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(personJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(breadcrumbJsonLd)} />
+  </head>
+  <body class="career-shell">
+    <Header />
+    <main class="career-page">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  :global(body.career-shell) {
+    --career-bg: #f2efe8;
+    --career-surface: #fffaf2;
+    --career-ink: #2d3434;
+    --career-muted: #69726b;
+    --career-muted-strong: #515b53;
+    --career-line: rgba(64, 72, 64, 0.18);
+    --career-accent: #5f7657;
+    --career-accent-strong: #344d3f;
+    --career-panel: rgba(255, 250, 242, 0.82);
+    --career-shadow: 0 24px 60px rgba(54, 43, 35, 0.12);
+    background: var(--career-bg);
+    color: var(--career-ink);
+  }
+
+  :global(:root[data-theme='dark'] body.career-shell) {
+    --career-bg: #141712;
+    --career-surface: #20251d;
+    --career-ink: #f0eadf;
+    --career-muted: #b9c0ae;
+    --career-muted-strong: #d0d7c6;
+    --career-line: rgba(240, 234, 223, 0.15);
+    --career-accent: #b6c493;
+    --career-accent-strong: #d7e3b5;
+    --career-panel: rgba(32, 37, 29, 0.78);
+    --career-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+    background: var(--career-bg);
+  }
+
+  .career-page {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 0 clamp(4rem, 7vw, 6rem);
+    overflow: clip;
+  }
+
+  .career-page::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 31rem;
+    z-index: -1;
+    content: '';
+    background-image:
+      linear-gradient(var(--career-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--career-line) 1px, transparent 1px);
+    background-size: 4.75rem 4.75rem;
+    opacity: 0.45;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 100%);
+    pointer-events: none;
+  }
+
+  :global(.career-section) {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: var(--career-section-padding, clamp(3rem, 7vw, 5rem) 0);
+    border-top: 1px solid var(--career-line);
+  }
+
+  :global(.career-section--compact) {
+    --career-section-padding: clamp(2.2rem, 6vw, 4rem) 0 0;
+  }
+
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  :global(#company-work),
+  :global(#other-work),
+  :global(#career-timeline),
+  :global(#selected-projects),
+  :global(#now-next),
+  :global(#career-related-links) {
+    scroll-margin-top: 28px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
+  }
+</style>
