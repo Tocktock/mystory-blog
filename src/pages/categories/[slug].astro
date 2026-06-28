@@ -8,6 +8,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { categoryList, type Category } from '../../data/categories';
 import { getSeries } from '../../data/series';
+import { getPostHeroImageAlt } from '../../utils/postImages';
 import { routes } from '../../utils/routes';
 import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
 import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
@@ -69,32 +70,34 @@ const { category, posts } = Astro.props as Props;
       </header>
 
       <ul class="category-page__list">
-        {posts.map((post) => {
-          const seriesEntry = getSeries(post.data.series);
+        {
+          posts.map((post) => {
+            const seriesEntry = getSeries(post.data.series);
 
-          return (
-            <li class="category-card">
-              <a href={routes.record(post.id)}>
-                <Image
-                  src={post.data.heroImage ?? getRandomImage()}
-                  alt=""
-                  width={480}
-                  widths={[360, 480, 720, 960]}
-                  sizes="(max-width: 960px) 100vw, 480px"
-                  loading="lazy"
-                  decoding="async"
-                  class="category-card__image"
-                />
-                <div class="category-card__body">
-                  {seriesEntry && <p class="category-card__series">{seriesEntry.title}</p>}
-                  <h2>{post.data.title}</h2>
-                  <p>{post.data.description}</p>
-                  <FormattedDate date={post.data.pubDate} />
-                </div>
-              </a>
-            </li>
-          );
-        })}
+            return (
+              <li class="category-card">
+                <a href={routes.record(post.id)}>
+                  <Image
+                    src={post.data.heroImage ?? getRandomImage()}
+                    alt={getPostHeroImageAlt(post.data)}
+                    width={480}
+                    widths={[360, 480, 720, 960]}
+                    sizes="(max-width: 960px) 100vw, 480px"
+                    loading="lazy"
+                    decoding="async"
+                    class="category-card__image"
+                  />
+                  <div class="category-card__body">
+                    {seriesEntry && <p class="category-card__series">{seriesEntry.title}</p>}
+                    <h2>{post.data.title}</h2>
+                    <p>{post.data.description}</p>
+                    <FormattedDate date={post.data.pubDate} />
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
       </ul>
       <Footer />
     </main>

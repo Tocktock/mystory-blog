@@ -25,6 +25,7 @@ const {
   pubDate,
   updatedDate,
   heroImage,
+  heroImageAlt: providedHeroImageAlt,
   lang: providedLang,
   slug,
   ogImage,
@@ -38,6 +39,7 @@ const {
 const lang = providedLang ?? 'ko';
 const showPostMeta = providedShowPostMeta ?? sectionPath === '/records';
 const isRecordPost = sectionPath === '/records';
+const heroImageAlt = heroImage ? (providedHeroImageAlt ?? `${title} 대표 이미지`) : '';
 const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
 const heroWidths = heroImage
   ? [360, 480, 720, 960, 1280].filter((width) => width <= heroImage.width)
@@ -488,7 +490,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
               <div class="hero-image__frame">
                 <Image
                   src={heroImage}
-                  alt=""
+                  alt={heroImageAlt}
                   width={heroBaseWidth}
                   widths={heroWidths}
                   sizes="(max-width: 960px) calc(100vw - 2em), 960px"
