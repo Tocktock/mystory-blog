@@ -8,7 +8,7 @@ series: 'record-room-making'
 seriesOrder: 3
 ---
 
-# 함수와 함수와 함수와 함수.
+## 함수와 함수와 함수와 함수.
 
 ```
     pages/blog/[...slug].js

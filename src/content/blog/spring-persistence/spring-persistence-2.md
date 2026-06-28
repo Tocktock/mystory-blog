@@ -8,12 +8,12 @@ series: 'spring-persistence'
 seriesOrder: 2
 ---
 
-# Spring Boot Persistence Best Practices 정리 글입니다.
+## Spring Boot Persistence Best Practices 정리 글입니다.
 
 - 부모 테이블, 엔티티를 부모라고 하겠습니다.
 - 자식 테이블, 엔티티를 자식이라고 하겠습니다.
 
-# ManyToOne 관계
+## ManyToOne 관계
 
 ManyToOne 이란 어떤것을 의미하는 것일까?
 

@@ -13,7 +13,7 @@ seriesOrder: 1
 이전 포스트에서 코틀린 어노테이션과 리플렉션에 대해서 알아보았다.
 코틀린 리플렉션을 쓰면 런타임에 클래스 정보를 분석할 수 있다.
 
-# Json Serializer
+## Json Serializer
 
 Serializer(직렬화) 란 Object 정보를 Json 형식의 데이터로 변환해주는 것을 말한다.
 이를 구현하는 메서드는 아래 형태로 명세가 가능할 것이다.
@@ -57,7 +57,7 @@ private fun toReturnTypeString(obj: Any, property: KProperty1<out Any, *>): Stri
 // KProperty1 은 kotlin.reflect 에 있다.
 ```
 
-# 어노테이션 적용해보기
+## 어노테이션 적용해보기
 
 리플렉션을 이용하여 클래스 정보를 얻어오는 것은 정상적으로 수행되었다. 리플렉션 자체만으로도 기능을 수행할 수 있다는 것을 알 수 있다.
 이제 어노테이션을 통해 리플렉션만으로 작업할 수 없는 내용을 수행해보고자 한다.
@@ -124,7 +124,7 @@ class JsonMapper {
 }
 ```
 
-# 후기
+## 후기
 
 리플렉션을 이용하여 Object 를 Json 형식으로 변환하는 간단한 Serializer 를 만들었다.
 어노테이션을 사용하면 리플렉션의 기능을 유연하게 사용할 수 있는 것을 확인해보았다.

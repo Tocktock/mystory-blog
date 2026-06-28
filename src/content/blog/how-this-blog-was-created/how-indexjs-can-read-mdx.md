@@ -8,8 +8,6 @@ series: 'record-room-making'
 seriesOrder: 2
 ---
 
-# Next.js 가 페이지 경로를 생성하는 방식
-
 이전 시간에 /pages/blog/[...slug].js 라는 파일을 보고 기절했었다.
 
 이번에는 이 파일에 무엇이 있고 저 대괄호는 무슨 뜻을 가지는지 한 번 살펴보자.

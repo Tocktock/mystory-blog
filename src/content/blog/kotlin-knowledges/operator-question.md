@@ -8,7 +8,7 @@ series: 'kotlin-notes'
 seriesOrder: 1
 ---
 
-# `?` 이 syntax 는 무슨 역할을 할까?.
+## `?` 이 syntax 는 무슨 역할을 할까?.
 
 ## Any?.toString() 과 Any.toString()
 
