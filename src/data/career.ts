@@ -23,6 +23,7 @@ interface CareerEntry {
   role: string;
   position: string;
   period: string;
+  headline: string;
   summary: string;
   details: ReadonlyArray<{
     title: string;
@@ -120,8 +121,9 @@ export const careerEntries: readonly CareerEntry[] = [
     role: 'Backend SW Engineer',
     position: 'Lead',
     period: '2021 - 현재',
+    headline: '운송관리와 플랫폼 운영에 필요한 백엔드를 맡고 있습니다.',
     summary:
-      '제품팀에서 운송관리 도메인, 차주 매칭, 운영 도구, 데이터 조회, 배포·관측성 개선에 필요한 백엔드 개발을 맡고 있습니다.',
+      '제품팀에서 운송관리 도메인, 차주 매칭, 운영 도구, 데이터 조회, 배포·관측성 개선을 다뤄왔습니다.',
     details: [
       {
         title: '역할',
@@ -132,8 +134,9 @@ export const careerEntries: readonly CareerEntry[] = [
       },
     ],
     highlights: [
-      '기능 구현뿐 아니라 도메인 상태 기준, API 조회 흐름, 운영자가 확인하는 데이터 기준을 함께 다뤘습니다.',
-      '운송관리와 플랫폼 운영에서는 설계 기준 수립, 배포 이후의 관측 흐름 개선까지 맡았습니다.',
+      '도메인 상태 기준과 API 조회 흐름 정리',
+      '운영자가 확인하는 데이터 기준 정리',
+      '배포 이후 관측 흐름 개선',
     ],
     projects: [],
   },
