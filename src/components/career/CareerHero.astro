@@ -1,11 +1,6 @@
 ---
+import CareerLink from './CareerLink.astro';
 import { careerProfile } from '../../data/career';
-
-const heroActions = careerProfile.actions.map((action) => ({
-  label: action.label,
-  href: 'href' in action ? action.href : undefined,
-  external: 'external' in action ? action.external : undefined,
-}));
 ---
 
 <section class="career-hero" aria-labelledby="career-title">
@@ -34,99 +29,20 @@ const heroActions = careerProfile.actions.map((action) => ({
       <p class="career-hero__meta">{careerProfile.meta.join(' · ')}</p>
       <nav class="career-hero__actions" aria-label="주요 링크">
         {
-          heroActions.map((action) => (
-            <a
+          careerProfile.actions.map((action) => (
+            <CareerLink
               href={action.href}
               data-external={action.external ? 'true' : 'false'}
-              target={action.external ? '_blank' : undefined}
-              rel={action.external ? 'noopener noreferrer' : undefined}
+              external={action.external}
             >
               {action.label}
-            </a>
+            </CareerLink>
           ))
         }
       </nav>
     </aside>
   </div>
 </section>
-
-<script>
-  const careerHeroActions = document.querySelector('.career-hero__actions');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let careerHeroScrollFrame = 0;
-
-  const focusCareerSection = (target: HTMLElement) => {
-    if (!target.hasAttribute('tabindex')) {
-      target.setAttribute('tabindex', '-1');
-    }
-    target.focus({ preventScroll: true });
-  };
-
-  const updateCareerHash = (hash: string) => {
-    if (window.location.hash !== hash) {
-      history.pushState(null, '', hash);
-    }
-  };
-
-  const scrollCareerSection = (target: HTMLElement, hash: string) => {
-    cancelAnimationFrame(careerHeroScrollFrame);
-
-    const topOffset = 28;
-    const start = window.scrollY;
-    const destination = Math.max(0, start + target.getBoundingClientRect().top - topOffset);
-    const distance = destination - start;
-
-    if (reducedMotion.matches || Math.abs(distance) < 8) {
-      window.scrollTo(0, destination);
-      updateCareerHash(hash);
-      focusCareerSection(target);
-      return;
-    }
-
-    const duration = Math.min(420, Math.max(240, Math.abs(distance) * 0.22));
-    const startedAt = performance.now();
-    const easeOutCubic = (progress: number) => 1 - Math.pow(1 - progress, 3);
-
-    const tick = (currentTime: number) => {
-      const progress = Math.min((currentTime - startedAt) / duration, 1);
-      window.scrollTo(0, start + distance * easeOutCubic(progress));
-
-      if (progress < 1) {
-        careerHeroScrollFrame = requestAnimationFrame(tick);
-        return;
-      }
-
-      updateCareerHash(hash);
-      focusCareerSection(target);
-    };
-
-    careerHeroScrollFrame = requestAnimationFrame(tick);
-  };
-
-  careerHeroActions?.addEventListener('click', (event) => {
-    if (!(event.target instanceof HTMLElement)) {
-      return;
-    }
-
-    const link = event.target.closest<HTMLAnchorElement>('a[href^="#"]');
-    if (!link || !careerHeroActions.contains(link)) {
-      return;
-    }
-
-    const hash = link.getAttribute('href');
-    if (!hash || hash === '#') {
-      return;
-    }
-
-    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (!target) {
-      return;
-    }
-
-    event.preventDefault();
-    scrollCareerSection(target, hash);
-  });
-</script>
 
 <style>
   .career-hero {
@@ -250,7 +166,7 @@ const heroActions = careerProfile.actions.map((action) => ({
     margin: 0;
   }
 
-  .career-hero__actions a {
+  :global(.career-hero__actions a) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -274,20 +190,20 @@ const heroActions = careerProfile.actions.map((action) => ({
       transform 0.2s ease;
   }
 
-  .career-hero__actions a:hover,
-  .career-hero__actions a:focus-visible {
+  :global(.career-hero__actions a:hover),
+  :global(.career-hero__actions a:focus-visible) {
     border-color: color-mix(in srgb, var(--career-accent-strong) 42%, var(--career-line));
     background: color-mix(in srgb, var(--career-accent-strong) 10%, transparent);
     color: var(--career-accent-strong);
     transform: translateY(-1px);
   }
 
-  .career-hero__actions a:focus-visible {
+  :global(.career-hero__actions a:focus-visible) {
     outline: 2px solid color-mix(in srgb, var(--career-accent-strong) 54%, transparent);
     outline-offset: 3px;
   }
 
-  .career-hero__actions a:active {
+  :global(.career-hero__actions a:active) {
     transform: translateY(0);
   }
 

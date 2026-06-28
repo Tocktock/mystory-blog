@@ -8,6 +8,7 @@ import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
 import PostMeta from '../components/records/PostMeta.astro';
+import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 type Props = CollectionEntry<'blog'>['data'] & {
   lang?: string;
@@ -81,8 +82,8 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 <html lang={lang}>
   <head>
     <BaseHead title={title} description={description} image={ogImageURL} lang={lang} />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(articleJsonLd)} />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(articleJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(breadcrumbJsonLd)} />
     <style>
       main.blog-post-page {
         width: calc(100% - 2em);

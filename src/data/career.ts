@@ -1,4 +1,71 @@
-export const careerProfile = {
+export interface CareerLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+interface CareerProfile {
+  eyebrow: string;
+  role: string;
+  thesis: string;
+  summary: readonly string[];
+  workStyle: string;
+  meta: readonly string[];
+  overview: ReadonlyArray<{
+    label: string;
+    value: string;
+  }>;
+  actions: readonly CareerLink[];
+}
+
+interface CareerEntry {
+  company: string;
+  role: string;
+  position: string;
+  period: string;
+  summary: string;
+  details: ReadonlyArray<{
+    title: string;
+    items: ReadonlyArray<{
+      label: string;
+      value: string;
+    }>;
+  }>;
+  highlights: readonly string[];
+  projects: readonly CareerLink[];
+}
+
+interface CompanyWorkArea {
+  number: string;
+  label: string;
+  title: string;
+  proofs: ReadonlyArray<{
+    label: string;
+    value: string;
+  }>;
+  summary: readonly string[];
+  items: readonly string[];
+  links?: readonly CareerLink[];
+}
+
+interface OtherWorkItem {
+  area: string;
+  period?: string;
+  title: string;
+  description: string;
+}
+
+interface NowNext {
+  title: string;
+  description: readonly string[];
+  links: readonly CareerLink[];
+}
+
+interface CareerLinks {
+  links: readonly CareerLink[];
+}
+
+export const careerProfile: CareerProfile = {
   eyebrow: 'JIYONG PARK',
   role: 'Backend SW Engineer · Platform & AI Automation',
   thesis: '제품과 운영 사이의 복잡한 흐름을 백엔드로 정리합니다.',
@@ -45,9 +112,9 @@ export const careerProfile = {
       href: '/about/',
     },
   ],
-} as const;
+};
 
-export const careerEntries = [
+export const careerEntries: readonly CareerEntry[] = [
   {
     company: '센디',
     role: 'Backend SW Engineer',
@@ -66,13 +133,13 @@ export const careerEntries = [
     ],
     highlights: [
       '기능 구현뿐 아니라 도메인 상태 기준, API 조회 흐름, 운영자가 확인하는 데이터 기준을 함께 다뤘습니다.',
-      '일부 도메인에서는 설계와 운영 기준 수립, 배포 이후의 관측 흐름 개선까지 맡았습니다.',
+      '운송관리와 플랫폼 운영에서는 설계 기준 수립, 배포 이후의 관측 흐름 개선까지 맡았습니다.',
     ],
-    projects: [] as Array<{ title: string; href: string }>,
+    projects: [],
   },
 ] as const;
 
-export const companyWorkAreas = [
+export const companyWorkAreas: readonly CompanyWorkArea[] = [
   {
     number: '01',
     label: 'AI 기반 오더 자동화',
@@ -83,21 +150,21 @@ export const companyWorkAreas = [
         value: '일정 · 경로 · 주소 · 차량 옵션',
       },
       {
-        label: '운영 기준',
-        value: '필드 단위 실패 처리 · 검증 가능한 결과 저장',
+        label: '실패 처리',
+        value: '필드별 실패 격리와 재검증',
       },
       {
         label: '보완 방식',
-        value: '기존 입력 데이터 · 운영 사용 흐름 기반 후보 제안',
+        value: '과거 입력 패턴 기반 누락 필드 후보 제안',
       },
     ],
     summary: [
       '기업 고객의 자연어 운송 요청에서 일정, 경로, 주소, 차량 옵션, 작업 조건을 추출하고, 이를 표준 오더 스키마로 변환하는 LLM 기반 자동완성 흐름을 설계·구현했습니다.',
-      '주소 기준 데이터 보정, 누락 정보 보완 후보 제안, 필드 단위 실패 처리, 검증 가능한 결과 저장 흐름을 함께 구성했습니다.',
+      '주소 보정, 누락 필드 후보 제안, 필드별 실패 격리, 검증 결과 저장 흐름을 함께 구성했습니다.',
     ],
     items: [
       '정보 추출 영역 분리와 병렬 처리 흐름 구성',
-      '기존 입력 데이터와 운영 사용 흐름 기반 정보 보완 후보 제안',
+      '과거 입력 패턴 기반 정보 보완 후보 제안',
       '주소 보정과 LLM 결과 검증 흐름 설계',
       '부분 실패를 허용하는 필드 단위 결과 처리',
     ],
@@ -109,16 +176,16 @@ export const companyWorkAreas = [
     proofs: [
       {
         label: '지도 검색 API',
-        value: '배포 후 일정 기간 운영 관찰 기준 1초 이상 요청 0건',
+        value: '운영 로그 기준 지연 요청 제거',
       },
       {
-        label: '같은 구간 내 최대 응답 시간',
-        value: '약 239ms',
+        label: '성능 개선',
+        value: '실행계획 · 인덱스 정비',
       },
     ],
     summary: [
       'Aurora MySQL에서 PostgreSQL로 전환하는 과정에서 SQL 호환성, 타입 매핑, 타임존, 공간정보, 인덱스 이슈를 점검하고 애플리케이션 쿼리와 실행계획을 정비했습니다.',
-      '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 관찰 구간에서 1초 이상 요청을 0건으로 줄이고, 최대 응답 시간을 약 239ms 수준으로 안정화했습니다.',
+      '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 로그에서 반복적으로 보이던 지연 요청을 줄였습니다.',
     ],
     items: ['DB 전환 절차와 애플리케이션 SQL 호환성 검증', '공간 쿼리 실행계획과 인덱스 개선'],
     links: [
@@ -139,33 +206,33 @@ export const companyWorkAreas = [
       },
       {
         label: '관측/로그',
-        value: 'Datadog APM · Filebeat → OpenSearch',
+        value: 'APM · 중앙 로그 수집',
       },
     ],
     summary: [
-      'JAR 직접 실행 기반으로 운영되던 대상 서비스를 Docker/ECS 기반 배포 흐름으로 전환하고, GitHub Actions CI/CD, Datadog APM, Filebeat→OpenSearch 로그 수집을 연결했습니다.',
-      '배포 이후의 상태, 장애, 로그를 개발자와 운영자가 같은 기준으로 확인할 수 있도록 운영 기준을 표준화했습니다.',
+      'JAR 직접 실행 기반으로 운영되던 대상 서비스를 Docker/ECS 기반 배포 흐름으로 전환하고, CI/CD와 APM, 중앙 로그 수집을 연결했습니다.',
+      '배포 이후의 상태, 장애, 로그를 개발자와 운영자가 같은 기준으로 확인할 수 있도록 배포 체크리스트와 관측 기준을 정리했습니다.',
     ],
     items: [
       'Docker/ECS 기반 배포 흐름 전환',
-      'CI/CD 자동화와 환경별 배포 기준 표준화',
-      'APM과 중앙 로그 수집 파이프라인 구성',
+      'CI/CD 자동화와 환경별 배포 체크리스트 정리',
+      'APM 대시보드와 로그 조회 기준 구성',
     ],
   },
 ] as const;
 
-export const otherWorkItems = [
+export const otherWorkItems: readonly OtherWorkItem[] = [
   {
     area: '데이터·지표 가시화',
     title: 'Metabase 기반 비즈니스 지표 대시보드',
     description:
-      'Self-hosted Metabase 분석 환경을 운영·확장하며 반복적으로 확인하던 매출·주문 등 주요 비즈니스 지표를 대시보드화했습니다.',
+      '분석 환경을 운영·확장하며 반복적으로 확인하던 매출·주문 등 주요 비즈니스 지표를 대시보드화했습니다.',
   },
   {
     area: '데이터·지표 가시화',
-    title: '디비딥 Text-to-SQL 흐름 구성',
+    title: '사내 Text-to-SQL 흐름 구성',
     description:
-      "사내 자연어 지표 조회 도구 '디비딥'을 공동 개발하며 n8n 기반 워크플로우, 쿼리 카탈로그, SQL 생성·검증, Metabase 연동 흐름을 구성했습니다.",
+      '사내 자연어 지표 조회 도구를 공동 개발하며 워크플로우, 쿼리 카탈로그, SQL 생성·검증, 대시보드 연동 흐름을 구성했습니다.',
   },
   {
     area: '운송관리 / 매칭',
@@ -182,7 +249,7 @@ export const otherWorkItems = [
   },
 ] as const;
 
-export const nowNext = {
+export const nowNext: NowNext = {
   title: 'Cornerstone',
   description: [
     '흩어진 기록과 작업 맥락을 검색하고 이어볼 수 있도록 만드는 개인 프로젝트입니다.',
@@ -195,9 +262,9 @@ export const nowNext = {
       external: true,
     },
   ],
-} as const;
+};
 
-export const careerLinks = {
+export const careerLinks: CareerLinks = {
   links: [
     {
       label: 'GitHub',
@@ -209,4 +276,4 @@ export const careerLinks = {
       href: '/about/',
     },
   ],
-} as const;
+};

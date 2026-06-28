@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { buildBreadcrumbJsonLd, buildPersonJsonLd } from '../utils/jsonld';
 import { routes } from '../utils/routes';
+import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 interface Props {
   title: string;
@@ -31,8 +32,8 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 <html lang="ko">
   <head>
     <BaseHead title={title} description={description} lang="ko" />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(personJsonLd)} />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(breadcrumbJsonLd)} />
   </head>
   <body class="career-shell">
     <Header />
@@ -95,5 +96,35 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     opacity: 0.45;
     mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 100%);
     pointer-events: none;
+  }
+
+  :global(.career-section) {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: var(--career-section-padding, clamp(3rem, 7vw, 5rem) 0);
+    border-top: 1px solid var(--career-line);
+  }
+
+  :global(.career-section--compact) {
+    --career-section-padding: clamp(2.2rem, 6vw, 4rem) 0 0;
+  }
+
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  :global(#company-work),
+  :global(#other-work),
+  :global(#career-timeline),
+  :global(#selected-projects),
+  :global(#now-next),
+  :global(#career-related-links) {
+    scroll-margin-top: 28px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
   }
 </style>

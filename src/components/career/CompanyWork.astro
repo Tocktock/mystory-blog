@@ -1,8 +1,9 @@
 ---
+import CareerLink from './CareerLink.astro';
 import { companyWorkAreas } from '../../data/career';
 ---
 
-<section class="company-work" id="company-work" aria-labelledby="company-work-title">
+<section class="company-work career-section" id="company-work" aria-labelledby="company-work-title">
   <header class="company-work__header">
     <h2 id="company-work-title">대표 작업</h2>
   </header>
@@ -35,10 +36,12 @@ import { companyWorkAreas } from '../../data/career';
                   </div>
                 ))}
               </dl>
-              {'links' in area && area.links ? (
+              {area.links ? (
                 <nav class="company-work__links" aria-label={`${area.title} 관련 링크`}>
                   {area.links.map((link) => (
-                    <a href={link.href}>{link.label}</a>
+                    <CareerLink href={link.href} external={link.external}>
+                      {link.label}
+                    </CareerLink>
                   ))}
                 </nav>
               ) : null}
@@ -51,13 +54,6 @@ import { companyWorkAreas } from '../../data/career';
 </section>
 
 <style>
-  .company-work {
-    width: min(1120px, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: clamp(3rem, 7vw, 5rem) 0;
-    border-top: 1px solid var(--career-line);
-  }
-
   .company-work__header {
     max-width: 45rem;
     margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
@@ -68,13 +64,6 @@ import { companyWorkAreas } from '../../data/career';
     color: var(--career-ink);
     font-size: clamp(2rem, 4vw, 3rem);
     letter-spacing: 0;
-  }
-
-  .company-work__header p {
-    margin: 1rem 0 0;
-    color: var(--career-muted);
-    line-height: 1.75;
-    word-break: keep-all;
   }
 
   .company-work__list {
@@ -214,7 +203,7 @@ import { companyWorkAreas } from '../../data/career';
     justify-content: end;
   }
 
-  .company-work__links a {
+  :global(.company-work__links a) {
     color: var(--career-accent-strong);
     font-size: 0.92rem;
     font-weight: 700;
@@ -223,12 +212,12 @@ import { companyWorkAreas } from '../../data/career';
     transition: transform 0.2s ease;
   }
 
-  .company-work__links a::after {
+  :global(.company-work__links a::after) {
     content: ' →';
   }
 
-  .company-work__links a:hover,
-  .company-work__links a:focus-visible {
+  :global(.company-work__links a:hover),
+  :global(.company-work__links a:focus-visible) {
     transform: translateX(4px);
     text-decoration: underline;
     text-underline-offset: 0.22em;

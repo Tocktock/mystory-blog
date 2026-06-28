@@ -1,10 +1,9 @@
 ---
+import CareerLink from './CareerLink.astro';
 import { nowNext } from '../../data/career';
-
-const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
 ---
 
-<section class="now-next" aria-labelledby="now-next-title">
+<section class="now-next career-section" id="now-next" aria-labelledby="now-next-title">
   <header class="now-next__header">
     <p>개인적으로 만드는 도구</p>
     <h2 id="now-next-title">{nowNext.title}</h2>
@@ -12,16 +11,12 @@ const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
   <div class="now-next__body">
     {nowNext.description.map((paragraph) => <p>{paragraph}</p>)}
     {
-      nowNextLinks.length > 0 ? (
+      nowNext.links.length > 0 ? (
         <nav class="now-next__links" aria-label="현재 프로젝트 링크">
-          {nowNextLinks.map((link) => (
-            <a
-              href={link.href}
-              target={link.external ? '_blank' : undefined}
-              rel={link.external ? 'noopener noreferrer' : undefined}
-            >
+          {nowNext.links.map((link) => (
+            <CareerLink href={link.href} external={link.external}>
               {link.label}
-            </a>
+            </CareerLink>
           ))}
         </nav>
       ) : null
@@ -34,10 +29,6 @@ const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
     display: grid;
     grid-template-columns: minmax(15rem, 0.34fr) minmax(0, 1fr);
     gap: clamp(1.2rem, 4vw, 3rem);
-    width: min(1120px, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: clamp(3rem, 7vw, 5rem) 0;
-    border-top: 1px solid var(--career-line);
   }
 
   .now-next__header p {
@@ -81,7 +72,7 @@ const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
     margin-top: 0.35rem;
   }
 
-  .now-next__links a {
+  :global(.now-next__links a) {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -92,12 +83,12 @@ const nowNextLinks = 'links' in nowNext ? nowNext.links : [];
     transition: transform 0.2s ease;
   }
 
-  .now-next__links a::after {
+  :global(.now-next__links a::after) {
     content: '↗';
   }
 
-  .now-next__links a:hover,
-  .now-next__links a:focus-visible {
+  :global(.now-next__links a:hover),
+  :global(.now-next__links a:focus-visible) {
     transform: translate(2px, -2px);
     text-decoration: underline;
     text-underline-offset: 0.22em;

@@ -1,4 +1,12 @@
-export const selectedProjects = [
+export interface SelectedProject {
+  meta: string;
+  title: string;
+  description: string;
+  href: string;
+  external?: boolean;
+}
+
+export const selectedProjects: readonly SelectedProject[] = [
   {
     meta: '2023',
     title: 'Aurora MySQL에서 PostgreSQL로 옮긴 실제 마이그레이션 기록',

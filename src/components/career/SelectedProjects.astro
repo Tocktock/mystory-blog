@@ -1,39 +1,36 @@
 ---
+import CareerLink from './CareerLink.astro';
 import { selectedProjects } from '../../data/selectedProjects';
 ---
 
-<section class="selected-projects" id="selected-projects" aria-labelledby="selected-projects-title">
+<section
+  class="selected-projects career-section"
+  id="selected-projects"
+  aria-labelledby="selected-projects-title"
+>
   <header class="selected-projects__header">
     <h2 id="selected-projects-title">글과 기록</h2>
   </header>
   <div class="selected-projects__list">
     {
       selectedProjects.map((project) => (
-        <a
+        <CareerLink
           class="selected-projects__item"
           href={project.href}
-          target={'external' in project && project.external ? '_blank' : undefined}
-          rel={'external' in project && project.external ? 'noopener noreferrer' : undefined}
+          external={project.external}
         >
           <span class="selected-projects__meta">{project.meta}</span>
           <span class="selected-projects__text">
             <strong>{project.title}</strong>
             <p>{project.description}</p>
           </span>
-        </a>
+        </CareerLink>
       ))
     }
   </div>
 </section>
 
 <style>
-  .selected-projects {
-    width: min(1120px, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: clamp(3rem, 7vw, 5rem) 0;
-    border-top: 1px solid var(--career-line);
-  }
-
   .selected-projects__header {
     max-width: 42rem;
     margin-bottom: clamp(1.7rem, 4vw, 2.5rem);
@@ -50,7 +47,7 @@ import { selectedProjects } from '../../data/selectedProjects';
     display: grid;
   }
 
-  .selected-projects__item {
+  :global(.selected-projects__item) {
     display: grid;
     grid-template-columns: minmax(9.5rem, 0.18fr) minmax(0, 1fr);
     gap: clamp(1rem, 3vw, 2rem);
@@ -59,12 +56,12 @@ import { selectedProjects } from '../../data/selectedProjects';
     text-decoration: none;
   }
 
-  .selected-projects__item + .selected-projects__item {
+  :global(.selected-projects__item + .selected-projects__item) {
     border-top: 1px solid color-mix(in srgb, var(--career-line) 74%, transparent);
   }
 
-  .selected-projects__item:hover strong,
-  .selected-projects__item:focus-visible strong {
+  :global(.selected-projects__item:hover strong),
+  :global(.selected-projects__item:focus-visible strong) {
     color: var(--career-accent-strong);
   }
 
@@ -97,8 +94,8 @@ import { selectedProjects } from '../../data/selectedProjects';
     transition: transform 0.2s ease;
   }
 
-  .selected-projects__item:hover .selected-projects__text strong::after,
-  .selected-projects__item:focus-visible .selected-projects__text strong::after {
+  :global(.selected-projects__item:hover .selected-projects__text strong::after),
+  :global(.selected-projects__item:focus-visible .selected-projects__text strong::after) {
     transform: translateX(4px);
   }
 
@@ -111,7 +108,7 @@ import { selectedProjects } from '../../data/selectedProjects';
   }
 
   @media (max-width: 680px) {
-    .selected-projects__item {
+    :global(.selected-projects__item) {
       grid-template-columns: 1fr;
       gap: 0.5rem;
     }

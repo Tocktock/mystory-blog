@@ -1,22 +1,18 @@
 ---
+import CareerLink from './CareerLink.astro';
 import { careerLinks } from '../../data/career';
-
-const relatedLinks = careerLinks.links.map((link) => ({
-  ...link,
-  external: 'external' in link ? link.external : false,
-}));
 ---
 
-<section class="career-links" id="career-related-links" aria-labelledby="career-links-title">
+<section
+  class="career-links career-section career-section--compact"
+  id="career-related-links"
+  aria-labelledby="career-links-title"
+>
   <h2 id="career-links-title" class="sr-only">관련 링크</h2>
   <nav class="career-links__actions" aria-label="관련 링크">
     {
-      relatedLinks.map((link) => (
-        <a
-          href={link.href}
-          target={link.external ? '_blank' : undefined}
-          rel={link.external ? 'noopener noreferrer' : undefined}
-        >
+      careerLinks.links.map((link) => (
+        <CareerLink href={link.href} external={link.external}>
           <span class="career-links__icon" aria-hidden="true">
             {link.label === 'GitHub' ? (
               <svg viewBox="0 0 16 16" focusable="false">
@@ -37,20 +33,13 @@ const relatedLinks = careerLinks.links.map((link) => ({
             )}
           </span>
           <span>{link.label}</span>
-        </a>
+        </CareerLink>
       ))
     }
   </nav>
 </section>
 
 <style>
-  .career-links {
-    width: min(1120px, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: clamp(2.2rem, 6vw, 4rem) 0 0;
-    border-top: 1px solid var(--career-line);
-  }
-
   .career-links__actions {
     display: flex;
     flex-wrap: wrap;
@@ -58,7 +47,7 @@ const relatedLinks = careerLinks.links.map((link) => ({
     justify-content: flex-end;
   }
 
-  .career-links__actions a {
+  :global(.career-links__actions a) {
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
@@ -86,8 +75,8 @@ const relatedLinks = careerLinks.links.map((link) => ({
     display: block;
   }
 
-  .career-links__actions a:hover,
-  .career-links__actions a:focus-visible {
+  :global(.career-links__actions a:hover),
+  :global(.career-links__actions a:focus-visible) {
     transform: translate(2px, -2px);
     text-decoration: underline;
     text-underline-offset: 0.22em;
