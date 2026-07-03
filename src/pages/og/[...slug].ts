@@ -19,13 +19,11 @@ const pages = Object.fromEntries(
   }),
 );
 
-export const { getStaticPaths, GET } = OGImageRoute({
-  param: 'slug',
+export const { getStaticPaths, GET } = await OGImageRoute({
   pages,
   getImageOptions: (_path, page) => ({
     title: page.title,
     description: page.description,
-    dir: page.lang === 'ar' || page.lang === 'he' ? 'rtl' : 'ltr',
     bgGradient: [
       [12, 18, 44],
       [48, 69, 141],

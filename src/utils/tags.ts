@@ -19,7 +19,7 @@ export const toTagSlug = (label: string) => {
 	if (!sanitized) {
 		return null;
 	}
-	return encodeURIComponent(sanitized);
+	return sanitized;
 };
 
 const fallbackLabelFromSlug = (slug: string) =>

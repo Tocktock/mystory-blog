@@ -9,6 +9,6 @@ export const routes = {
   about: '/about',
   search: '/search',
   tags: '/tags',
-  tag: (slug: string) => `/tags/${slug}/`,
+  tag: (slug: string) => `/tags/${encodeURIComponent(slug)}/`,
   category: (slug: string) => `/categories/${slug}/`,
 } as const;

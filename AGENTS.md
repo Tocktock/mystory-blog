@@ -34,7 +34,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 ## Repository Orientation
 
-- `astro.config.mjs` - site URL, enabled integrations (MDX & sitemap; Tailwind deps exist but are not wired in).
+- `astro.config.mjs` - site URL and enabled integrations (MDX & sitemap).
 - `package.json` - scripts for dev/build/test/audits; `postbuild` runs `npx pagefind --site dist` to emit search assets.
 - `public/` - favicons, fonts, gallery images; anything here is copied verbatim to the build.
 - `src/assets/` - hero artwork (`heroes/`), blog placeholders, gallery JPEGs processed via `astro:assets`.
@@ -119,7 +119,7 @@ Optional overrides include `PUBLIC_GISCUS_LANG`, `PUBLIC_GISCUS_THEME`, `PUBLIC_
 
 - Content collection validation fails builds if required frontmatter is missing or malformed; match schema types (dates parsed via `z.coerce.date()`).
 - Default language is Korean; set `lang: 'en'` on English posts so OG cards and JSON-LD use the right locale.
-- Tailwind packages exist but are inactive; do not rely on utility classes until `astro.config.mjs` includes `tailwind()` and a config is committed.
+- Tailwind is not installed; if adding it later, use the supported Tailwind Vite plugin path instead of the deprecated `@astrojs/tailwind` integration.
 - Pagefind assets live under `dist/pagefind/`; missing bundles mean the search page will show a fallback notice.
 - OG generation depends on collection IDs; renaming or moving posts invalidates cached images - clean `dist/` if you change slugs.
 - CSP rules are in `vercel.json`; extend allowlists when embedding new third-party scripts or if audits fail due to blocked resources.
