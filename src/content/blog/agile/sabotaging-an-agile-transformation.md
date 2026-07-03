@@ -8,7 +8,7 @@ series: 'solve-again'
 seriesOrder: 1
 ---
 
-# 애자일을 방해하는 요소들
+## 애자일을 방해하는 요소들
 
 ## TLDR
 

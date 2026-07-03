@@ -26,10 +26,49 @@ import '../styles/search.css';
           기억나는 단어를 입력해보세요. 기술 노트, 일상 기록, 만냥구름 이야기까지 함께 찾아봅니다.
         </p>
       </section>
-      <div id="search" class="search-page__results"></div>
+      <div id="search" class="search-page__results">
+        <noscript>
+          <form class="search-page__noscript-form" action="/search/" method="get" role="search">
+            <label for="fallback-search">검색어</label>
+            <div>
+              <input
+                id="fallback-search"
+                name="q"
+                type="search"
+                placeholder="기록실에서 찾아볼게요"
+              />
+              <button type="submit">검색</button>
+            </div>
+          </form>
+          <p class="search-page__noscript-note">
+            검색 결과를 보려면 JavaScript가 필요합니다. 대신 상단 메뉴에서 기록과 시리즈를 둘러볼 수
+            있습니다.
+          </p>
+        </noscript>
+      </div>
     </main>
     <Footer />
     <script type="module" is:inline>
+      const SEARCH_QUERY_PARAM = 'q';
+
+      const getSearchTermFromURL = () => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(SEARCH_QUERY_PARAM)?.trim() ?? '';
+      };
+
+      const syncURLToSearchTerm = (term) => {
+        const url = new URL(window.location.href);
+        const normalizedTerm = term.trim();
+
+        if (normalizedTerm) {
+          url.searchParams.set(SEARCH_QUERY_PARAM, normalizedTerm);
+        } else {
+          url.searchParams.delete(SEARCH_QUERY_PARAM);
+        }
+
+        window.history.replaceState({}, '', url);
+      };
+
       const initSearch = async () => {
         try {
           const module = await import('/pagefind/pagefind-ui.js');
@@ -37,7 +76,7 @@ import '../styles/search.css';
           if (typeof PagefindUI !== 'function') {
             throw new Error('PagefindUI script did not expose the PagefindUI constructor.');
           }
-          new PagefindUI({
+          const search = new PagefindUI({
             element: '#search',
             bundlePath: '/pagefind/',
             showImages: true,
@@ -48,6 +87,28 @@ import '../styles/search.css';
               load_more: '더 보기',
               search_label: '기록 검색',
             },
+          });
+
+          const initialTerm = getSearchTermFromURL();
+          if (initialTerm) {
+            search.triggerSearch(initialTerm);
+          }
+
+          const container = document.querySelector('#search');
+          container?.addEventListener('input', (event) => {
+            const input = event.target;
+            if (input instanceof HTMLInputElement && input.matches('.pagefind-ui__search-input')) {
+              syncURLToSearchTerm(input.value);
+            }
+          });
+          container?.addEventListener('click', (event) => {
+            const button = event.target;
+            if (
+              button instanceof HTMLButtonElement &&
+              button.matches('.pagefind-ui__search-clear')
+            ) {
+              requestAnimationFrame(() => syncURLToSearchTerm(''));
+            }
           });
         } catch (error) {
           const container = document.querySelector('#search');

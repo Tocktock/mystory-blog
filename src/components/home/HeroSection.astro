@@ -6,15 +6,14 @@ import { routes } from '../../utils/routes';
 interface Props {
   recordCount: number;
   seriesCount: number;
-  activeSeriesCount: number;
   latestDateLabel: string;
 }
 
-const { recordCount, seriesCount, activeSeriesCount, latestDateLabel } = Astro.props as Props;
+const { recordCount, seriesCount, latestDateLabel } = Astro.props as Props;
 
 const heroStats = [
   { label: 'records', value: `${recordCount}편` },
-  { label: 'series', value: `${activeSeriesCount}/${seriesCount}` },
+  { label: 'series', value: `${seriesCount}개` },
   { label: 'latest', value: latestDateLabel },
 ];
 ---

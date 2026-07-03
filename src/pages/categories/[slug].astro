@@ -2,13 +2,13 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import EmptyState from '../../components/common/EmptyState.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { categoryList, type Category } from '../../data/categories';
 import { getSeries } from '../../data/series';
+import { getPostHeroImageAlt } from '../../utils/postImages';
 import { routes } from '../../utils/routes';
 import placeholder2 from '../../assets/placeholders/blog-placeholder-2.jpg';
 import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
@@ -30,15 +30,18 @@ const getRandomImage = () => {
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
-  return categoryList.map((category) => ({
-    params: { slug: category.slug },
-    props: {
+  return categoryList
+    .map((category) => ({
       category,
       posts: posts
         .filter((post) => post.data.category === category.slug)
         .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-    },
-  }));
+    }))
+    .filter(({ posts }) => posts.length > 0)
+    .map(({ category, posts }) => ({
+      params: { slug: category.slug },
+      props: { category, posts },
+    }));
 }
 
 const { category, posts } = Astro.props as Props;
@@ -66,46 +69,36 @@ const { category, posts } = Astro.props as Props;
         <p>{category.description}</p>
       </header>
 
-      {
-        posts.length > 0 ? (
-          <ul class="category-page__list">
-            {posts.map((post) => {
-              const seriesEntry = getSeries(post.data.series);
+      <ul class="category-page__list">
+        {
+          posts.map((post) => {
+            const seriesEntry = getSeries(post.data.series);
 
-              return (
-                <li class="category-card">
-                  <a href={routes.record(post.id)}>
-                    <Image
-                      src={post.data.heroImage ?? getRandomImage()}
-                      alt=""
-                      width={480}
-                      widths={[360, 480, 720, 960]}
-                      sizes="(max-width: 960px) 100vw, 480px"
-                      loading="lazy"
-                      decoding="async"
-                      class="category-card__image"
-                    />
-                    <div class="category-card__body">
-                      {seriesEntry && <p class="category-card__series">{seriesEntry.title}</p>}
-                      <h2>{post.data.title}</h2>
-                      <p>{post.data.description}</p>
-                      <FormattedDate date={post.data.pubDate} />
-                    </div>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <EmptyState
-            title="아직 이 책장은 비어 있어요"
-            description="이 카테고리의 기록은 천천히 채워질 예정입니다. 만냥구름도 아직 기다리는 중이에요."
-            href={routes.records}
-            linkLabel="전체 기록 보기"
-            compact
-          />
-        )
-      }
+            return (
+              <li class="category-card">
+                <a href={routes.record(post.id)}>
+                  <Image
+                    src={post.data.heroImage ?? getRandomImage()}
+                    alt={getPostHeroImageAlt(post.data)}
+                    width={480}
+                    widths={[360, 480, 720, 960]}
+                    sizes="(max-width: 960px) 100vw, 480px"
+                    loading="lazy"
+                    decoding="async"
+                    class="category-card__image"
+                  />
+                  <div class="category-card__body">
+                    {seriesEntry && <p class="category-card__series">{seriesEntry.title}</p>}
+                    <h2>{post.data.title}</h2>
+                    <p>{post.data.description}</p>
+                    <FormattedDate date={post.data.pubDate} />
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
       <Footer />
     </main>
   </body>

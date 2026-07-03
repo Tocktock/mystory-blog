@@ -12,8 +12,6 @@ tags:
   - writing
 ---
 
-# 회사에서 AI Advisor로 보낸 3개월 회고
-
 ## 1. 왜 AI Advisor를 맡았나
 
 내가 AI Advisor가 된 건 회사의 실험과 나의 호기심이 겹쳐진 순간이었다.  
