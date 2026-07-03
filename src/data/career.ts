@@ -230,6 +230,12 @@ export const companyWorkAreas: readonly CompanyWorkArea[] = [
 
 export const otherWorkItems: readonly OtherWorkItem[] = [
   {
+    area: 'AI 업무 자동화',
+    title: 'LLM 파인튜닝 기반 개체명 인식 적용',
+    description:
+      '운송 요청 문장의 개체명 인식 모델을 파인튜닝하고, 추출 결과를 오더폼 자동완성의 필드 후보 생성 흐름에 연결했습니다.',
+  },
+  {
     area: '데이터·지표 가시화',
     title: 'Metabase 기반 비즈니스 지표 대시보드',
     description:
