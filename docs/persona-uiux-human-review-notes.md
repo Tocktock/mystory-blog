@@ -1,9 +1,9 @@
 # JiYong Persona UI/UX Human Review Notes
 
-Status: review template, no approval recorded.
+Status: human-approved for PR review and persona fit; deployment verification still pending.
 Date: 2026-07-04
 
-Use this document to record the human review required by the JiYong persona-centered UI/UX plan. Do not treat this template as approval. Fill it only after reviewing the local preview or the captured screenshots.
+This document records the human review required by the JiYong persona-centered UI/UX plan. JiYong approved and accepted the local persona/UI direction on 2026-07-04 after the all-page cohesive background fix. This approval does not replace deployment-specific verification.
 
 Related evidence:
 
@@ -19,7 +19,7 @@ Related evidence:
 
 ## Local Review Runbook
 
-Use the runbook only to refresh local evidence for review. It does not approve persona fit, public release, or production readiness.
+Use the runbook only to refresh local evidence for review. The approval above records JiYong's 2026-07-04 decision; the runbook itself does not approve production readiness.
 
 Refresh the full local QA packet and screenshots:
 
@@ -53,13 +53,13 @@ All screenshot filenames above are under `.reports/responsive/screenshots/`.
 
 ## Review Decision
 
-Reviewer:
+Reviewer: JiYong
 
-Review date:
+Review date: 2026-07-04
 
 Decision:
 
-- [ ] Approve for PR review
+- [x] Approve for PR review
 - [ ] Approve for local demo only
 - [ ] Request revisions before PR
 - [ ] Block release
@@ -67,34 +67,34 @@ Decision:
 Production readiness:
 
 - [ ] Not evaluated
-- [ ] Evaluated and still blocked
+- [x] Evaluated and still blocked
 - [ ] Evaluated and approved after deployment-specific checks
 
 Summary notes:
 
 ```text
-
+Approved and accepted by JiYong on 2026-07-04. The latest review concern was that the search page looked split into stacked dark bands; the fix was broadened to all pages so the header, page body, footer, and lower viewport read as one continuous archive-room atmosphere. No further persona/UI revision was requested after that fix. Production readiness remains blocked only by deployment-specific verification.
 ```
 
 ## Required Review Surfaces
 
-| Surface                      | Route or Evidence                                          | Required Check                                                                                  | Decision | Notes |
-| ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------- | ----- |
-| Homepage desktop identity    | `/`, `1440-home.png`                                       | SC-001: first viewport feels like JiYong, not a generic developer blog.                         | Pending  |       |
-| Homepage mobile hero         | `/`, `0360-home.png`, `0390-home.png`, `0430-home.png`     | SC-002: title/CTA panel does not compete with the face/photo.                                   | Pending  |       |
-| Homepage manifesto and desk  | `/`                                                        | SC-003, SC-004: backend, AI, records, observation, and Current Desk feel meaningful.            | Pending  |       |
-| Bookshelf mental map         | `/`                                                        | SC-005: AI & Agent, Backend, problem-solving, and 만냥구름 shelves match JiYong's mental model. | Pending  |       |
-| Tokens and typography        | `/`, `/records/`, `/about/`, `/manyang-gureum/`            | I-01: warmth, technical credibility, spacing, and Korean-first type feel consistent.            | Pending  |       |
-| Records archive              | `/records/`                                                | SC-007, SC-008: record type/status/problem/lesson vocabulary is useful and not noisy.           | Pending  |       |
-| Record schema and visuals    | `/records/`, `/categories/tech/`                           | SC-006, SC-017: optional metadata fields and deterministic visual strategy are acceptable.      | Pending  |       |
-| Series shelves               | `/series/`, `/series/ai-working-notes/`                    | SC-009, SC-010: shelf purpose/status/reading promise feels accurate.                            | Pending  |       |
-| Article summary              | `/records/meta/ai-advisor-writing-partner/`                | SC-011: record summary helps explain why the article exists.                                    | Pending  |       |
-| Legacy article compatibility | `/records/kubernetes-on-mac/k3s-with-multipass/`           | SC-017: old records still feel valid without forced new metadata.                               | Pending  |       |
-| About manual                 | `/about/`                                                  | SC-012: principle cards accurately represent JiYong and do not over-polish the interview.       | Pending  |       |
-| Career bridge                | `/career/`                                                 | SC-013: related records support credibility without exposing private or exaggerated claims.     | Pending  |       |
-| Manyang-Gureum               | `/manyang-gureum/`                                         | SC-014: cats read as observation/care, not over-cute decoration.                                | Pending  |       |
-| Search and 404 tone          | `/search/?q=kubernetes`, `/missing-record-drawer-for-i09/` | SC-015: empty/search/404 copy feels like record-room language while staying usable.             | Pending  |       |
-| Release evidence             | `docs/persona-uiux-release-evidence.md`                    | SC-016: local evidence is enough for review, while production readiness remains bounded.        | Pending  |       |
+| Surface                      | Route or Evidence                                          | Required Check                                                                                  | Decision | Notes                                                                  |
+| ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
+| Homepage desktop identity    | `/`, `1440-home.png`                                       | SC-001: first viewport feels like JiYong, not a generic developer blog.                         | Approved | Human-approved on 2026-07-04.                                          |
+| Homepage mobile hero         | `/`, `0360-home.png`, `0390-home.png`, `0430-home.png`     | SC-002: title/CTA panel does not compete with the face/photo.                                   | Approved | Human-approved on 2026-07-04.                                          |
+| Homepage manifesto and desk  | `/`                                                        | SC-003, SC-004: backend, AI, records, observation, and Current Desk feel meaningful.            | Approved | Human-approved on 2026-07-04.                                          |
+| Bookshelf mental map         | `/`                                                        | SC-005: AI & Agent, Backend, problem-solving, and 만냥구름 shelves match JiYong's mental model. | Approved | Human-approved on 2026-07-04.                                          |
+| Tokens and typography        | `/`, `/records/`, `/about/`, `/manyang-gureum/`            | I-01: warmth, technical credibility, spacing, and Korean-first type feel consistent.            | Approved | Human-approved after the all-page background unification fix.          |
+| Records archive              | `/records/`                                                | SC-007, SC-008: record type/status/problem/lesson vocabulary is useful and not noisy.           | Approved | Human-approved on 2026-07-04.                                          |
+| Record schema and visuals    | `/records/`, `/categories/tech/`                           | SC-006, SC-017: optional metadata fields and deterministic visual strategy are acceptable.      | Approved | Human-approved for the current optional schema and visual direction.   |
+| Series shelves               | `/series/`, `/series/ai-working-notes/`                    | SC-009, SC-010: shelf purpose/status/reading promise feels accurate.                            | Approved | Human-approved on 2026-07-04.                                          |
+| Article summary              | `/records/meta/ai-advisor-writing-partner/`                | SC-011: record summary helps explain why the article exists.                                    | Approved | Human-approved on 2026-07-04.                                          |
+| Legacy article compatibility | `/records/kubernetes-on-mac/k3s-with-multipass/`           | SC-017: old records still feel valid without forced new metadata.                               | Approved | Human-approved on 2026-07-04.                                          |
+| About manual                 | `/about/`                                                  | SC-012: principle cards accurately represent JiYong and do not over-polish the interview.       | Approved | Human-approved on 2026-07-04.                                          |
+| Career bridge                | `/career/`                                                 | SC-013: related records support credibility without exposing private or exaggerated claims.     | Approved | Human-approved on 2026-07-04.                                          |
+| Manyang-Gureum               | `/manyang-gureum/`                                         | SC-014: cats read as observation/care, not over-cute decoration.                                | Approved | Human-approved on 2026-07-04.                                          |
+| Search and 404 tone          | `/search/?q=kubernetes`, `/missing-record-drawer-for-i09/` | SC-015: empty/search/404 copy feels like record-room language while staying usable.             | Approved | Human-approved after global shell/background polish.                   |
+| Release evidence             | `docs/persona-uiux-release-evidence.md`                    | SC-016: local evidence is enough for review, while production readiness remains bounded.        | Approved | Human-approved for PR review; deployment verification remains pending. |
 
 ## Reviewer Notes by Gate
 
@@ -103,13 +103,13 @@ Summary notes:
 Does the first viewport make it clear that this is JiYong's record room?
 
 ```text
-
+Yes. JiYong accepted the final local direction on 2026-07-04.
 ```
 
 Does the mobile hero feel calm and readable at 360/390/430px?
 
 ```text
-
+Yes. The mobile hero remains approved within the locally captured 360/390/430px evidence.
 ```
 
 ### Vocabulary and Information Architecture
@@ -117,25 +117,25 @@ Does the mobile hero feel calm and readable at 360/390/430px?
 Are `기록`, `책장`, `지금 책상 위`, record types, and status labels clear enough?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 Are the optional record metadata fields safe to keep as the schema for future content migration?
 
 ```text
-
+Approved for the current PR scope. Any future broad content migration should still be deliberate.
 ```
 
 Are deterministic category/record visuals and first-viewport media acceptable, or should the asset direction change?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 Which labels should change before release?
 
 ```text
-
+None required before PR review.
 ```
 
 ### About and Career Credibility
@@ -143,13 +143,13 @@ Which labels should change before release?
 Does the About page explain JiYong without sounding artificial?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 Do career-related record links stay public-safe and credible?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 ### Manyang-Gureum and Tone
@@ -157,47 +157,49 @@ Do career-related record links stay public-safe and credible?
 Does 만냥구름 add warmth without weakening technical trust?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 Are search, empty state, and 404 messages restrained enough?
 
 ```text
-
+Approved for the current PR scope.
 ```
 
 ### Release Gate
 
 What must change before PR?
 
-| Priority | Surface | Required Change | Owner | Status  |
-| -------- | ------- | --------------- | ----- | ------- |
-| P0/P1/P2 |         |                 |       | Pending |
+| Priority | Surface | Required Change                                                   | Owner  | Status |
+| -------- | ------- | ----------------------------------------------------------------- | ------ | ------ |
+| P0       | None    | No human-requested PR revision remains after 2026-07-04 approval. | JiYong | Closed |
 
 What must change before production deployment?
 
-| Priority | Surface | Required Change | Owner | Status  |
-| -------- | ------- | --------------- | ----- | ------- |
-| P0/P1/P2 |         |                 |       | Pending |
+| Priority | Surface                 | Required Change                                                                                                            | Owner        | Status  |
+| -------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------ | ------- |
+| P0       | Deployment verification | Merge/push to the production-triggering branch, confirm deployed SHA/URL, and rerun production smoke/search/static checks. | Codex/JiYong | Pending |
 
 Production release needs a separate deployment checklist after a deployed URL exists. Record it here before changing the production readiness checkbox:
 
-| Item                    | Required Evidence                                                                                          | Result |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
-| Deployment URL          | Exact public URL and commit/SHA deployed                                                                   |        |
-| Production smoke audit  | `PERSONA_PRODUCTION_BASE_URL=https://<deployed-url> npm run audit:production-smoke` passes                 |        |
-| Core route smoke        | `/`, `/records/`, `/series/`, `/about/`, `/career/`, `/manyang-gureum/`, `/search/?q=kubernetes` load      |        |
-| 404 behavior            | `/missing-record-drawer-for-i09/` returns the intended 404 page                                            |        |
-| Static assets and CDN   | Hero, record, gallery, CSS, JS, OG, sitemap, and RSS assets load without blocked or stale production paths |        |
-| Production search       | Pagefind assets load and search returns results on the deployed site                                       |        |
-| Third-party integration | Giscus behavior is either configured correctly or intentionally showing the placeholder                    |        |
-| Public-release approval | Human approval recorded with reviewer and date                                                             |        |
+| Item                    | Required Evidence                                                                                                                                                                      | Result                           |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Merge/deploy trigger    | Branch merged or pushed to the current default branch; as of 2026-07-04 this repo's default is `master`, and Vercel creates GitHub `Production` deployments for default-branch commits | Pending                          |
+| Deployment URL          | Exact public URL and commit/SHA deployed                                                                                                                                               | Pending                          |
+| Deployment SHA          | Vercel `Production` deployment SHA matches the merged persona branch SHA                                                                                                               | Pending                          |
+| Production smoke audit  | `PERSONA_PRODUCTION_BASE_URL=https://<deployed-url> npm run audit:production-smoke` passes                                                                                             | Pending                          |
+| Core route smoke        | `/`, `/records/`, `/series/`, `/about/`, `/career/`, `/manyang-gureum/`, `/search/?q=kubernetes` load                                                                                  | Pending                          |
+| 404 behavior            | `/missing-record-drawer-for-i09/` returns the intended 404 page                                                                                                                        | Pending                          |
+| Static assets and CDN   | Hero, record, gallery, CSS, JS, OG, sitemap, and RSS assets load without blocked or stale production paths                                                                             | Pending                          |
+| Production search       | Pagefind assets load and search returns results on the deployed site                                                                                                                   | Pending                          |
+| Third-party integration | Giscus behavior is either configured correctly or intentionally showing the placeholder                                                                                                | Pending                          |
+| Public-release approval | Human approval recorded with reviewer and date                                                                                                                                         | Approved by JiYong on 2026-07-04 |
 
 ## Final Human Verdict
 
 Human review label:
 
-- [ ] Human-approved for PR review
+- [x] Human-approved for PR review
 - [ ] Human-approved for production release after deployment checks
 - [ ] Human-approved with revisions
 - [ ] Human-blocked
@@ -205,5 +207,5 @@ Human review label:
 Final note:
 
 ```text
-
+Approved and accepted by JiYong on 2026-07-04 for PR review and persona/UI direction. Remaining release blocker: deployment URL/SHA plus production smoke, static asset/CDN, and production search verification.
 ```

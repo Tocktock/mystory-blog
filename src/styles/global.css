@@ -27,8 +27,14 @@
   --color-line: #e4d7c6;
   --gray-gradient: rgba(246, 239, 228, 0.92), #fffaf2;
   --body-background:
-    linear-gradient(180deg, rgba(105, 123, 91, 0.08) 0%, transparent 22rem),
-    linear-gradient(var(--gray-gradient)) no-repeat;
+    radial-gradient(
+      ellipse at 50% -10rem,
+      rgba(var(--accent-rgb), 0.14) 0,
+      rgba(var(--accent-rgb), 0.07) 20rem,
+      transparent 38rem
+    ),
+    radial-gradient(ellipse at 18% 26rem, rgba(var(--sage-rgb), 0.08) 0, transparent 32rem),
+    linear-gradient(180deg, var(--surface-elevated) 0, var(--surface) 46rem);
   --box-shadow: 0 10px 30px rgba(74, 47, 34, 0.12), 0 2px 8px rgba(74, 47, 34, 0.08);
   --code-bg: rgba(var(--gray-light), 0.55);
   --room-bg: var(--surface);
@@ -64,8 +70,14 @@
   --color-line: #4a382c;
   --gray-gradient: rgba(31, 23, 18, 0.92), #2a2019;
   --body-background:
-    linear-gradient(180deg, rgba(145, 163, 126, 0.08) 0%, transparent 22rem),
-    linear-gradient(var(--gray-gradient)) no-repeat;
+    radial-gradient(
+      ellipse at 50% -10rem,
+      rgba(var(--accent-rgb), 0.16) 0,
+      rgba(var(--accent-rgb), 0.08) 20rem,
+      transparent 38rem
+    ),
+    radial-gradient(ellipse at 18% 26rem, rgba(var(--sage-rgb), 0.08) 0, transparent 32rem),
+    linear-gradient(180deg, var(--surface-elevated) 0, var(--surface) 46rem);
   --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.28);
   --code-bg: rgba(var(--gray-light), 0.8);
 }
@@ -84,13 +96,20 @@
   font-display: swap;
 }
 body {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
   font-family: var(--font-body);
   margin: 0;
   padding: 0;
   text-align: left;
   background: var(--body-background);
   background-color: var(--surface);
-  background-size: 100% 600px;
+  background-repeat: no-repeat;
+  background-size:
+    100% 42rem,
+    100% 46rem,
+    100% 100%;
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
@@ -101,9 +120,10 @@ body {
     color var(--motion-base) ease;
 }
 main {
+  flex: 1 0 auto;
   width: 720px;
   max-width: calc(100% - 2em);
-  margin: auto;
+  margin: 0 auto;
   padding: 3em 1em;
 }
 h1,

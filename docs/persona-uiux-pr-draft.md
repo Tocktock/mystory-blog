@@ -1,6 +1,6 @@
 # PR Draft: Implement JiYong Persona-Centered Record Room UI
 
-Status: local PR draft only. No branch push or GitHub PR has been performed from this document.
+Status: human-approved local PR draft only. No branch push or GitHub PR has been performed from this document.
 
 Base branch: `master`
 
@@ -10,7 +10,7 @@ Head branch: `codex/jiyong-persona-uiux`
 
 This branch implements the JiYong persona-centered UI/UX plan for `지용의 기록실` as a locally verified review packet. The site now frames itself around JiYong's record room: Backend, AI/Agent work, problem-solving records, career proof, reflective notes, and 만냥구름.
 
-The implementation preserves the existing Astro static-site structure and keeps new record metadata optional so legacy posts continue to build and render.
+The implementation preserves the existing Astro static-site structure and keeps new record metadata optional so legacy posts continue to build and render. JiYong approved and accepted the current persona/UI direction on 2026-07-04; deployment verification remains separate.
 
 ## Main Changes
 
@@ -28,6 +28,8 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Added a reproducible keyboard audit for visible focus stops and visible focus indicators on home, records, and search.
 - Added reproducible publication safety and static local link audits to replace manual release-evidence rows.
 - Added an optional production-smoke audit for deployed route/status/text/static-asset/Pagefind/Giscus checks once `PERSONA_PRODUCTION_BASE_URL` is set.
+- Verified that Vercel, not this GitHub CI workflow, creates Production deployments for default-branch commits; the current production/default branch is `master`.
+- Recorded JiYong's 2026-07-04 human approval in the release evidence and human review notes.
 
 ## Verification
 
@@ -74,6 +76,10 @@ Verified locally on 2026-07-04:
   - 0 vulnerabilities
 - `.github/workflows/ci.yml`
   - push trigger includes `master` and `main`; `pull_request` remains enabled
+- GitHub deployment records
+  - repository default branch is `master`
+  - recent `Production` deployments are created by `vercel[bot]` for `origin/master` commits
+  - merging this branch to the default branch is expected to trigger Vercel, but the resulting deployed URL still needs `PERSONA_PRODUCTION_BASE_URL=<url> npm run audit:production-smoke`
 
 Additional local evidence:
 
@@ -87,6 +93,7 @@ Additional local evidence:
 - RSS/dark-mode regressions: `/rss.xml` keeps canonical `/records/` links, and the theme toggle persists after reload.
 - Search accessibility regression: hydrated Pagefind input and no-JS fallback remain reachable by the `검색어` label.
 - CI rollout config: local workflow file now covers the `master` base branch listed for this review.
+- Deploy trigger config: Vercel Git integration is visible through GitHub deployment records for `master`; this branch is not deployed until it is pushed/merged through that production branch path.
 
 ## Evidence Docs
 
@@ -98,7 +105,7 @@ Additional local evidence:
 
 ## Human / External Gates
 
-These are intentionally not claimed as locally verified:
+These human gates are closed for the current PR scope by JiYong approval on 2026-07-04:
 
 - JiYong first-viewport identity and emotional fit.
 - Design token, typography, warmth, and technical-credibility balance.
@@ -108,7 +115,11 @@ These are intentionally not claimed as locally verified:
 - About page principle-card copy.
 - Career-to-record links for privacy and credibility boundaries.
 - 만냥구름, search, empty-state, and 404 tone boundaries.
-- Deployment URL for this branch, passing production-smoke result, CDN/static asset behavior, production search behavior, and public-release approval.
+
+These are intentionally not claimed as locally verified:
+
+- Deployment URL for this branch, passing production-smoke result, CDN/static asset behavior, and production search behavior.
+- Confirmation that the post-merge Vercel Production deployment SHA matches the merged persona branch SHA.
 
 ## Deliberately Not Done
 
@@ -117,8 +128,8 @@ These are intentionally not claimed as locally verified:
 - Did not add a new production dependency.
 - Did not run `npm audit fix` for dev-only moderate findings because that would widen this UI/UX slice into dependency upgrade work.
 - Did not include ignored/generated outputs such as `dist/`, `.reports/`, `output/`, or the unrelated local `exports/` backup.
-- Did not claim production readiness, deployment success, or human persona approval.
+- Did not claim production readiness or deployment success.
 
 ## Review Recommendation
 
-Open as a draft PR after explicit publication approval. Treat it as locally verified and human-review-ready, not production-ready.
+Open as a draft PR when GitHub publication is requested. Treat it as locally verified and human-approved for the current PR scope, not deployment-verified or production-ready.
