@@ -30,28 +30,29 @@ The site should read as JiYong's working memory, not as a generic developer blog
 
 ## Current Evidence
 
-| Evidence Surface                | Result                                                                                          | Label                                |
-| ------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `npm run check`                 | 87 files, 0 errors, 0 warnings, 0 hints                                                         | Verified                             |
-| `npm run lint`                  | Passed with `--max-warnings=0`                                                                  | Verified                             |
-| `git diff --check`              | Passed                                                                                          | Verified                             |
-| `npm run build`                 | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                             | Verified                             |
-| `npm run test:e2e`              | 27 Chromium tests passed                                                                        | Verified                             |
-| Lighthouse on built preview `/` | Performance 100, accessibility 100, SEO 100                                                     | Verified                             |
-| `npm run audit:axe`             | Playwright-backed axe runner checked 11 target routes, 0 violations                             | Verified                             |
-| `npm run audit:links`           | Same-origin preview crawl checked 694 links: 367 OK, 327 skipped external/non-preview, 0 broken | Verified                             |
-| `npm run audit:web`             | Built-preview audit passed Lighthouse, axe, and same-origin link crawl                          | Verified                             |
-| Audit dependency cleanup        | Removed unused `@axe-core/cli`/ChromeDriver path; `audit:axe` now depends on direct `axe-core`  | Verified                             |
-| `npm audit --omit=dev`          | 0 vulnerabilities                                                                               | Verified                             |
-| Publication safety scan         | Secret-like pattern scan found only documented Giscus placeholders/env readers                  | Verified                             |
-| Diff scope audit                | `exports/`, generated reports, local screenshots, and Playwright scratch output are ignored     | Verified                             |
-| Static local link check         | 138 generated HTML files, 3,781 local references, 0 broken                                      | Verified                             |
-| Responsive screenshots          | 66 screenshots across 11 routes and 6 widths; no measured horizontal overflow                   | Verified                             |
-| Keyboard spot check             | Home, records, and search each produced 12 visible focus stops                                  | Verified                             |
-| Human review notes template     | `docs/persona-uiux-human-review-notes.md` exists, but no approval is recorded                   | Verified template only               |
-| Human review                    | Not performed in this repository state                                                          | Human/external verification required |
+| Evidence Surface                | Result                                                                                                 | Label                                |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `npm run check`                 | 87 files, 0 errors, 0 warnings, 0 hints                                                                | Verified                             |
+| `npm run lint`                  | Passed with `--max-warnings=0`                                                                         | Verified                             |
+| `git diff --check`              | Passed                                                                                                 | Verified                             |
+| `npm run build`                 | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                    | Verified                             |
+| `npm run test:e2e`              | 28 Chromium tests passed                                                                               | Verified                             |
+| Lighthouse on built preview `/` | Performance 100, accessibility 100, SEO 100                                                            | Verified                             |
+| `npm run audit:axe`             | Playwright-backed axe runner checked 11 target routes, 0 violations                                    | Verified                             |
+| `npm run audit:links`           | Same-origin preview crawl checked 694 links: 367 OK, 327 skipped external/non-preview, 0 broken        | Verified                             |
+| `npm run audit:web`             | Fresh build plus preview audit passed Lighthouse, axe, and same-origin link crawl                      | Verified                             |
+| Audit dependency cleanup        | Removed unused `@axe-core/cli`/ChromeDriver path; `audit:web` now builds before preview                | Verified                             |
+| `npm audit --omit=dev`          | 0 vulnerabilities                                                                                      | Verified                             |
+| Publication safety scan         | Secret-like pattern scan found only documented Giscus placeholders/env readers                         | Verified                             |
+| Diff scope audit                | `exports/`, generated reports, local screenshots, and Playwright scratch output are ignored            | Verified                             |
+| Static local link check         | 138 generated HTML files, 3,781 local references, 0 broken                                             | Verified                             |
+| Responsive screenshots          | 66 screenshots across 11 routes and 6 widths; no measured horizontal overflow                          | Verified                             |
+| Keyboard spot check             | Home, records, and search each produced 12 visible focus stops; collapsed mobile nav regression passed | Verified                             |
+| Slice contract register         | `docs/persona-uiux-slice-contracts.md` maps I-00 through I-09 contracts, checkpoints, and gates        | Verified                             |
+| Human review notes template     | `docs/persona-uiux-human-review-notes.md` exists, but no approval is recorded                          | Verified template only               |
+| Human review                    | Not performed in this repository state                                                                 | Human/external verification required |
 
-Local evidence artifacts are under `output/playwright/i09-final-qa-20260704/` and `.reports/` on this machine. Those paths are ignored build/report outputs, so the table above captures the important result summary for review.
+Local evidence artifacts are under `output/playwright/i09-final-qa-20260704/` and `.reports/` on this machine. Those paths are ignored build/report outputs, so the table above captures the important result summary for review. `npm run audit:web` now runs a fresh build before opening `astro preview`; older evidence used an explicit build-before-audit sequence.
 
 ## Assumptions
 
@@ -65,6 +66,8 @@ Local evidence artifacts are under `output/playwright/i09-final-qa-20260704/` an
 
 - Human/external verification required: first-viewport JiYong identity and emotional fit.
 - Human/external verification required: design tokens, typography, and warmth/technical balance.
+- Human/external verification required: schema review for optional record metadata before any broad content migration.
+- Human/external verification required: asset decision for deterministic record/category visuals and first-viewport media.
 - Human/external verification required: record type vocabulary and whether `생각 기록`, `기술 기록`, and status labels feel right.
 - Human/external verification required: series shelf copy and reading promises.
 - Human/external verification required: About page principle-card copy and whether it accurately represents JiYong.
@@ -81,7 +84,7 @@ Local evidence artifacts are under `output/playwright/i09-final-qa-20260704/` an
 | SC-003   | MUST_PASS  | human_required         | Homepage copy connects Backend, AI Agent, records, observation, and 만냥구름.                                                                                    | Human copy approval.                                   |
 | SC-004   | REGRESSION | human_required         | E2E asserts Current Desk derived labels and numeric record/series counts.                                                                                        | Human approval that the status model feels meaningful. |
 | SC-005   | MUST_PASS  | human_required         | E2E asserts bookshelf mental-map copy for AI & Agent, Backend, problem-solving, and 만냥구름.                                                                    | Human approval of IA language.                         |
-| SC-006   | MUST_PASS  | in_this_slice          | Record card/category route tests verify deterministic category cover behavior.                                                                                   | None for local automated acceptance.                   |
+| SC-006   | MUST_PASS  | in_this_slice          | Record card/category route tests verify deterministic category cover behavior.                                                                                   | Human asset-decision approval still useful.            |
 | SC-007   | MUST_PASS  | in_this_slice          | Records E2E asserts optional type/status/problem/lesson rendering for a new-metadata post; legacy render tests cover fallback.                                   | Human vocabulary approval still useful.                |
 | SC-008   | REGRESSION | in_this_slice          | Records E2E covers category route navigation and record-type orientation.                                                                                        | None for local automated acceptance.                   |
 | SC-009   | MUST_PASS  | human_required         | Series E2E covers learning shelf metadata and active shelf rendering.                                                                                            | Human approval of shelf purpose/status copy.           |
@@ -96,18 +99,18 @@ Local evidence artifacts are under `output/playwright/i09-final-qa-20260704/` an
 
 ## Backlog Classification
 
-| Backlog Slice                                 | Current Classification | Evidence                                                                                                                                      | Remaining Gate                                                                             |
-| --------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| I-00 Baseline and slice contract              | in_this_slice          | Baseline checks and screenshots were captured as part of the final evidence set.                                                              | None.                                                                                      |
-| I-01 Design tokens, type, and copy dictionary | human_required         | Global CSS/ui copy changes are implemented and validated by build/tests.                                                                      | Design token and typography approval.                                                      |
-| I-02 Homepage first impression                | human_required         | Homepage implementation, E2E coverage, and responsive screenshots exist.                                                                      | JiYong first-impression approval.                                                          |
-| I-03 Records archive semantics                | human_required         | Optional schema/card semantics, deterministic covers, and records tests exist.                                                                | Record vocabulary approval.                                                                |
-| I-04 Series as learning shelves               | human_required         | Series metadata/detail behavior and tests exist.                                                                                              | Series purpose copy approval.                                                              |
-| I-05 Article pages as record documents        | human_required         | Record summary component and legacy/new post tests exist.                                                                                     | Article summary visual-tone approval.                                                      |
-| I-06 About as JiYong Manual                   | human_required         | Principle cards and interview preservation are tested.                                                                                        | JiYong copy approval.                                                                      |
-| I-07 Career and records bridge                | human_required         | Career related-record links are implemented and tested.                                                                                       | Privacy and credibility review.                                                            |
-| I-08 Manyang-Gureum and microcopy polish      | human_required         | 만냥구름, empty state, search, and 404 tone are implemented and tested.                                                                       | Tone approval.                                                                             |
-| I-09 Final QA and release evidence            | human_required         | Final local checks, screenshot matrix, `npm run audit:web`, local link check, keyboard spot check, release packet, and review-notes template. | Filled human review notes plus production/deployment verification if release is requested. |
+| Backlog Slice                                 | Current Classification | Evidence                                                                                                                                                               | Remaining Gate                                                                                                       |
+| --------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| I-00 Baseline and slice contract              | in_this_slice          | Baseline checks and screenshots were captured as part of the final evidence set.                                                                                       | None.                                                                                                                |
+| I-01 Design tokens, type, and copy dictionary | human_required         | Global CSS/ui copy changes are implemented and validated by build/tests.                                                                                               | Design token and typography approval.                                                                                |
+| I-02 Homepage first impression                | human_required         | Homepage implementation, E2E coverage, and responsive screenshots exist.                                                                                               | JiYong first-impression approval.                                                                                    |
+| I-03 Records archive semantics                | human_required         | Optional schema/card semantics, deterministic covers, and records tests exist.                                                                                         | Schema, record vocabulary, and asset-decision approval.                                                              |
+| I-04 Series as learning shelves               | human_required         | Series metadata/detail behavior and tests exist.                                                                                                                       | Series purpose copy approval.                                                                                        |
+| I-05 Article pages as record documents        | human_required         | Record summary component and legacy/new post tests exist.                                                                                                              | Article summary visual-tone approval.                                                                                |
+| I-06 About as JiYong Manual                   | human_required         | Principle cards and interview preservation are tested.                                                                                                                 | JiYong copy approval.                                                                                                |
+| I-07 Career and records bridge                | human_required         | Career related-record links are implemented and tested.                                                                                                                | Privacy and credibility review.                                                                                      |
+| I-08 Manyang-Gureum and microcopy polish      | human_required         | 만냥구름, empty state, search, and 404 tone are implemented and tested.                                                                                                | Tone approval.                                                                                                       |
+| I-09 Final QA and release evidence            | human_required         | Final local checks, screenshot matrix, `npm run audit:web`, local link check, keyboard spot check, release packet, review-notes template, and slice contract register. | Filled human review notes, slice contract sign-off, plus production/deployment verification if release is requested. |
 
 ## Lens Review
 

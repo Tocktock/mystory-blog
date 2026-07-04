@@ -8,6 +8,7 @@ Use this document to record the human review required by the JiYong persona-cent
 Related evidence:
 
 - Release evidence packet: `docs/persona-uiux-release-evidence.md`
+- Slice contract register: `docs/persona-uiux-slice-contracts.md`
 - Final screenshot bundle: `output/playwright/i09-final-qa-20260704/`
 - Responsive summary: `output/playwright/i09-final-qa-20260704/responsive-screenshot-summary.json`
 - Accessibility summary: `output/playwright/i09-final-qa-20260704/axe-summary.json`
@@ -53,6 +54,7 @@ Summary notes:
 | Homepage manifesto and desk  | `/`                                                    | SC-003, SC-004: backend, AI, records, observation, and Current Desk feel meaningful.            | Pending  |       |
 | Bookshelf mental map         | `/`                                                    | SC-005: AI & Agent, Backend, problem-solving, and 만냥구름 shelves match JiYong's mental model. | Pending  |       |
 | Records archive              | `/records/`                                            | SC-007, SC-008: record type/status/problem/lesson vocabulary is useful and not noisy.           | Pending  |       |
+| Record schema and visuals    | `/records/`, `/categories/tech/`                       | SC-006, SC-017: optional metadata fields and deterministic visual strategy are acceptable.      | Pending  |       |
 | Series shelves               | `/series/`, `/series/ai-working-notes/`                | SC-009, SC-010: shelf purpose/status/reading promise feels accurate.                            | Pending  |       |
 | Article summary              | `/records/meta/ai-advisor-writing-partner/`            | SC-011: record summary helps explain why the article exists.                                    | Pending  |       |
 | Legacy article compatibility | `/records/kubernetes-on-mac/k3s-with-multipass/`       | SC-017: old records still feel valid without forced new metadata.                               | Pending  |       |
@@ -81,6 +83,18 @@ Does the mobile hero feel calm and readable at 360/390/430px?
 ### Vocabulary and Information Architecture
 
 Are `기록`, `책장`, `지금 책상 위`, record types, and status labels clear enough?
+
+```text
+
+```
+
+Are the optional record metadata fields safe to keep as the schema for future content migration?
+
+```text
+
+```
+
+Are deterministic category/record visuals and first-viewport media acceptable, or should the asset direction change?
 
 ```text
 

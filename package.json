@@ -22,7 +22,7 @@
     "audit:lighthouse": "lighthouse http://127.0.0.1:4321 --chrome-flags=--headless --only-categories=performance,accessibility,seo --output=json --output=html --output-path=.reports/lighthouse/report",
     "audit:axe": "node scripts/audit/run-axe-check.mjs",
     "audit:links": "node scripts/audit/run-link-check.mjs",
-    "audit:web": "start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:links\""
+    "audit:web": "npm run build && start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:links\""
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
