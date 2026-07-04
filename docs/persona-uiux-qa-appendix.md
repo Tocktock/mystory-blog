@@ -13,8 +13,9 @@ This appendix preserves the review-relevant output from local QA without committ
 | `npm run lint`                           | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                       | Verified       |
 | `git diff --check`                       | exited 0 with no whitespace errors                                               | Verified       |
 | `npm run build`                          | 138 static pages built; Pagefind indexed 138 pages and 13,756 words              | Verified       |
-| `npm run test:e2e -- --project=chromium` | 28 Chromium tests passed in 21.7s                                                | Verified       |
+| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.7s                                                | Verified       |
 | `npm run audit:web`                      | ran `npm run build` before preview, then Lighthouse, axe, and link checks passed | Verified       |
+| `npm run audit:axe`                      | 11 routes checked; expected statuses matched; 0 violations detected              | Verified       |
 | `npm audit --omit=dev`                   | 0 vulnerabilities                                                                | Verified       |
 | `.github/workflows/ci.yml`               | push trigger includes `master` and `main`; `pull_request` remains enabled        | Verified       |
 
@@ -55,19 +56,21 @@ Representative home metric rows confirmed `h1: 지용의 기록실`, `Backend와
 
 Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.json`, `.reports/linkinator/report.json`, and `output/playwright/i09-final-qa-20260704/axe-summary.json`.
 
-| Check                                   | Result                     | Evidence Label |
-| --------------------------------------- | -------------------------- | -------------- |
-| Lighthouse URL                          | `http://127.0.0.1:4321/`   | Verified       |
-| Lighthouse fetch time                   | `2026-07-04T07:46:49.725Z` | Verified       |
-| Lighthouse performance                  | 100                        | Verified       |
-| Lighthouse accessibility                | 100                        | Verified       |
-| Lighthouse SEO                          | 100                        | Verified       |
-| axe route count                         | 11                         | Verified       |
-| axe violation count                     | 0                          | Verified       |
-| Linkinator total links                  | 694                        | Verified       |
-| Linkinator OK                           | 367                        | Verified       |
-| Linkinator skipped external/non-preview | 327                        | Verified       |
-| Linkinator broken                       | 0                          | Verified       |
+| Check                                   | Result                        | Evidence Label |
+| --------------------------------------- | ----------------------------- | -------------- |
+| Lighthouse URL                          | `http://127.0.0.1:4321/`      | Verified       |
+| Lighthouse fetch time                   | `2026-07-04T08:08:24.066Z`    | Verified       |
+| Lighthouse performance                  | 100                           | Verified       |
+| Lighthouse accessibility                | 100                           | Verified       |
+| Lighthouse SEO                          | 100                           | Verified       |
+| axe route count                         | 11                            | Verified       |
+| axe violation count                     | 0                             | Verified       |
+| axe route statuses                      | all expected statuses matched | Verified       |
+| axe status mismatches                   | 0                             | Verified       |
+| Linkinator total links                  | 694                           | Verified       |
+| Linkinator OK                           | 367                           | Verified       |
+| Linkinator skipped external/non-preview | 327                           | Verified       |
+| Linkinator broken                       | 0                             | Verified       |
 
 axe target routes:
 
@@ -87,15 +90,26 @@ axe target routes:
 
 Source summary: `output/playwright/i09-final-qa-20260704/keyboard-focus-spot-check.json` plus `tests/e2e/navigation.spec.ts`.
 
-| Surface                     | Result                                              | Evidence Label |
-| --------------------------- | --------------------------------------------------- | -------------- |
-| Home keyboard spot check    | 12 visible focus stops                              | Verified       |
-| Records keyboard spot check | 12 visible focus stops                              | Verified       |
-| Search keyboard spot check  | 12 visible focus stops                              | Verified       |
-| Mobile collapsed nav        | hidden links are not focusable while collapsed      | Verified       |
-| Mobile opened nav           | links become visible and focusable after menu opens | Verified       |
+| Surface                     | Result                                               | Evidence Label |
+| --------------------------- | ---------------------------------------------------- | -------------- |
+| Home keyboard spot check    | 12 visible focus stops                               | Verified       |
+| Records keyboard spot check | 12 visible focus stops                               | Verified       |
+| Search keyboard spot check  | 12 visible focus stops                               | Verified       |
+| Search input label          | JS Pagefind input and no-JS fallback expose `검색어` | Verified       |
+| Mobile collapsed nav        | hidden links are not focusable while collapsed       | Verified       |
+| Mobile opened nav           | links become visible and focusable after menu opens  | Verified       |
+| Theme toggle                | dark mode can be selected and persists after reload  | Verified       |
 
 The mobile nav regression is covered by `collapsed mobile navigation keeps hidden links out of focus order` in `tests/e2e/navigation.spec.ts`.
+
+## Feed and SEO Regression Evidence
+
+| Surface          | Result                                                                                            | Evidence Label |
+| ---------------- | ------------------------------------------------------------------------------------------------- | -------------- |
+| Sitemap          | canonical record URLs are present; legacy `/blog/` and `/cat-pics/` URLs are absent               | Verified       |
+| RSS feed         | `/rss.xml` publishes canonical `/records/` links and does not publish legacy `/blog/` links       | Verified       |
+| RSS feed title   | feed title remains `지용의 기록실`                                                                | Verified       |
+| Dark-mode script | theme toggle sets `data-theme="dark"`, updates ARIA state, stores preference, and survives reload | Verified       |
 
 ## Remaining Non-Local Gates
 

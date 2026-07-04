@@ -22,6 +22,8 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Hardened local QA by making `npm run audit:web` build before preview.
 - Fixed collapsed mobile navigation so hidden links are not keyboard-focusable, with a Playwright regression test.
 - Aligned the CI push trigger with the current default branch by including `master` while retaining `main`.
+- Added E2E regressions for canonical RSS record links and persisted dark-mode toggling.
+- Tightened search accessibility assertions and made the axe audit fail on unexpected route statuses.
 
 ## Verification
 
@@ -37,11 +39,11 @@ Verified locally on 2026-07-04:
   - 138 static pages built
   - Pagefind indexed 138 pages and 13,756 words
 - `npm run test:e2e -- --project=chromium`
-  - 28 Chromium tests passed
+  - 30 Chromium tests passed
 - `npm run audit:web`
   - runs a fresh build before preview
   - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
-  - axe: 11 routes checked, 0 violations
+  - axe: 11 routes checked, expected statuses matched, 0 violations
   - same-origin link crawl: 694 links checked/skipped, 0 broken
 - `npm audit --omit=dev`
   - 0 vulnerabilities
@@ -54,6 +56,8 @@ Additional local evidence:
 - Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
 - Keyboard spot check: home, records, and search each produced 12 visible focus stops.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
+- RSS/dark-mode regressions: `/rss.xml` keeps canonical `/records/` links, and the theme toggle persists after reload.
+- Search accessibility regression: hydrated Pagefind input and no-JS fallback remain reachable by the `검색어` label.
 - CI rollout config: local workflow file now covers the `master` base branch listed for this review.
 
 ## Evidence Docs

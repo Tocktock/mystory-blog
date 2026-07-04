@@ -4,7 +4,7 @@ test('site search returns results for known keywords', async ({ page }) => {
   await page.goto('/search');
 
   await page.waitForSelector('#search input', { timeout: 10000 });
-  const searchBox = page.locator('#search input');
+  const searchBox = page.getByLabel('검색어');
   await expect(searchBox).toBeVisible();
 
   await searchBox.fill('kubernetes');
@@ -17,7 +17,8 @@ test('site search returns results for known keywords', async ({ page }) => {
 test('site search hydrates results from the q query parameter', async ({ page }) => {
   await page.goto('/search/?q=kubernetes');
 
-  const searchBox = page.locator('#search input');
+  await page.waitForSelector('#search input', { timeout: 10000 });
+  const searchBox = page.getByLabel('검색어');
   await expect(searchBox).toBeVisible({ timeout: 10000 });
   await expect(searchBox).toHaveValue('kubernetes');
 
@@ -30,7 +31,7 @@ test('site search no-results copy uses the record-room empty state', async ({ pa
   await page.goto('/search');
 
   await page.waitForSelector('#search input', { timeout: 10000 });
-  const searchBox = page.locator('#search input');
+  const searchBox = page.getByLabel('검색어');
   await searchBox.fill('zzzz-no-record-drawer-0000');
 
   await expect(page.getByText('비어 있는 서랍입니다')).toBeVisible({ timeout: 15000 });

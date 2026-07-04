@@ -14,3 +14,16 @@ test('sitemap exposes canonical record URLs only', async ({ request }) => {
   expect(sitemap).not.toContain('https://ji-yong.com/blog/');
   expect(sitemap).not.toContain('https://ji-yong.com/cat-pics/');
 });
+
+test('rss feed keeps record-room canonical links', async ({ request }) => {
+  const response = await request.get('/rss.xml');
+  expect(response.ok()).toBe(true);
+
+  const feed = await response.text();
+
+  expect(feed).toContain('<title>지용의 기록실</title>');
+  expect(feed).toContain('https://ji-yong.com/records/kubernetes-on-mac/k3s-with-multipass/');
+  expect(feed).toContain('https://ji-yong.com/records/meta/ai-advisor-writing-partner/');
+  expect(feed).not.toContain('https://ji-yong.com/blog/');
+  expect(feed).not.toContain('/blog/');
+});
