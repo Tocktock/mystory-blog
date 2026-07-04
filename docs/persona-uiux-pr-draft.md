@@ -46,7 +46,7 @@ Verified locally on 2026-07-04:
   - 30 Chromium tests passed
 - `npm run audit:web`
   - runs a fresh build before preview
-  - publication safety: 179 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens
+  - publication safety: 180 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens
   - static local links: 138 generated HTML files, 4,533 static local references, 0 broken
   - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
   - axe: 11 routes checked, expected statuses matched, 0 violations
@@ -67,7 +67,7 @@ Verified locally on 2026-07-04:
   - 66 screenshots across 11 routes and 6 widths
   - 0 status/text/overflow issues
 - `npm run audit:publication-safety`
-  - 179 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens, 31 documented public env references
+  - 180 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens, 31 documented public env references
 - `npm run audit:static-links`
   - 138 generated HTML files, 4,533 static local references, 0 broken
 - `npm audit --omit=dev`
@@ -92,6 +92,7 @@ Additional local evidence:
 
 - `docs/persona-uiux-release-evidence.md`
 - `docs/persona-uiux-qa-appendix.md`
+- `docs/persona-uiux-completion-audit.md`
 - `docs/persona-uiux-slice-contracts.md`
 - `docs/persona-uiux-human-review-notes.md`
 

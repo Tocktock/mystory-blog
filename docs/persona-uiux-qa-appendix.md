@@ -20,7 +20,7 @@ This appendix preserves the review-relevant output from local QA without committ
 | `npm run audit:persona-contract`                                                   | 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 10 human-review anchors, 0 issues | Verified                             |
 | `npm run audit:axe`                                                                | 11 routes checked; expected statuses matched; 0 violations detected                                                                                                              | Verified                             |
 | `npm run audit:keyboard`                                                           | 3 routes checked; 36 visible focus stops; 0 invisible stops; 0 missing focus indicators                                                                                          | Verified                             |
-| `npm run audit:publication-safety`                                                 | 179 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references                                                             | Verified                             |
+| `npm run audit:publication-safety`                                                 | 180 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references                                                             | Verified                             |
 | `npm run audit:responsive`                                                         | 66 screenshots across 11 routes and 6 widths; 0 status/text/overflow issues                                                                                                      | Verified                             |
 | `npm run audit:static-links`                                                       | 138 generated HTML files; 4,533 static local references; 0 broken                                                                                                                | Verified                             |
 | `npm audit --omit=dev`                                                             | 0 vulnerabilities                                                                                                                                                                | Verified                             |
@@ -77,7 +77,7 @@ Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.j
 | axe violation count                     | 0                             | Verified                             |
 | axe route statuses                      | all expected statuses matched | Verified                             |
 | axe status mismatches                   | 0                             | Verified                             |
-| Publication safety scanned files        | 179                           | Verified                             |
+| Publication safety scanned files        | 180                           | Verified                             |
 | Publication safety blocked paths        | 0                             | Verified                             |
 | Publication safety disallowed findings  | 0                             | Verified                             |
 | Static local HTML files                 | 138                           | Verified                             |
