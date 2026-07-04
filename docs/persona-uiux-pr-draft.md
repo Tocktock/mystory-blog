@@ -24,13 +24,14 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Aligned the CI push trigger with the current default branch by including `master` while retaining `main`.
 - Added E2E regressions for canonical RSS record links and persisted dark-mode toggling.
 - Tightened search accessibility assertions and made the axe audit fail on unexpected route statuses.
+- Added a reproducible responsive audit that captures the required 11-route x 6-width screenshot matrix.
 
 ## Verification
 
 Verified locally on 2026-07-04:
 
 - `npm run check`
-  - 87 files, 0 errors, 0 warnings, 0 hints
+  - 89 files, 0 errors, 0 warnings, 0 hints
 - `npm run lint`
   - passed with `--max-warnings=0`
 - `git diff --check`
@@ -44,7 +45,11 @@ Verified locally on 2026-07-04:
   - runs a fresh build before preview
   - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
   - axe: 11 routes checked, expected statuses matched, 0 violations
+  - responsive: 66 screenshots across 11 routes and 6 widths, 0 status/text/overflow issues
   - same-origin link crawl: 694 links checked/skipped, 0 broken
+- `npm run audit:responsive`
+  - 66 screenshots across 11 routes and 6 widths
+  - 0 status/text/overflow issues
 - `npm audit --omit=dev`
   - 0 vulnerabilities
 - `.github/workflows/ci.yml`
@@ -52,7 +57,7 @@ Verified locally on 2026-07-04:
 
 Additional local evidence:
 
-- Responsive screenshots: 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
+- Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
 - Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
 - Keyboard spot check: home, records, and search each produced 12 visible focus stops.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.

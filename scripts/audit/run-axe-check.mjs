@@ -1,33 +1,12 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium } from '@playwright/test';
+import { PERSONA_AUDIT_ROUTES } from './persona-audit-routes.mjs';
 
 const BASE_URL = 'http://127.0.0.1:4321';
 const REPORT_DIR = resolve(process.cwd(), '.reports/axe');
 const REPORT_PATH = resolve(REPORT_DIR, 'report.json');
 const AXE_SOURCE_PATH = resolve(process.cwd(), 'node_modules/axe-core/axe.min.js');
-
-const ROUTES = [
-  { name: 'home', route: '/', expectedStatus: 200 },
-  { name: 'records', route: '/records/', expectedStatus: 200 },
-  { name: 'series', route: '/series/', expectedStatus: 200 },
-  { name: 'series-detail', route: '/series/ai-working-notes/', expectedStatus: 200 },
-  {
-    name: 'record-detail-new',
-    route: '/records/meta/ai-advisor-writing-partner/',
-    expectedStatus: 200,
-  },
-  {
-    name: 'record-detail-legacy',
-    route: '/records/kubernetes-on-mac/k3s-with-multipass/',
-    expectedStatus: 200,
-  },
-  { name: 'about', route: '/about/', expectedStatus: 200 },
-  { name: 'career', route: '/career/', expectedStatus: 200 },
-  { name: 'manyang', route: '/manyang-gureum/', expectedStatus: 200 },
-  { name: 'search', route: '/search/?q=kubernetes', expectedStatus: 200 },
-  { name: 'not-found', route: '/missing-record-drawer-for-i09/', expectedStatus: 404 },
-];
 
 async function run() {
   await mkdir(REPORT_DIR, { recursive: true });
@@ -36,7 +15,7 @@ async function run() {
   const results = [];
 
   try {
-    for (const { name, route, expectedStatus } of ROUTES) {
+    for (const { name, route, expectedStatus } of PERSONA_AUDIT_ROUTES) {
       const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
       const response = await page.goto(`${BASE_URL}${route}`, { waitUntil: 'networkidle' });
       const status = response?.status() ?? null;
