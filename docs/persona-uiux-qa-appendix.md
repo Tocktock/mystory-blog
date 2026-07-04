@@ -7,21 +7,22 @@ This appendix preserves the review-relevant output from local QA without committ
 
 ## Command Evidence
 
-| Command                                  | Observed Result                                                                                                      | Evidence Label |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `npm run check`                          | `Result (92 files): 0 errors, 0 warnings, 0 hints`                                                                   | Verified       |
-| `npm run lint`                           | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                                                           | Verified       |
-| `git diff --check`                       | exited 0 with no whitespace errors                                                                                   | Verified       |
-| `npm run build`                          | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                  | Verified       |
-| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.7s                                                                                    | Verified       |
-| `npm run audit:web`                      | ran `npm run build`, publication safety, static links, Lighthouse, axe, keyboard, responsive, and link checks        | Verified       |
-| `npm run audit:axe`                      | 11 routes checked; expected statuses matched; 0 violations detected                                                  | Verified       |
-| `npm run audit:keyboard`                 | 3 routes checked; 36 visible focus stops; 0 invisible stops; 0 missing focus indicators                              | Verified       |
-| `npm run audit:publication-safety`       | 177 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references | Verified       |
-| `npm run audit:responsive`               | 66 screenshots across 11 routes and 6 widths; 0 status/text/overflow issues                                          | Verified       |
-| `npm run audit:static-links`             | 138 generated HTML files; 4,533 static local references; 0 broken                                                    | Verified       |
-| `npm audit --omit=dev`                   | 0 vulnerabilities                                                                                                    | Verified       |
-| `.github/workflows/ci.yml`               | push trigger includes `master` and `main`; `pull_request` remains enabled                                            | Verified       |
+| Command                                  | Observed Result                                                                                                                                             | Evidence Label |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `npm run check`                          | `Result (93 files): 0 errors, 0 warnings, 0 hints`                                                                                                          | Verified       |
+| `npm run lint`                           | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                                                                                                  | Verified       |
+| `git diff --check`                       | exited 0 with no whitespace errors                                                                                                                          | Verified       |
+| `npm run build`                          | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                                                         | Verified       |
+| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.7s                                                                                                                           | Verified       |
+| `npm run audit:web`                      | ran `npm run build`, publication safety, static links, Lighthouse, axe, keyboard, responsive, and link checks                                               | Verified       |
+| `npm run audit:persona-contract`         | 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 26 explicit backlog scenario references, 0 issues | Verified       |
+| `npm run audit:axe`                      | 11 routes checked; expected statuses matched; 0 violations detected                                                                                         | Verified       |
+| `npm run audit:keyboard`                 | 3 routes checked; 36 visible focus stops; 0 invisible stops; 0 missing focus indicators                                                                     | Verified       |
+| `npm run audit:publication-safety`       | 178 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references                                        | Verified       |
+| `npm run audit:responsive`               | 66 screenshots across 11 routes and 6 widths; 0 status/text/overflow issues                                                                                 | Verified       |
+| `npm run audit:static-links`             | 138 generated HTML files; 4,533 static local references; 0 broken                                                                                           | Verified       |
+| `npm audit --omit=dev`                   | 0 vulnerabilities                                                                                                                                           | Verified       |
+| `.github/workflows/ci.yml`               | push trigger includes `master` and `main`; `pull_request` remains enabled                                                                                   | Verified       |
 
 Important boundary: these are local command/config results. They do not prove GitHub-hosted CI execution, human persona acceptance, deployment success, CDN behavior, or production search.
 
@@ -59,7 +60,7 @@ Responsive verifier command: `npm run audit:responsive` against a running previe
 
 ## Accessibility, Performance, and Link Reports
 
-Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.json`, `.reports/keyboard/report.json`, `.reports/publication-safety/report.json`, `.reports/responsive/report.json`, `.reports/static-links/report.json`, `.reports/linkinator/report.json`, and `output/playwright/i09-final-qa-20260704/axe-summary.json`.
+Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.json`, `.reports/keyboard/report.json`, `.reports/persona-contract/report.json`, `.reports/publication-safety/report.json`, `.reports/responsive/report.json`, `.reports/static-links/report.json`, `.reports/linkinator/report.json`, and `output/playwright/i09-final-qa-20260704/axe-summary.json`.
 
 | Check                                   | Result                        | Evidence Label |
 | --------------------------------------- | ----------------------------- | -------------- |
@@ -72,7 +73,7 @@ Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.j
 | axe violation count                     | 0                             | Verified       |
 | axe route statuses                      | all expected statuses matched | Verified       |
 | axe status mismatches                   | 0                             | Verified       |
-| Publication safety scanned files        | 177                           | Verified       |
+| Publication safety scanned files        | 178                           | Verified       |
 | Publication safety blocked paths        | 0                             | Verified       |
 | Publication safety disallowed findings  | 0                             | Verified       |
 | Static local HTML files                 | 138                           | Verified       |
