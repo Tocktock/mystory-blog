@@ -25,13 +25,14 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Added E2E regressions for canonical RSS record links and persisted dark-mode toggling.
 - Tightened search accessibility assertions and made the axe audit fail on unexpected route statuses.
 - Added a reproducible responsive audit that captures the required 11-route x 6-width screenshot matrix.
+- Added a reproducible keyboard audit for visible focus stops and visible focus indicators on home, records, and search.
 
 ## Verification
 
 Verified locally on 2026-07-04:
 
 - `npm run check`
-  - 89 files, 0 errors, 0 warnings, 0 hints
+  - 90 files, 0 errors, 0 warnings, 0 hints
 - `npm run lint`
   - passed with `--max-warnings=0`
 - `git diff --check`
@@ -45,8 +46,12 @@ Verified locally on 2026-07-04:
   - runs a fresh build before preview
   - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
   - axe: 11 routes checked, expected statuses matched, 0 violations
+  - keyboard: 3 routes checked, 36 visible focus stops, 0 invisible stops, 0 missing focus indicators
   - responsive: 66 screenshots across 11 routes and 6 widths, 0 status/text/overflow issues
   - same-origin link crawl: 694 links checked/skipped, 0 broken
+- `npm run audit:keyboard`
+  - 3 routes checked
+  - 36 visible focus stops, 0 invisible stops, 0 missing focus indicators
 - `npm run audit:responsive`
   - 66 screenshots across 11 routes and 6 widths
   - 0 status/text/overflow issues
@@ -59,7 +64,7 @@ Additional local evidence:
 
 - Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
 - Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
-- Keyboard spot check: home, records, and search each produced 12 visible focus stops.
+- Keyboard spot check: `npm run audit:keyboard` verifies home, records, and search each produce 12 visible focus stops with visible focus indicators.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
 - RSS/dark-mode regressions: `/rss.xml` keeps canonical `/records/` links, and the theme toggle persists after reload.
 - Search accessibility regression: hydrated Pagefind input and no-JS fallback remain reachable by the `검색어` label.

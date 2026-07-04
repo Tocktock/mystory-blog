@@ -2,7 +2,7 @@ import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const REPORT_ROOT = resolve(process.cwd(), '.reports');
-const DIRECTORIES = ['lighthouse', 'axe', 'linkinator', 'responsive'].map((dir) =>
+const DIRECTORIES = ['lighthouse', 'axe', 'keyboard', 'linkinator', 'responsive'].map((dir) =>
   resolve(REPORT_ROOT, dir),
 );
 

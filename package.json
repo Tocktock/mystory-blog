@@ -18,13 +18,15 @@
     "test:e2e": "npm run build && playwright test",
     "preaudit:lighthouse": "node scripts/audit/prepare-reports.mjs",
     "preaudit:axe": "node scripts/audit/prepare-reports.mjs",
+    "preaudit:keyboard": "node scripts/audit/prepare-reports.mjs",
     "preaudit:links": "node scripts/audit/prepare-reports.mjs",
     "preaudit:responsive": "node scripts/audit/prepare-reports.mjs",
     "audit:lighthouse": "lighthouse http://127.0.0.1:4321 --chrome-flags=--headless --only-categories=performance,accessibility,seo --output=json --output=html --output-path=.reports/lighthouse/report",
     "audit:axe": "node scripts/audit/run-axe-check.mjs",
+    "audit:keyboard": "node scripts/audit/run-keyboard-check.mjs",
     "audit:responsive": "node scripts/audit/run-responsive-check.mjs",
     "audit:links": "node scripts/audit/run-link-check.mjs",
-    "audit:web": "npm run build && start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:responsive && npm run audit:links\""
+    "audit:web": "npm run build && start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:keyboard && npm run audit:responsive && npm run audit:links\""
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
