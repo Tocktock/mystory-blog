@@ -9,6 +9,7 @@ const SCENARIO_MATRIX_PATH = resolve(ARTIFACT_DIR, '03_scenario_matrix.csv');
 const BACKLOG_PATH = resolve(ARTIFACT_DIR, '02_incremental_implementation_backlog.md');
 const RELEASE_EVIDENCE_PATH = resolve(process.cwd(), 'docs/persona-uiux-release-evidence.md');
 const SLICE_CONTRACTS_PATH = resolve(process.cwd(), 'docs/persona-uiux-slice-contracts.md');
+const HUMAN_REVIEW_NOTES_PATH = resolve(process.cwd(), 'docs/persona-uiux-human-review-notes.md');
 const ALLOWED_CLASSIFICATIONS = new Set([
   'in_this_slice',
   'later_slice',
@@ -25,6 +26,16 @@ const REQUIRED_SLICE_CONTRACT_FIELDS = [
   'Done criteria:',
   'Checkpoint:',
   'Recommendation:',
+];
+const REQUIRED_HUMAN_REVIEW_ANCHORS = [
+  'http://127.0.0.1:4321',
+  'npm run audit:persona-contract',
+  'npm run audit:web',
+  '.reports/responsive/screenshots/',
+  '/missing-record-drawer-for-i09/',
+  'Deployment URL',
+  'Production search',
+  'Public-release approval',
 ];
 
 function parseCsvLine(line) {
@@ -361,16 +372,56 @@ function addSliceContractIssues(issues, sourceBacklog, contractSections, sourceS
   }
 }
 
+function addHumanReviewIssues(issues, sourceScenarioIds, releaseScenarios, humanReviewText) {
+  const humanReviewScenarioIds = scenarioIdsIn(humanReviewText);
+  const releaseHumanRequiredScenarioIds = releaseScenarios
+    .filter((scenario) => scenario.classification === 'human_required')
+    .map((scenario) => scenario.id);
+
+  for (const scenarioId of sourceScenarioIds) {
+    if (!humanReviewScenarioIds.includes(scenarioId)) {
+      issues.push({
+        rule: 'human-review-missing-source-scenario',
+        message: `Human review notes omit source scenario ${scenarioId}`,
+      });
+    }
+  }
+
+  for (const scenarioId of releaseHumanRequiredScenarioIds) {
+    if (!humanReviewScenarioIds.includes(scenarioId)) {
+      issues.push({
+        rule: 'human-review-missing-human-required-scenario',
+        message: `Human review notes omit human-required release scenario ${scenarioId}`,
+      });
+    }
+  }
+
+  for (const anchor of REQUIRED_HUMAN_REVIEW_ANCHORS) {
+    if (!humanReviewText.includes(anchor)) {
+      issues.push({
+        rule: 'human-review-missing-anchor',
+        message: `Human review notes omit required review anchor "${anchor}"`,
+      });
+    }
+  }
+}
+
 async function run() {
   await mkdir(REPORT_DIR, { recursive: true });
 
-  const [scenarioMatrixText, backlogText, releaseEvidenceText, sliceContractsText] =
-    await Promise.all([
-      readFile(SCENARIO_MATRIX_PATH, 'utf8'),
-      readFile(BACKLOG_PATH, 'utf8'),
-      readFile(RELEASE_EVIDENCE_PATH, 'utf8'),
-      readFile(SLICE_CONTRACTS_PATH, 'utf8'),
-    ]);
+  const [
+    scenarioMatrixText,
+    backlogText,
+    releaseEvidenceText,
+    sliceContractsText,
+    humanReviewText,
+  ] = await Promise.all([
+    readFile(SCENARIO_MATRIX_PATH, 'utf8'),
+    readFile(BACKLOG_PATH, 'utf8'),
+    readFile(RELEASE_EVIDENCE_PATH, 'utf8'),
+    readFile(SLICE_CONTRACTS_PATH, 'utf8'),
+    readFile(HUMAN_REVIEW_NOTES_PATH, 'utf8'),
+  ]);
 
   const sourceScenarios = parseScenarioMatrix(scenarioMatrixText);
   const sourceBacklog = parseSourceBacklog(backlogText);
@@ -425,6 +476,7 @@ async function run() {
   addHumanRequiredClassificationIssues(issues, sourceScenarios, releaseScenarios);
   addBacklogReferenceIssues(issues, sourceBacklog, sourceScenarioIds);
   addSliceContractIssues(issues, sourceBacklog, contractSections, sourceScenarioIds);
+  addHumanReviewIssues(issues, sourceScenarioIds, releaseScenarios, humanReviewText);
 
   const summary = {
     scenarioSourceCount: sourceScenarios.length,
@@ -440,6 +492,8 @@ async function run() {
     humanRequiredSourceScenarioCount: sourceScenarios.filter((scenario) =>
       /\bHUMAN_REQUIRED\b/.test(scenario.verificationMode),
     ).length,
+    humanReviewScenarioReferenceCount: scenarioIdsIn(humanReviewText).length,
+    requiredHumanReviewAnchorCount: REQUIRED_HUMAN_REVIEW_ANCHORS.length,
     issueCount: issues.length,
   };
 
@@ -454,6 +508,7 @@ async function run() {
           relative(process.cwd(), BACKLOG_PATH),
           relative(process.cwd(), RELEASE_EVIDENCE_PATH),
           relative(process.cwd(), SLICE_CONTRACTS_PATH),
+          relative(process.cwd(), HUMAN_REVIEW_NOTES_PATH),
         ],
         summary,
         issues,
