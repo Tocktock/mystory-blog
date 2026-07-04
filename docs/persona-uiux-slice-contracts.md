@@ -148,7 +148,7 @@ Non-scope: no new public disclosure of internal notes, no expansion of career co
 
 Files/surfaces touched: `src/data/career.ts`, `src/components/career/CompanyWork.astro`, `tests/e2e/career.spec.ts`.
 
-Proof needed: related-record links render, narrow-mobile containment passes, local public-safety scan stays clean.
+Proof needed: related-record links render, narrow-mobile containment passes, local publication-safety scan stays clean.
 
 Done criteria: career proof points connect to writing without implying unverifiable private details.
 
@@ -182,13 +182,13 @@ Included scenarios: all applicable MUST_PASS and REGRESSION scenarios.
 
 Non-scope: no production readiness claim, no deployment claim, no human approval claim, no dependency-upgrade detour for dev-only audit findings.
 
-Files/surfaces touched: `docs/persona-uiux-release-evidence.md`, `docs/persona-uiux-human-review-notes.md`, `docs/persona-uiux-qa-appendix.md`, `docs/persona-uiux-pr-draft.md`, `.github/workflows/ci.yml`, `package.json`, `scripts/audit/persona-audit-routes.mjs`, `scripts/audit/run-axe-check.mjs`, `scripts/audit/run-keyboard-check.mjs`, `scripts/audit/run-responsive-check.mjs`, `scripts/audit/run-link-check.mjs`, `.gitignore`, ignored generated outputs under `output/` and `.reports/`.
+Files/surfaces touched: `docs/persona-uiux-release-evidence.md`, `docs/persona-uiux-human-review-notes.md`, `docs/persona-uiux-qa-appendix.md`, `docs/persona-uiux-pr-draft.md`, `.github/workflows/ci.yml`, `package.json`, `scripts/audit/persona-audit-routes.mjs`, `scripts/audit/run-axe-check.mjs`, `scripts/audit/run-keyboard-check.mjs`, `scripts/audit/run-link-check.mjs`, `scripts/audit/run-publication-safety-scan.mjs`, `scripts/audit/run-responsive-check.mjs`, `scripts/audit/run-static-local-link-check.mjs`, `.gitignore`, ignored generated outputs under `output/` and `.reports/`.
 
-Proof needed: `npm run check`, `npm run lint`, `npm run build`, `npm run test:e2e`, `npm run audit:keyboard`, `npm run audit:responsive`, `npm run audit:web`, responsive screenshots, axe/Lighthouse/link reports, keyboard spot check, RSS/dark-mode/search accessibility regressions, CI trigger/default-branch alignment, public-safety/diff-scope checks, human review notes.
+Proof needed: `npm run check`, `npm run lint`, `npm run build`, `npm run test:e2e`, `npm run audit:keyboard`, `npm run audit:publication-safety`, `npm run audit:responsive`, `npm run audit:static-links`, `npm run audit:web`, responsive screenshots, axe/Lighthouse/link reports, keyboard spot check, RSS/dark-mode/search accessibility regressions, CI trigger/default-branch alignment, publication-safety/diff-scope checks, human review notes.
 
 Done criteria: every selected scenario has traceable implementation evidence, all remaining gates are explicit, and local evidence is not described as deployment or human approval.
 
-Checkpoint: Verified locally and review-ready. RSS canonical links, dark-mode persistence, JS/no-JS search labels, axe route statuses, keyboard focus stops, and the full responsive screenshot matrix now have reproducible regression coverage. CI push triggers include the current default branch `master`; GitHub-hosted CI execution still requires a pushed branch/PR. Human/external verification required before release.
+Checkpoint: Verified locally and review-ready. RSS canonical links, dark-mode persistence, JS/no-JS search labels, axe route statuses, keyboard focus stops, publication safety, static local references, and the full responsive screenshot matrix now have reproducible regression coverage. CI push triggers include the current default branch `master`; GitHub-hosted CI execution still requires a pushed branch/PR. Human/external verification required before release.
 
 Recommendation: ask human review before release; open a draft PR only after explicit publication approval.
 

@@ -26,13 +26,14 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Tightened search accessibility assertions and made the axe audit fail on unexpected route statuses.
 - Added a reproducible responsive audit that captures the required 11-route x 6-width screenshot matrix.
 - Added a reproducible keyboard audit for visible focus stops and visible focus indicators on home, records, and search.
+- Added reproducible publication safety and static local link audits to replace manual release-evidence rows.
 
 ## Verification
 
 Verified locally on 2026-07-04:
 
 - `npm run check`
-  - 90 files, 0 errors, 0 warnings, 0 hints
+  - 92 files, 0 errors, 0 warnings, 0 hints
 - `npm run lint`
   - passed with `--max-warnings=0`
 - `git diff --check`
@@ -44,6 +45,8 @@ Verified locally on 2026-07-04:
   - 30 Chromium tests passed
 - `npm run audit:web`
   - runs a fresh build before preview
+  - publication safety: 177 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens
+  - static local links: 138 generated HTML files, 4,533 static local references, 0 broken
   - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
   - axe: 11 routes checked, expected statuses matched, 0 violations
   - keyboard: 3 routes checked, 36 visible focus stops, 0 invisible stops, 0 missing focus indicators
@@ -55,6 +58,10 @@ Verified locally on 2026-07-04:
 - `npm run audit:responsive`
   - 66 screenshots across 11 routes and 6 widths
   - 0 status/text/overflow issues
+- `npm run audit:publication-safety`
+  - 177 files scanned, 0 blocked publication paths, 0 disallowed secret-like tokens, 31 documented public env references
+- `npm run audit:static-links`
+  - 138 generated HTML files, 4,533 static local references, 0 broken
 - `npm audit --omit=dev`
   - 0 vulnerabilities
 - `.github/workflows/ci.yml`
@@ -63,7 +70,7 @@ Verified locally on 2026-07-04:
 Additional local evidence:
 
 - Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
-- Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
+- Static local link check: `npm run audit:static-links` verifies 138 generated HTML files, 4,533 static local references, and 0 broken references.
 - Keyboard spot check: `npm run audit:keyboard` verifies home, records, and search each produce 12 visible focus stops with visible focus indicators.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
 - RSS/dark-mode regressions: `/rss.xml` keeps canonical `/records/` links, and the theme toggle persists after reload.
