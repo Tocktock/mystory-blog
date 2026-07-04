@@ -32,6 +32,8 @@ const REQUIRED_HUMAN_REVIEW_ANCHORS = [
   'npm run audit:persona-contract',
   'npm run audit:web',
   '.reports/responsive/screenshots/',
+  'npm run audit:production-smoke',
+  'PERSONA_PRODUCTION_BASE_URL',
   '/missing-record-drawer-for-i09/',
   'Deployment URL',
   'Production search',

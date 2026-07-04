@@ -15,6 +15,7 @@ Related evidence:
 - Responsive summary: `.reports/responsive/report.json`
 - Accessibility summary: `output/playwright/i09-final-qa-20260704/axe-summary.json`
 - Keyboard spot check: `.reports/keyboard/report.json`
+- Production smoke report: `.reports/production-smoke/report.json`
 
 ## Local Review Runbook
 
@@ -34,6 +35,12 @@ npm run preview -- --host 127.0.0.1 --port 4321
 ```
 
 Local base URL: `http://127.0.0.1:4321`
+
+After a deployed URL exists, refresh the deployment-specific smoke check:
+
+```bash
+PERSONA_PRODUCTION_BASE_URL=https://<deployed-url> npm run audit:production-smoke
+```
 
 Screenshot shortcuts for the main subjective gates:
 
@@ -178,6 +185,7 @@ Production release needs a separate deployment checklist after a deployed URL ex
 | Item                    | Required Evidence                                                                                          | Result |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
 | Deployment URL          | Exact public URL and commit/SHA deployed                                                                   |        |
+| Production smoke audit  | `PERSONA_PRODUCTION_BASE_URL=https://<deployed-url> npm run audit:production-smoke` passes                 |        |
 | Core route smoke        | `/`, `/records/`, `/series/`, `/about/`, `/career/`, `/manyang-gureum/`, `/search/?q=kubernetes` load      |        |
 | 404 behavior            | `/missing-record-drawer-for-i09/` returns the intended 404 page                                            |        |
 | Static assets and CDN   | Hero, record, gallery, CSS, JS, OG, sitemap, and RSS assets load without blocked or stale production paths |        |

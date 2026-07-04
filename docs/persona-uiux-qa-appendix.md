@@ -7,24 +7,25 @@ This appendix preserves the review-relevant output from local QA without committ
 
 ## Command Evidence
 
-| Command                                  | Observed Result                                                                                                                                                                 | Evidence Label |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `npm run check`                          | `Result (93 files): 0 errors, 0 warnings, 0 hints`                                                                                                                              | Verified       |
-| `npm run lint`                           | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                                                                                                                      | Verified       |
-| `git diff --check`                       | exited 0 with no whitespace errors                                                                                                                                              | Verified       |
-| `npm run build`                          | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                                                                             | Verified       |
-| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.9s                                                                                                                                               | Verified       |
-| `npm run audit:web`                      | ran `npm run build`, publication safety, static links, Lighthouse, axe, keyboard, responsive, and link checks                                                                   | Verified       |
-| `npm run audit:persona-contract`         | 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 8 human-review anchors, 0 issues | Verified       |
-| `npm run audit:axe`                      | 11 routes checked; expected statuses matched; 0 violations detected                                                                                                             | Verified       |
-| `npm run audit:keyboard`                 | 3 routes checked; 36 visible focus stops; 0 invisible stops; 0 missing focus indicators                                                                                         | Verified       |
-| `npm run audit:publication-safety`       | 178 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references                                                            | Verified       |
-| `npm run audit:responsive`               | 66 screenshots across 11 routes and 6 widths; 0 status/text/overflow issues                                                                                                     | Verified       |
-| `npm run audit:static-links`             | 138 generated HTML files; 4,533 static local references; 0 broken                                                                                                               | Verified       |
-| `npm audit --omit=dev`                   | 0 vulnerabilities                                                                                                                                                               | Verified       |
-| `.github/workflows/ci.yml`               | push trigger includes `master` and `main`; `pull_request` remains enabled                                                                                                       | Verified       |
+| Command                                                                            | Observed Result                                                                                                                                                                  | Evidence Label              |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `npm run check`                                                                    | `Result (94 files): 0 errors, 0 warnings, 0 hints`                                                                                                                               | Verified                    |
+| `npm run lint`                                                                     | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                                                                                                                       | Verified                    |
+| `git diff --check`                                                                 | exited 0 with no whitespace errors                                                                                                                                               | Verified                    |
+| `npm run build`                                                                    | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                                                                              | Verified                    |
+| `npm run test:e2e -- --project=chromium`                                           | 30 Chromium tests passed in 21.9s                                                                                                                                                | Verified                    |
+| `npm run audit:web`                                                                | ran `npm run build`, publication safety, static links, Lighthouse, axe, keyboard, responsive, and link checks                                                                    | Verified                    |
+| `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke` | local-preview harness checked 11 routes, 176 critical assets, 2 Pagefind assets, acceptable Giscus placeholder, and 0 issues                                                     | Verified local harness only |
+| `npm run audit:persona-contract`                                                   | 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 10 human-review anchors, 0 issues | Verified                    |
+| `npm run audit:axe`                                                                | 11 routes checked; expected statuses matched; 0 violations detected                                                                                                              | Verified                    |
+| `npm run audit:keyboard`                                                           | 3 routes checked; 36 visible focus stops; 0 invisible stops; 0 missing focus indicators                                                                                          | Verified                    |
+| `npm run audit:publication-safety`                                                 | 179 files scanned; 0 blocked publication paths; 0 disallowed secret-like tokens; 31 documented public env references                                                             | Verified                    |
+| `npm run audit:responsive`                                                         | 66 screenshots across 11 routes and 6 widths; 0 status/text/overflow issues                                                                                                      | Verified                    |
+| `npm run audit:static-links`                                                       | 138 generated HTML files; 4,533 static local references; 0 broken                                                                                                                | Verified                    |
+| `npm audit --omit=dev`                                                             | 0 vulnerabilities                                                                                                                                                                | Verified                    |
+| `.github/workflows/ci.yml`                                                         | push trigger includes `master` and `main`; `pull_request` remains enabled                                                                                                        | Verified                    |
 
-Important boundary: these are local command/config results. They do not prove GitHub-hosted CI execution, human persona acceptance, deployment success, CDN behavior, or production search.
+Important boundary: these are local command/config results. The production-smoke evidence above proves only the harness against local preview; it does not prove GitHub-hosted CI execution, human persona acceptance, deployment success, CDN behavior, or production search.
 
 ## Responsive Screenshot Manifest
 
@@ -60,29 +61,33 @@ Responsive verifier command: `npm run audit:responsive` against a running previe
 
 ## Accessibility, Performance, and Link Reports
 
-Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.json`, `.reports/keyboard/report.json`, `.reports/persona-contract/report.json`, `.reports/publication-safety/report.json`, `.reports/responsive/report.json`, `.reports/static-links/report.json`, `.reports/linkinator/report.json`, and `output/playwright/i09-final-qa-20260704/axe-summary.json`.
+Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.json`, `.reports/keyboard/report.json`, `.reports/persona-contract/report.json`, `.reports/production-smoke/report.json`, `.reports/publication-safety/report.json`, `.reports/responsive/report.json`, `.reports/static-links/report.json`, `.reports/linkinator/report.json`, and `output/playwright/i09-final-qa-20260704/axe-summary.json`.
 
-| Check                                   | Result                        | Evidence Label |
-| --------------------------------------- | ----------------------------- | -------------- |
-| Lighthouse URL                          | `http://127.0.0.1:4321/`      | Verified       |
-| Lighthouse fetch time                   | `2026-07-04T09:01:06.474Z`    | Verified       |
-| Lighthouse performance                  | 100                           | Verified       |
-| Lighthouse accessibility                | 100                           | Verified       |
-| Lighthouse SEO                          | 100                           | Verified       |
-| axe route count                         | 11                            | Verified       |
-| axe violation count                     | 0                             | Verified       |
-| axe route statuses                      | all expected statuses matched | Verified       |
-| axe status mismatches                   | 0                             | Verified       |
-| Publication safety scanned files        | 178                           | Verified       |
-| Publication safety blocked paths        | 0                             | Verified       |
-| Publication safety disallowed findings  | 0                             | Verified       |
-| Static local HTML files                 | 138                           | Verified       |
-| Static local references                 | 4,533                         | Verified       |
-| Static local broken references          | 0                             | Verified       |
-| Linkinator total links                  | 694                           | Verified       |
-| Linkinator OK                           | 367                           | Verified       |
-| Linkinator skipped external/non-preview | 327                           | Verified       |
-| Linkinator broken                       | 0                             | Verified       |
+| Check                                   | Result                        | Evidence Label              |
+| --------------------------------------- | ----------------------------- | --------------------------- |
+| Lighthouse URL                          | `http://127.0.0.1:4321/`      | Verified                    |
+| Lighthouse fetch time                   | `2026-07-04T09:21:23.455Z`    | Verified                    |
+| Lighthouse performance                  | 100                           | Verified                    |
+| Lighthouse accessibility                | 100                           | Verified                    |
+| Lighthouse SEO                          | 100                           | Verified                    |
+| axe route count                         | 11                            | Verified                    |
+| axe violation count                     | 0                             | Verified                    |
+| axe route statuses                      | all expected statuses matched | Verified                    |
+| axe status mismatches                   | 0                             | Verified                    |
+| Publication safety scanned files        | 179                           | Verified                    |
+| Publication safety blocked paths        | 0                             | Verified                    |
+| Publication safety disallowed findings  | 0                             | Verified                    |
+| Static local HTML files                 | 138                           | Verified                    |
+| Static local references                 | 4,533                         | Verified                    |
+| Static local broken references          | 0                             | Verified                    |
+| Linkinator total links                  | 694                           | Verified                    |
+| Linkinator OK                           | 367                           | Verified                    |
+| Linkinator skipped external/non-preview | 327                           | Verified                    |
+| Linkinator broken                       | 0                             | Verified                    |
+| Production-smoke route count            | 11                            | Verified local harness only |
+| Production-smoke critical assets        | 176                           | Verified local harness only |
+| Production-smoke broken assets          | 0                             | Verified local harness only |
+| Production-smoke Pagefind assets        | 2                             | Verified local harness only |
 
 axe target routes:
 
@@ -132,4 +137,4 @@ The mobile nav regression is covered by `collapsed mobile navigation keeps hidde
 - Human/external verification required: optional record metadata schema review before broad content migration.
 - Human/external verification required: deterministic visual and first-viewport asset direction.
 - Human/external verification required: vocabulary, series shelf copy, About copy, career privacy/credibility, and 만냥구름 tone.
-- Human/external verification required: deployment URL behavior, CDN/static assets, production search, and public-release approval.
+- Human/external verification required: deployment URL behavior, `PERSONA_PRODUCTION_BASE_URL=https://<deployed-url> npm run audit:production-smoke`, CDN/static assets, production search, and public-release approval.

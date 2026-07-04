@@ -21,6 +21,7 @@
     "preaudit:keyboard": "node scripts/audit/prepare-reports.mjs",
     "preaudit:links": "node scripts/audit/prepare-reports.mjs",
     "preaudit:persona-contract": "node scripts/audit/prepare-reports.mjs",
+    "preaudit:production-smoke": "node scripts/audit/prepare-reports.mjs",
     "preaudit:publication-safety": "node scripts/audit/prepare-reports.mjs",
     "preaudit:responsive": "node scripts/audit/prepare-reports.mjs",
     "preaudit:static-links": "node scripts/audit/prepare-reports.mjs",
@@ -30,6 +31,7 @@
     "audit:responsive": "node scripts/audit/run-responsive-check.mjs",
     "audit:links": "node scripts/audit/run-link-check.mjs",
     "audit:persona-contract": "node scripts/audit/run-persona-contract-check.mjs",
+    "audit:production-smoke": "node scripts/audit/run-production-smoke-check.mjs",
     "audit:publication-safety": "node scripts/audit/run-publication-safety-scan.mjs",
     "audit:static-links": "node scripts/audit/run-static-local-link-check.mjs",
     "audit:web": "npm run build && npm run audit:publication-safety && npm run audit:static-links && start-server-and-test \"npm run preview -- --host 127.0.0.1 --port 4321\" http://127.0.0.1:4321 \"npm run audit:lighthouse && npm run audit:axe && npm run audit:keyboard && npm run audit:responsive && npm run audit:links\""

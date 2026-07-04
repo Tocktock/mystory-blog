@@ -8,6 +8,7 @@ const DIRECTORIES = [
   'keyboard',
   'linkinator',
   'persona-contract',
+  'production-smoke',
   'publication-safety',
   'responsive',
   'static-links',
