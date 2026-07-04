@@ -6,6 +6,10 @@ lang: 'ko'
 category: 'thought'
 series: 'ai-working-notes'
 seriesOrder: 1
+recordType: 'essay'
+status: 'stable'
+problem: 'AI를 조직에 소개하는 일이 도구 교육만으로 끝나지 않는다는 착각을 어떻게 정리할 것인가.'
+lesson: 'AI 활용은 문제를 대신 풀어주는 일이 아니라, 각자가 문제를 정의하고 책임지는 기준을 만드는 일에 가깝다.'
 tags:
   - meta
   - ai

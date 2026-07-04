@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
+import { uiCopy } from '../data/uiCopy';
 import '../styles/search.css';
 ---
 
@@ -20,13 +21,19 @@ import '../styles/search.css';
     <Header />
     <main class="search-page" aria-labelledby="search-title">
       <section class="search-page__intro">
-        <p class="search-page__eyebrow">Search Drawer</p>
+        <p class="search-page__eyebrow">{uiCopy.searchDrawer}</p>
         <h1 id="search-title">기록 찾기</h1>
         <p>
           기억나는 단어를 입력해보세요. 기술 노트, 일상 기록, 만냥구름 이야기까지 함께 찾아봅니다.
         </p>
       </section>
-      <div id="search" class="search-page__results">
+      <div
+        id="search"
+        class="search-page__results"
+        data-zero-results={uiCopy.searchNoResults}
+        data-fallback-title={uiCopy.searchUnavailableTitle}
+        data-fallback-description={uiCopy.searchUnavailableDescription}
+      >
         <noscript>
           <form class="search-page__noscript-form" action="/search/" method="get" role="search">
             <label for="fallback-search">검색어</label>
@@ -41,8 +48,8 @@ import '../styles/search.css';
             </div>
           </form>
           <p class="search-page__noscript-note">
-            검색 결과를 보려면 JavaScript가 필요합니다. 대신 상단 메뉴에서 기록과 시리즈를 둘러볼 수
-            있습니다.
+            검색 결과를 보려면 JavaScript가 필요합니다. 대신 기록과 시리즈를 열어보거나 검색 서랍을
+            다시 사용할 수 있을 때 찾아볼 수 있습니다.
           </p>
         </noscript>
       </div>
@@ -50,6 +57,7 @@ import '../styles/search.css';
     <Footer />
     <script type="module" is:inline>
       const SEARCH_QUERY_PARAM = 'q';
+      const SEARCH_INPUT_ID = 'record-room-search-input';
 
       const getSearchTermFromURL = () => {
         const params = new URLSearchParams(window.location.search);
@@ -69,6 +77,25 @@ import '../styles/search.css';
         window.history.replaceState({}, '', url);
       };
 
+      const ensureVisibleSearchLabel = (container) => {
+        const input = container?.querySelector('.pagefind-ui__search-input');
+        if (!(input instanceof HTMLInputElement)) return;
+
+        if (!input.id) {
+          input.id = SEARCH_INPUT_ID;
+        }
+        input.setAttribute('aria-label', '검색어');
+
+        const form = input.closest('form');
+        if (!form || form.querySelector(`label[for="${input.id}"]`)) return;
+
+        const label = document.createElement('label');
+        label.className = 'search-page__input-label';
+        label.htmlFor = input.id;
+        label.textContent = '검색어';
+        form.insertBefore(label, input);
+      };
+
       const initSearch = async () => {
         try {
           const module = await import('/pagefind/pagefind-ui.js');
@@ -82,7 +109,9 @@ import '../styles/search.css';
             showImages: true,
             translations: {
               placeholder: '기록실에서 찾아볼게요…',
-              zero_results: '만냥구름도 못 찾았어요. 다른 단어로 다시 찾아볼까요?',
+              zero_results:
+                document.querySelector('#search')?.dataset.zeroResults ??
+                '비어 있는 서랍입니다. 다른 단어로 다시 찾아볼 수 있습니다.',
               clear_search: '검색어 지우기',
               load_more: '더 보기',
               search_label: '기록 검색',
@@ -95,6 +124,13 @@ import '../styles/search.css';
           }
 
           const container = document.querySelector('#search');
+          requestAnimationFrame(() => ensureVisibleSearchLabel(container));
+          const searchLabelObserver = new MutationObserver(() =>
+            ensureVisibleSearchLabel(container),
+          );
+          if (container) {
+            searchLabelObserver.observe(container, { childList: true, subtree: true });
+          }
           container?.addEventListener('input', (event) => {
             const input = event.target;
             if (input instanceof HTMLInputElement && input.matches('.pagefind-ui__search-input')) {
@@ -113,8 +149,19 @@ import '../styles/search.css';
         } catch (error) {
           const container = document.querySelector('#search');
           if (container) {
-            container.innerHTML =
-              '<div class="search-page__fallback"><p><strong>검색 서랍을 아직 열 수 없어요.</strong></p><p>빌드 후 생성되는 Pagefind 색인이 필요합니다. <code>npm run build</code>를 실행한 뒤 다시 확인해주세요.</p></div>';
+            const fallback = document.createElement('div');
+            const title = document.createElement('p');
+            const strong = document.createElement('strong');
+            const description = document.createElement('p');
+            fallback.className = 'search-page__fallback';
+            strong.textContent =
+              container.dataset.fallbackTitle ?? '검색 서랍을 아직 열 수 없어요.';
+            description.textContent =
+              container.dataset.fallbackDescription ??
+              '빌드 후 생성되는 Pagefind 색인이 필요합니다.';
+            title.append(strong);
+            fallback.append(title, description);
+            container.replaceChildren(fallback);
           }
           console.warn('Pagefind UI failed to load. Did you run `npm run build`?', error);
         }

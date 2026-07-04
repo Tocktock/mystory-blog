@@ -6,9 +6,9 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { getCategory } from '../../data/categories';
-import { seriesList, type SeriesEntry } from '../../data/series';
+import { getSeriesStatusLabel, seriesList, type SeriesEntry } from '../../data/series';
 import { routes } from '../../utils/routes';
-import { sortSeriesPostsByLatest } from '../../utils/seriesPosts';
+import { sortSeriesPosts } from '../../utils/seriesPosts';
 
 type Props = {
   seriesItem: SeriesEntry;
@@ -21,9 +21,7 @@ export async function getStaticPaths() {
   return seriesList
     .map((seriesItem) => ({
       seriesItem,
-      posts: posts
-        .filter((post) => post.data.series === seriesItem.slug)
-        .sort(sortSeriesPostsByLatest),
+      posts: posts.filter((post) => post.data.series === seriesItem.slug).sort(sortSeriesPosts),
     }))
     .filter(({ posts }) => posts.length > 0)
     .map(({ seriesItem, posts }) => ({
@@ -34,6 +32,15 @@ export async function getStaticPaths() {
 
 const { seriesItem, posts } = Astro.props as Props;
 const category = getCategory(seriesItem.category);
+const statusLabel = getSeriesStatusLabel(seriesItem.status);
+const shelfItems = [
+  seriesItem.purpose?.trim()
+    ? { label: '이 선반의 목적', value: seriesItem.purpose.trim() }
+    : undefined,
+  seriesItem.readingPromise?.trim()
+    ? { label: '읽는 길', value: seriesItem.readingPromise.trim() }
+    : undefined,
+].filter((item): item is { label: string; value: string } => Boolean(item));
 ---
 
 <!doctype html>
@@ -54,29 +61,58 @@ const category = getCategory(seriesItem.category);
           <span aria-hidden="true">/</span>
           <span>{seriesItem.title}</span>
         </p>
-        <p class="series-detail__category">{category.label}</p>
+        <div class="series-detail__meta" aria-label="시리즈 정보">
+          <span>{category.label}</span>
+          <span>{posts.length}개 기록</span>
+          {statusLabel && <span>{statusLabel}</span>}
+        </div>
         <h1 id="series-detail-title">{seriesItem.title}</h1>
         <p>{seriesItem.description}</p>
       </header>
 
-      <ol class="series-detail__list">
-        {posts.map((post, index) => {
-          const orderLabel = post.data.seriesOrder ?? index + 1;
+      {
+        shelfItems.length > 0 && (
+          <section class="series-detail__shelf" aria-label="시리즈 선반 안내">
+            {shelfItems.map((item) => (
+              <div>
+                <p>{item.label}</p>
+                <strong>{item.value}</strong>
+              </div>
+            ))}
+          </section>
+        )
+      }
 
-          return (
-            <li class="series-detail__item">
-              <a href={routes.record(post.id)}>
-                <span class="series-detail__order">{String(orderLabel).padStart(2, '0')}</span>
-                <div>
-                  <h2>{post.data.title}</h2>
-                  <p>{post.data.description}</p>
-                  <FormattedDate date={post.data.pubDate} />
-                </div>
-              </a>
-            </li>
-          );
-        })}
-      </ol>
+      <section class="series-detail__records" aria-labelledby="series-records-title">
+        <header class="series-detail__records-header">
+          <p>읽는 순서</p>
+          <h2 id="series-records-title">기록 순서</h2>
+        </header>
+
+        <ol class="series-detail__list">
+          {
+            posts.map((post, index) => {
+              const orderLabel = post.data.seriesOrder ?? index + 1;
+
+              return (
+                <li
+                  class="series-detail__item"
+                  data-series-order={String(orderLabel).padStart(2, '0')}
+                >
+                  <a href={routes.record(post.id)}>
+                    <span class="series-detail__order">{String(orderLabel).padStart(2, '0')}</span>
+                    <div>
+                      <h3>{post.data.title}</h3>
+                      <p>{post.data.description}</p>
+                      <FormattedDate date={post.data.pubDate} />
+                    </div>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ol>
+      </section>
       <Footer />
     </main>
   </body>
@@ -94,9 +130,11 @@ const category = getCategory(seriesItem.category);
   }
 
   .series-detail__breadcrumbs {
-    display: inline-flex;
+    display: flex;
     gap: 0.5rem;
-    margin: 0 0 0.75rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 0.75rem;
     color: rgb(var(--gray));
     font-size: 0.95rem;
   }
@@ -106,9 +144,19 @@ const category = getCategory(seriesItem.category);
     text-decoration: none;
   }
 
-  .series-detail__category {
+  .series-detail__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 0.85rem;
+  }
+
+  .series-detail__meta span {
     display: inline-flex;
-    margin: 0 0 0.85rem;
+    align-items: center;
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
     background: rgba(var(--accent-rgb), 0.12);
@@ -126,6 +174,55 @@ const category = getCategory(seriesItem.category);
     color: rgb(var(--gray));
     line-height: 1.75;
     text-wrap: balance;
+  }
+
+  .series-detail__shelf {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0 0 2rem;
+  }
+
+  .series-detail__shelf div {
+    padding: 1rem;
+    border-radius: 10px;
+    background: var(--room-surface);
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.2);
+  }
+
+  .series-detail__shelf p {
+    margin: 0 0 0.45rem;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .series-detail__shelf strong {
+    display: block;
+    color: var(--ink-text);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.65;
+  }
+
+  .series-detail__records {
+    margin-top: 2rem;
+  }
+
+  .series-detail__records-header {
+    margin-bottom: 1rem;
+  }
+
+  .series-detail__records-header p {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .series-detail__records-header h2 {
+    margin: 0.3rem 0 0;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
   }
 
   .series-detail__list {
@@ -171,7 +268,7 @@ const category = getCategory(seriesItem.category);
     font-weight: 800;
   }
 
-  .series-detail__item h2 {
+  .series-detail__item h3 {
     margin-bottom: 0.5rem;
     font-size: clamp(1.35rem, 2vw, 1.7rem);
   }
@@ -190,6 +287,10 @@ const category = getCategory(seriesItem.category);
   @media (max-width: 840px) {
     .series-detail {
       width: 100%;
+    }
+
+    .series-detail__shelf {
+      grid-template-columns: 1fr;
     }
 
     .series-detail__item a {

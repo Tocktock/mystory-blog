@@ -9,6 +9,7 @@ import RecentRecords from '../components/home/RecentRecords.astro';
 import ManyangGureumCard from '../components/home/ManyangGureumCard.astro';
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
+import { routes } from '../utils/routes';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -18,13 +19,16 @@ const posts = allPosts.slice(0, 4);
 const seriesCount = new Set(
   allPosts.map((post) => post.data.series).filter((series): series is string => Boolean(series)),
 ).size;
-const latestDateLabel = allPosts[0]
+const latestPost = allPosts[0];
+const latestDateLabel = latestPost
   ? new Intl.DateTimeFormat('ko-KR', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-    }).format(allPosts[0].data.pubDate)
+    }).format(latestPost.data.pubDate)
   : '준비 중';
+const latestRecordTitle = latestPost?.data.title ?? '아직 준비 중인 기록실';
+const latestRecordHref = latestPost ? routes.record(latestPost.id) : undefined;
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
@@ -55,6 +59,8 @@ const personJsonLd = buildPersonJsonLd({
         recordCount={allPosts.length}
         seriesCount={seriesCount}
         latestDateLabel={latestDateLabel}
+        latestRecordTitle={latestRecordTitle}
+        latestRecordHref={latestRecordHref}
       />
       <BookshelfSection />
       <RecentRecords posts={posts} />

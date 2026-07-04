@@ -11,13 +11,28 @@ import CatProfileCard from '../components/cats/CatProfileCard.astro';
 import { SITE_TITLE } from '../consts';
 import { cats } from '../data/cats';
 import { catPhotos } from '../data/catGallery';
+import { uiCopy } from '../data/uiCopy';
 import { routes } from '../utils/routes';
 
 const PAGE_TITLE = `만냥구름 | ${SITE_TITLE}`;
 const PAGE_DESCRIPTION =
-  '기록실을 함께 쓰는 만냥이와 구름이의 사진, 기억, 작은 순간들을 모아둔 공간입니다.';
+  '기록실을 함께 쓰는 만냥이와 구름이를 통해 관찰, 돌봄, 원인 이해를 차분히 남기는 공간입니다.';
 
 const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
+const observationNotes = [
+  {
+    title: '먼저 바라보기',
+    description: '행동을 바로 판단하기보다 반복되는 표정, 자리, 움직임을 먼저 봅니다.',
+  },
+  {
+    title: '원인을 이해하기',
+    description: '불편한 행동에도 이유가 있다고 보고, 환경과 습관을 함께 살핍니다.',
+  },
+  {
+    title: '돌봄을 기록으로 남기기',
+    description: '작은 해결과 따뜻한 순간을 기록해 다음 선택의 기준으로 삼습니다.',
+  },
+] as const;
 
 const observationPosts = (await getCollection('blog'))
   .filter((post) => post.data.category === 'cats')
@@ -38,8 +53,8 @@ const observationPosts = (await getCollection('blog'))
           <p class="manyang-hero__eyebrow">Manyang & Gureum</p>
           <h1 id="manyang-gureum-title">만냥구름</h1>
           <p>
-            기록실을 함께 쓰는 두 고양이입니다. 이불 위 휴식, 낮잠, 앞발을 쭉 뻗은 순간,
-            그리고 조용히 곁을 차지하는 장면들을 모았습니다.
+            기록실을 함께 쓰는 두 고양이입니다. 귀여운 장면만 모으기보다, 작은 변화와 불편의 이유를
+            관찰하고 돌보는 방식을 함께 남깁니다.
           </p>
           <div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
             <a href="#cat-profiles">둘 소개 보기</a>
@@ -65,10 +80,35 @@ const observationPosts = (await getCollection('blog'))
         }
       </header>
 
+      <section
+        class="observation-bridge"
+        aria-labelledby="observation-bridge-title"
+        id="observation-bridge"
+      >
+        <div class="section-heading">
+          <p>Observation & Care</p>
+          <h2 id="observation-bridge-title">관찰과 돌봄으로 남긴 기준</h2>
+        </div>
+        <p class="observation-bridge__intro">
+          만냥구름은 기록실의 장식이 아니라, 문제를 보기 전에 먼저 살피고 원인을 이해하려는 태도를
+          매일 확인하게 해주는 존재입니다.
+        </p>
+        <div class="observation-bridge__grid">
+          {
+            observationNotes.map((note) => (
+              <article>
+                <h3>{note.title}</h3>
+                <p>{note.description}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
       <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
         <div class="section-heading">
           <p>Roommates</p>
-          <h2 id="cat-profiles-title">기록실을 함께 쓰는 친구들</h2>
+          <h2 id="cat-profiles-title">기록실을 함께 쓰는 고양이들</h2>
         </div>
         <div class="cat-profiles__grid">
           {cats.map((cat) => <CatProfileCard cat={cat} />)}
@@ -102,8 +142,9 @@ const observationPosts = (await getCollection('blog'))
             </ul>
           ) : (
             <EmptyState
-              title="아직 관찰일지는 비어 있어요"
-              description="만냥이와 구름이를 보며 배운 것들은 앞으로 천천히 기록할 예정입니다."
+              eyebrow={uiCopy.emptyDrawer}
+              title={uiCopy.emptyDrawerTitle}
+              description="아직 만냥구름 관찰일지는 꺼낼 기록이 없습니다. 사진첩을 먼저 보거나 전체 기록에서 다른 서랍을 열어볼 수 있습니다."
               href={routes.records}
               linkLabel="전체 기록 보기"
               compact
@@ -227,8 +268,44 @@ const observationPosts = (await getCollection('blog'))
   }
 
   .cat-profiles,
+  .observation-bridge,
   .cat-notes {
     margin-top: 4rem;
+  }
+
+  .observation-bridge__intro {
+    max-width: 46rem;
+    margin: 0 0 1.25rem;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .observation-bridge__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .observation-bridge__grid article {
+    min-width: 0;
+    padding: 1rem;
+    border-radius: 8px;
+    background: var(--surface-elevated);
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  }
+
+  .observation-bridge__grid h3 {
+    margin: 0 0 0.55rem;
+    font-size: 1.15rem;
+    letter-spacing: 0;
+  }
+
+  .observation-bridge__grid p {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.65;
+    word-break: keep-all;
   }
 
   .cat-profiles__grid {
@@ -317,8 +394,13 @@ const observationPosts = (await getCollection('blog'))
     }
 
     .cat-profiles,
+    .observation-bridge,
     .cat-notes {
       margin-top: 3rem;
+    }
+
+    .observation-bridge__grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

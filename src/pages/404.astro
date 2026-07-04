@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 import { catPhotos } from '../data/catGallery';
+import { uiCopy } from '../data/uiCopy';
 import { routes } from '../utils/routes';
 
 const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catPhotos[0];
@@ -15,7 +16,7 @@ const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catP
   <head>
     <BaseHead
       title={`비어 있는 서랍 | ${SITE_TITLE}`}
-      description="찾으려던 기록이 없거나, 구름이가 어딘가에 숨겨둔 것 같아요."
+      description="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍과 기록 목록에서 다시 찾을 수 있습니다."
       lang="ko"
     />
   </head>
@@ -25,16 +26,16 @@ const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catP
       <h1 class="sr-only">비어 있는 서랍입니다</h1>
       <EmptyState
         eyebrow="404"
-        title="비어 있는 서랍입니다"
-        description="찾으려던 기록이 없거나, 구름이가 어딘가에 숨겨둔 것 같아요. 기록실의 다른 서랍을 열어볼까요?"
+        title={uiCopy.emptyDrawerTitle}
+        description="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍에서 다시 찾거나 기록실의 다른 서랍을 열어볼 수 있습니다."
         href={routes.records}
         linkLabel="기록으로 돌아가기"
         image={emptyDrawerPhoto?.image}
         imageAlt={emptyDrawerPhoto?.alt}
       />
       <nav class="not-found-page__links" aria-label="도움 링크">
-        <a href={routes.search}>검색하기</a>
-        <a href={routes.manyangGureum}>만냥구름 보러가기</a>
+        <a href={routes.search}>검색 서랍 열기</a>
+        <a href={routes.manyangGureum}>만냥구름 사진첩 보기</a>
       </nav>
       <Footer />
     </main>
@@ -43,6 +44,7 @@ const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catP
 
 <style>
   .not-found-page {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;

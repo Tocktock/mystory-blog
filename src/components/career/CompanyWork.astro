@@ -36,13 +36,27 @@ import { companyWorkAreas } from '../../data/career';
                   </div>
                 ))}
               </dl>
-              {area.links ? (
+              {area.links || area.relatedRecords ? (
                 <nav class="company-work__links" aria-label={`${area.title} 관련 링크`}>
-                  {area.links.map((link) => (
-                    <CareerLink href={link.href} external={link.external}>
-                      {link.label}
-                    </CareerLink>
-                  ))}
+                  {area.links ? (
+                    <div class="company-work__link-group">
+                      {area.links.map((link) => (
+                        <CareerLink href={link.href} external={link.external}>
+                          {link.label}
+                        </CareerLink>
+                      ))}
+                    </div>
+                  ) : null}
+                  {area.relatedRecords ? (
+                    <div class="company-work__link-group" role="group" aria-label="관련 기록">
+                      <span>관련 기록</span>
+                      {area.relatedRecords.map((record) => (
+                        <CareerLink href={record.href} external={record.external}>
+                          {record.label}
+                        </CareerLink>
+                      ))}
+                    </div>
+                  ) : null}
                 </nav>
               ) : null}
             </div>
@@ -197,10 +211,25 @@ import { companyWorkAreas } from '../../data/career';
   }
 
   .company-work__links {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.75rem 1rem;
     justify-content: end;
+  }
+
+  .company-work__link-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.9rem;
+    align-items: baseline;
+    justify-content: end;
+  }
+
+  .company-work__link-group > span {
+    color: var(--career-muted-strong);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.45;
   }
 
   :global(.company-work__links a) {
@@ -235,6 +264,10 @@ import { companyWorkAreas } from '../../data/career';
     }
 
     .company-work__links {
+      justify-content: start;
+    }
+
+    .company-work__link-group {
       justify-content: start;
     }
   }

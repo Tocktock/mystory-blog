@@ -2,6 +2,72 @@
 import Layout from '../layouts/BlogPost.astro';
 import aboutHero from '../assets/placeholders/blog-placeholder-about.jpg';
 import { routes } from '../utils/routes';
+
+const principles = [
+  {
+    title: '마음가짐과 몰입',
+    summary: '일의 의미는 주어진 역할보다 어떤 마음으로 더 잘 풀어보려는지에서 시작됩니다.',
+    qHref: '#q1',
+    qLabel: 'Q1에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.career, label: '이력에서 확인하기' },
+      { href: routes.seriesDetail('running-log'), label: '꾸준함의 기록' },
+    ],
+  },
+  {
+    title: '문제를 먼저 정의하기',
+    summary: '바로 만들기보다 내가 진짜 해결하려는 문제가 무엇인지 먼저 좁힙니다.',
+    qHref: '#q2',
+    qLabel: 'Q2에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.seriesDetail('spring-backend-notes'), label: '백엔드 문제풀이' },
+      { href: routes.record('spring/spring-validate'), label: '에러 반환 기록' },
+    ],
+  },
+  {
+    title: '유대감과 협업',
+    summary: '같이 일하는 사람의 이유를 이해할수록 판단과 실행이 덜 흔들립니다.',
+    qHref: '#q4',
+    qLabel: 'Q4에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.career, label: '실제 일의 맥락' },
+      { href: routes.record('agile/sabotaging-an-agile-transformation'), label: '협업 문화 기록' },
+    ],
+  },
+  {
+    title: '실패하면 다시 풀기',
+    summary: '실패를 감정으로 끝내지 않고 다시 풀 수 있는 상태로 돌아오는 일을 중요하게 봅니다.',
+    qHref: '#q5',
+    qLabel: 'Q5에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.seriesDetail('solve-again'), label: '다시 푸는 기록' },
+      { href: routes.record('meta/ai-advisor-writing-partner'), label: 'AI Advisor 회고' },
+    ],
+  },
+  {
+    title: '관찰하고 이해하기',
+    summary: '만냥구름을 돌보며 배운 관찰은 사람, 일, 시스템을 대하는 방식으로 이어집니다.',
+    qHref: '#q7',
+    qLabel: 'Q7에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.manyangGureum, label: '만냥구름 보기' },
+      {
+        href: routes.record('hardware/first-soldering-monitor-repair'),
+        label: '손으로 관찰한 기록',
+      },
+    ],
+  },
+  {
+    title: '틀릴 수 있음을 인정하기',
+    summary: '배움 앞에서는 열어두고, 아니라고 판단한 것에는 단호하게 기준을 세웁니다.',
+    qHref: '#q8',
+    qLabel: 'Q8에서 자세히 보기',
+    relatedLinks: [
+      { href: routes.seriesDetail('ai-working-notes'), label: 'AI와 일하는 방식' },
+      { href: routes.records, label: '전체 기록 보기' },
+    ],
+  },
+] as const;
 ---
 
 <Layout
@@ -12,6 +78,7 @@ import { routes } from '../utils/routes';
   category="thought"
   slug="about"
   heroImage={aboutHero}
+  ogImage={aboutHero.src}
   sectionName="소개"
   sectionPath="/about"
 >
@@ -19,11 +86,50 @@ import { routes } from '../utils/routes';
     <p><strong>Interview with JiYong</strong></p>
     <hr />
   </header>
+  <section class="about-manual" id="jiyong-manual" aria-labelledby="jiyong-manual-title">
+    <div class="about-manual__intro">
+      <p class="about-manual__eyebrow">지용 매뉴얼</p>
+      <h2 id="jiyong-manual-title">내가 문제를 보고, 풀고, 다시 기록하는 방식</h2>
+      <p>
+        긴 인터뷰를 읽기 전에 먼저 볼 수 있는 짧은 지도입니다. 마음가짐, 문제 정의, 협업, 실패,
+        관찰, 성장이라는 기준으로 내가 일과 생활을 어떻게 바라보는지 정리했습니다.
+      </p>
+      <a href="#full-interview">전체 인터뷰로 내려가기</a>
+    </div>
+    <div class="about-manual__grid" aria-label="지용의 원칙">
+      {
+        principles.map((principle) => (
+          <article class="about-principle-card">
+            <a class="about-principle-card__main" href={principle.qHref}>
+              <span>{principle.qLabel}</span>
+              <h3>{principle.title}</h3>
+              <p>{principle.summary}</p>
+            </a>
+            <nav class="about-principle-card__links" aria-label={`${principle.title} 관련 링크`}>
+              {principle.relatedLinks.map((link) => (
+                <a href={link.href}>{link.label}</a>
+              ))}
+            </nav>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="about-interview-intro" id="full-interview" aria-labelledby="full-interview-title">
+    <p class="about-interview-intro__eyebrow">전체 인터뷰</p>
+    <h2 id="full-interview-title">원칙이 만들어진 배경</h2>
+    <p>
+      아래 문답은 원래의 긴 인터뷰입니다. 앞의 매뉴얼 카드가 요약이라면, 이 영역은 각 원칙이 어떤
+      경험에서 나왔는지 확인하는 기록입니다.
+    </p>
+  </section>
+
   <section aria-labelledby="q1">
     <h2 id="q1">💬 Q1. 일을 할 때 가장 중요하게 생각하는 원칙은 무엇인가요?</h2>
     <p>
-      <strong>A.</strong> 저는 '마음가짐'을 가장 중요하게 생각합니다. 어떤 일이든 몰입해서 한다는 건
-      좋은 일이라고 믿어요. 그 몰입은 "이 일을 잘하고 싶다"는 마음에서 시작되죠.
+      <strong>A.</strong> 저는 '마음가짐'을 가장 중요하게 생각합니다. 어떤 일이든 몰입해서 한다는 건 좋은
+      일이라고 믿어요. 그 몰입은 "이 일을 잘하고 싶다"는 마음에서 시작되죠.
     </p>
     <p>
       물론 일이 항상 잘될 수는 없고, 때로는 이유 없이 주어진 일을 해야 할 때도 있습니다. 어떤 사람은
@@ -44,8 +150,8 @@ import { routes } from '../utils/routes';
     <h2 id="q2">💬 Q2. 문제를 해결할 때 어떤 접근 방식을 선호하시나요?</h2>
     <p>
       <strong>A.</strong> 대부분의 문제에는 각각 다른 접근이 필요하다고 생각합니다. 완벽한 제품을 만들어야
-      할 때는 실험보다 안정성과 일관성이 중요할 수 있고, 반대로 빠른 반응과 학습이 필요한 상황에서는
-      과감한 실험과 선택이 더 가치 있을 때도 있습니다.
+      할 때는 실험보다 안정성과 일관성이 중요할 수 있고, 반대로 빠른 반응과 학습이 필요한 상황에서는 과감한
+      실험과 선택이 더 가치 있을 때도 있습니다.
     </p>
     <p>
       저는 문제를 풀기 전에 먼저 "내가 진짜 해결하려는 게 무엇인가?"를 정의하려고 합니다. 그다음,
@@ -203,6 +309,151 @@ import { routes } from '../utils/routes';
     max-width: 8rem;
   }
 
+  .about-manual,
+  .about-interview-intro {
+    margin: clamp(2.5rem, 6vw, 4rem) 0;
+  }
+
+  .about-manual {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 1.8rem);
+  }
+
+  .about-manual__intro {
+    display: grid;
+    gap: 0.8rem;
+    padding: clamp(1.1rem, 3vw, 1.45rem);
+    border: 1px solid rgba(var(--gray-light), 0.58);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--gray-light), 0.18)),
+      var(--surface-elevated);
+  }
+
+  .about-manual__eyebrow,
+  .about-interview-intro__eyebrow {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .about-manual__intro h2,
+  .about-interview-intro h2 {
+    margin: 0;
+    color: rgb(var(--black));
+    font-size: clamp(1.55rem, 5vw, 2.45rem);
+    line-height: 1.18;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  .about-manual__intro p,
+  .about-interview-intro p:not(.about-interview-intro__eyebrow) {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    word-break: keep-all;
+  }
+
+  .about-manual__intro a {
+    width: fit-content;
+    color: var(--accent-dark);
+    font-weight: 800;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.22em;
+  }
+
+  .about-manual__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .about-principle-card {
+    display: grid;
+    gap: 0.85rem;
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid rgba(var(--gray-light), 0.58);
+    border-radius: 8px;
+    background: var(--surface-elevated);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.28) inset;
+  }
+
+  .about-principle-card__main {
+    display: grid;
+    gap: 0.45rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .about-principle-card__main span {
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .about-principle-card h3 {
+    margin: 0;
+    color: rgb(var(--black));
+    font-size: clamp(1.08rem, 3vw, 1.28rem);
+    line-height: 1.32;
+  }
+
+  .about-principle-card p {
+    margin: 0;
+    color: rgb(var(--gray));
+    font-size: 0.94rem;
+    line-height: 1.65;
+    word-break: keep-all;
+  }
+
+  .about-principle-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+    align-self: end;
+  }
+
+  .about-principle-card__links a {
+    display: inline-flex;
+    min-height: 2.15rem;
+    align-items: center;
+    padding: 0.42rem 0.58rem;
+    border: 1px solid rgba(var(--gray-light), 0.58);
+    border-radius: 7px;
+    color: var(--accent-dark);
+    font-size: 0.84rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .about-principle-card__main:hover h3,
+  .about-principle-card__main:focus-visible h3,
+  .about-manual__intro a:hover,
+  .about-manual__intro a:focus-visible,
+  .about-principle-card__links a:hover,
+  .about-principle-card__links a:focus-visible {
+    color: var(--accent);
+  }
+
+  .about-principle-card__main:focus-visible,
+  .about-principle-card__links a:focus-visible,
+  .about-manual__intro a:focus-visible {
+    outline: 2px solid rgba(var(--accent-rgb), 0.45);
+    outline-offset: 3px;
+  }
+
+  .about-interview-intro {
+    display: grid;
+    gap: 0.65rem;
+    padding-top: clamp(1.5rem, 4vw, 2.25rem);
+    border-top: 1px solid rgba(var(--gray-light), 0.55);
+  }
+
   .about-career-link {
     margin-top: 3rem;
     padding: 1.5rem;
@@ -251,5 +502,15 @@ import { routes } from '../utils/routes';
   .about-career-link a:focus-visible {
     border-color: var(--accent);
     color: var(--accent);
+  }
+
+  @media (max-width: 720px) {
+    .about-manual__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-principle-card {
+      padding: 0.92rem;
+    }
   }
 </style>

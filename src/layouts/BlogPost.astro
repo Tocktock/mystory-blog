@@ -8,6 +8,7 @@ import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
 import PostMeta from '../components/records/PostMeta.astro';
+import RecordSummary from '../components/records/RecordSummary.astro';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 type Props = CollectionEntry<'blog'>['data'] & {
@@ -32,6 +33,10 @@ const {
   category,
   tags = [],
   series: seriesSlug,
+  recordType,
+  status,
+  problem,
+  lesson,
   sectionName = '기록',
   sectionPath = '/records',
   showPostMeta: providedShowPostMeta,
@@ -208,6 +213,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
         width: auto;
         max-width: 760px;
         padding: 0 0 1rem;
+        overflow-x: hidden;
         color: var(--blog-text);
       }
       .blog-post-shell--record .title {
@@ -471,8 +477,6 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
           border-radius: 14px;
         }
         :global(.blog-post-shell--record .post-content pre) {
-          margin-right: -0.25rem;
-          margin-left: -0.25rem;
           padding: 1.1rem;
           border-radius: 12px;
         }
@@ -517,6 +521,16 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
             </div>
             <h1>{title}</h1>
             {showPostMeta && <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />}
+            {
+              isRecordPost && (
+                <RecordSummary
+                  recordType={recordType}
+                  status={status}
+                  problem={problem}
+                  lesson={lesson}
+                />
+              )
+            }
             <hr />
           </div>
           <slot />

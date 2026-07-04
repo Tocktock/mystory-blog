@@ -1,0 +1,232 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import FormattedDate from '../FormattedDate.astro';
+import { getCategory } from '../../data/categories';
+import { getRecordStatus, getRecordType } from '../../data/recordTypes';
+import { getSeries } from '../../data/series';
+import { getPostHeroImageAlt } from '../../utils/postImages';
+import { getCategoryCoverImage } from '../../utils/recordCovers';
+import { routes } from '../../utils/routes';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  featured?: boolean;
+  showCategory?: boolean;
+  showTags?: boolean;
+}
+
+const { post, featured = false, showCategory = true, showTags = true } = Astro.props as Props;
+const category = getCategory(post.data.category);
+const seriesEntry = getSeries(post.data.series);
+const recordType = getRecordType(post.data.recordType);
+const statusLabel = getRecordStatus(post.data.status);
+const coverImage = post.data.heroImage ?? getCategoryCoverImage(post.data.category);
+const intentItems = [
+  post.data.problem?.trim() ? { label: '문제', value: post.data.problem.trim() } : undefined,
+  post.data.lesson?.trim() ? { label: '배운 것', value: post.data.lesson.trim() } : undefined,
+].filter((item): item is { label: string; value: string } => Boolean(item));
+const imageWidths = featured ? [720, 960, 1200] : [360, 480, 720, 960];
+const imageSizes = featured ? '(max-width: 960px) 100vw, 960px' : '(max-width: 960px) 100vw, 480px';
+---
+
+<article class:list={['record-card', { 'record-card--featured': featured }]}>
+  <a href={routes.record(post.id)}>
+    <Image
+      src={coverImage}
+      alt={getPostHeroImageAlt(post.data)}
+      width={featured ? 960 : 480}
+      widths={imageWidths}
+      sizes={imageSizes}
+      loading={featured ? 'eager' : 'lazy'}
+      decoding="async"
+      class="record-card__image"
+      data-cover-category={category.slug}
+    />
+    <div class="record-card__body">
+      <div class="record-card__meta">
+        {showCategory && <span class="record-card__category">{category.label}</span>}
+        {recordType && <span class="record-card__type">{recordType.label}</span>}
+        {statusLabel && <span class="record-card__status">{statusLabel}</span>}
+        {seriesEntry && <span class="record-card__series">{seriesEntry.title}</span>}
+      </div>
+      <h2 class="record-card__title">{post.data.title}</h2>
+      <p class="record-card__description">{post.data.description}</p>
+      {
+        intentItems.length > 0 && (
+          <dl class="record-card__intent" aria-label="기록 의도">
+            {intentItems.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+      <p class="record-card__date">
+        <FormattedDate date={post.data.pubDate} />
+      </p>
+      {
+        showTags && post.data.tags.length > 0 && (
+          <ul class="record-card__tags" aria-label="기록 태그">
+            {post.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </a>
+</article>
+
+<style>
+  .record-card {
+    height: 100%;
+  }
+
+  .record-card a {
+    display: block;
+    height: 100%;
+    padding: 0.5rem;
+    border-radius: 16px;
+    background: var(--room-surface);
+    color: var(--ink-text);
+    text-decoration: none;
+    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.18);
+    transition:
+      box-shadow var(--motion-fast) ease,
+      transform var(--motion-fast) ease,
+      background-color var(--motion-fast) ease;
+  }
+
+  .record-card a:focus-visible,
+  .record-card a:hover {
+    background-color: rgba(var(--room-accent-rgb), 0.06);
+    box-shadow: var(--room-shadow);
+    transform: translateY(-2px);
+  }
+
+  .record-card__image {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    border-radius: 14px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .record-card__body {
+    padding: 0.25rem 0.25rem 0.5rem;
+  }
+
+  .record-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .record-card__category,
+  .record-card__series,
+  .record-card__status,
+  .record-card__type {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .record-card__category {
+    background: rgba(var(--room-accent-rgb), 0.12);
+    color: var(--accent-dark);
+  }
+
+  .record-card__type {
+    background: rgba(var(--ops-sage-rgb), 0.14);
+    color: rgb(var(--gray-dark));
+  }
+
+  .record-card__status {
+    background: rgba(var(--cat-clay-rgb), 0.14);
+    color: var(--accent-dark);
+  }
+
+  .record-card__series {
+    background: rgba(var(--gray-light), 0.26);
+    color: var(--ink-text);
+  }
+
+  .record-card__title {
+    margin: 0 0 0.5rem;
+    color: rgb(var(--black));
+    line-height: 1.2;
+  }
+
+  .record-card__description {
+    margin: 0 0 0.75rem;
+    color: var(--ink-text);
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+
+  .record-card__intent {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0 0 0.85rem;
+    padding: 0.72rem 0.78rem;
+    border-radius: 8px;
+    background: rgba(var(--gray-light), 0.16);
+  }
+
+  .record-card__intent div {
+    display: grid;
+    gap: 0.12rem;
+  }
+
+  .record-card__intent dt {
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .record-card__intent dd {
+    margin: 0;
+    color: var(--ink-text);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .record-card__date {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .record-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .record-card__tags li {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(var(--room-accent-rgb), 0.12);
+    color: var(--accent-dark);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .record-card--featured .record-card__title {
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+  }
+</style>

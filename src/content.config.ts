@@ -20,6 +20,12 @@ const blog = defineCollection({
       category: z.enum(['tech', 'life', 'thought', 'project', 'cats']).default('thought'),
       series: z.string().optional(),
       seriesOrder: z.number().int().positive().optional(),
+      recordType: z
+        .enum(['debug-log', 'experiment', 'system-note', 'essay', 'project-log', 'observation'])
+        .optional(),
+      status: z.enum(['seed', 'growing', 'stable']).optional(),
+      problem: z.string().optional(),
+      lesson: z.string().optional(),
     }),
 });
 

@@ -1,0 +1,117 @@
+---
+import { getRecordStatus, getRecordType } from '../../data/recordTypes';
+
+interface Props {
+  recordType?: string;
+  status?: string;
+  problem?: string;
+  lesson?: string;
+}
+
+type SummaryItem = {
+  label: string;
+  value: string;
+  note?: string;
+};
+
+const { recordType: recordTypeSlug, status, problem, lesson } = Astro.props as Props;
+const recordType = getRecordType(recordTypeSlug);
+const statusLabel = getRecordStatus(status);
+const itemCandidates: (SummaryItem | undefined)[] = [
+  recordType
+    ? { label: '기록 갈래', value: recordType.label, note: recordType.description }
+    : undefined,
+  statusLabel ? { label: '상태', value: statusLabel } : undefined,
+  problem?.trim() ? { label: '문제', value: problem.trim() } : undefined,
+  lesson?.trim() ? { label: '배운 것', value: lesson.trim() } : undefined,
+];
+const items = itemCandidates.filter((item): item is SummaryItem => Boolean(item));
+---
+
+{
+  items.length > 0 && (
+    <aside class="record-summary" aria-label="기록 요약">
+      <p class="record-summary__eyebrow">Record Summary</p>
+      <dl class="record-summary__list">
+        {items.map((item) => (
+          <div>
+            <dt>{item.label}</dt>
+            <dd>
+              <strong>{item.value}</strong>
+              {item.note && <span>{item.note}</span>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </aside>
+  )
+}
+
+<style>
+  .record-summary {
+    margin: 1.45rem auto 0;
+    padding: clamp(1rem, 3vw, 1.25rem);
+    border: 1px solid rgba(var(--accent-rgb), 0.24);
+    border-radius: 16px;
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb), 0.13), rgba(255, 255, 255, 0.035)),
+      rgba(255, 255, 255, 0.045);
+    color: rgb(var(--gray-dark));
+    text-align: left;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
+  }
+
+  .record-summary__eyebrow {
+    margin: 0 0 0.9rem;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .record-summary__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin: 0;
+  }
+
+  .record-summary__list div {
+    min-width: 0;
+    padding: 0.78rem 0.85rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.14);
+  }
+
+  .record-summary__list dt {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .record-summary__list dd {
+    display: grid;
+    gap: 0.18rem;
+    margin: 0;
+    color: rgb(var(--gray-dark));
+    line-height: 1.55;
+  }
+
+  .record-summary__list strong {
+    color: rgb(var(--black));
+    font-weight: 800;
+  }
+
+  .record-summary__list span {
+    color: rgb(var(--gray));
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 640px) {
+    .record-summary__list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

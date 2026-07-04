@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { uiCopy } from '../../data/uiCopy';
 import heroImage from '../../assets/gallery/main.jpg';
 import { routes } from '../../utils/routes';
 
@@ -7,14 +8,29 @@ interface Props {
   recordCount: number;
   seriesCount: number;
   latestDateLabel: string;
+  latestRecordTitle: string;
+  latestRecordHref?: string;
 }
 
-const { recordCount, seriesCount, latestDateLabel } = Astro.props as Props;
+interface HeroStat {
+  label: string;
+  value: string;
+  detail?: string;
+  href?: string;
+}
 
-const heroStats = [
-  { label: 'records', value: `${recordCount}편` },
-  { label: 'series', value: `${seriesCount}개` },
-  { label: 'latest', value: latestDateLabel },
+const { recordCount, seriesCount, latestDateLabel, latestRecordTitle, latestRecordHref } =
+  Astro.props as Props;
+
+const heroStats: HeroStat[] = [
+  {
+    label: uiCopy.recentRecord,
+    value: latestRecordTitle,
+    detail: latestDateLabel,
+    href: latestRecordHref,
+  },
+  { label: uiCopy.stackedRecords, value: `${recordCount}편` },
+  { label: uiCopy.ongoingSeries, value: `${seriesCount}개` },
 ];
 ---
 
@@ -36,7 +52,8 @@ const heroStats = [
           <p class="home-hero__eyebrow">Ji Yong's Record Room</p>
           <h1 id="home-hero-title">지용의 기록실</h1>
           <p class="home-hero__description">
-            AI, Backend, Agent, 그리고 만냥구름. 배우고 만들고 사랑하는 것들을 기록합니다.
+            문제를 관찰하고 구조를 세운 뒤, Backend와 AI Agent 실험을 작은 도구와 기록으로 남깁니다.
+            만냥구름과 일상의 관찰도 같은 책상 위에 둡니다.
           </p>
           <div class="home-hero__actions" aria-label="홈 주요 이동">
             <a class="home-hero__button home-hero__button--primary" href={routes.records}
@@ -50,14 +67,23 @@ const heroStats = [
           </div>
         </div>
 
-        <aside class="home-hero__index" aria-label="기록실 현황">
-          <p class="home-hero__index-title">현재 책장</p>
+        <aside class="home-hero__index" aria-label={uiCopy.currentDesk}>
+          <p class="home-hero__index-title">{uiCopy.currentDesk}</p>
           <dl>
             {
               heroStats.map((item) => (
                 <div>
                   <dt>{item.label}</dt>
-                  <dd>{item.value}</dd>
+                  <dd>
+                    {item.href ? (
+                      <a class="home-hero__index-link" href={item.href}>
+                        {item.value}
+                      </a>
+                    ) : (
+                      item.value
+                    )}
+                    {item.detail && <span class="home-hero__index-detail">{item.detail}</span>}
+                  </dd>
                 </div>
               ))
             }
@@ -252,6 +278,28 @@ const heroStats = [
     font-variant-numeric: tabular-nums;
   }
 
+  .home-hero__index-link {
+    display: inline;
+    color: inherit;
+    text-decoration: none;
+    text-wrap: pretty;
+  }
+
+  .home-hero__index-link:hover,
+  .home-hero__index-link:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+  }
+
+  .home-hero__index-detail {
+    display: block;
+    margin-top: 0.18rem;
+    color: rgba(255, 249, 240, 0.66);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
   @media (max-width: 920px) {
     .home-hero {
       width: min(100% - 1rem, 1180px);
@@ -334,19 +382,15 @@ const heroStats = [
 
     .home-hero__actions {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 0.6rem;
       margin-top: 1.05rem;
     }
 
     .home-hero__button {
-      min-height: 2.7rem;
-      padding: 0.55rem 0.75rem;
+      min-height: 2.9rem;
+      padding: 0.6rem 0.85rem;
       font-size: 0.95rem;
-    }
-
-    .home-hero__button--soft {
-      grid-column: 1 / -1;
     }
 
     .home-hero__index {
@@ -362,19 +406,19 @@ const heroStats = [
     }
 
     .home-hero__index dl {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 0.45rem;
     }
 
     .home-hero__index dl > div {
-      display: inline-flex;
-      flex: 0 1 auto;
-      align-items: center;
+      display: grid;
+      grid-template-columns: minmax(5.5rem, 0.38fr) minmax(0, 1fr);
+      align-items: start;
       gap: 0.4rem;
-      padding: 0.35rem 0.55rem;
+      padding: 0.5rem 0.65rem;
       border: 1px solid rgba(255, 249, 240, 0.16);
-      border-radius: 999px;
+      border-radius: 8px;
       background: rgba(255, 249, 240, 0.08);
     }
 
@@ -384,7 +428,14 @@ const heroStats = [
     }
 
     .home-hero__index dd {
+      min-width: 0;
       font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .home-hero__index-detail {
+      margin-top: 0.12rem;
+      font-size: 0.68rem;
     }
   }
 </style>

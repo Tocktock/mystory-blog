@@ -7,6 +7,7 @@ import placeholder3 from '../../assets/placeholders/blog-placeholder-3.jpg';
 import placeholder4 from '../../assets/placeholders/blog-placeholder-4.jpg';
 import { getCategory } from '../../data/categories';
 import { getSeries } from '../../data/series';
+import { uiCopy } from '../../data/uiCopy';
 import { getPostHeroImageAlt } from '../../utils/postImages';
 import { routes } from '../../utils/routes';
 
@@ -23,7 +24,7 @@ const [featuredPost, ...secondaryPosts] = posts;
 <section class="recent-records" aria-labelledby="recent-records-title">
   <div class="recent-records__header">
     <div>
-      <p class="recent-records__eyebrow">Latest Records</p>
+      <p class="recent-records__eyebrow">{uiCopy.recentRecords}</p>
       <h2 id="recent-records-title">최근 기록</h2>
     </div>
     <p>요즘 배우고 만들고 남긴 것들을 넓은 기록 한 편과 이어지는 목록으로 읽습니다.</p>

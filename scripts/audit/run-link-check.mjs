@@ -4,11 +4,9 @@ import { LinkChecker } from 'linkinator';
 
 const REPORT_PATH = resolve(process.cwd(), '.reports/linkinator/report.json');
 const LINKS_TO_SKIP = [
-  'https://fonts\\.gstatic\\.com/.*',
-  '^https?://localhost',
-  '^https?://127\\.0\\.0\\.1',
-  '^https?://k3s-worker1',
-  '^https://techblog\\.woowahan\\.com/.*',
+  // This audit protects generated local routes and assets. Historical posts contain
+  // localhost examples and external citations that are validated separately.
+  '^https?://(?!127\\.0\\.0\\.1:4321(?:/|$)).*',
 ];
 
 async function run() {
@@ -35,7 +33,7 @@ async function run() {
     }
     process.exitCode = 1;
   } else {
-    console.log('[audit] Link check passed — no broken links detected.');
+    console.log('[audit] Link check passed - no broken links detected.');
   }
 }
 

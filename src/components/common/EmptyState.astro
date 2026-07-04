@@ -1,11 +1,12 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
+import { uiCopy } from '../../data/uiCopy';
 
 interface Props {
   eyebrow?: string;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   href?: string;
   linkLabel?: string;
   image?: ImageMetadata;
@@ -14,9 +15,9 @@ interface Props {
 }
 
 const {
-  eyebrow = 'Empty Drawer',
-  title,
-  description,
+  eyebrow = uiCopy.emptyDrawer,
+  title = uiCopy.emptyDrawerTitle,
+  description = uiCopy.emptyDrawerDescription,
   href,
   linkLabel,
   image,

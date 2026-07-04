@@ -47,6 +47,7 @@ interface CompanyWorkArea {
   summary: readonly string[];
   items: readonly string[];
   links?: readonly CareerLink[];
+  relatedRecords?: readonly CareerLink[];
 }
 
 interface OtherWorkItem {
@@ -171,6 +172,12 @@ export const companyWorkAreas: readonly CompanyWorkArea[] = [
       '주소 보정과 LLM 결과 검증 흐름 설계',
       '부분 실패를 허용하는 필드 단위 결과 처리',
     ],
+    relatedRecords: [
+      {
+        label: 'AI Advisor 회고',
+        href: '/records/meta/ai-advisor-writing-partner/',
+      },
+    ],
   },
   {
     number: '02',
@@ -195,10 +202,14 @@ export const companyWorkAreas: readonly CompanyWorkArea[] = [
       '전환 이후 지도 검색 API의 실행계획과 인덱스를 개선해 운영 관찰 구간 기준 1초 이상 요청을 520건에서 0건으로 줄이고, 같은 구간 최대 응답을 약 239ms로 안정화했습니다.',
     ],
     items: ['DB 전환 절차와 애플리케이션 SQL 호환성 검증', '공간 쿼리 실행계획과 인덱스 개선'],
-    links: [
+    relatedRecords: [
       {
-        label: '마이그레이션 상세 기록',
+        label: '마이그레이션 충돌기',
         href: '/records/mysql-to-postgres/mysql-to-postgres-realworld/',
+      },
+      {
+        label: 'pgloader 사용 기록',
+        href: '/records/mysql-to-postgres/how-to-use-pgloader/',
       },
     ],
   },

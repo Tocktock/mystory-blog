@@ -2,150 +2,92 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import SeriesCard from '../../components/records/SeriesCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
-import { getCategory } from '../../data/categories';
 import { seriesList } from '../../data/series';
-import { routes } from '../../utils/routes';
+import { uiCopy } from '../../data/uiCopy';
 
 const posts = await getCollection('blog');
 const seriesCards = seriesList
-	.map((item) => ({
-		...item,
-		categoryMeta: getCategory(item.category),
-		posts: posts.filter((post) => post.data.series === item.slug),
-	}))
-	.filter((item) => item.posts.length > 0);
+  .map((item) => ({
+    ...item,
+    posts: posts.filter((post) => post.data.series === item.slug),
+  }))
+  .filter((item) => item.posts.length > 0);
 ---
 
 <!doctype html>
 <html lang="ko">
-	<head>
-		<BaseHead
-			title={`시리즈 | ${SITE_TITLE}`}
-			description="기록실 책장에 꽂아둔 긴 기록들을 모았습니다."
-			lang="ko"
-		/>
-	</head>
-	<body>
-		<Header />
-		<main class="series-page" aria-labelledby="series-title">
-			<header class="series-page__header">
-				<p class="series-page__eyebrow">Bookshelf</p>
-				<h1 id="series-title">시리즈</h1>
-				<p>
-					기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의
-					이야기를 흐름으로 정리합니다.
-				</p>
-			</header>
+  <head>
+    <BaseHead
+      title={`시리즈 | ${SITE_TITLE}`}
+      description="기록실 책장에 꽂아둔 긴 기록들을 모았습니다."
+      lang="ko"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="series-page" aria-labelledby="series-title">
+      <header class="series-page__header">
+        <p class="series-page__eyebrow">{uiCopy.bookshelf}</p>
+        <h1 id="series-title">시리즈</h1>
+        <p>
+          기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의 이야기를
+          흐름으로 정리합니다.
+        </p>
+      </header>
 
-			<section aria-label="시리즈 목록">
-				<div class="series-grid">
-					{
-						seriesCards.map((item) => (
-							<a class="series-card" href={routes.seriesDetail(item.slug)}>
-								<div class="series-card__meta">
-									<span>{item.categoryMeta.label}</span>
-									<span>{item.posts.length}개 기록</span>
-								</div>
-								<h2>{item.title}</h2>
-								<p>{item.description}</p>
-							</a>
-						))
-					}
-				</div>
-			</section>
-			<Footer />
-		</main>
-	</body>
+      <section aria-label="시리즈 목록">
+        <div class="series-grid">
+          {seriesCards.map((item) => <SeriesCard seriesItem={item} count={item.posts.length} />)}
+        </div>
+      </section>
+      <Footer />
+    </main>
+  </body>
 </html>
 
 <style>
-	.series-page {
-		width: 960px;
-	}
+  .series-page {
+    width: 960px;
+  }
 
-	.series-page__header {
-		max-width: 42rem;
-		margin: 0 auto 2.5rem;
-		text-align: center;
-	}
+  .series-page__header {
+    max-width: 42rem;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+  }
 
-	.series-page__eyebrow {
-		margin: 0 0 0.35rem;
-		color: var(--accent);
-		font-size: 0.9rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
+  .series-page__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-	.series-page__header h1 {
-		margin-bottom: 1rem;
-	}
+  .series-page__header h1 {
+    margin-bottom: 1rem;
+  }
 
-	.series-page__header p {
-		margin: 0;
-		color: rgb(var(--gray));
-		line-height: 1.75;
-		text-wrap: balance;
-	}
+  .series-page__header p {
+    margin: 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+    text-wrap: balance;
+  }
 
-	.series-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 1.25rem;
-	}
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
 
-	.series-card {
-		display: block;
-		padding: 1.25rem;
-		border-radius: 1rem;
-		background: var(--surface-elevated);
-		color: rgb(var(--gray-dark));
-		text-decoration: none;
-		box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
-		transition:
-			box-shadow 0.2s ease,
-			transform 0.2s ease;
-	}
-
-	.series-card:hover,
-	.series-card:focus-visible {
-		box-shadow: var(--box-shadow);
-		transform: translateY(-2px);
-	}
-
-	.series-card__meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.45rem;
-		margin-bottom: 0.85rem;
-	}
-
-	.series-card__meta span {
-		display: inline-flex;
-		padding: 0.2rem 0.55rem;
-		border-radius: 999px;
-		background: rgba(var(--accent-rgb), 0.12);
-		color: var(--accent-dark);
-		font-size: 0.82rem;
-		font-weight: 700;
-	}
-
-	.series-card h2 {
-		margin-bottom: 0.75rem;
-		font-size: clamp(1.35rem, 2vw, 1.7rem);
-	}
-
-	.series-card p {
-		margin: 0;
-		color: rgb(var(--gray));
-	}
-
-	@media (max-width: 960px) {
-		.series-page {
-			width: 100%;
-		}
-	}
+  @media (max-width: 960px) {
+    .series-page {
+      width: 100%;
+    }
+  }
 </style>

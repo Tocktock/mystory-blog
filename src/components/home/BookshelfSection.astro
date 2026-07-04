@@ -1,51 +1,58 @@
 ---
+import { uiCopy } from '../../data/uiCopy';
 import { routes } from '../../utils/routes';
 
 const shelves = [
   {
-    title: 'AI & Agent',
-    description: '도구를 만들고 실험하며 남긴 기록',
+    title: 'AI & Agent 실험실',
+    description:
+      '도구를 직접 만들고 써보며, 어디까지 맡길 수 있고 어디부터 사람이 판단해야 하는지 남긴 기록입니다.',
     href: routes.series,
-    label: '시리즈 보기',
+    label: '실험실 보기',
     tone: 'warm',
     size: 'feature',
-    note: '실험과 판단을 한곳에 모읍니다.',
+    note: '실험, 판단, 다시 쓰는 기준을 한곳에 모읍니다.',
   },
   {
-    title: 'Backend',
-    description: '서버, 구조, 문제 해결에 대한 노트',
+    title: 'Backend 설계 노트',
+    description:
+      '요구사항과 운영 흐름을 읽고, API와 데이터 구조를 어디에 세울지 정리한 기술 기록입니다.',
     href: routes.category('tech'),
-    label: '기술 기록 보기',
+    label: '설계 노트 보기',
     tone: 'ink',
     size: 'standard',
-    note: '구조를 다시 읽습니다.',
+    note: '구조를 먼저 읽고 작은 변경으로 확인합니다.',
   },
   {
-    title: '생각과 일상',
-    description: '몰입, 관찰, 배움, 살아가는 방식에 대한 글',
+    title: '문제를 다시 푸는 법',
+    description:
+      '처음 본 현상을 바로 결론내리지 않고, 원인과 선택지를 다시 분해해본 생각의 기록입니다.',
     href: routes.category('thought'),
     label: '생각 보기',
     tone: 'sage',
     size: 'standard',
-    note: '일하는 방식과 생활을 같이 둡니다.',
+    note: '일하는 방식과 생활의 관찰을 같이 둡니다.',
   },
   {
-    title: '만냥구름',
-    description: '기록실을 함께 쓰는 두 고양이의 순간들',
+    title: '만냥구름 관찰일지',
+    description: '기록실 옆자리를 채우는 두 고양이의 표정과 습관을 조용히 모아둡니다.',
     href: routes.manyangGureum,
-    label: '만냥구름 보기',
+    label: '관찰일지 보기',
     tone: 'soft',
     size: 'wide',
-    note: '조용한 관찰도 기록입니다.',
+    note: '돌봄과 관찰도 기록실의 한 층입니다.',
   },
 ];
 ---
 
 <section class="bookshelf" aria-labelledby="bookshelf-title">
   <div class="bookshelf__header">
-    <p class="bookshelf__eyebrow">Bookshelf</p>
+    <p class="bookshelf__eyebrow">{uiCopy.bookshelf}</p>
     <h2 id="bookshelf-title">기록실 책장</h2>
-    <p>기술과 생각, 일상과 만냥구름을 같은 공간 안에서 다른 리듬으로 정리합니다.</p>
+    <p>
+      Backend와 AI 실험, 문제를 다시 푸는 습관, 그리고 만냥구름의 관찰이 같은 기록실에서 서로를
+      설명합니다.
+    </p>
   </div>
 
   <div class="bookshelf__grid">
