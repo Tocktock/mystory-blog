@@ -182,13 +182,13 @@ Included scenarios: all applicable MUST_PASS and REGRESSION scenarios.
 
 Non-scope: no production readiness claim, no deployment claim, no human approval claim, no dependency-upgrade detour for dev-only audit findings.
 
-Files/surfaces touched: `docs/persona-uiux-release-evidence.md`, `docs/persona-uiux-human-review-notes.md`, `scripts/audit/run-axe-check.mjs`, `scripts/audit/run-link-check.mjs`, `.gitignore`, ignored generated outputs under `output/` and `.reports/`.
+Files/surfaces touched: `docs/persona-uiux-release-evidence.md`, `docs/persona-uiux-human-review-notes.md`, `docs/persona-uiux-qa-appendix.md`, `docs/persona-uiux-pr-draft.md`, `.github/workflows/ci.yml`, `scripts/audit/run-axe-check.mjs`, `scripts/audit/run-link-check.mjs`, `.gitignore`, ignored generated outputs under `output/` and `.reports/`.
 
-Proof needed: `npm run check`, `npm run lint`, `npm run build`, `npm run test:e2e`, `npm run audit:web`, responsive screenshots, axe/Lighthouse/link reports, keyboard spot check, public-safety/diff-scope checks, human review notes.
+Proof needed: `npm run check`, `npm run lint`, `npm run build`, `npm run test:e2e`, `npm run audit:web`, responsive screenshots, axe/Lighthouse/link reports, keyboard spot check, CI trigger/default-branch alignment, public-safety/diff-scope checks, human review notes.
 
 Done criteria: every selected scenario has traceable implementation evidence, all remaining gates are explicit, and local evidence is not described as deployment or human approval.
 
-Checkpoint: Verified locally and review-ready. Human/external verification required before release.
+Checkpoint: Verified locally and review-ready. CI push triggers include the current default branch `master`; GitHub-hosted CI execution still requires a pushed branch/PR. Human/external verification required before release.
 
 Recommendation: ask human review before release; open a draft PR only after explicit publication approval.
 

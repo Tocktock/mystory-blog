@@ -16,8 +16,9 @@ This appendix preserves the review-relevant output from local QA without committ
 | `npm run test:e2e -- --project=chromium` | 28 Chromium tests passed in 21.7s                                                | Verified       |
 | `npm run audit:web`                      | ran `npm run build` before preview, then Lighthouse, axe, and link checks passed | Verified       |
 | `npm audit --omit=dev`                   | 0 vulnerabilities                                                                | Verified       |
+| `.github/workflows/ci.yml`               | push trigger includes `master` and `main`; `pull_request` remains enabled        | Verified       |
 
-Important boundary: these are local command results. They do not prove human persona acceptance, deployment success, CDN behavior, or production search.
+Important boundary: these are local command/config results. They do not prove GitHub-hosted CI execution, human persona acceptance, deployment success, CDN behavior, or production search.
 
 ## Responsive Screenshot Manifest
 

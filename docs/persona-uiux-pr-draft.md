@@ -21,6 +21,7 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Added a release evidence packet, human review notes, and slice contract register.
 - Hardened local QA by making `npm run audit:web` build before preview.
 - Fixed collapsed mobile navigation so hidden links are not keyboard-focusable, with a Playwright regression test.
+- Aligned the CI push trigger with the current default branch by including `master` while retaining `main`.
 
 ## Verification
 
@@ -44,6 +45,8 @@ Verified locally on 2026-07-04:
   - same-origin link crawl: 694 links checked/skipped, 0 broken
 - `npm audit --omit=dev`
   - 0 vulnerabilities
+- `.github/workflows/ci.yml`
+  - push trigger includes `master` and `main`; `pull_request` remains enabled
 
 Additional local evidence:
 
@@ -51,6 +54,7 @@ Additional local evidence:
 - Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
 - Keyboard spot check: home, records, and search each produced 12 visible focus stops.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
+- CI rollout config: local workflow file now covers the `master` base branch listed for this review.
 
 ## Evidence Docs
 
