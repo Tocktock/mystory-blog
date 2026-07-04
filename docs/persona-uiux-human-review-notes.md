@@ -8,7 +8,9 @@ Use this document to record the human review required by the JiYong persona-cent
 Related evidence:
 
 - Release evidence packet: `docs/persona-uiux-release-evidence.md`
+- QA appendix: `docs/persona-uiux-qa-appendix.md`
 - Slice contract register: `docs/persona-uiux-slice-contracts.md`
+- Local PR draft: `docs/persona-uiux-pr-draft.md`
 - Final screenshot bundle: `output/playwright/i09-final-qa-20260704/`
 - Responsive summary: `output/playwright/i09-final-qa-20260704/responsive-screenshot-summary.json`
 - Accessibility summary: `output/playwright/i09-final-qa-20260704/axe-summary.json`

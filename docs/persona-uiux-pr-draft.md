@@ -1,0 +1,87 @@
+# PR Draft: Implement JiYong Persona-Centered Record Room UI
+
+Status: local PR draft only. No branch push or GitHub PR has been performed from this document.
+
+Base branch: `master`
+
+Head branch: `codex/jiyong-persona-uiux`
+
+## Summary
+
+This branch implements the JiYong persona-centered UI/UX plan for `지용의 기록실` as a locally verified review packet. The site now frames itself around JiYong's record room: Backend, AI/Agent work, problem-solving records, career proof, reflective notes, and 만냥구름.
+
+The implementation preserves the existing Astro static-site structure and keeps new record metadata optional so legacy posts continue to build and render.
+
+## Main Changes
+
+- Reworked the homepage first impression around `지용의 기록실`, Current Desk, shelves, recent records, and 만냥구름.
+- Added shared persona UI copy, record types, deterministic record/category visual helpers, and reusable record/series components.
+- Reframed records, categories, series, article detail pages, About, Career, 만냥구름, search, and 404 around the record-room model.
+- Added optional content metadata for record intent without forcing a migration across legacy posts.
+- Added a release evidence packet, human review notes, and slice contract register.
+- Hardened local QA by making `npm run audit:web` build before preview.
+- Fixed collapsed mobile navigation so hidden links are not keyboard-focusable, with a Playwright regression test.
+
+## Verification
+
+Verified locally on 2026-07-04:
+
+- `npm run check`
+  - 87 files, 0 errors, 0 warnings, 0 hints
+- `npm run lint`
+  - passed with `--max-warnings=0`
+- `git diff --check`
+  - passed
+- `npm run build`
+  - 138 static pages built
+  - Pagefind indexed 138 pages and 13,756 words
+- `npm run test:e2e -- --project=chromium`
+  - 28 Chromium tests passed
+- `npm run audit:web`
+  - runs a fresh build before preview
+  - Lighthouse on `/`: performance 100, accessibility 100, SEO 100
+  - axe: 11 routes checked, 0 violations
+  - same-origin link crawl: 694 links checked/skipped, 0 broken
+- `npm audit --omit=dev`
+  - 0 vulnerabilities
+
+Additional local evidence:
+
+- Responsive screenshots: 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
+- Static local link check: 138 generated HTML files, 3,781 local references, 0 broken.
+- Keyboard spot check: home, records, and search each produced 12 visible focus stops.
+- Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
+
+## Evidence Docs
+
+- `docs/persona-uiux-release-evidence.md`
+- `docs/persona-uiux-qa-appendix.md`
+- `docs/persona-uiux-slice-contracts.md`
+- `docs/persona-uiux-human-review-notes.md`
+
+## Human / External Gates
+
+These are intentionally not claimed as locally verified:
+
+- JiYong first-viewport identity and emotional fit.
+- Design token, typography, warmth, and technical-credibility balance.
+- Optional record metadata schema approval before any broad content migration.
+- Asset direction for deterministic category/record visuals and first-viewport media.
+- Record type vocabulary, status labels, and series shelf language.
+- About page principle-card copy.
+- Career-to-record links for privacy and credibility boundaries.
+- 만냥구름, search, empty-state, and 404 tone boundaries.
+- Deployment URL, CDN/static asset behavior, production search behavior, and public-release approval.
+
+## Deliberately Not Done
+
+- Did not rewrite all legacy posts with new metadata.
+- Did not replace the Astro architecture or add a CMS.
+- Did not add a new production dependency.
+- Did not run `npm audit fix` for dev-only moderate findings because that would widen this UI/UX slice into dependency upgrade work.
+- Did not include ignored/generated outputs such as `dist/`, `.reports/`, `output/`, or the unrelated local `exports/` backup.
+- Did not claim production readiness, deployment success, or human persona approval.
+
+## Review Recommendation
+
+Open as a draft PR after explicit publication approval. Treat it as locally verified and human-review-ready, not production-ready.
