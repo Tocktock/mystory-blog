@@ -13,7 +13,7 @@ This appendix preserves the review-relevant output from local QA without committ
 | `npm run lint`                           | `eslint . --ext .ts,.tsx,.astro --max-warnings=0` exited 0                                                                                                  | Verified       |
 | `git diff --check`                       | exited 0 with no whitespace errors                                                                                                                          | Verified       |
 | `npm run build`                          | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                                                         | Verified       |
-| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.7s                                                                                                                           | Verified       |
+| `npm run test:e2e -- --project=chromium` | 30 Chromium tests passed in 21.9s                                                                                                                           | Verified       |
 | `npm run audit:web`                      | ran `npm run build`, publication safety, static links, Lighthouse, axe, keyboard, responsive, and link checks                                               | Verified       |
 | `npm run audit:persona-contract`         | 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 26 explicit backlog scenario references, 0 issues | Verified       |
 | `npm run audit:axe`                      | 11 routes checked; expected statuses matched; 0 violations detected                                                                                         | Verified       |
@@ -65,7 +65,7 @@ Source reports: `.reports/lighthouse/report.report.json`, `.reports/axe/report.j
 | Check                                   | Result                        | Evidence Label |
 | --------------------------------------- | ----------------------------- | -------------- |
 | Lighthouse URL                          | `http://127.0.0.1:4321/`      | Verified       |
-| Lighthouse fetch time                   | `2026-07-04T08:43:31.306Z`    | Verified       |
+| Lighthouse fetch time                   | `2026-07-04T09:01:06.474Z`    | Verified       |
 | Lighthouse performance                  | 100                           | Verified       |
 | Lighthouse accessibility                | 100                           | Verified       |
 | Lighthouse SEO                          | 100                           | Verified       |
