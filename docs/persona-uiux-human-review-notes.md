@@ -16,11 +16,33 @@ Related evidence:
 - Accessibility summary: `output/playwright/i09-final-qa-20260704/axe-summary.json`
 - Keyboard spot check: `.reports/keyboard/report.json`
 
-Optional local preview command:
+## Local Review Runbook
+
+Use the runbook only to refresh local evidence for review. It does not approve persona fit, public release, or production readiness.
+
+Refresh the full local QA packet and screenshots:
+
+```bash
+npm run audit:persona-contract
+npm run audit:web
+```
+
+Open the local preview after a build has been produced:
 
 ```bash
 npm run preview -- --host 127.0.0.1 --port 4321
 ```
+
+Local base URL: `http://127.0.0.1:4321`
+
+Screenshot shortcuts for the main subjective gates:
+
+- Desktop first look: `1440-home.png`, `1024-home.png`
+- Mobile hero separation: `0360-home.png`, `0390-home.png`, `0430-home.png`
+- Main section scan: `0360-records.png`, `0360-series.png`, `0360-about.png`, `0360-career.png`, `0360-manyang.png`
+- Empty/search tone: `0360-search.png`, `0360-not-found.png`
+
+All screenshot filenames above are under `.reports/responsive/screenshots/`.
 
 ## Review Decision
 
@@ -49,22 +71,23 @@ Summary notes:
 
 ## Required Review Surfaces
 
-| Surface                      | Route or Evidence                                      | Required Check                                                                                  | Decision | Notes |
-| ---------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | -------- | ----- |
-| Homepage desktop identity    | `/`, `1440-home.png`                                   | SC-001: first viewport feels like JiYong, not a generic developer blog.                         | Pending  |       |
-| Homepage mobile hero         | `/`, `0360-home.png`, `0390-home.png`, `0430-home.png` | SC-002: title/CTA panel does not compete with the face/photo.                                   | Pending  |       |
-| Homepage manifesto and desk  | `/`                                                    | SC-003, SC-004: backend, AI, records, observation, and Current Desk feel meaningful.            | Pending  |       |
-| Bookshelf mental map         | `/`                                                    | SC-005: AI & Agent, Backend, problem-solving, and 만냥구름 shelves match JiYong's mental model. | Pending  |       |
-| Records archive              | `/records/`                                            | SC-007, SC-008: record type/status/problem/lesson vocabulary is useful and not noisy.           | Pending  |       |
-| Record schema and visuals    | `/records/`, `/categories/tech/`                       | SC-006, SC-017: optional metadata fields and deterministic visual strategy are acceptable.      | Pending  |       |
-| Series shelves               | `/series/`, `/series/ai-working-notes/`                | SC-009, SC-010: shelf purpose/status/reading promise feels accurate.                            | Pending  |       |
-| Article summary              | `/records/meta/ai-advisor-writing-partner/`            | SC-011: record summary helps explain why the article exists.                                    | Pending  |       |
-| Legacy article compatibility | `/records/kubernetes-on-mac/k3s-with-multipass/`       | SC-017: old records still feel valid without forced new metadata.                               | Pending  |       |
-| About manual                 | `/about/`                                              | SC-012: principle cards accurately represent JiYong and do not over-polish the interview.       | Pending  |       |
-| Career bridge                | `/career/`                                             | SC-013: related records support credibility without exposing private or exaggerated claims.     | Pending  |       |
-| Manyang-Gureum               | `/manyang-gureum/`                                     | SC-014: cats read as observation/care, not over-cute decoration.                                | Pending  |       |
-| Search and 404 tone          | `/search/?q=kubernetes`, missing route screenshot      | SC-015: empty/search/404 copy feels like record-room language while staying usable.             | Pending  |       |
-| Release evidence             | `docs/persona-uiux-release-evidence.md`                | SC-016: local evidence is enough for review, while production readiness remains bounded.        | Pending  |       |
+| Surface                      | Route or Evidence                                          | Required Check                                                                                  | Decision | Notes |
+| ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------- | ----- |
+| Homepage desktop identity    | `/`, `1440-home.png`                                       | SC-001: first viewport feels like JiYong, not a generic developer blog.                         | Pending  |       |
+| Homepage mobile hero         | `/`, `0360-home.png`, `0390-home.png`, `0430-home.png`     | SC-002: title/CTA panel does not compete with the face/photo.                                   | Pending  |       |
+| Homepage manifesto and desk  | `/`                                                        | SC-003, SC-004: backend, AI, records, observation, and Current Desk feel meaningful.            | Pending  |       |
+| Bookshelf mental map         | `/`                                                        | SC-005: AI & Agent, Backend, problem-solving, and 만냥구름 shelves match JiYong's mental model. | Pending  |       |
+| Tokens and typography        | `/`, `/records/`, `/about/`, `/manyang-gureum/`            | I-01: warmth, technical credibility, spacing, and Korean-first type feel consistent.            | Pending  |       |
+| Records archive              | `/records/`                                                | SC-007, SC-008: record type/status/problem/lesson vocabulary is useful and not noisy.           | Pending  |       |
+| Record schema and visuals    | `/records/`, `/categories/tech/`                           | SC-006, SC-017: optional metadata fields and deterministic visual strategy are acceptable.      | Pending  |       |
+| Series shelves               | `/series/`, `/series/ai-working-notes/`                    | SC-009, SC-010: shelf purpose/status/reading promise feels accurate.                            | Pending  |       |
+| Article summary              | `/records/meta/ai-advisor-writing-partner/`                | SC-011: record summary helps explain why the article exists.                                    | Pending  |       |
+| Legacy article compatibility | `/records/kubernetes-on-mac/k3s-with-multipass/`           | SC-017: old records still feel valid without forced new metadata.                               | Pending  |       |
+| About manual                 | `/about/`                                                  | SC-012: principle cards accurately represent JiYong and do not over-polish the interview.       | Pending  |       |
+| Career bridge                | `/career/`                                                 | SC-013: related records support credibility without exposing private or exaggerated claims.     | Pending  |       |
+| Manyang-Gureum               | `/manyang-gureum/`                                         | SC-014: cats read as observation/care, not over-cute decoration.                                | Pending  |       |
+| Search and 404 tone          | `/search/?q=kubernetes`, `/missing-record-drawer-for-i09/` | SC-015: empty/search/404 copy feels like record-room language while staying usable.             | Pending  |       |
+| Release evidence             | `docs/persona-uiux-release-evidence.md`                    | SC-016: local evidence is enough for review, while production readiness remains bounded.        | Pending  |       |
 
 ## Reviewer Notes by Gate
 
@@ -149,6 +172,18 @@ What must change before production deployment?
 | Priority | Surface | Required Change | Owner | Status  |
 | -------- | ------- | --------------- | ----- | ------- |
 | P0/P1/P2 |         |                 |       | Pending |
+
+Production release needs a separate deployment checklist after a deployed URL exists. Record it here before changing the production readiness checkbox:
+
+| Item                    | Required Evidence                                                                                          | Result |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
+| Deployment URL          | Exact public URL and commit/SHA deployed                                                                   |        |
+| Core route smoke        | `/`, `/records/`, `/series/`, `/about/`, `/career/`, `/manyang-gureum/`, `/search/?q=kubernetes` load      |        |
+| 404 behavior            | `/missing-record-drawer-for-i09/` returns the intended 404 page                                            |        |
+| Static assets and CDN   | Hero, record, gallery, CSS, JS, OG, sitemap, and RSS assets load without blocked or stale production paths |        |
+| Production search       | Pagefind assets load and search returns results on the deployed site                                       |        |
+| Third-party integration | Giscus behavior is either configured correctly or intentionally showing the placeholder                    |        |
+| Public-release approval | Human approval recorded with reviewer and date                                                             |        |
 
 ## Final Human Verdict
 
