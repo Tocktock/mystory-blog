@@ -10,8 +10,7 @@ const principles = [
     qHref: '#q1',
     qLabel: 'Q1에서 자세히 보기',
     relatedLinks: [
-      { href: routes.career, label: '이력에서 확인하기' },
-      { href: routes.seriesDetail('running-log'), label: '꾸준함의 기록' },
+      { href: routes.record('running/first-half-marathon-prep'), label: '하프마라톤 완주 기록' },
     ],
   },
   {
@@ -20,8 +19,11 @@ const principles = [
     qHref: '#q2',
     qLabel: 'Q2에서 자세히 보기',
     relatedLinks: [
-      { href: routes.seriesDetail('spring-backend-notes'), label: '백엔드 문제풀이' },
       { href: routes.record('spring/spring-validate'), label: '에러 반환 기록' },
+      {
+        href: routes.record('hardware/first-soldering-monitor-repair'),
+        label: '원인을 먼저 봐야 했던 기록',
+      },
     ],
   },
   {
@@ -30,8 +32,7 @@ const principles = [
     qHref: '#q4',
     qLabel: 'Q4에서 자세히 보기',
     relatedLinks: [
-      { href: routes.career, label: '실제 일의 맥락' },
-      { href: routes.record('agile/sabotaging-an-agile-transformation'), label: '협업 문화 기록' },
+      { href: routes.record('concern/ai-concern-26-05-10'), label: '팀 기준을 세운 기록' },
     ],
   },
   {
@@ -40,8 +41,11 @@ const principles = [
     qHref: '#q5',
     qLabel: 'Q5에서 자세히 보기',
     relatedLinks: [
-      { href: routes.seriesDetail('solve-again'), label: '다시 푸는 기록' },
       { href: routes.record('meta/ai-advisor-writing-partner'), label: 'AI Advisor 회고' },
+      {
+        href: routes.record('hardware/first-soldering-monitor-repair'),
+        label: '실패한 수리 기록',
+      },
     ],
   },
   {
@@ -49,13 +53,7 @@ const principles = [
     summary: '만냥구름을 돌보며 배운 관찰은 사람, 일, 시스템을 대하는 방식으로 이어집니다.',
     qHref: '#q7',
     qLabel: 'Q7에서 자세히 보기',
-    relatedLinks: [
-      { href: routes.manyangGureum, label: '만냥구름 보기' },
-      {
-        href: routes.record('hardware/first-soldering-monitor-repair'),
-        label: '손으로 관찰한 기록',
-      },
-    ],
+    relatedLinks: [{ href: routes.manyangGureum, label: '만냥구름 보기' }],
   },
   {
     title: '틀릴 수 있음을 인정하기',
@@ -63,8 +61,10 @@ const principles = [
     qHref: '#q8',
     qLabel: 'Q8에서 자세히 보기',
     relatedLinks: [
-      { href: routes.seriesDetail('ai-working-notes'), label: 'AI와 일하는 방식' },
-      { href: routes.records, label: '전체 기록 보기' },
+      {
+        href: routes.record('concern/ai-concern-26-05-10'),
+        label: '틀릴 수 있음을 인정한 기록',
+      },
     ],
   },
 ] as const;
