@@ -188,7 +188,7 @@ Proof needed: `npm run check`, `npm run lint`, `npm run build`, `npm run test:e2
 
 Done criteria: every selected scenario has traceable implementation evidence, all remaining gates are explicit, and local evidence is not described as deployment or human approval.
 
-Checkpoint: Verified locally and review-ready. RSS canonical links, dark-mode persistence, JS/no-JS search labels, axe route statuses, keyboard focus stops, generated-artifact traceability, human-review packet traceability, production-smoke harness behavior, publication safety, static local references, and the full responsive screenshot matrix now have reproducible regression coverage. CI push triggers include the current default branch `master`; GitHub-hosted CI execution and deployed-site smoke verification still require a pushed branch/PR or deployed URL. Human/external verification required before release.
+Checkpoint: Verified locally and review-ready. RSS canonical links, dark-mode persistence, JS/no-JS search labels, axe route statuses, keyboard focus stops, generated-artifact traceability, human-review packet traceability, production-smoke harness behavior, publication safety, static local references, and the full responsive screenshot matrix now have reproducible regression coverage. CI push triggers include the current default branch `master`; live-domain smoke against `https://ji-yong.com` failed 6 required persona-text checks, so GitHub-hosted CI execution and deployed-site verification still require a pushed branch/PR or a deployment for this branch. Human/external verification required before release.
 
 Recommendation: ask human review before release; open a draft PR only after explicit publication approval.
 
@@ -196,6 +196,6 @@ Recommendation: ask human review before release; open a draft PR only after expl
 
 Verified locally: implementation, automated checks, generated-artifact traceability, human-review packet traceability, local accessibility/link/performance audits, production-smoke harness behavior, responsive screenshot coverage, and evidence packet.
 
-Human/external verification required: JiYong first-impression fit, final copy/tone, vocabulary, career privacy/credibility, 만냥구름 tone, deployment URL behavior, production-smoke result, CDN/static assets, and production search.
+Human/external verification required: JiYong first-impression fit, final copy/tone, vocabulary, career privacy/credibility, 만냥구름 tone, deployment URL behavior for this branch, passing production-smoke result, CDN/static assets, and production search.
 
 Verdict: review-ready locally, not production-ready.

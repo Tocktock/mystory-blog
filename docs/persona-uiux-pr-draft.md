@@ -57,6 +57,9 @@ Verified locally on 2026-07-04:
   - 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 10 human-review anchors, 0 traceability issues
 - `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke`
   - local-preview harness checked 11 routes, 176 critical assets, 2 Pagefind assets, acceptable Giscus placeholder, and 0 issues
+- `PERSONA_PRODUCTION_BASE_URL=https://ji-yong.com npm run audit:production-smoke`
+  - current live domain checked 11 routes and assets, but failed 6 required persona-text checks
+  - this means deployment verification remains open; it does not contradict the local branch checks
 - `npm run audit:keyboard`
   - 3 routes checked
   - 36 visible focus stops, 0 invisible stops, 0 missing focus indicators
@@ -76,7 +79,8 @@ Additional local evidence:
 
 - Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
 - Persona contract traceability: `npm run audit:persona-contract` verifies the release scenario map, backlog classification, slice contract register, and human-review packet against the generated source artifacts available in `PERSONA_UIUX_ARTIFACT_DIR`.
-- Production smoke harness: `npm run audit:production-smoke` verifies route/status/text/static-asset/Pagefind/Giscus surface after `PERSONA_PRODUCTION_BASE_URL` is set; current evidence targets local preview only.
+- Production smoke harness: `npm run audit:production-smoke` verifies route/status/text/static-asset/Pagefind/Giscus surface after `PERSONA_PRODUCTION_BASE_URL` is set; passing evidence targets local preview only.
+- Live-domain smoke attempt: `https://ji-yong.com` currently does not satisfy required persona-text checks for this branch.
 - Static local link check: `npm run audit:static-links` verifies 138 generated HTML files, 4,533 static local references, and 0 broken references.
 - Keyboard spot check: `npm run audit:keyboard` verifies home, records, and search each produce 12 visible focus stops with visible focus indicators.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
@@ -103,7 +107,7 @@ These are intentionally not claimed as locally verified:
 - About page principle-card copy.
 - Career-to-record links for privacy and credibility boundaries.
 - 만냥구름, search, empty-state, and 404 tone boundaries.
-- Deployment URL, production-smoke result, CDN/static asset behavior, production search behavior, and public-release approval.
+- Deployment URL for this branch, passing production-smoke result, CDN/static asset behavior, production search behavior, and public-release approval.
 
 ## Deliberately Not Done
 
