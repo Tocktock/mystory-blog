@@ -442,9 +442,9 @@ function addCompletionAuditIssues(
   );
 
   const requiredBoundaryAnchors = [
-    'Status: local implementation human-approved, not deployment-verified, not production-ready.',
-    'Do not mark the full goal complete yet.',
-    'Human/external verification required',
+    'Status: local implementation human-approved and production deployment verified.',
+    'Mark the full goal complete.',
+    'Verified production',
     'https://ji-yong.com',
   ];
 

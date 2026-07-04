@@ -1,6 +1,6 @@
 # PR Draft: Implement JiYong Persona-Centered Record Room UI
 
-Status: human-approved local PR draft only. No branch push or GitHub PR has been performed from this document.
+Status: merged to `master`, deployed by Vercel, and production verified.
 
 Base branch: `master`
 
@@ -8,9 +8,9 @@ Head branch: `codex/jiyong-persona-uiux`
 
 ## Summary
 
-This branch implements the JiYong persona-centered UI/UX plan for `지용의 기록실` as a locally verified review packet. The site now frames itself around JiYong's record room: Backend, AI/Agent work, problem-solving records, career proof, reflective notes, and 만냥구름.
+This branch implements the JiYong persona-centered UI/UX plan for `지용의 기록실` as a verified release. The site now frames itself around JiYong's record room: Backend, AI/Agent work, problem-solving records, career proof, reflective notes, and 만냥구름.
 
-The implementation preserves the existing Astro static-site structure and keeps new record metadata optional so legacy posts continue to build and render. JiYong approved and accepted the current persona/UI direction on 2026-07-04; deployment verification remains separate.
+The implementation preserves the existing Astro static-site structure and keeps new record metadata optional so legacy posts continue to build and render. JiYong approved and accepted the current persona/UI direction on 2026-07-04; production deployment verification passed after the `master` deploy.
 
 ## Main Changes
 
@@ -21,15 +21,15 @@ The implementation preserves the existing Astro static-site structure and keeps 
 - Added a release evidence packet, human review notes, and slice contract register.
 - Hardened local QA by making `npm run audit:web` build before preview.
 - Fixed collapsed mobile navigation so hidden links are not keyboard-focusable, with a Playwright regression test.
-- Aligned the CI push trigger with the current default branch by including `master` while retaining `main`.
+- Verified that Vercel, not the GitHub Actions CI branch filter, creates Production deployments for default-branch commits; the current production/default branch is `master`.
 - Added E2E regressions for canonical RSS record links and persisted dark-mode toggling.
 - Tightened search accessibility assertions and made the axe audit fail on unexpected route statuses.
 - Added a reproducible responsive audit that captures the required 11-route x 6-width screenshot matrix.
 - Added a reproducible keyboard audit for visible focus stops and visible focus indicators on home, records, and search.
 - Added reproducible publication safety and static local link audits to replace manual release-evidence rows.
 - Added an optional production-smoke audit for deployed route/status/text/static-asset/Pagefind/Giscus checks once `PERSONA_PRODUCTION_BASE_URL` is set.
-- Verified that Vercel, not this GitHub CI workflow, creates Production deployments for default-branch commits; the current production/default branch is `master`.
 - Recorded JiYong's 2026-07-04 human approval in the release evidence and human review notes.
+- Verified the deployed production site on `https://ji-yong.com`.
 
 ## Verification
 
@@ -60,8 +60,7 @@ Verified locally on 2026-07-04:
 - `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke`
   - local-preview harness checked 11 routes, 176 critical assets, 2 Pagefind assets, acceptable Giscus placeholder, and 0 issues
 - `PERSONA_PRODUCTION_BASE_URL=https://ji-yong.com npm run audit:production-smoke`
-  - current live domain checked 11 routes and assets, but failed 6 required persona-text checks
-  - this means deployment verification remains open; it does not contradict the local branch checks
+  - public domain checked 11 routes, 176 critical assets, 2 Pagefind assets, configured Giscus, and 0 issues
 - `npm run audit:keyboard`
   - 3 routes checked
   - 36 visible focus stops, 0 invisible stops, 0 missing focus indicators
@@ -75,25 +74,26 @@ Verified locally on 2026-07-04:
 - `npm audit --omit=dev`
   - 0 vulnerabilities
 - `.github/workflows/ci.yml`
-  - push trigger includes `master` and `main`; `pull_request` remains enabled
+  - push trigger includes `main`; `pull_request` remains enabled
+  - production deployment proof comes from Vercel GitHub deployment records for `master`, not this CI trigger
 - GitHub deployment records
   - repository default branch is `master`
   - recent `Production` deployments are created by `vercel[bot]` for `origin/master` commits
-  - merging this branch to the default branch is expected to trigger Vercel, but the resulting deployed URL still needs `PERSONA_PRODUCTION_BASE_URL=<url> npm run audit:production-smoke`
+  - Vercel created a `Production` deployment for the pushed `master` commit, and production smoke passed against `https://ji-yong.com`
 
 Additional local evidence:
 
 - Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
 - Persona contract traceability: `npm run audit:persona-contract` verifies the release scenario map, backlog classification, slice contract register, human-review packet, and completion audit against the generated source artifacts available in `PERSONA_UIUX_ARTIFACT_DIR`.
-- Production smoke harness: `npm run audit:production-smoke` verifies route/status/text/static-asset/Pagefind/Giscus surface after `PERSONA_PRODUCTION_BASE_URL` is set; passing evidence targets local preview only.
-- Live-domain smoke attempt: `https://ji-yong.com` currently does not satisfy required persona-text checks for this branch.
+- Production smoke harness: `npm run audit:production-smoke` verifies route/status/text/static-asset/Pagefind/Giscus surface after `PERSONA_PRODUCTION_BASE_URL` is set; passing evidence now covers both local preview and `https://ji-yong.com`.
+- Live-domain smoke attempt: `https://ji-yong.com` satisfies required persona-text checks after the `master` deployment.
 - Static local link check: `npm run audit:static-links` verifies 138 generated HTML files, 4,533 static local references, and 0 broken references.
 - Keyboard spot check: `npm run audit:keyboard` verifies home, records, and search each produce 12 visible focus stops with visible focus indicators.
 - Mobile nav regression: collapsed hidden links are not focusable until the menu opens.
 - RSS/dark-mode regressions: `/rss.xml` keeps canonical `/records/` links, and the theme toggle persists after reload.
 - Search accessibility regression: hydrated Pagefind input and no-JS fallback remain reachable by the `검색어` label.
-- CI rollout config: local workflow file now covers the `master` base branch listed for this review.
-- Deploy trigger config: Vercel Git integration is visible through GitHub deployment records for `master`; this branch is not deployed until it is pushed/merged through that production branch path.
+- Production search regression: Playwright verified `/search/?q=kubernetes` hydrates Pagefind and returns 5 visible results on `https://ji-yong.com`.
+- Deploy trigger config: Vercel Git integration is visible through GitHub deployment records for `master`; the pushed `master` deployment is verified.
 
 ## Evidence Docs
 
@@ -116,7 +116,7 @@ These human gates are closed for the current PR scope by JiYong approval on 2026
 - Career-to-record links for privacy and credibility boundaries.
 - 만냥구름, search, empty-state, and 404 tone boundaries.
 
-These are intentionally not claimed as locally verified:
+These deployment gates are closed by production verification on 2026-07-04:
 
 - Deployment URL for this branch, passing production-smoke result, CDN/static asset behavior, and production search behavior.
 - Confirmation that the post-merge Vercel Production deployment SHA matches the merged persona branch SHA.
@@ -132,4 +132,4 @@ These are intentionally not claimed as locally verified:
 
 ## Review Recommendation
 
-Open as a draft PR when GitHub publication is requested. Treat it as locally verified and human-approved for the current PR scope, not deployment-verified or production-ready.
+No PR action remains. Treat this release as locally verified, human-approved, merged to `master`, deployed by Vercel, and production verified.
