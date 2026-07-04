@@ -54,7 +54,7 @@ Verified locally on 2026-07-04:
   - responsive: 66 screenshots across 11 routes and 6 widths, 0 status/text/overflow issues
   - same-origin link crawl: 694 links checked/skipped, 0 broken
 - `npm run audit:persona-contract`
-  - 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 10 human-review anchors, 0 traceability issues
+  - 13 source requirements, 17 source scenarios, 11 human-required source scenarios preserved, 10 backlog slices, 10 slice contracts, 17 human-review scenario references, 10 human-review anchors, 13 completion-audit requirement references, 17 completion-audit scenario references, 0 traceability issues
 - `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke`
   - local-preview harness checked 11 routes, 176 critical assets, 2 Pagefind assets, acceptable Giscus placeholder, and 0 issues
 - `PERSONA_PRODUCTION_BASE_URL=https://ji-yong.com npm run audit:production-smoke`
@@ -78,7 +78,7 @@ Verified locally on 2026-07-04:
 Additional local evidence:
 
 - Responsive screenshots: `npm run audit:responsive` generates 66 screenshots across 11 routes and widths 360, 390, 430, 768, 1024, and 1440.
-- Persona contract traceability: `npm run audit:persona-contract` verifies the release scenario map, backlog classification, slice contract register, and human-review packet against the generated source artifacts available in `PERSONA_UIUX_ARTIFACT_DIR`.
+- Persona contract traceability: `npm run audit:persona-contract` verifies the release scenario map, backlog classification, slice contract register, human-review packet, and completion audit against the generated source artifacts available in `PERSONA_UIUX_ARTIFACT_DIR`.
 - Production smoke harness: `npm run audit:production-smoke` verifies route/status/text/static-asset/Pagefind/Giscus surface after `PERSONA_PRODUCTION_BASE_URL` is set; passing evidence targets local preview only.
 - Live-domain smoke attempt: `https://ji-yong.com` currently does not satisfy required persona-text checks for this branch.
 - Static local link check: `npm run audit:static-links` verifies 138 generated HTML files, 4,533 static local references, and 0 broken references.

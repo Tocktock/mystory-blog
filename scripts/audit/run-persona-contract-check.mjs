@@ -5,11 +5,16 @@ const DEFAULT_ARTIFACT_DIR = '/Users/jiyong/Downloads/jiyong_persona_uiux_artifa
 const ARTIFACT_DIR = resolve(process.env.PERSONA_UIUX_ARTIFACT_DIR ?? DEFAULT_ARTIFACT_DIR);
 const REPORT_DIR = resolve(process.cwd(), '.reports/persona-contract');
 const REPORT_PATH = resolve(REPORT_DIR, 'report.json');
+const ARCHITECTURE_PATH = resolve(
+  ARTIFACT_DIR,
+  '01_persona_uiux_architecture_and_test_scenarios.md',
+);
 const SCENARIO_MATRIX_PATH = resolve(ARTIFACT_DIR, '03_scenario_matrix.csv');
 const BACKLOG_PATH = resolve(ARTIFACT_DIR, '02_incremental_implementation_backlog.md');
 const RELEASE_EVIDENCE_PATH = resolve(process.cwd(), 'docs/persona-uiux-release-evidence.md');
 const SLICE_CONTRACTS_PATH = resolve(process.cwd(), 'docs/persona-uiux-slice-contracts.md');
 const HUMAN_REVIEW_NOTES_PATH = resolve(process.cwd(), 'docs/persona-uiux-human-review-notes.md');
+const COMPLETION_AUDIT_PATH = resolve(process.cwd(), 'docs/persona-uiux-completion-audit.md');
 const ALLOWED_CLASSIFICATIONS = new Set([
   'in_this_slice',
   'later_slice',
@@ -212,6 +217,10 @@ function scenarioIdsIn(text) {
   return [...new Set([...text.matchAll(/\bSC-\d{3}\b/g)].map((match) => match[0]))];
 }
 
+function requirementIdsIn(text) {
+  return [...new Set([...text.matchAll(/\bR-\d{2}\b/g)].map((match) => match[0]))];
+}
+
 function byId(items) {
   const map = new Map();
 
@@ -408,24 +417,72 @@ function addHumanReviewIssues(issues, sourceScenarioIds, releaseScenarios, human
   }
 }
 
+function addCompletionAuditIssues(
+  issues,
+  sourceRequirementIds,
+  sourceScenarioIds,
+  completionAuditText,
+) {
+  const completionAuditRequirementIds = requirementIdsIn(completionAuditText);
+  const completionAuditScenarioIds = scenarioIdsIn(completionAuditText);
+
+  addSetComparisonIssues(
+    issues,
+    'completion-audit-requirement-coverage',
+    sourceRequirementIds,
+    completionAuditRequirementIds,
+    'Completion audit requirements',
+  );
+  addSetComparisonIssues(
+    issues,
+    'completion-audit-scenario-coverage',
+    sourceScenarioIds,
+    completionAuditScenarioIds,
+    'Completion audit scenarios',
+  );
+
+  const requiredBoundaryAnchors = [
+    'Status: local implementation review-ready, not human-approved, not production-ready.',
+    'Do not mark the full goal complete yet.',
+    'Human/external verification required',
+    'https://ji-yong.com',
+  ];
+
+  for (const anchor of requiredBoundaryAnchors) {
+    if (!completionAuditText.includes(anchor)) {
+      issues.push({
+        rule: 'completion-audit-missing-boundary-anchor',
+        message: `Completion audit omits required boundary anchor "${anchor}"`,
+      });
+    }
+  }
+}
+
 async function run() {
   await mkdir(REPORT_DIR, { recursive: true });
 
   const [
+    architectureText,
     scenarioMatrixText,
     backlogText,
     releaseEvidenceText,
     sliceContractsText,
     humanReviewText,
+    completionAuditText,
   ] = await Promise.all([
+    readFile(ARCHITECTURE_PATH, 'utf8'),
     readFile(SCENARIO_MATRIX_PATH, 'utf8'),
     readFile(BACKLOG_PATH, 'utf8'),
     readFile(RELEASE_EVIDENCE_PATH, 'utf8'),
     readFile(SLICE_CONTRACTS_PATH, 'utf8'),
     readFile(HUMAN_REVIEW_NOTES_PATH, 'utf8'),
+    readFile(COMPLETION_AUDIT_PATH, 'utf8'),
   ]);
 
   const sourceScenarios = parseScenarioMatrix(scenarioMatrixText);
+  const sourceRequirementIds = requirementIdsIn(
+    sliceBetween(architectureText, '## Explicit requirements', '## Assumptions'),
+  );
   const sourceBacklog = parseSourceBacklog(backlogText);
   const releaseScenarios = parseReleaseScenarioMap(releaseEvidenceText);
   const releaseBacklog = parseReleaseBacklogClassification(releaseEvidenceText);
@@ -437,6 +494,13 @@ async function run() {
   const sourceBacklogIds = sourceBacklog.map((item) => item.id);
   const releaseBacklogIds = releaseBacklog.map((item) => item.id);
   const contractIds = contractSections.map((section) => section.id);
+
+  if (sourceRequirementIds.length === 0) {
+    issues.push({
+      rule: 'source-requirement-coverage',
+      message: 'No source requirements were parsed from the architecture artifact.',
+    });
+  }
 
   addSetComparisonIssues(
     issues,
@@ -479,8 +543,12 @@ async function run() {
   addBacklogReferenceIssues(issues, sourceBacklog, sourceScenarioIds);
   addSliceContractIssues(issues, sourceBacklog, contractSections, sourceScenarioIds);
   addHumanReviewIssues(issues, sourceScenarioIds, releaseScenarios, humanReviewText);
+  addCompletionAuditIssues(issues, sourceRequirementIds, sourceScenarioIds, completionAuditText);
 
   const summary = {
+    requirementSourceCount: sourceRequirementIds.length,
+    completionAuditRequirementReferenceCount: requirementIdsIn(completionAuditText).length,
+    completionAuditScenarioReferenceCount: scenarioIdsIn(completionAuditText).length,
     scenarioSourceCount: sourceScenarios.length,
     releaseScenarioCount: releaseScenarios.length,
     backlogSourceCount: sourceBacklog.length,
@@ -506,11 +574,13 @@ async function run() {
         generatedAt: new Date().toISOString(),
         sourceArtifactDir: ARTIFACT_DIR,
         checkedFiles: [
+          relative(process.cwd(), ARCHITECTURE_PATH),
           relative(process.cwd(), SCENARIO_MATRIX_PATH),
           relative(process.cwd(), BACKLOG_PATH),
           relative(process.cwd(), RELEASE_EVIDENCE_PATH),
           relative(process.cwd(), SLICE_CONTRACTS_PATH),
           relative(process.cwd(), HUMAN_REVIEW_NOTES_PATH),
+          relative(process.cwd(), COMPLETION_AUDIT_PATH),
         ],
         summary,
         issues,
@@ -534,7 +604,7 @@ async function run() {
   }
 
   console.log(
-    `[audit] Persona contract check passed - ${summary.scenarioSourceCount} scenarios, ${summary.backlogSourceCount} backlog slices, ${summary.sliceContractCount} slice contracts, 0 traceability issues.`,
+    `[audit] Persona contract check passed - ${summary.requirementSourceCount} requirements, ${summary.scenarioSourceCount} scenarios, ${summary.backlogSourceCount} backlog slices, ${summary.sliceContractCount} slice contracts, ${summary.completionAuditRequirementReferenceCount} completion-audit requirements, ${summary.completionAuditScenarioReferenceCount} completion-audit scenarios, 0 traceability issues.`,
   );
 }
 

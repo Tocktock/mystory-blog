@@ -63,16 +63,16 @@ The implementation has local evidence for the automated and compatibility parts 
 
 ## Command Evidence Snapshot
 
-| Check                                                                              | Current Result                                                                                                     | Label                                |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| `npm run check`                                                                    | 94 files, 0 errors, 0 warnings, 0 hints                                                                            | Verified                             |
-| `npm run lint`                                                                     | Passed with `--max-warnings=0`                                                                                     | Verified                             |
-| `npm run build`                                                                    | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                | Verified                             |
-| `npm run test:e2e -- --project=chromium`                                           | 30 Chromium tests passed                                                                                           | Verified                             |
-| `npm run audit:web`                                                                | Build, publication safety, static links, Lighthouse, axe, keyboard, responsive, and same-origin link checks passed | Verified                             |
-| `npm run audit:persona-contract`                                                   | 17 scenarios, 10 backlog slices, 10 slice contracts, 0 traceability issues                                         | Verified                             |
-| `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke` | 11 routes, 176 critical assets, 2 Pagefind assets, 0 issues                                                        | Verified local harness only          |
-| `PERSONA_PRODUCTION_BASE_URL=https://ji-yong.com npm run audit:production-smoke`   | 11 routes and assets checked, but 6 required persona-text checks failed                                            | Human/external verification required |
+| Check                                                                              | Current Result                                                                                                         | Label                                |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `npm run check`                                                                    | 94 files, 0 errors, 0 warnings, 0 hints                                                                                | Verified                             |
+| `npm run lint`                                                                     | Passed with `--max-warnings=0`                                                                                         | Verified                             |
+| `npm run build`                                                                    | 138 static pages built; Pagefind indexed 138 pages and 13,756 words                                                    | Verified                             |
+| `npm run test:e2e -- --project=chromium`                                           | 30 Chromium tests passed                                                                                               | Verified                             |
+| `npm run audit:web`                                                                | Build, publication safety, static links, Lighthouse, axe, keyboard, responsive, and same-origin link checks passed     | Verified                             |
+| `npm run audit:persona-contract`                                                   | 13 requirements, 17 scenarios, 10 backlog slices, 10 slice contracts, completion-audit coverage, 0 traceability issues | Verified                             |
+| `PERSONA_PRODUCTION_BASE_URL=http://127.0.0.1:4321 npm run audit:production-smoke` | 11 routes, 176 critical assets, 2 Pagefind assets, 0 issues                                                            | Verified local harness only          |
+| `PERSONA_PRODUCTION_BASE_URL=https://ji-yong.com npm run audit:production-smoke`   | 11 routes and assets checked, but 6 required persona-text checks failed                                                | Human/external verification required |
 
 ## Non-Local Gates
 
