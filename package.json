@@ -2,6 +2,9 @@
   "name": "",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,6 +19,7 @@
     "hero:photo": "node scripts/prepare_hero_photo.mjs",
     "hero:audit": "node scripts/audit_hero_images.mjs",
     "test:e2e": "npm run build && playwright test",
+    "test:contracts": "node --test tests/contracts/*.test.mjs",
     "preaudit:lighthouse": "node scripts/audit/prepare-reports.mjs",
     "preaudit:axe": "node scripts/audit/prepare-reports.mjs",
     "preaudit:keyboard": "node scripts/audit/prepare-reports.mjs",
