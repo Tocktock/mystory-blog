@@ -24,13 +24,13 @@ test('about page exposes JiYong manual and preserves the interview', async ({ pa
     'href',
     '#q1',
   );
-  await expect(manual.getByRole('link', { name: '이력에서 확인하기' })).toHaveAttribute(
+  await expect(manual.getByRole('link', { name: '하프마라톤 완주 기록' })).toHaveAttribute(
     'href',
-    '/career',
+    '/records/running/first-half-marathon-prep/',
   );
-  await expect(manual.getByRole('link', { name: 'AI와 일하는 방식' })).toHaveAttribute(
+  await expect(manual.getByRole('link', { name: '틀릴 수 있음을 인정한 기록' })).toHaveAttribute(
     'href',
-    '/series/ai-working-notes/',
+    '/records/concern/ai-concern-26-05-10/',
   );
   await expect(manual.getByRole('link', { name: 'AI Advisor 회고' })).toHaveAttribute(
     'href',
