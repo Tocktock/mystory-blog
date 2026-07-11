@@ -10,20 +10,20 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
 <a
-	href={href}
-	class:list={[className, { active: isActive }]}
-	aria-current={isActive ? 'page' : undefined}
-	{...props}
+  href={href}
+  class:list={[className, { active: isActive }]}
+  aria-current={isActive ? 'page' : undefined}
+  {...props}
 >
-	<slot />
+  <slot />
 </a>
 <style>
-	a {
-		display: inline-block;
-		text-decoration: none;
-		font-weight: 500;
-	}
-	a.active {
-		font-weight: 600;
-	}
+  a {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a.active {
+    font-weight: 600;
+  }
 </style>

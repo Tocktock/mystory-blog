@@ -15,7 +15,11 @@ const tags = collectTags(posts);
 <!doctype html>
 <html lang="ko">
   <head>
-    <BaseHead title={`태그 | ${SITE_TITLE}`} description="비슷한 기록들을 태그로 모았습니다." lang="ko" />
+    <BaseHead
+      title={`태그 | ${SITE_TITLE}`}
+      description="비슷한 기록들을 태그로 모았습니다."
+      lang="ko"
+    />
   </head>
   <body>
     <Header />
@@ -25,16 +29,18 @@ const tags = collectTags(posts);
         <p>비슷한 기록들을 태그로 모아봤습니다.</p>
       </section>
       <ul class="tags-page__list">
-        {tags.map((tag) => (
-          <li>
-            <a href={routes.tag(tag.slug)}>
-              <span class="tags-page__label">{tag.label}</span>
-              <span class="tags-page__count" aria-label={`${tag.posts.length} records`}>
-                {tag.posts.length}
-              </span>
-            </a>
-          </li>
-        ))}
+        {
+          tags.map((tag) => (
+            <li>
+              <a href={routes.tag(tag.slug)}>
+                <span class="tags-page__label">{tag.label}</span>
+                <span class="tags-page__count" aria-label={`${tag.posts.length} records`}>
+                  {tag.posts.length}
+                </span>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </main>
     <Footer />

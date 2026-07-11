@@ -10,17 +10,17 @@ import { routes } from '../../utils/routes';
 import '../../styles/tag-detail.css';
 
 type Props = {
-	tag: TagEntry;
+  tag: TagEntry;
 };
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	const tags = collectTags(posts);
+  const posts = await getCollection('blog');
+  const tags = collectTags(posts);
 
-	return tags.map((tag) => ({
-		params: { tag: tag.slug },
-		props: { tag },
-	}));
+  return tags.map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tag },
+  }));
 }
 
 const { tag } = Astro.props as Props;
@@ -50,15 +50,17 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
       </header>
 
       <ul class="tag-detail__list">
-        {tagPosts.map((post) => (
-          <li>
-            <a href={routes.record(post.id)}>
-              <h2>{post.data.title}</h2>
-              <p>{post.data.description}</p>
-              <FormattedDate date={post.data.pubDate} />
-            </a>
-          </li>
-        ))}
+        {
+          tagPosts.map((post) => (
+            <li>
+              <a href={routes.record(post.id)}>
+                <h2>{post.data.title}</h2>
+                <p>{post.data.description}</p>
+                <FormattedDate date={post.data.pubDate} />
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </main>
     <Footer />
