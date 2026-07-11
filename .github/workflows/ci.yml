@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -40,6 +40,9 @@ jobs:
 
       - name: Run type check
         run: npm run check
+
+      - name: Run source contracts
+        run: npm run test:contracts
 
       - name: Run e2e tests
         run: npm run test:e2e

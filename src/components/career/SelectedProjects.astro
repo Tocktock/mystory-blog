@@ -14,11 +14,7 @@ import { selectedProjects } from '../../data/selectedProjects';
   <div class="selected-projects__list">
     {
       selectedProjects.map((project) => (
-        <CareerLink
-          class="selected-projects__item"
-          href={project.href}
-          external={project.external}
-        >
+        <CareerLink class="selected-projects__item" href={project.href} external={project.external}>
           <span class="selected-projects__meta">{project.meta}</span>
           <span class="selected-projects__text">
             <strong>{project.title}</strong>

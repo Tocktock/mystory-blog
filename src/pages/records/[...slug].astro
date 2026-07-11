@@ -7,11 +7,11 @@ import SeriesProgress from '../../components/records/SeriesProgress.astro';
 import { sortSeriesPosts } from '../../utils/seriesPosts';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
 }
 
 type Props = CollectionEntry<'blog'>;
@@ -20,16 +20,16 @@ const post = Astro.props as Props;
 const { Content } = await render(post);
 
 const seriesPosts = post.data.series
-	? (await getCollection('blog'))
-			.filter((candidate) => candidate.data.series === post.data.series)
-			.sort(sortSeriesPosts)
-	: [];
+  ? (await getCollection('blog'))
+      .filter((candidate) => candidate.data.series === post.data.series)
+      .sort(sortSeriesPosts)
+  : [];
 ---
 
 <BlogPost {...post.data} slug={post.id} ogImage={`/og/${post.id}.png`}>
-	<Content />
+  <Content />
 
-	<SeriesProgress seriesSlug={post.data.series} currentId={post.id} posts={seriesPosts} />
+  <SeriesProgress seriesSlug={post.data.series} currentId={post.id} posts={seriesPosts} />
 
-	<GiscusComments />
+  <GiscusComments />
 </BlogPost>

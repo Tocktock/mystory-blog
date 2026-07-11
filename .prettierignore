@@ -2,4 +2,6 @@
 dist/
 node_modules/
 .reports/
+test-results/
+**/*.md
 phase*-baseline-*.zip

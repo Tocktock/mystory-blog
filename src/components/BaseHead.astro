@@ -6,10 +6,10 @@ import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import placeholderOg from '../assets/placeholders/blog-placeholder-1.jpg';
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
-	lang?: 'ko' | 'en';
+  title: string;
+  description: string;
+  image?: string;
+  lang?: 'ko' | 'en';
 }
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
@@ -21,26 +21,27 @@ const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---
 
 <script is:inline>
-	(() => {
-		const storageKey = 'preferred-color-scheme';
-		const root = document.documentElement;
-		const prefersDarkQuery = '(prefers-color-scheme: dark)';
+  (() => {
+    const storageKey = 'preferred-color-scheme';
+    const root = document.documentElement;
+    const prefersDarkQuery = '(prefers-color-scheme: dark)';
 
-		try {
-			const stored = localStorage.getItem(storageKey);
-			if (stored === 'dark' || stored === 'light') {
-				root.dataset.theme = stored;
-				return;
-			}
-		} catch (error) {
-			// Ignore storage access issues (e.g., private browsing)
-		}
+    try {
+      const stored = localStorage.getItem(storageKey);
+      if (stored === 'dark' || stored === 'light') {
+        root.dataset.theme = stored;
+        return;
+      }
+    } catch (error) {
+      // Ignore storage access issues (e.g., private browsing)
+    }
 
-		const prefersDark = typeof window !== 'undefined' && window.matchMedia
-			? window.matchMedia(prefersDarkQuery).matches
-			: false;
-		root.dataset.theme = prefersDark ? 'dark' : 'light';
-	})();
+    const prefersDark =
+      typeof window !== 'undefined' && window.matchMedia
+        ? window.matchMedia(prefersDarkQuery).matches
+        : false;
+    root.dataset.theme = prefersDark ? 'dark' : 'light';
+  })();
 </script>
 
 <!-- Global Metadata -->
@@ -49,10 +50,10 @@ const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 <meta name="author" content={SITE_AUTHOR} />

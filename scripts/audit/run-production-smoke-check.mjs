@@ -3,9 +3,11 @@ import { resolve } from 'node:path';
 import { PERSONA_AUDIT_ROUTES } from './persona-audit-routes.mjs';
 
 const RAW_BASE_URL = process.env.PERSONA_PRODUCTION_BASE_URL?.trim();
+const EXPECTED_DEPLOY_SHA = process.env.EXPECTED_DEPLOY_SHA?.trim().toLowerCase();
 const REPORT_DIR = resolve(process.cwd(), '.reports/production-smoke');
 const REPORT_PATH = resolve(REPORT_DIR, 'report.json');
 const REQUEST_TIMEOUT_MS = 15_000;
+const FULL_SHA_PATTERN = /^[0-9a-f]{40}$/;
 const ATTRIBUTE_PATTERN = /\b(?:href|src|poster|action)=["']([^"']+)["']/gi;
 const SRCSET_PATTERN = /\bsrcset=["']([^"']+)["']/gi;
 const CSS_URL_PATTERN = /url\((['"]?)([^'")]+)\1\)/gi;
@@ -180,7 +182,7 @@ function summarizeGiscus(recordHtml) {
   };
 }
 
-async function writeBlockedReport(reason) {
+async function writeBlockedReport(reason, requiredEnv) {
   await mkdir(REPORT_DIR, { recursive: true });
   await writeFile(
     REPORT_PATH,
@@ -188,7 +190,7 @@ async function writeBlockedReport(reason) {
       {
         status: 'blocked',
         reason,
-        requiredEnv: 'PERSONA_PRODUCTION_BASE_URL',
+        requiredEnv,
       },
       null,
       2,
@@ -197,18 +199,103 @@ async function writeBlockedReport(reason) {
   );
 }
 
+async function readBuildIdentity(baseUrl) {
+  const url = urlFor(baseUrl, '/build-info.json');
+  const response = await fetchWithTimeout(url);
+  let buildInfo = null;
+
+  try {
+    buildInfo = JSON.parse(response.text);
+  } catch {
+    // The validation result below records a bounded public error without
+    // copying an arbitrary response body into the report.
+  }
+
+  const publishedKeys =
+    buildInfo && typeof buildInfo === 'object' ? Object.keys(buildInfo).sort() : [];
+  const allowedKeys = ['buildTime', 'commitSha', 'environment'];
+  const keysAreSafe = JSON.stringify(publishedKeys) === JSON.stringify(allowedKeys);
+  const actualSha =
+    typeof buildInfo?.commitSha === 'string' ? buildInfo.commitSha.toLowerCase() : '';
+  const shaIsValid = FULL_SHA_PATTERN.test(actualSha);
+  const matchesExpectedSha = shaIsValid && actualSha === EXPECTED_DEPLOY_SHA;
+
+  return {
+    url,
+    status: response.status,
+    contentType: response.contentType,
+    publishedKeys,
+    keysAreSafe,
+    commitSha: shaIsValid ? actualSha : null,
+    environment: typeof buildInfo?.environment === 'string' ? buildInfo.environment : null,
+    buildTime: typeof buildInfo?.buildTime === 'string' ? buildInfo.buildTime : null,
+    expectedSha: EXPECTED_DEPLOY_SHA,
+    matchesExpectedSha,
+  };
+}
+
+async function failBuildIdentity(buildIdentity) {
+  const issues = [];
+
+  if (buildIdentity.status !== 200) {
+    issues.push({ rule: 'build-info-status', message: 'Build info did not return HTTP 200.' });
+  }
+  if (!buildIdentity.keysAreSafe) {
+    issues.push({
+      rule: 'build-info-publication-safety',
+      message: 'Build info exposes missing or unexpected fields.',
+    });
+  }
+  if (!buildIdentity.matchesExpectedSha) {
+    issues.push({
+      rule: 'deployment-sha',
+      message: `deployment SHA mismatch: expected ${EXPECTED_DEPLOY_SHA}, received ${buildIdentity.commitSha ?? 'invalid'}`,
+    });
+  }
+
+  if (issues.length === 0) {
+    return false;
+  }
+
+  await writeFile(
+    REPORT_PATH,
+    JSON.stringify({ status: 'failed', buildIdentity, issues }, null, 2),
+    'utf8',
+  );
+  console.error(
+    `[audit] Production smoke check failed - ${issues.length} build identity issue(s).`,
+  );
+  for (const issue of issues) {
+    console.error(` - ${issue.rule}: ${issue.message}`);
+  }
+  process.exitCode = 1;
+  return true;
+}
+
 async function run() {
   await mkdir(REPORT_DIR, { recursive: true });
 
   if (!RAW_BASE_URL) {
     const reason = 'Set PERSONA_PRODUCTION_BASE_URL to the deployed site URL before running.';
-    await writeBlockedReport(reason);
+    await writeBlockedReport(reason, 'PERSONA_PRODUCTION_BASE_URL');
+    console.error(`[audit] Production smoke check blocked - ${reason}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  if (!EXPECTED_DEPLOY_SHA || !FULL_SHA_PATTERN.test(EXPECTED_DEPLOY_SHA)) {
+    const reason = 'Set EXPECTED_DEPLOY_SHA to the full 40-character reviewed commit SHA.';
+    await writeBlockedReport(reason, 'EXPECTED_DEPLOY_SHA');
     console.error(`[audit] Production smoke check blocked - ${reason}`);
     process.exitCode = 1;
     return;
   }
 
   const baseUrl = normalizeBaseUrl(RAW_BASE_URL);
+  const buildIdentity = await readBuildIdentity(baseUrl);
+  if (await failBuildIdentity(buildIdentity)) {
+    return;
+  }
   const routeResults = [];
   const extractedReferences = [];
 
@@ -324,6 +411,7 @@ async function run() {
     JSON.stringify(
       {
         status: issues.length === 0 ? 'passed' : 'failed',
+        buildIdentity,
         summary,
         issues,
         routeResults,

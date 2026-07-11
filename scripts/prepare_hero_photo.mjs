@@ -89,11 +89,7 @@ function inferFormatFromPath(filePath) {
 }
 
 function inferOutputPath({ slug, format, ext }) {
-  const extension = ext
-    ? ext.replace(/^\./, '')
-    : format === 'jpeg'
-      ? 'jpeg'
-      : format;
+  const extension = ext ? ext.replace(/^\./, '') : format === 'jpeg' ? 'jpeg' : format;
   return path.join(HERO_DIR, `${slug}.${extension}`);
 }
 
@@ -131,7 +127,8 @@ const height = args.height ? Number.parseInt(args.height, 10) : Math.round((widt
 if (!Number.isFinite(height) || height <= 0) usage({ error: 'Invalid --height.' });
 
 const quality = args.quality ? Number.parseInt(args.quality, 10) : 82;
-if (!Number.isFinite(quality) || quality < 1 || quality > 100) usage({ error: 'Invalid --quality.' });
+if (!Number.isFinite(quality) || quality < 1 || quality > 100)
+  usage({ error: 'Invalid --quality.' });
 
 const position = typeof args.position === 'string' ? args.position : 'center';
 const overwrite = Boolean(args.overwrite);
