@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import { creations } from '../../data/creations';
+import { routes } from '../../utils/routes';
+
+const featured = creations.find((creation) => creation.featured) ?? creations[0];
+---
+
+{
+  featured && (
+    <section class="creations-card" aria-labelledby="home-creations-title">
+      <a class="creations-card__artwork" href={routes.creations} aria-hidden="true" tabindex="-1">
+        <Image
+          src={featured.image}
+          alt=""
+          widths={[480, 720, 960, 1280]}
+          sizes="(max-width: 860px) 100vw, 58vw"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+      <div class="creations-card__content">
+        <p class="creations-card__eyebrow">My Creations</p>
+        <h2 id="home-creations-title">음악과 창작 실험</h2>
+        <p>
+          AI를 악기처럼 사용해 상상하던 장면을 노래와 영상으로 만듭니다. 결과물과 그 뒤의 선택을
+          함께 기록합니다.
+        </p>
+        <a class="creations-card__link" href={routes.creations}>
+          창작 작업 보러가기 <span aria-hidden="true">›</span>
+        </a>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .creations-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    align-items: stretch;
+    width: min(1120px, calc(100% - 2rem));
+    margin: 5rem auto 0;
+    overflow: hidden;
+    border: 1px solid rgba(var(--gray-light), 0.5);
+    border-radius: 14px;
+    background: var(--surface-elevated);
+    box-shadow: var(--box-shadow);
+  }
+
+  .creations-card__artwork {
+    display: block;
+    min-height: 22rem;
+    overflow: hidden;
+    background: rgb(var(--black));
+  }
+
+  .creations-card__artwork :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .creations-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .creations-card__eyebrow {
+    margin: 0 0 0.4rem;
+    color: var(--accent);
+    font-family: var(--font-label);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .creations-card h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.12;
+  }
+
+  .creations-card__content > p:not(.creations-card__eyebrow) {
+    margin: 1rem 0 0;
+    color: rgb(var(--gray));
+    line-height: 1.8;
+  }
+
+  .creations-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    align-self: flex-start;
+    margin-top: 1.4rem;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .creations-card__link:hover,
+  .creations-card__link:focus-visible {
+    color: var(--accent-dark);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 860px) {
+    .creations-card {
+      grid-template-columns: 1fr;
+      margin-top: 3.5rem;
+    }
+
+    .creations-card__artwork {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

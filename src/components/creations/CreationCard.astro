@@ -1,0 +1,155 @@
+---
+import { Image } from 'astro:assets';
+import type { Creation } from '../../data/creations';
+
+interface Props {
+  creation: Creation;
+}
+
+const { creation } = Astro.props;
+---
+
+<article class="creation-card">
+  <a
+    class="creation-card__artwork"
+    href={creation.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`${creation.title} YouTube에서 듣기`}
+  >
+    <Image
+      src={creation.image}
+      alt={creation.imageAlt}
+      widths={[360, 540, 720, 960]}
+      sizes="(max-width: 720px) 100vw, 50vw"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="creation-card__play" aria-hidden="true">▶</span>
+  </a>
+  <div class="creation-card__content">
+    <p class="creation-card__subtitle">{creation.subtitle}</p>
+    <h3>{creation.title}</h3>
+    <p class="creation-card__description">{creation.description}</p>
+    <ul class="creation-card__tags" aria-label={`${creation.title} 특징`}>
+      {creation.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+    <a class="creation-card__link" href={creation.href} target="_blank" rel="noopener noreferrer">
+      YouTube에서 듣기 <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .creation-card {
+    overflow: hidden;
+    border: 1px solid rgba(var(--gray-light), 0.55);
+    border-radius: 14px;
+    background: var(--surface-elevated);
+    box-shadow: 0 10px 34px rgba(var(--ink-rgb), 0.07);
+  }
+
+  .creation-card__artwork {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--black));
+  }
+
+  .creation-card__artwork :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+    object-fit: cover;
+    transition:
+      transform 0.35s ease,
+      opacity 0.35s ease;
+  }
+
+  .creation-card__artwork:hover :global(img),
+  .creation-card__artwork:focus-visible :global(img) {
+    opacity: 0.82;
+    transform: scale(1.025);
+  }
+
+  .creation-card__play {
+    display: grid;
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--surface-elevated);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    color: var(--accent-dark);
+    font-size: 0.8rem;
+  }
+
+  .creation-card__content {
+    padding: 1.35rem;
+  }
+
+  .creation-card__subtitle {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
+    font-family: var(--font-label);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .creation-card h3 {
+    margin: 0;
+    font-size: 1.65rem;
+  }
+
+  .creation-card__description {
+    margin: 0.75rem 0 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+  }
+
+  .creation-card__tags {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .creation-card__tags li {
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(var(--sage-rgb), 0.12);
+    color: rgb(var(--gray-dark));
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .creation-card__link {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-top: 1.15rem;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .creation-card__link:hover,
+  .creation-card__link:focus-visible {
+    color: var(--accent-dark);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .creation-card__artwork :global(img) {
+      transition: none;
+    }
+  }
+</style>

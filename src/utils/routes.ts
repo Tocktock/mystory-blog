@@ -4,6 +4,7 @@ export const routes = {
   record: (id: string) => `/records/${id}/`,
   series: '/series',
   seriesDetail: (slug: string) => `/series/${slug}/`,
+  creations: '/creations',
   career: '/career',
   manyangGureum: '/manyang-gureum',
   about: '/about',
