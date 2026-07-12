@@ -7,6 +7,7 @@ import HeroSection from '../components/home/HeroSection.astro';
 import BookshelfSection from '../components/home/BookshelfSection.astro';
 import RecentRecords from '../components/home/RecentRecords.astro';
 import ManyangGureumCard from '../components/home/ManyangGureumCard.astro';
+import CreationsCard from '../components/home/CreationsCard.astro';
 import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
 import { routes } from '../utils/routes';
@@ -64,6 +65,7 @@ const personJsonLd = buildPersonJsonLd({
       />
       <BookshelfSection />
       <RecentRecords posts={posts} />
+      <CreationsCard />
       <ManyangGureumCard />
     </main>
     <Footer />

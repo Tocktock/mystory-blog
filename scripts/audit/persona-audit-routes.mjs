@@ -24,6 +24,12 @@ export const PERSONA_AUDIT_ROUTES = [
     requiredText: ['AI와 일하는 방식', '이 선반의 목적', '읽는 길'],
   },
   {
+    name: 'creations',
+    route: '/creations/',
+    expectedStatus: 200,
+    requiredText: ['My Creations', '음악과 창작 실험', '열려라 별문'],
+  },
+  {
     name: 'record-detail-new',
     route: '/records/meta/ai-advisor-writing-partner/',
     expectedStatus: 200,

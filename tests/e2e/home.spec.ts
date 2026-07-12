@@ -63,3 +63,14 @@ test('homepage bookshelf expresses JiYong mental map', async ({ page }) => {
   );
   await expect(page.getByRole('link', { name: /만냥구름 관찰일지/ })).toContainText('돌봄과 관찰');
 });
+
+test('homepage introduces the creations studio', async ({ page }) => {
+  await page.goto('/');
+
+  const creations = page.getByRole('region', { name: '음악과 창작 실험' });
+  await expect(creations).toBeVisible();
+  await expect(creations.getByRole('link', { name: /창작 작업 보러가기/ })).toHaveAttribute(
+    'href',
+    '/creations',
+  );
+});

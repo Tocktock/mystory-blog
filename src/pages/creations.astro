@@ -1,0 +1,456 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import CreationCard from '../components/creations/CreationCard.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { creations, YOUTUBE_CHANNEL_URL } from '../data/creations';
+
+const featured = creations.find((creation) => creation.featured) ?? creations[0];
+const archive = creations.filter((creation) => creation.slug !== featured?.slug);
+const PAGE_TITLE = `창작 | ${SITE_TITLE}`;
+const PAGE_DESCRIPTION =
+  'AI를 악기처럼 사용해 만든 음악과 가사 영상, 그리고 결과물 뒤의 선택과 실험을 모았습니다.';
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead
+      title={PAGE_TITLE}
+      description={PAGE_DESCRIPTION}
+      image={featured?.image.src}
+      lang="ko"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="creations-page">
+      <header class="creations-hero">
+        <div class="creations-hero__copy">
+          <p class="eyebrow">My Creations</p>
+          <h1>음악과 창작 실험</h1>
+          <p class="creations-hero__intro">
+            AI를 악기처럼 사용해 상상하던 음악을 실제 결과물로 만듭니다. 노래, 커버 이미지, 가사
+            영상과 창작 과정을 다듬는 작은 도구들을 이곳에 모읍니다.
+          </p>
+          <div class="creations-hero__actions">
+            <a
+              class="button button--youtube"
+              href={YOUTUBE_CHANNEL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22">
+                <rect x="1.5" y="5" width="21" height="14" rx="4" fill="currentColor"></rect>
+                <path d="M10 9v6l5-3-5-3Z" fill="var(--youtube-red)"></path>
+              </svg>
+              YouTube 채널 <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+        <aside class="creations-hero__note" aria-label="창작 노트">
+          <p class="creations-hero__note-label">Studio note · 2026</p>
+          <p>“AI가 대신 만드는 것보다, 내가 무엇을 남기고 버릴지 고르는 과정에 더 가깝다.”</p>
+        </aside>
+      </header>
+
+      {
+        featured && (
+          <section id="featured-creation" class="featured" aria-labelledby="featured-title">
+            <a
+              class="featured__artwork"
+              href={featured.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${featured.title} YouTube에서 듣기`}
+            >
+              <Image
+                src={featured.image}
+                alt={featured.imageAlt}
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 800px) 100vw, 62vw"
+                loading="eager"
+                decoding="async"
+              />
+              <span class="featured__play" aria-hidden="true">
+                ▶
+              </span>
+            </a>
+            <div class="featured__content">
+              <p class="eyebrow">Featured track</p>
+              <p class="featured__subtitle">{featured.subtitle}</p>
+              <h2 id="featured-title">{featured.title}</h2>
+              <p>{featured.description}</p>
+              <ul class="featured__tags" aria-label={`${featured.title} 특징`}>
+                {featured.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+              <div class="featured__actions">
+                <a href={featured.href} target="_blank" rel="noopener noreferrer">
+                  YouTube에서 듣기 <span aria-hidden="true">↗</span>
+                </a>
+                {featured.relatedRecord && <a href={featured.relatedRecord}>만든 과정 읽기 →</a>}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <section class="archive" aria-labelledby="archive-title">
+        <header class="section-heading">
+          <p class="eyebrow">Selected work</p>
+          <h2 id="archive-title">전체 발매곡</h2>
+          <p>
+            현재 공개한 {creations.length}곡을 모두 모았습니다. 한 곡마다 다른 장면과 감정을 골라,
+            음악과 화면의 호흡을 새로 설계합니다.
+          </p>
+        </header>
+        <div class="archive__grid">
+          {archive.map((creation) => <CreationCard creation={creation} />)}
+        </div>
+      </section>
+
+      <section class="journal" aria-labelledby="journal-title">
+        <div>
+          <p class="eyebrow">Creation journal</p>
+          <h2 id="journal-title">결과물 뒤의 선택도 기록합니다</h2>
+          <p>
+            첫 AI 음악을 만들며 느낀 점, 이미지와 영상 도구를 연결한 과정, 그리고 결국 사람이
+            판단해야 했던 순간을 글로 남겼습니다.
+          </p>
+        </div>
+        <a href="/records/meta/ai-music-with-suno/"
+          >창작 노트 읽기 <span aria-hidden="true">→</span></a
+        >
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .creations-page {
+    width: min(1120px, calc(100% - 2rem));
+    max-width: none;
+    padding: clamp(3.5rem, 8vw, 7rem) 0 5.5rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--accent);
+    font-family: var(--font-label);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .creations-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+    gap: clamp(2.5rem, 7vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(4rem, 9vw, 7rem);
+  }
+
+  .creations-hero h1 {
+    max-width: 9ch;
+    margin: 0;
+    font-size: clamp(3.3rem, 8vw, 6.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  .creations-hero__intro {
+    max-width: 43rem;
+    margin: 1.5rem 0 0;
+    color: rgb(var(--gray));
+    font-size: clamp(1.05rem, 2vw, 1.28rem);
+    line-height: 1.8;
+  }
+
+  .creations-hero__actions,
+  .featured__actions {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    margin-top: 1.7rem;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.05rem;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .button--youtube {
+    --youtube-red: #ff0033;
+    border-color: var(--youtube-red);
+    background: var(--youtube-red);
+    color: white;
+  }
+  .button:hover,
+  .button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 18px rgba(var(--accent-rgb), 0.18);
+  }
+  .button--youtube:hover,
+  .button--youtube:focus-visible {
+    --youtube-red: #d9002b;
+    border-color: var(--youtube-red);
+    background: var(--youtube-red);
+    color: white;
+    box-shadow: 0 7px 18px rgba(217, 0, 43, 0.24);
+  }
+  .button--youtube:focus-visible {
+    outline: 3px solid rgba(255, 0, 51, 0.28);
+    outline-offset: 3px;
+  }
+
+  .creations-hero__note {
+    padding: 1.5rem;
+    border-top: 3px solid var(--accent);
+    background: rgba(var(--sage-rgb), 0.08);
+  }
+
+  .creations-hero__note > p:not(.creations-hero__note-label) {
+    margin: 0;
+    color: rgb(var(--gray-dark));
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.75;
+  }
+
+  .creations-hero__note-label {
+    margin: 0 0 0.7rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+  }
+
+  .featured {
+    --featured-accent: #e7bd7e;
+    --featured-background: #121824;
+    --featured-text: #f8f4ed;
+    --featured-text-muted: #c2cad7;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid rgba(194, 202, 215, 0.12);
+    background: var(--featured-background);
+    box-shadow: 0 24px 70px rgba(7, 12, 22, 0.3);
+    color: var(--featured-text);
+    scroll-margin-top: 2rem;
+  }
+
+  .featured__artwork {
+    display: block;
+    position: relative;
+    min-height: 34rem;
+    overflow: hidden;
+    background: #080a10;
+  }
+  .featured__artwork :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    transition:
+      transform 0.5s ease,
+      opacity 0.5s ease;
+  }
+  .featured__artwork:hover :global(img),
+  .featured__artwork:focus-visible :global(img) {
+    opacity: 0.78;
+    transform: scale(1.02);
+  }
+  .featured__play {
+    display: grid;
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 4.5rem;
+    height: 4.5rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 999px;
+    background: rgba(8, 10, 16, 0.72);
+    color: white;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(8px);
+  }
+  .featured__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 4.5vw, 4rem);
+    background:
+      radial-gradient(circle at 100% 0, rgba(78, 101, 143, 0.2), transparent 52%),
+      var(--featured-background);
+  }
+  .featured__content .eyebrow {
+    color: var(--featured-accent);
+  }
+  .featured__subtitle {
+    margin: 0 0 0.45rem;
+    color: #aeb9ca;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+  .featured h2 {
+    margin: 0;
+    color: var(--featured-text);
+    font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+  }
+  .featured__content > p:not(.eyebrow):not(.featured__subtitle) {
+    margin: 1.15rem 0 0;
+    color: var(--featured-text-muted);
+    line-height: 1.8;
+  }
+  .featured__tags {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .featured__tags li {
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(231, 189, 126, 0.26);
+    border-radius: 999px;
+    background: rgba(231, 189, 126, 0.08);
+    color: #dbe1ea;
+    font-size: 0.76rem;
+  }
+  .featured__actions a {
+    color: var(--featured-accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .featured__actions a:hover,
+  .featured__actions a:focus-visible {
+    color: var(--featured-text);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .archive {
+    margin-top: clamp(5rem, 11vw, 8rem);
+  }
+  .section-heading {
+    max-width: 47rem;
+    margin-bottom: 2rem;
+  }
+  .section-heading h2 {
+    margin: 0;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+  .section-heading > p:not(.eyebrow) {
+    margin: 1rem 0 0;
+    color: rgb(var(--gray));
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+  .archive__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .journal {
+    display: flex;
+    gap: 2rem;
+    align-items: end;
+    justify-content: space-between;
+    margin-top: clamp(5rem, 11vw, 8rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-left: 4px solid var(--accent);
+    background: rgba(var(--clay-rgb), 0.08);
+  }
+  .journal > div {
+    max-width: 45rem;
+  }
+  .journal h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+  }
+  .journal p:not(.eyebrow) {
+    margin: 0.8rem 0 0;
+    color: rgb(var(--gray));
+    line-height: 1.75;
+  }
+  .journal > a {
+    flex: 0 0 auto;
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .journal > a:hover,
+  .journal > a:focus-visible {
+    color: var(--accent-dark);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  @media (max-width: 900px) {
+    .creations-hero,
+    .featured {
+      grid-template-columns: 1fr;
+    }
+    .featured__artwork {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .creations-page {
+      width: min(100% - 1.25rem, 1120px);
+      padding-top: 3rem;
+    }
+    .creations-hero h1 {
+      font-size: clamp(3rem, 16vw, 4.5rem);
+    }
+    .creations-hero__actions,
+    .featured__actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .button {
+      justify-content: center;
+    }
+    .archive__grid {
+      grid-template-columns: 1fr;
+    }
+    .journal {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button,
+    .featured__artwork :global(img) {
+      transition: none;
+    }
+  }
+</style>
