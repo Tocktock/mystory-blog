@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 
+import bureunKyeoDwoCover from '../assets/creations/bureun-kyeo-dwo.jpg';
 import dalWieseoCover from '../assets/creations/dal-wieseo.jpg';
 import hanBakjaNeutgeCover from '../assets/creations/han-bakja-neutge.jpg';
 import jeoHaneulWiroCover from '../assets/creations/jeo-haneul-wiro.jpg';
@@ -28,6 +29,17 @@ export interface Creation {
 export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/channel/UC41i7l-rQ_VWZjxoLnKROIQ';
 
 export const creations: readonly Creation[] = [
+  {
+    slug: 'bureun-kyeo-dwo',
+    title: '불은 켜 둬',
+    subtitle: 'Korean Chamber Pop Duet',
+    description:
+      '저녁빛이 남은 빈 식탁과 켜 둔 불의 온기를 두 목소리의 대화로 옮겼습니다. 기다림과 다정한 여백이 잔잔히 번지는 챔버 팝 듀엣입니다.',
+    image: bureunKyeoDwoCover,
+    imageAlt: '노을이 비치는 방 안, 촛불과 찻잔이 놓인 빈 식탁',
+    href: 'https://www.youtube.com/watch?v=ihY6XIIHU0g',
+    tags: ['AI Song', 'Chamber Pop', 'Duet'],
+  },
   {
     slug: 'on-bit-wie',
     title: '온 빛 위에',
