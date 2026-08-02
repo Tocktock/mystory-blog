@@ -3,7 +3,7 @@ title: '남는 맥북을 GitHub Actions 빌드 머신으로 만들었다'
 pubDate: 2026-08-02
 description: '남는 Apple Silicon Mac 여러 대를 GitHub Actions self-hosted runner로 구성하고, 로컬 캐시를 활용해 반복 빌드를 개선하며 겪은 시행착오를 기록했다.'
 heroImage: '../../../assets/heroes/macos-self-hosted-runner-fleet.jpeg'
-heroImageAlt: '배경을 흐리게 처리한 여러 대의 Apple Silicon Mac 빌드 플릿 사진'
+heroImageAlt: '배경을 흐리게 처리한 여러 대의 Apple Silicon Mac 빌드 플릿 대표 이미지'
 lang: 'ko'
 category: 'tech'
 series: 'devops-lab'
