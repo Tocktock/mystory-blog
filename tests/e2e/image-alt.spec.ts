@@ -12,7 +12,14 @@ test('record hero images expose contextual alt text', async ({ page }) => {
 test('record listing hero images expose contextual alt text', async ({ page }) => {
   await page.goto('/records');
 
-  const firstCardImage = page.locator('.record-card img').first();
-  await expect(firstCardImage).toHaveAttribute('alt', /대표 이미지$/);
-  await expect(firstCardImage).not.toHaveAttribute('alt', 'Image');
+  const heroImage = page.locator(
+    '.record-card a[href="/records/kubernetes-on-mac/k3s-with-multipass/"] img',
+  );
+  await expect(heroImage).toHaveAttribute('alt', /대표 이미지$/);
+  await expect(heroImage).not.toHaveAttribute('alt', 'Image');
+
+  const decorativeCover = page.locator(
+    '.record-card a[href="/records/concern/ai-work-learning-team/"] img',
+  );
+  await expect(decorativeCover).toHaveAttribute('alt', '');
 });
