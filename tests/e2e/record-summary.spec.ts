@@ -15,7 +15,7 @@ test('record detail renders optional summary and series progress when metadata e
   await expect(summary).toContainText('배운 것');
 
   await expect(page.locator('.series-progress')).toBeVisible();
-  await expect(page.locator('.series-progress__count')).toHaveText('01 / 03');
+  await expect(page.locator('.series-progress__count')).toHaveText('01 / 04');
 });
 
 test('technical legacy record keeps code blocks readable without empty summary', async ({
