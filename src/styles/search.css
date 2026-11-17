@@ -81,7 +81,7 @@
 .search-page__noscript-form button {
   padding: 0 1.1rem;
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
   font-weight: 800;
   cursor: pointer;
 }

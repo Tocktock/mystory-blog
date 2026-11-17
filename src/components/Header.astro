@@ -5,8 +5,8 @@ import { navLinks } from '../data/siteNavigation';
 const pad = (value: number) => String(value).padStart(2, '0');
 ---
 
-<a class="skip-link" href="#main">본문 바로가기</a>
-<header class="site-header">
+<a class="skip-link" href="#main" data-pagefind-ignore>본문 바로가기</a>
+<header class="site-header" data-pagefind-ignore>
   <a class="site-header__brand" href="/">JI YONG</a>
   <button
     class="site-header__index"
@@ -20,7 +20,12 @@ const pad = (value: number) => String(value).padStart(2, '0');
   </button>
 </header>
 
-<dialog id="index-dialog" class="index-dialog" aria-labelledby="index-dialog-title">
+<dialog
+  id="index-dialog"
+  class="index-dialog"
+  aria-labelledby="index-dialog-title"
+  data-pagefind-ignore
+>
   <div class="index-dialog__head">
     <p class="kicker" id="index-dialog-title">THE MIDNIGHT OBSERVATORY / INDEX</p>
     <button class="index-dialog__close" type="button" data-index-close>

@@ -27,6 +27,24 @@ test('site search hydrates results from the q query parameter', async ({ page })
   await expect(results.first()).toContainText(/kubernetes/i);
 });
 
+test('site search does not index the header, skip link or INDEX menu', async ({ page }) => {
+  await page.goto('/search/');
+
+  const indexedContent = await page.evaluate(async () => {
+    const pagefind = await import(/* @vite-ignore */ `${location.origin}/pagefind/pagefind.js`);
+    await pagefind.init();
+    const search = await pagefind.search('kubernetes');
+    const results = search.results.slice(0, 5) as { data: () => Promise<{ content: string }> }[];
+    const pages = await Promise.all(results.map((result) => result.data()));
+    return pages.map((data) => data.content);
+  });
+
+  expect(indexedContent.length).toBeGreaterThan(0);
+  for (const content of indexedContent) {
+    expect(content).not.toMatch(/본문 바로가기|INDEX \+|CLOSE ×|AN ARCHIVE IN DEEP SPACE/);
+  }
+});
+
 test('site search no-results copy uses the record-room empty state', async ({ page }) => {
   await page.goto('/search');
 

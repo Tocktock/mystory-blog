@@ -72,7 +72,10 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
 
   .tag-detail__breadcrumbs a {
     color: var(--muted);
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
   }
 
   .tag-detail__breadcrumbs span[aria-hidden] {

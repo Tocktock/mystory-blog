@@ -112,6 +112,9 @@ const shelfItems = [
 <style>
   .series-detail {
     width: 840px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 3em 1em;
   }
 
   .series-detail__header {
@@ -227,7 +230,7 @@ const shelfItems = [
 
   .series-detail__item a {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
     gap: 1rem;
     padding: 1.25rem;
     border-radius: 1rem;
@@ -285,7 +288,7 @@ const shelfItems = [
     }
 
     .series-detail__item a {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
