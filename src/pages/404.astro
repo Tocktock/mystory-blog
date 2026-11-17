@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import EmptyState from '../components/common/EmptyState.astro';
+import PageHero from '../components/observatory/PageHero.astro';
+import TextLink from '../components/observatory/TextLink.astro';
 import { SITE_TITLE } from '../consts';
 import { catPhotos } from '../data/catGallery';
 import { uiCopy } from '../data/uiCopy';
@@ -16,56 +18,125 @@ const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catP
 >
   <div class="not-found-page">
     <h1 class="sr-only">비어 있는 서랍입니다</h1>
-    <EmptyState
-      eyebrow="404"
+    <PageHero
+      kicker="404 / LOST SIGNAL"
       title={uiCopy.emptyDrawerTitle}
-      description="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍에서 다시 찾거나 기록실의 다른 서랍을 열어볼 수 있습니다."
-      href={routes.records}
-      linkLabel="기록으로 돌아가기"
-      image={emptyDrawerPhoto?.image}
-      imageAlt={emptyDrawerPhoto?.alt}
-    />
-    <nav class="not-found-page__links" aria-label="도움 링크">
-      <a href={routes.search}>검색 서랍 열기</a>
-      <a href={routes.manyangGureum}>만냥구름 사진첩 보기</a>
-    </nav>
+      headingLevel={2}
+      lede="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍에서 다시 찾거나 기록실의 다른 서랍을 열어볼 수 있습니다."
+    >
+      <div class="not-found-page__primary">
+        <TextLink href={routes.records} direction="back">기록으로 돌아가기</TextLink>
+      </div>
+    </PageHero>
+
+    <div class="shell not-found-page__body">
+      {
+        emptyDrawerPhoto && (
+          <figure class="not-found-page__photo">
+            <Image
+              src={emptyDrawerPhoto.image}
+              alt={emptyDrawerPhoto.alt}
+              widths={[320, 480, 640, 920]}
+              sizes="(max-width: 760px) calc(100vw - 48px), 460px"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption class="meta">{emptyDrawerPhoto.caption}</figcaption>
+          </figure>
+        )
+      }
+      <nav class="not-found-page__links" aria-label="도움 링크">
+        <p class="kicker">OTHER DRAWERS</p>
+        <ul>
+          <li>
+            <a href={routes.search}>검색 서랍 열기</a>
+            <span class="meta" aria-hidden="true">/search</span>
+          </li>
+          <li>
+            <a href={routes.manyangGureum}>만냥구름 사진첩 보기</a>
+            <span class="meta" aria-hidden="true">/manyang-gureum</span>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </SiteLayout>
 
 <style>
-  .not-found-page {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    justify-content: center;
-    width: min(960px, calc(100% - 2rem));
-    max-width: none;
-    min-height: 62vh;
-    margin: 0 auto;
-    padding: 3em 1em;
+  .not-found-page__primary {
+    margin-top: 2.25rem;
   }
 
-  .not-found-page__links {
+  .not-found-page__body {
+    display: grid;
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 90px);
+    align-items: start;
+    padding-bottom: clamp(120px, 14vw, 220px);
+  }
+
+  .not-found-page__photo {
+    margin: 0;
+  }
+
+  .not-found-page__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    object-fit: cover;
+  }
+
+  .not-found-page__photo figcaption {
+    margin-top: 0.9rem;
+  }
+
+  .not-found-page__links ul {
+    margin: 1.5rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .not-found-page__links li {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
+    gap: 1rem;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 30px 2px;
+    border-bottom: 1px solid var(--line);
+    transition: padding var(--motion-fast) ease;
+  }
+
+  .not-found-page__links li:hover {
+    padding-left: 13px;
   }
 
   .not-found-page__links a {
-    display: inline-flex;
-    padding: 0.55rem 0.9rem;
-    border-radius: 999px;
-    background: var(--surface-elevated);
-    color: var(--accent);
-    font-weight: 800;
+    color: var(--fg);
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
     text-decoration: none;
-    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
   }
 
-  .not-found-page__links a:hover,
-  .not-found-page__links a:focus-visible {
-    box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.42);
+  .not-found-page__links a::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+  }
+
+  .not-found-page__links li:hover a {
+    color: var(--fg-strong);
+  }
+
+  @media (max-width: 760px) {
+    .not-found-page__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .not-found-page__links li:hover {
+      padding-left: 2px;
+    }
   }
 </style>

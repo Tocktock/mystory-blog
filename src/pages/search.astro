@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import PageHero from '../components/observatory/PageHero.astro';
 import { SITE_TITLE } from '../consts';
 import { uiCopy } from '../data/uiCopy';
 import '../styles/search.css';
@@ -13,38 +14,41 @@ import '../styles/search.css';
 >
   <link slot="head" rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   <div class="search-page">
-    <section class="search-page__intro">
-      <p class="search-page__eyebrow">{uiCopy.searchDrawer}</p>
-      <h1 id="search-title">기록 찾기</h1>
-      <p>
-        기억나는 단어를 입력해보세요. 기술 노트, 일상 기록, 만냥구름 이야기까지 함께 찾아봅니다.
-      </p>
-    </section>
-    <div
-      id="search"
-      class="search-page__results"
-      data-zero-results={uiCopy.searchNoResults}
-      data-fallback-title={uiCopy.searchUnavailableTitle}
-      data-fallback-description={uiCopy.searchUnavailableDescription}
+    <PageHero
+      kicker="DISCOVERY / SEARCH"
+      title="기록 찾기"
+      titleId="search-title"
+      lede="기억나는 단어를 입력해보세요. 기술 노트, 일상 기록, 만냥구름 이야기까지 함께 찾아봅니다."
     >
-      <noscript>
-        <form class="search-page__noscript-form" action="/search/" method="get" role="search">
-          <label for="fallback-search">검색어</label>
-          <div>
-            <input
-              id="fallback-search"
-              name="q"
-              type="search"
-              placeholder="기록실에서 찾아볼게요"
-            />
-            <button type="submit">검색</button>
-          </div>
-        </form>
-        <p class="search-page__noscript-note">
-          검색 결과를 보려면 JavaScript가 필요합니다. 대신 기록과 시리즈를 열어보거나 검색 서랍을
-          다시 사용할 수 있을 때 찾아볼 수 있습니다.
-        </p>
-      </noscript>
+      <p class="meta search-page__eyebrow" slot="top">{uiCopy.searchDrawer}</p>
+    </PageHero>
+    <div class="shell search-page__body">
+      <div
+        id="search"
+        class="search-page__results"
+        data-zero-results={uiCopy.searchNoResults}
+        data-fallback-title={uiCopy.searchUnavailableTitle}
+        data-fallback-description={uiCopy.searchUnavailableDescription}
+      >
+        <noscript>
+          <form class="search-page__noscript-form" action="/search/" method="get" role="search">
+            <label for="fallback-search">검색어</label>
+            <div>
+              <input
+                id="fallback-search"
+                name="q"
+                type="search"
+                placeholder="기록실에서 찾아볼게요"
+              />
+              <button type="submit">검색</button>
+            </div>
+          </form>
+          <p class="search-page__noscript-note">
+            검색 결과를 보려면 JavaScript가 필요합니다. 대신 기록과 시리즈를 열어보거나 검색 서랍을
+            다시 사용할 수 있을 때 찾아볼 수 있습니다.
+          </p>
+        </noscript>
+      </div>
     </div>
   </div>
   <script type="module" is:inline>
@@ -98,7 +102,7 @@ import '../styles/search.css';
         const search = new PagefindUI({
           element: '#search',
           bundlePath: '/pagefind/',
-          showImages: true,
+          showImages: false,
           translations: {
             placeholder: '기록실에서 찾아볼게요…',
             zero_results:
