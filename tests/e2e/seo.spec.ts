@@ -38,12 +38,22 @@ test('sitemap lists only indexable pages and dates every post', async ({ request
 
   for (const [, loc, rest] of entries) {
     const path = new URL(loc).pathname;
-    // Posts live at /records/<folder>/<slug>/ and carry their modified date.
-    if (/^\/records\/[^/]+\/[^/]+\/$/.test(path)) {
-      expect(rest, `${path} has lastmod`).toContain('<lastmod>');
-    }
     const html = await (await request.get(path)).text();
     expect(html, `${path} is indexable`).not.toMatch(robotsNoindex);
+
+    // Posts live at /records/<folder>/<slug>/: they carry their modified date, and every
+    // image their structured data names must exist (Astro can drop a de-duplicated original).
+    if (/^\/records\/[^/]+\/[^/]+\/$/.test(path)) {
+      expect(rest, `${path} has lastmod`).toContain('<lastmod>');
+      const scripts = html.match(/<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g);
+      for (const script of scripts ?? []) {
+        const node = JSON.parse(script.replace(/^<script[^>]*>|<\/script>$/g, ''));
+        for (const imageUrl of Array.isArray(node.image) ? node.image : []) {
+          const response = await request.get(new URL(imageUrl).pathname);
+          expect(response.status(), `${path} JSON-LD image ${imageUrl}`).toBe(200);
+        }
+      }
+    }
   }
 });
 

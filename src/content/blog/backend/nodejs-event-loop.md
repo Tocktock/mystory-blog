@@ -131,7 +131,7 @@ setImmediate() 는 setTimeout() 와 다른 단계에서 수행이 되며 동일�
 
 [ Bert Belder 의 강연](https://www.youtube.com/watch?v=PNa9OMajw9w&t=596s) 에서는 다음과 같은 그림을 통해 설명하고 있습니다.
 
-![Node.js 이벤트 루프 단계를 그린 다이어그램. index.js를 실행한 뒤 타이머(setTimeout, setInterval), 네트워크·디스크·자식 프로세스, setImmediate, close 이벤트 순서로 돌고 process#exit로 끝난다.](../../../assets/posts/nodejs-event-loop/event-loop.png)
+![Node.js 이벤트 루프 단계를 그린 다이어그램. index.js를 실행한 뒤 타이머(setTimeout, setInterval), 네트워크·디스크·자식 프로세스, setImmediate, close 이벤트 순서로 돌고 process#exit로 끝난다.](../../../assets/heroes/nodejs-event-loop.png)
 
 ---
 
