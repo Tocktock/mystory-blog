@@ -1,6 +1,7 @@
 ---
 title: 'Node.js Event loop 파헤치기'
 pubDate: 2021-02-15T10:05:45.189Z
+updatedDate: 2026-11-17
 description: 'Node.js Event loop의 timers, poll, check 등 각 단계가 어떤 콜백을 실행하는지 정리합니다. setTimeout이 정확한 시간이 아닌 최소 지연 시간 뒤에 실행되는 이유도 예제로 설명합니다.'
 heroImage: '../../../assets/heroes/nodejs-event-loop.png'
 category: 'tech'

@@ -52,6 +52,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 ## Content Collections & Media
 
 - Content schema (`src/content.config.ts`) requires `title`, `description`, `pubDate`; optional `updatedDate`, `heroImage`, `lang` (`'ko' | 'en'`), and `tags: string[]` (defaults to an empty list).
+- Set `updatedDate` when a post's body changes (text, images, code, links). It is the visible "UPDATED" date, `article:modified_time`, JSON-LD `dateModified` and the sitemap `lastmod`. Leave it alone for description-only or site-wide markup changes.
 - Posts live under `src/content/blog/<topic>/<slug>.md[x]`. Keep slugs stable - routes and OG assets key off `id`.
 - In-post images belong in `src/assets/posts/<slug>/` and are referenced with relative Markdown paths (`![alt](../../../assets/posts/<slug>/<file>)`) so Astro converts them to WebP with width/height. Write a real alt text for every informational image.
 - Hero images belong in `src/assets/heroes/`; create them with `node scripts/create_observatory_art.mjs hero --slug <name> --title <text> [--subtitle <text>]` (add the entry to `scripts/observatory-heroes.json` so `heroes` can re-render the set). Reference from frontmatter as `heroImage: "../../../assets/heroes/<file>.png"`.

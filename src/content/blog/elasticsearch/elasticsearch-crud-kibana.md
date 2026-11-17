@@ -1,6 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch CRUD 기본사용법 (feat. Kibana)'
 pubDate: 2021-01-13T02:17:55.587Z
+updatedDate: 2026-11-17
 description: 'Kibana Dev Tools 콘솔에서 Elasticsearch 인덱스와 문서를 생성, 조회, 수정, 삭제하는 기본 CRUD 사용법을 실습합니다. Index Pattern을 만들어 Discover 탭에서 결과를 확인하는 방법도 다룹니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
