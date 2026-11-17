@@ -1,287 +1,128 @@
 ---
-import { uiCopy } from '../../data/uiCopy';
+import SectionHead from '../observatory/SectionHead.astro';
 import { routes } from '../../utils/routes';
 
 const shelves = [
   {
     title: 'AI & Agent 실험실',
     description:
-      '도구를 직접 만들고 써보며, 어디까지 맡길 수 있고 어디부터 사람이 판단해야 하는지 남긴 기록입니다.',
+      'AI 도구를 직접 만들고 써 보면서, 어디까지 맡기고 어디부터 사람이 판단해야 하는지 적었어요.',
     href: routes.series,
     label: '실험실 보기',
-    tone: 'warm',
-    size: 'feature',
-    note: '실험, 판단, 다시 쓰는 기준을 한곳에 모읍니다.',
+    kind: 'AI',
   },
   {
     title: 'Backend 설계 노트',
-    description:
-      '요구사항과 운영 흐름을 읽고, API와 데이터 구조를 어디에 세울지 정리한 기술 기록입니다.',
+    description: '요구사항을 보고 API와 데이터 구조를 어떻게 잡았는지 정리한 글이에요.',
     href: routes.category('tech'),
     label: '설계 노트 보기',
-    tone: 'ink',
-    size: 'standard',
-    note: '구조를 먼저 읽고 작은 변경으로 확인합니다.',
+    kind: 'BACKEND',
   },
   {
     title: '문제를 다시 푸는 법',
-    description:
-      '처음 본 현상을 바로 결론내리지 않고, 원인과 선택지를 다시 분해해본 생각의 기록입니다.',
+    description: '막혔던 문제를 다시 들여다보면서 원인과 선택지를 하나씩 정리한 글이에요.',
     href: routes.category('thought'),
     label: '생각 보기',
-    tone: 'sage',
-    size: 'standard',
-    note: '일하는 방식과 생활의 관찰을 같이 둡니다.',
+    kind: 'THINKING',
   },
   {
     title: '만냥구름 관찰일지',
-    description: '기록실 옆자리를 채우는 두 고양이의 표정과 습관을 조용히 모아둡니다.',
+    description: '같이 사는 고양이 만냥이와 구름이를 돌보며 알게 된 것들이에요.',
     href: routes.manyangGureum,
     label: '관찰일지 보기',
-    tone: 'soft',
-    size: 'wide',
-    note: '돌봄과 관찰도 기록실의 한 층입니다.',
+    kind: 'CATS',
   },
 ];
 ---
 
 <section class="bookshelf" aria-labelledby="bookshelf-title">
-  <div class="bookshelf__header">
-    <p class="bookshelf__eyebrow">{uiCopy.bookshelf}</p>
-    <h2 id="bookshelf-title">기록실 책장</h2>
-    <p>
-      Backend와 AI 실험, 문제를 다시 푸는 습관, 그리고 만냥구름의 관찰이 같은 기록실에서 서로를
-      설명합니다.
-    </p>
-  </div>
+  <div class="shell">
+    <SectionHead kicker="02 / TOPICS" title="주제별로 보기" titleId="bookshelf-title">
+      <p class="bookshelf__intro">주로 이런 이야기를 써요.</p>
+    </SectionHead>
 
-  <div class="bookshelf__grid">
-    {
-      shelves.map((shelf) => (
-        <a
-          class:list={[
-            'bookshelf__card',
-            `bookshelf__card--${shelf.tone}`,
-            `bookshelf__card--${shelf.size}`,
-          ]}
-          href={shelf.href}
-        >
-          <span class="bookshelf__card-mark" aria-hidden="true" />
-          <span class="bookshelf__note">{shelf.note}</span>
-          <div>
+    <div class="bookshelf__grid">
+      {
+        shelves.map((shelf, index) => (
+          <a class="bookshelf__shelf" href={shelf.href}>
+            <span class="kicker bookshelf__index">
+              {String(index + 1).padStart(2, '0')} / {shelf.kind}
+            </span>
             <h3>{shelf.title}</h3>
             <p>{shelf.description}</p>
-          </div>
-          <span class="bookshelf__link">
-            {shelf.label}
-            <span aria-hidden="true">›</span>
-          </span>
-        </a>
-      ))
-    }
+            <span class="bookshelf__link">
+              {shelf.label} <span aria-hidden="true">↗</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
   .bookshelf {
-    width: min(1120px, calc(100% - 2rem));
-    margin: 5rem auto 0;
+    padding: clamp(60px, 8vw, 110px) 0;
   }
 
-  .bookshelf__header {
-    display: grid;
-    grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.48fr);
-    gap: 2rem;
-    align-items: end;
-    margin-bottom: 1.5rem;
-  }
-
-  .bookshelf__eyebrow {
-    grid-column: 1 / -1;
-    margin: 0 0 -1.4rem;
-    color: var(--accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0;
-    text-transform: uppercase;
-  }
-
-  .bookshelf h2 {
-    margin-bottom: 0;
-    font-size: 3rem;
-    line-height: 1.05;
-  }
-
-  .bookshelf__header p:last-child {
-    margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.75;
-    text-wrap: balance;
+  .bookshelf__intro {
+    max-width: 640px;
+    margin: 1.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.95;
+    word-break: keep-all;
   }
 
   .bookshelf__grid {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    grid-auto-rows: minmax(12rem, auto);
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 75px;
+    border-top: 1px solid var(--line);
   }
 
-  .bookshelf__card {
-    position: relative;
-    display: flex;
-    min-height: 13rem;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.25rem;
-    overflow: hidden;
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(var(--shelf-tone), 0.16), transparent 42%),
-      var(--surface-elevated);
-    color: rgb(var(--gray-dark));
+  .bookshelf__shelf {
+    display: block;
+    padding: 42px 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
     text-decoration: none;
-    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-    transition:
-      transform 0.24s ease,
-      box-shadow 0.24s ease,
-      background-color 0.24s ease;
   }
 
-  .bookshelf__card--feature {
-    grid-row: span 2;
-    min-height: 27rem;
+  .bookshelf__index {
+    color: var(--dim);
   }
 
-  .bookshelf__card--wide {
-    grid-column: span 2;
-    min-height: 11rem;
-  }
-
-  .bookshelf__card--warm {
-    --shelf-tone: var(--accent-rgb);
-  }
-
-  .bookshelf__card--ink {
-    --shelf-tone: var(--ink-rgb);
-  }
-
-  .bookshelf__card--sage {
-    --shelf-tone: var(--sage-rgb);
-  }
-
-  .bookshelf__card--soft {
-    --shelf-tone: var(--clay-rgb);
-  }
-
-  .bookshelf__card:hover,
-  .bookshelf__card:focus-visible {
-    box-shadow: var(--box-shadow);
-    transform: translateY(-4px);
-  }
-
-  .bookshelf__card:active {
-    transform: translateY(-1px);
-  }
-
-  .bookshelf__card-mark {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 3.25rem;
-    height: 3.25rem;
-    border: 1px solid rgba(var(--shelf-tone), 0.22);
-    border-radius: 999px;
-    background: rgba(var(--shelf-tone), 0.12);
-    box-shadow: inset 0 0 0 0.55rem rgba(var(--shelf-tone), 0.1);
-  }
-
-  .bookshelf__note {
-    max-width: 14rem;
-    color: rgba(var(--gray-dark), 0.66);
-    font-size: 0.9rem;
-    font-weight: 700;
+  .bookshelf__shelf h3 {
+    margin: 1rem 0 0.75rem;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
     line-height: 1.5;
   }
 
-  .bookshelf__card h3 {
-    max-width: 12ch;
-    margin: 2.4rem 0 0.7rem;
-    font-size: 2rem;
-    line-height: 1.08;
-  }
-
-  .bookshelf__card--feature h3 {
-    font-size: 3.2rem;
-  }
-
-  .bookshelf__card--wide h3 {
-    max-width: none;
-    margin-top: 1.2rem;
-  }
-
-  .bookshelf__card p {
-    max-width: 24rem;
+  .bookshelf__shelf p {
     margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.65;
+    color: var(--muted);
+    line-height: 1.9;
+    word-break: keep-all;
   }
 
   .bookshelf__link {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-top: 1rem;
-    color: var(--accent);
-    font-weight: 800;
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--label-sm);
+    letter-spacing: 0.14em;
   }
 
-  .bookshelf__link span {
-    font-size: 1.2em;
-    line-height: 1;
+  .bookshelf__shelf:hover h3,
+  .bookshelf__shelf:hover .bookshelf__link {
+    color: var(--fg-strong);
   }
 
-  @media (max-width: 960px) {
-    .bookshelf__header {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
-    .bookshelf__eyebrow {
-      margin-bottom: 0;
-    }
-
+  @media (max-width: 700px) {
     .bookshelf__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .bookshelf__card--feature,
-    .bookshelf__card--wide {
-      grid-column: auto;
-      grid-row: auto;
-      min-height: 13rem;
-    }
-
-    .bookshelf__card--feature h3 {
-      font-size: 2rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .bookshelf {
-      margin-top: 3.5rem;
-    }
-
-    .bookshelf h2 {
-      font-size: 2.25rem;
-    }
-
-    .bookshelf__grid {
-      grid-template-columns: 1fr;
-    }
-
-    .bookshelf__card {
-      min-height: 12rem;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

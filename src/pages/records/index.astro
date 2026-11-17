@@ -1,13 +1,14 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import EntryList from '../../components/observatory/EntryList.astro';
+import PageHero from '../../components/observatory/PageHero.astro';
 import RecordCard from '../../components/records/RecordCard.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import RecordFilters from '../../components/records/RecordFilters.astro';
+import TextLink from '../../components/observatory/TextLink.astro';
+import { SITE_TITLE } from '../../consts';
 import { getCollection } from 'astro:content';
 import { categoryList } from '../../data/categories';
 import { getRecordType } from '../../data/recordTypes';
-import { uiCopy } from '../../data/uiCopy';
 import { routes } from '../../utils/routes';
 
 const posts = (await getCollection('blog')).sort(
@@ -25,233 +26,83 @@ const recordTypeCounts = posts.reduce((counts, post) => {
 const recordTypeSummary = Array.from(recordTypeCounts.entries());
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`기록 | ${SITE_TITLE}`}
-      description="기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다."
-      lang="ko"
+<SiteLayout
+  title={`기록 | ${SITE_TITLE}`}
+  description="기술, 일상, 생각, 프로젝트, 고양이 이야기까지 지금까지 쓴 글을 모았어요."
+  lang="ko"
+  mainLabelledBy="records-title"
+>
+  <div class="records-page">
+    <PageHero
+      kicker="ALL POSTS"
+      title="기록"
+      titleId="records-title"
+      lede="기술, 일상, 생각, 프로젝트, 고양이 이야기까지 지금까지 쓴 글을 모두 모았어요."
     />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <section class="records-index" aria-labelledby="records-title">
-        <header class="records-index__header">
-          <p class="records-index__eyebrow">{uiCopy.records}</p>
-          <h1 id="records-title" class="page-title">기록</h1>
-          <p class="records-index__description">
-            기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다.
-            {SITE_DESCRIPTION}
-          </p>
-        </header>
 
-        <nav class="records-index__categories" aria-label="기록 카테고리">
-          <a
-            class="records-index__category-link records-index__category-link--active"
-            href={routes.records}
-          >
-            전체
-          </a>
-          {
-            activeCategories.map((category) => (
-              <a class="records-index__category-link" href={routes.category(category.slug)}>
-                {category.label}
-              </a>
-            ))
-          }
-        </nav>
+    <section class="shell records-page__content" aria-label="기록 목록">
+      <RecordFilters categories={activeCategories} />
 
+      <div class="records-page__summary">
+        <p class="kicker">{posts.length} POSTS</p>
+        <TextLink class="records-page__tags-link" href={routes.tags}>태그로 찾기</TextLink>
         {
           recordTypeSummary.length > 0 && (
-            <aside class="records-index__types" aria-label="기록 갈래">
-              <p>기록 갈래</p>
+            <aside class="records-page__types" aria-label="글 종류">
+              <p class="meta">글 종류</p>
               <ul>
                 {recordTypeSummary.map(([label, count]) => (
-                  <li>
-                    <span>{label}</span>
-                    <strong>{count}편</strong>
+                  <li class="meta">
+                    {label} <strong>{count}편</strong>
                   </li>
                 ))}
               </ul>
             </aside>
           )
         }
+      </div>
 
-        <ul class="record-grid">
-          {
-            posts.map((post, index) => {
-              const isFeatured = index === 0;
-
-              return (
-                <li
-                  class:list={['record-grid__item', { 'record-grid__item--featured': isFeatured }]}
-                >
-                  <RecordCard post={post} featured={isFeatured} />
-                </li>
-              );
-            })
-          }
-        </ul>
-      </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+      <EntryList>
+        {posts.map((post, index) => <RecordCard post={post} index={index + 1} />)}
+      </EntryList>
+    </section>
+  </div>
+</SiteLayout>
 
 <style>
-  main {
-    width: 960px;
+  .records-page__content {
+    padding-bottom: clamp(120px, 14vw, 220px);
   }
 
-  .records-index {
-    padding: 1.5rem 0 0;
-  }
-
-  .records-index__header {
-    max-width: 42rem;
-    margin: 0 auto 2rem;
-    text-align: center;
-  }
-
-  .records-index__eyebrow {
-    margin: 0 0 0.35rem;
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .page-title {
-    margin: 0 0 1rem;
-    font-size: clamp(2.4rem, 4vw, 3.2rem);
-    text-align: center;
-  }
-
-  .records-index__description {
-    margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.75;
-    text-wrap: balance;
-  }
-
-  .records-index__categories {
+  .records-page__summary {
     display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-    margin: 0 0 2rem;
+    margin: 0.5rem 0 1.5rem;
   }
 
-  .records-index__category-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.45rem 0.8rem;
-    border-radius: 999px;
-    border: 1px solid rgba(var(--gray-light), 0.5);
-    background: var(--surface-elevated);
-    color: rgb(var(--gray-dark));
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .records-index__category-link:hover,
-  .records-index__category-link:focus-visible,
-  .records-index__category-link--active {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .records-index__types {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+  .records-page__types {
+    display: flex;
+    align-items: baseline;
     gap: 1rem;
-    align-items: center;
-    margin: 0 0 2rem;
-    padding: 0.9rem 1rem;
-    border: 1px solid rgba(var(--gray-light), 0.34);
-    border-radius: 8px;
-    background: rgba(var(--gray-light), 0.12);
   }
 
-  .records-index__types p {
+  .records-page__types p,
+  .records-page__types ul {
     margin: 0;
-    color: var(--accent);
-    font-size: 0.86rem;
-    font-weight: 800;
   }
 
-  .records-index__types ul {
+  .records-page__types ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: flex-end;
-    margin: 0;
+    gap: 1rem;
     padding: 0;
     list-style: none;
   }
 
-  .records-index__types li {
-    display: inline-flex;
-    gap: 0.35rem;
-    align-items: baseline;
-    padding: 0.25rem 0.55rem;
-    border-radius: 999px;
-    background: var(--room-surface);
-    color: var(--ink-muted);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-
-  .records-index__types strong {
-    color: var(--ink-text);
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .record-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .record-grid__item {
-    width: calc(50% - 1rem);
-  }
-
-  .record-grid__item--featured {
-    width: 100%;
-  }
-
-  @media (max-width: 960px) {
-    main {
-      width: 100%;
-    }
-
-    .record-grid {
-      gap: 1.25rem;
-    }
-
-    .record-grid__item {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 720px) {
-    .records-index__types {
-      grid-template-columns: 1fr;
-      gap: 0.65rem;
-    }
-
-    .records-index__types ul {
-      justify-content: flex-start;
-    }
+  .records-page__types strong {
+    color: var(--fg);
+    font-weight: 500;
   }
 </style>

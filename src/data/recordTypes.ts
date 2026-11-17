@@ -1,33 +1,33 @@
 export const recordTypes = {
   'debug-log': {
     label: '디버그 로그',
-    description: '증상과 원인을 따라가며 남긴 기록',
+    description: '증상에서 원인까지 따라가 본 글',
   },
   experiment: {
     label: '실험 기록',
-    description: '도구와 아이디어를 직접 시험한 기록',
+    description: '도구나 아이디어를 직접 써 본 글',
   },
   'system-note': {
     label: '시스템 노트',
-    description: '구조와 흐름을 정리한 기록',
+    description: '시스템이 어떻게 돌아가는지 정리한 글',
   },
   essay: {
     label: '생각 기록',
-    description: '판단과 관찰을 다시 적어둔 기록',
+    description: '생각을 정리해 적은 글',
   },
   'project-log': {
     label: '프로젝트 로그',
-    description: '만들고 고친 과정을 남긴 기록',
+    description: '만들고 고친 과정을 적은 글',
   },
   observation: {
     label: '관찰 기록',
-    description: '일상과 만냥구름을 조용히 살핀 기록',
+    description: '일상과 고양이들을 지켜보며 적은 글',
   },
 } as const;
 
 export const recordStatuses = {
-  seed: '씨앗',
-  growing: '키우는 중',
+  seed: '메모',
+  growing: '쓰는 중',
   stable: '정리됨',
 } as const;
 

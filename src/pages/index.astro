@@ -1,8 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import HeroSection from '../components/home/HeroSection.astro';
 import BookshelfSection from '../components/home/BookshelfSection.astro';
 import RecentRecords from '../components/home/RecentRecords.astro';
@@ -21,14 +19,7 @@ const seriesCount = new Set(
   allPosts.map((post) => post.data.series).filter((series): series is string => Boolean(series)),
 ).size;
 const latestPost = allPosts[0];
-const latestDateLabel = latestPost
-  ? new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(latestPost.data.pubDate)
-  : '준비 중';
-const latestRecordTitle = latestPost?.data.title ?? '아직 준비 중인 기록실';
+const latestRecordTitle = latestPost?.data.title ?? '아직 글이 없어요';
 const latestRecordHref = latestPost ? routes.record(latestPost.id) : undefined;
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
@@ -46,58 +37,36 @@ const personJsonLd = buildPersonJsonLd({
 });
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko" />
-    <script type="application/ld+json" is:inline set:html={serializeJsonLd(websiteJsonLd)} />
-    <script type="application/ld+json" is:inline set:html={serializeJsonLd(personJsonLd)} />
-  </head>
-  <body>
-    <Header />
-    <main class="home-page">
-      <HeroSection
-        recordCount={allPosts.length}
-        seriesCount={seriesCount}
-        latestDateLabel={latestDateLabel}
-        latestRecordTitle={latestRecordTitle}
-        latestRecordHref={latestRecordHref}
-      />
-      <BookshelfSection />
-      <RecentRecords posts={posts} />
-      <CreationsCard />
-      <ManyangGureumCard />
-    </main>
-    <Footer />
-  </body>
-</html>
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko">
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={serializeJsonLd(websiteJsonLd)}
+  />
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={serializeJsonLd(personJsonLd)}
+  />
+  <div class="home-page">
+    <HeroSection
+      recordCount={allPosts.length}
+      seriesCount={seriesCount}
+      latestRecordTitle={latestRecordTitle}
+      latestRecordHref={latestRecordHref}
+      latestRecordDate={latestPost?.data.pubDate}
+    />
+    <RecentRecords posts={posts} />
+    <BookshelfSection />
+    <CreationsCard />
+    <ManyangGureumCard />
+  </div>
+</SiteLayout>
 
 <style>
   .home-page {
-    position: relative;
-    width: 100%;
-    max-width: none;
-    padding: 1.25rem 0 5.5rem;
-    overflow: clip;
-  }
-
-  .home-page::before {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    content: '';
-    background-image:
-      linear-gradient(rgba(var(--gray-light), 0.2) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(var(--gray-light), 0.16) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 42rem);
-    pointer-events: none;
-  }
-
-  @media (max-width: 720px) {
-    .home-page {
-      padding-top: 0;
-      padding-bottom: 3rem;
-    }
+    overflow-x: clip;
   }
 </style>

@@ -1,13 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import EmptyState from '../components/common/EmptyState.astro';
 import CatGallery from '../components/cats/CatGallery.astro';
 import CatProfileCard from '../components/cats/CatProfileCard.astro';
+import EntryList from '../components/observatory/EntryList.astro';
+import EntryRow from '../components/observatory/EntryRow.astro';
+import PageHero from '../components/observatory/PageHero.astro';
+import SectionHead from '../components/observatory/SectionHead.astro';
+import TextLink from '../components/observatory/TextLink.astro';
 import { SITE_TITLE } from '../consts';
 import { cats } from '../data/cats';
 import { catPhotos } from '../data/catGallery';
@@ -16,21 +18,21 @@ import { routes } from '../utils/routes';
 
 const PAGE_TITLE = `만냥구름 | ${SITE_TITLE}`;
 const PAGE_DESCRIPTION =
-  '기록실을 함께 쓰는 만냥이와 구름이를 통해 관찰, 돌봄, 원인 이해를 차분히 남기는 공간입니다.';
+  '같이 사는 고양이 만냥이와 구름이 이야기예요. 사진과 함께, 둘을 돌보며 알게 된 것들을 적어요.';
 
 const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
 const observationNotes = [
   {
     title: '먼저 바라보기',
-    description: '행동을 바로 판단하기보다 반복되는 표정, 자리, 움직임을 먼저 봅니다.',
+    description: '바로 혼내기보다 자주 보이는 표정, 자리, 움직임을 먼저 봐요.',
   },
   {
     title: '원인을 이해하기',
-    description: '불편한 행동에도 이유가 있다고 보고, 환경과 습관을 함께 살핍니다.',
+    description: '이상한 행동에도 이유가 있다고 보고, 주변 환경부터 살펴요.',
   },
   {
-    title: '돌봄을 기록으로 남기기',
-    description: '작은 해결과 따뜻한 순간을 기록해 다음 선택의 기준으로 삼습니다.',
+    title: '적어 두기',
+    description: '효과가 있었던 방법과 좋았던 순간을 적어 두고 다음에 참고해요.',
   },
 ] as const;
 
@@ -40,367 +42,222 @@ const observationPosts = (await getCollection('blog'))
   .slice(0, 4);
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
-  </head>
-  <body>
-    <Header />
-    <main class="manyang-page" aria-labelledby="manyang-gureum-title">
-      <header class="manyang-hero">
-        <div class="manyang-hero__content">
-          <p class="manyang-hero__eyebrow">Manyang & Gureum</p>
-          <h1 id="manyang-gureum-title">만냥구름</h1>
-          <p>
-            기록실을 함께 쓰는 두 고양이입니다. 귀여운 장면만 모으기보다, 작은 변화와 불편의 이유를
-            관찰하고 돌보는 방식을 함께 남깁니다.
-          </p>
-          <div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
-            <a href="#cat-profiles">둘 소개 보기</a>
-            <a href="#cat-gallery">사진첩 보기</a>
-            <a href="#cat-notes">관찰일지 보기</a>
-          </div>
-        </div>
+<SiteLayout
+  title={PAGE_TITLE}
+  description={PAGE_DESCRIPTION}
+  lang="ko"
+  mainLabelledBy="manyang-gureum-title"
+>
+  <div class="manyang-page">
+    <PageHero
+      kicker="PERSONAL / MANYANG & GUREUM"
+      title="만냥구름"
+      titleId="manyang-gureum-title"
+      lede="같이 사는 고양이 만냥이와 구름이예요. 귀여운 사진도 모으고, 둘을 돌보면서 알게 된 것들도 적어 둬요."
+    >
+      <nav class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
+        <TextLink href="#cat-profiles">둘 소개 보기</TextLink>
+        <TextLink href="#cat-gallery">사진첩 보기</TextLink>
+        <TextLink href="#cat-notes">관찰일지 보기</TextLink>
+      </nav>
+    </PageHero>
 
-        {
-          featuredPhoto && (
-            <figure class="manyang-hero__photo">
-              <Image
-                src={featuredPhoto.image}
-                alt={featuredPhoto.alt}
-                widths={[420, 640, 820, 960, 1280]}
-                sizes="(max-width: 860px) 100vw, 520px"
-                loading="eager"
-                decoding="async"
-              />
-              <figcaption>{featuredPhoto.caption}</figcaption>
-            </figure>
-          )
-        }
-      </header>
-
+    <div class="shell manyang-page__body">
       <section
         class="observation-bridge"
         aria-labelledby="observation-bridge-title"
         id="observation-bridge"
       >
-        <div class="section-heading">
-          <p>Observation & Care</p>
-          <h2 id="observation-bridge-title">관찰과 돌봄으로 남긴 기준</h2>
-        </div>
-        <p class="observation-bridge__intro">
-          만냥구름은 기록실의 장식이 아니라, 문제를 보기 전에 먼저 살피고 원인을 이해하려는 태도를
-          매일 확인하게 해주는 존재입니다.
-        </p>
-        <div class="observation-bridge__grid">
+        <SectionHead
+          kicker="01 / CARE"
+          title="돌보면서 배운 것"
+          titleId="observation-bridge-title"
+        />
+
+        <div class="observation-bridge__stage">
           {
-            observationNotes.map((note) => (
-              <article>
-                <h3>{note.title}</h3>
-                <p>{note.description}</p>
-              </article>
+            featuredPhoto && (
+              <figure class="manyang-hero__photo">
+                <Image
+                  src={featuredPhoto.image}
+                  alt={featuredPhoto.alt}
+                  widths={[420, 640, 820, 960]}
+                  sizes="(max-width: 860px) calc(100vw - 48px), 460px"
+                  loading="eager"
+                  decoding="async"
+                />
+                <figcaption class="meta">{featuredPhoto.caption}</figcaption>
+              </figure>
+            )
+          }
+          <p class="observation-bridge__intro">
+            둘을 키우면서, 행동만 보고 판단하기 전에 이유부터 살피는 습관이 생겼어요.
+          </p>
+        </div>
+
+        <ol class="observation-bridge__grid">
+          {
+            observationNotes.map((note, index) => (
+              <li>
+                <span class="meta">{String(index + 1).padStart(2, '0')}</span>
+                <article>
+                  <h3>{note.title}</h3>
+                  <p>{note.description}</p>
+                </article>
+              </li>
             ))
           }
-        </div>
+        </ol>
       </section>
 
       <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
-        <div class="section-heading">
-          <p>Roommates</p>
-          <h2 id="cat-profiles-title">기록실을 함께 쓰는 고양이들</h2>
-        </div>
+        <SectionHead kicker="02 / PROFILES" title="만냥이와 구름이" titleId="cat-profiles-title" />
         <div class="cat-profiles__grid">
           {cats.map((cat) => <CatProfileCard cat={cat} />)}
         </div>
       </section>
 
-      <div id="cat-gallery">
-        <CatGallery photos={catPhotos} />
+      <div id="cat-gallery" class="manyang-page__gallery">
+        <CatGallery photos={catPhotos} kicker="03 / PHOTOS" />
       </div>
 
       <section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
-        <div class="section-heading">
-          <p>Observation Log</p>
-          <h2 id="cat-notes-title">만냥구름 관찰일지</h2>
-        </div>
+        <SectionHead kicker="04 / NOTES" title="만냥구름 관찰일지" titleId="cat-notes-title" />
 
         {
           observationPosts.length > 0 ? (
-            <ul class="cat-notes__list">
+            <EntryList>
               {observationPosts.map((post) => (
-                <li>
-                  <a href={routes.record(post.id)}>
-                    <h3>{post.data.title}</h3>
-                    <p>{post.data.description}</p>
-                    <time datetime={post.data.pubDate.toISOString()}>
-                      <FormattedDate date={post.data.pubDate} />
-                    </time>
-                  </a>
-                </li>
+                <EntryRow
+                  class="cat-notes__item"
+                  href={routes.record(post.id)}
+                  title={post.data.title}
+                  date={post.data.pubDate}
+                >
+                  <p class="cat-notes__description">{post.data.description}</p>
+                </EntryRow>
               ))}
-            </ul>
+            </EntryList>
           ) : (
             <EmptyState
-              eyebrow={uiCopy.emptyDrawer}
-              title={uiCopy.emptyDrawerTitle}
-              description="아직 만냥구름 관찰일지는 꺼낼 기록이 없습니다. 사진첩을 먼저 보거나 전체 기록에서 다른 서랍을 열어볼 수 있습니다."
+              eyebrow={uiCopy.emptyLabel}
+              title={uiCopy.emptyTitle}
+              description="아직 관찰일지에 쓴 글이 없어요. 먼저 사진첩을 구경해 보세요."
               href={routes.records}
-              linkLabel="전체 기록 보기"
+              linkLabel="다른 글 보기"
               compact
             />
           )
         }
       </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+    </div>
+  </div>
+</SiteLayout>
 
 <style>
-  .manyang-page {
-    width: min(1080px, calc(100% - 2rem));
-    max-width: none;
-    padding: 3rem 0 4.5rem;
-  }
-
-  .manyang-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
-    gap: 1.5rem;
-    align-items: center;
-    margin-bottom: 4rem;
-    padding: 1.25rem;
-    border-radius: 12px;
-    background:
-      linear-gradient(135deg, rgba(var(--accent-rgb), 0.13), transparent 36%),
-      linear-gradient(180deg, var(--surface-elevated), rgba(var(--sage-rgb), 0.08));
-    box-shadow:
-      0 0 0 1px rgba(var(--gray-light), 0.34),
-      var(--box-shadow);
-  }
-
-  .manyang-hero__content {
-    padding: 2rem;
-  }
-
-  .manyang-hero__eyebrow,
-  .section-heading p {
-    margin: 0 0 0.35rem;
-    color: var(--accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0;
-    text-transform: uppercase;
-  }
-
-  .manyang-hero h1 {
-    margin-bottom: 1rem;
-    font-size: 5rem;
-    line-height: 1.02;
-  }
-
-  .manyang-hero__content > p {
-    max-width: 42rem;
-    margin: 0;
-    color: rgb(var(--gray));
-    font-size: 1.2rem;
-    line-height: 1.75;
-    text-wrap: balance;
-  }
-
   .manyang-hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.4rem;
+    gap: 0.75rem 2rem;
+    margin-top: 2.25rem;
   }
 
-  .manyang-hero__actions a {
-    display: inline-flex;
-    padding: 0.45rem 0.85rem;
-    border-radius: 999px;
-    background: rgba(var(--accent-rgb), 0.12);
-    color: var(--accent-dark);
-    font-size: 0.9rem;
-    font-weight: 800;
-    text-decoration: none;
+  .manyang-page__body {
+    display: grid;
+    gap: clamp(100px, 12vw, 160px);
+    padding-bottom: clamp(120px, 14vw, 220px);
   }
 
-  .manyang-hero__actions a:hover,
-  .manyang-hero__actions a:focus-visible {
-    background: rgba(var(--accent-rgb), 0.18);
-    color: var(--accent);
+  .manyang-page__body > * {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .observation-bridge__stage {
+    display: grid;
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 90px);
+    align-items: center;
+    padding: clamp(40px, 6vw, 70px) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
   .manyang-hero__photo {
     margin: 0;
-    overflow: hidden;
-    border-radius: 8px;
-    background: var(--surface);
-    box-shadow: 0 12px 36px rgba(74, 47, 34, 0.18);
-    transform: rotate(1deg);
   }
 
   .manyang-hero__photo :global(img) {
     display: block;
     width: 100%;
+    height: auto;
     aspect-ratio: 4 / 3;
-    border-radius: 0;
+    border: 1px solid var(--line);
     object-fit: cover;
   }
 
   .manyang-hero__photo figcaption {
-    padding: 0.8rem 0.9rem;
-    color: rgb(var(--gray));
-    font-size: 0.92rem;
-    font-weight: 700;
-  }
-
-  .section-heading {
-    max-width: 48rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-heading h2 {
-    margin: 0;
-    font-size: 2.65rem;
-  }
-
-  .cat-profiles,
-  .observation-bridge,
-  .cat-notes {
-    margin-top: 4rem;
+    margin-top: 0.9rem;
   }
 
   .observation-bridge__intro {
-    max-width: 46rem;
-    margin: 0 0 1.25rem;
-    color: rgb(var(--gray));
-    line-height: 1.75;
+    max-width: 620px;
+    margin: 0;
+    color: var(--fg);
+    font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+    line-height: 1.85;
     word-break: keep-all;
   }
 
   .observation-bridge__grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.85rem;
-  }
-
-  .observation-bridge__grid article {
-    min-width: 0;
-    padding: 1rem;
-    border-radius: 8px;
-    background: var(--surface-elevated);
-    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
-  }
-
-  .observation-bridge__grid h3 {
-    margin: 0 0 0.55rem;
-    font-size: 1.15rem;
-    letter-spacing: 0;
-  }
-
-  .observation-bridge__grid p {
-    margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.65;
-    word-break: keep-all;
-  }
-
-  .cat-profiles__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .cat-notes__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .cat-notes__list a {
-    display: block;
-    height: 100%;
-    padding: 1.1rem;
-    border-radius: 8px;
-    background: var(--surface-elevated);
-    color: rgb(var(--gray-dark));
-    text-decoration: none;
-    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.34);
+  .observation-bridge__grid li {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 40px;
+    padding: 38px 0;
+    border-bottom: 1px solid var(--line);
   }
 
-  .cat-notes__list a {
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+  .observation-bridge__grid h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.5;
   }
 
-  .cat-notes__list a:hover,
-  .cat-notes__list a:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: var(--box-shadow);
+  .observation-bridge__grid p {
+    margin: 0.6rem 0 0;
+    color: var(--muted);
+    line-height: 1.9;
+    word-break: keep-all;
   }
 
-  .cat-notes__list h3 {
-    margin-bottom: 0.65rem;
-    font-size: 1.45rem;
+  .cat-profiles__grid {
+    border-top: 1px solid var(--line);
   }
 
-  .cat-notes__list p {
-    margin: 0 0 0.85rem;
-    color: rgb(var(--gray));
-    line-height: 1.6;
-  }
-
-  .cat-notes__list time {
-    color: rgb(var(--gray));
-    font-size: 0.9rem;
+  .cat-notes__description {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.85;
+    word-break: keep-all;
   }
 
   @media (max-width: 860px) {
-    .manyang-page {
-      width: min(100% - 1.5rem, 1080px);
-      padding-top: 2rem;
+    .observation-bridge__stage {
+      grid-template-columns: minmax(0, 1fr);
     }
+  }
 
-    .manyang-hero {
-      grid-template-columns: 1fr;
-      margin-bottom: 3rem;
-    }
-
-    .manyang-hero__content {
-      padding: 0.75rem;
-    }
-
-    .manyang-hero h1 {
-      font-size: 3.15rem;
-    }
-
-    .manyang-hero__content > p {
-      font-size: 1.05rem;
-    }
-
-    .manyang-hero__photo {
-      transform: none;
-    }
-
-    .section-heading h2 {
-      font-size: 2.15rem;
-    }
-
-    .cat-profiles,
-    .observation-bridge,
-    .cat-notes {
-      margin-top: 3rem;
-    }
-
-    .observation-bridge__grid {
-      grid-template-columns: 1fr;
+  @media (max-width: 700px) {
+    .observation-bridge__grid li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      padding: 28px 0;
     }
   }
 </style>

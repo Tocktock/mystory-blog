@@ -1,9 +1,12 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
+// Global styles and self-hosted fonts load here so every page gets them through <BaseHead />.
+import '@fontsource/noto-serif-kr/400.css';
+import '@fontsource/noto-serif-kr/500.css';
+import '@fontsource/noto-serif-kr/600.css';
+import '@fontsource/dm-mono/400.css';
+import '@fontsource/dm-mono/500.css';
 import '../styles/global.css';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
-import placeholderOg from '../assets/placeholders/blog-placeholder-1.jpg';
 
 interface Props {
   title: string;
@@ -15,38 +18,16 @@ interface Props {
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL);
 
-const { title, description, image = placeholderOg.src, lang = 'ko' } = Astro.props as Props;
+const { title, description, image = '/og/site.png', lang = 'ko' } = Astro.props as Props;
 const imageURL = new URL(image, siteURL);
 const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---
 
-<script is:inline>
-  (() => {
-    const storageKey = 'preferred-color-scheme';
-    const root = document.documentElement;
-    const prefersDarkQuery = '(prefers-color-scheme: dark)';
-
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored === 'dark' || stored === 'light') {
-        root.dataset.theme = stored;
-        return;
-      }
-    } catch (error) {
-      // Ignore storage access issues (e.g., private browsing)
-    }
-
-    const prefersDark =
-      typeof window !== 'undefined' && window.matchMedia
-        ? window.matchMedia(prefersDarkQuery).matches
-        : false;
-    root.dataset.theme = prefersDark ? 'dark' : 'light';
-  })();
-</script>
-
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#020304" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
@@ -59,9 +40,14 @@ const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 <meta name="author" content={SITE_AUTHOR} />
 <meta name="language" content={lang} />
 
-<!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<!-- The INDEX menu needs JS; without it the footer navigation takes over. -->
+<noscript
+  ><style is:inline>
+    .site-header__index {
+      display: none;
+    }
+  </style></noscript
+>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

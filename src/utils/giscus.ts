@@ -35,7 +35,7 @@ export function buildGiscusConfig(env: Record<string, EnvValue>): GiscusConfig {
     categoryId: readEnv(env.PUBLIC_GISCUS_CATEGORY_ID),
     mapping: readEnv(env.PUBLIC_GISCUS_MAPPING) ?? 'title',
     lang: readEnv(env.PUBLIC_GISCUS_LANG) ?? 'ko',
-    theme: readEnv(env.PUBLIC_GISCUS_THEME) ?? 'light',
+    theme: readEnv(env.PUBLIC_GISCUS_THEME) ?? 'transparent_dark',
     strict: readEnv(env.PUBLIC_GISCUS_STRICT) ?? '1',
     reactionsEnabled: readEnv(env.PUBLIC_GISCUS_REACTIONS_ENABLED) ?? '1',
     emitMetadata: readEnv(env.PUBLIC_GISCUS_EMIT_METADATA) ?? '0',

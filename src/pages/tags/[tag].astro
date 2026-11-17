@@ -1,13 +1,12 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import EntryList from '../../components/observatory/EntryList.astro';
+import EntryRow from '../../components/observatory/EntryRow.astro';
+import PageHero from '../../components/observatory/PageHero.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { collectTags, type TagEntry } from '../../utils/tags';
 import { routes } from '../../utils/routes';
-import '../../styles/tag-detail.css';
 
 type Props = {
   tag: TagEntry;
@@ -27,42 +26,72 @@ const { tag } = Astro.props as Props;
 const tagPosts = tag.posts as CollectionEntry<'blog'>[];
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`${tag.label} 기록 | ${SITE_TITLE}`}
-      description={`${tag.label} 태그가 붙은 기록입니다.`}
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main class="tag-detail" aria-labelledby="tag-detail-title">
-      <header class="tag-detail__header">
-        <p class="tag-detail__breadcrumbs">
-          <a href={routes.tags}>태그</a>
-          <span aria-hidden="true">/</span>
-          <span>{tag.label}</span>
-        </p>
-        <h1 id="tag-detail-title">{tag.label}</h1>
-        <p class="tag-detail__count">{tagPosts.length}개 기록</p>
-      </header>
-
-      <ul class="tag-detail__list">
+<SiteLayout
+  title={`${tag.label} 기록 | ${SITE_TITLE}`}
+  description={`${tag.label} 태그가 붙은 글이에요.`}
+  lang="ko"
+  mainLabelledBy="tag-detail-title"
+>
+  <div class="tag-detail">
+    <PageHero
+      kicker="TAG"
+      title={tag.label}
+      titleId="tag-detail-title"
+      lede={`글 ${tagPosts.length}편`}
+    >
+      <p class="meta tag-detail__breadcrumbs" slot="top">
+        <a href={routes.tags}>태그</a>
+        <span aria-hidden="true">/</span>
+        <span>{tag.label}</span>
+      </p>
+    </PageHero>
+    <section class="shell tag-detail__content" aria-label={`${tag.label} 기록 목록`}>
+      <EntryList>
         {
-          tagPosts.map((post) => (
-            <li>
-              <a href={routes.record(post.id)}>
-                <h2>{post.data.title}</h2>
-                <p>{post.data.description}</p>
-                <FormattedDate date={post.data.pubDate} />
-              </a>
-            </li>
+          tagPosts.map((post, index) => (
+            <EntryRow
+              href={routes.record(post.id)}
+              title={post.data.title}
+              index={index + 1}
+              date={post.data.pubDate}
+              headingLevel={2}
+            >
+              <p class="tag-detail__description">{post.data.description}</p>
+            </EntryRow>
           ))
         }
-      </ul>
-    </main>
-    <Footer />
-  </body>
-</html>
+      </EntryList>
+    </section>
+  </div>
+</SiteLayout>
+
+<style>
+  .tag-detail__breadcrumbs {
+    margin: 0;
+  }
+
+  .tag-detail__breadcrumbs a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+
+  .tag-detail__breadcrumbs span[aria-hidden] {
+    margin: 0 0.6em;
+  }
+
+  .tag-detail__content {
+    padding-bottom: clamp(120px, 14vw, 220px);
+  }
+
+  .tag-detail__description {
+    max-width: 46rem;
+    margin: 0.6rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.85;
+    word-break: keep-all;
+  }
+</style>

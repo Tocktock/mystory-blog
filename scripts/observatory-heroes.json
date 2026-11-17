@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "agile-transformation",
+    "title": "Agile Pitfalls",
+    "subtitle": "Keeping teams aligned"
+  },
+  { "slug": "content-deep-sea", "title": "Blog Reflections", "subtitle": "Lessons from shipping" },
+  { "slug": "content-index-mdx", "title": "Astro Content", "subtitle": "Indexing MDX files" },
+  {
+    "slug": "content-pipeline",
+    "title": "Building the Blog",
+    "subtitle": "From markdown to Astro pages"
+  },
+  { "slug": "k3s-multipass", "title": "K3s on macOS", "subtitle": "Multipass playground" },
+  { "slug": "kotlin-object-json", "title": "Mapper Patterns", "subtitle": "Objects to JSON" },
+  { "slug": "kotlin-operator", "title": "Kotlin Operators", "subtitle": "Handling edge cases" },
+  { "slug": "kotlin-reflections", "title": "Mapper Insights", "subtitle": "Leveraging reflection" },
+  { "slug": "mysql2pg-compare", "title": "MySQL vs Postgres", "subtitle": "Tradeoffs explained" },
+  { "slug": "mysql2pg-pgloader", "title": "pgloader Guide", "subtitle": "Migrating with speed" },
+  { "slug": "mysql2pg-realworld", "title": "Real-world Move", "subtitle": "Production migration" },
+  {
+    "slug": "spring-persistence-advanced",
+    "title": "JPA Advanced",
+    "subtitle": "Transactions & tuning"
+  },
+  {
+    "slug": "spring-persistence-core",
+    "title": "JPA Essentials",
+    "subtitle": "Persistence basics"
+  },
+  {
+    "slug": "spring-soap",
+    "title": "Retrofit + SOAP",
+    "subtitle": "Modern Spring integration guide"
+  },
+  { "slug": "spring-validation", "title": "Spring Validation", "subtitle": "Robust input rules" }
+]

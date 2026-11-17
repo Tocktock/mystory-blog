@@ -43,26 +43,26 @@ const configuredGiscus = getConfiguredGiscus(giscusConfig);
 
 <style>
   .comments {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(var(--gray-light), 0.35);
     width: 100%;
+    margin-top: clamp(4rem, 8vw, 5.5rem);
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
   }
 
   .comments__placeholder {
     margin: 0;
-    padding: 1rem;
-    background: rgba(var(--gray-light), 0.15);
-    border-radius: 0.5rem;
-    font-size: 0.95rem;
-    color: rgb(var(--gray));
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--label-md);
+    letter-spacing: 0.02em;
+    line-height: 1.8;
   }
 
   .comments__noscript {
     display: inline-block;
     margin-top: 1rem;
+    color: var(--muted);
     font-size: 0.85rem;
-    color: rgba(var(--gray), 0.75);
   }
 
   .giscus {

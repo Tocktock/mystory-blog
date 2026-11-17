@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+  direction?: 'forward' | 'back' | 'external';
+};
+
+const { direction = 'forward', class: className, ...attrs } = Astro.props as Props;
+const arrow = direction === 'back' ? '←' : '↗';
+---
+
+<a class:list={['text-link', className]} {...attrs}>
+  {direction === 'back' && <span aria-hidden="true">{arrow}</span>}
+  <slot />
+  {direction !== 'back' && <span aria-hidden="true">{arrow}</span>}
+</a>
+
+<style>
+  .text-link {
+    display: inline-flex;
+    gap: 0.6em;
+    align-items: baseline;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--label-sm);
+    /* Most link labels are Hangul, which wide tracking breaks into loose syllables. */
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .text-link:hover {
+    color: var(--fg);
+  }
+</style>

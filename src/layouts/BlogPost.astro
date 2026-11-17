@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 import { Image } from 'astro:assets';
-import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
+import SiteLayout from './SiteLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import PostMeta from '../components/records/PostMeta.astro';
 import RecordSummary from '../components/records/RecordSummary.astro';
+import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { getCategory } from '../data/categories';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
+import { routes } from '../utils/routes';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
 
 type Props = CollectionEntry<'blog'>['data'] & {
@@ -17,6 +17,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   ogImage?: string;
   sectionName?: string;
   sectionPath?: string;
+  sectionKicker?: string;
   showPostMeta?: boolean;
 };
 
@@ -39,15 +40,18 @@ const {
   lesson,
   sectionName = '기록',
   sectionPath = '/records',
+  sectionKicker,
   showPostMeta: providedShowPostMeta,
 } = Astro.props as Props;
-const lang = providedLang ?? 'ko';
-const showPostMeta = providedShowPostMeta ?? sectionPath === '/records';
+const lang = providedLang === 'en' ? 'en' : 'ko';
 const isRecordPost = sectionPath === '/records';
+const showPostMeta = providedShowPostMeta ?? isRecordPost;
+const categoryEntry = getCategory(category);
+const showHero = isRecordPost && Boolean(heroImage);
 const heroImageAlt = heroImage ? (providedHeroImageAlt ?? `${title} 대표 이미지`) : '';
-const heroBaseWidth = heroImage ? Math.min(960, heroImage.width) : 960;
+const heroBaseWidth = heroImage ? Math.min(1000, heroImage.width) : 1000;
 const heroWidths = heroImage
-  ? [360, 480, 720, 960, 1280].filter((width) => width <= heroImage.width)
+  ? [360, 480, 720, 1000, 1280].filter((width) => width <= heroImage.width)
   : [];
 
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
@@ -86,457 +90,370 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 });
 ---
 
-<html lang={lang}>
-  <head>
-    <BaseHead title={title} description={description} image={ogImageURL} lang={lang} />
-    <script type="application/ld+json" is:inline set:html={serializeJsonLd(articleJsonLd)} />
-    <script type="application/ld+json" is:inline set:html={serializeJsonLd(breadcrumbJsonLd)} />
-    <style>
-      main.blog-post-page {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0 auto;
-      }
-      .hero-image {
-        width: 100%;
-        max-width: 960px;
-        margin: 0 auto;
-      }
-      .hero-image__frame {
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
-        overflow: hidden;
-      }
-      @supports (aspect-ratio: 1 / 1) {
-        .hero-image__frame {
-          aspect-ratio: 16 / 9;
-        }
-      }
-      .hero-image__media {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-      @supports (aspect-ratio: 1 / 1) {
-        .hero-image__media {
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-      .blog-post-article {
-        width: 100%;
-      }
-      .post-content {
-        width: 720px;
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
-      }
-      .post-content p {
-        margin-bottom: 2em;
-      }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
-      }
-      .title h1 {
-        margin: 0 0 0.5em 0;
-      }
-      .date {
-        margin-bottom: 0.5em;
-        color: rgb(var(--gray));
-      }
-      .last-updated-on {
-        font-style: italic;
-      }
+<SiteLayout
+  title={title}
+  description={description}
+  image={ogImageURL}
+  lang={lang}
+  mainLabelledBy="article-title"
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={serializeJsonLd(articleJsonLd)}
+  />
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={serializeJsonLd(breadcrumbJsonLd)}
+  />
 
-      body.blog-post-shell--record {
-        --blog-bg: #0b0a09;
-        --blog-bg-soft: #12100e;
-        --blog-bg-elevated: #17130f;
-        --blog-text: #f3eee7;
-        --blog-text-muted: #b8aa9a;
-        --blog-text-subtle: #8f8173;
-        --blog-accent: #d8a760;
-        --blog-accent-soft: rgba(216, 167, 96, 0.16);
-        --blog-border: rgba(255, 255, 255, 0.075);
-        --accent: var(--blog-accent);
-        --accent-rgb: 216, 167, 96;
-        --accent-dark: #f0c37f;
-        --black: 255, 248, 237;
-        --gray: 184, 170, 154;
-        --gray-light: 255, 255, 255;
-        --gray-dark: 243, 238, 231;
-        --surface: var(--blog-bg);
-        --surface-elevated: var(--blog-bg-elevated);
-        --color-text-muted: var(--blog-text-muted);
-        --color-line: var(--blog-border);
-        --gray-gradient: rgba(11, 10, 9, 0.94), #090807;
-        --code-bg: rgba(255, 255, 255, 0.07);
-        --box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28), 0 2px 12px rgba(0, 0, 0, 0.22);
-        min-height: 100dvh;
-        background:
-          radial-gradient(circle at top center, rgba(216, 167, 96, 0.11), transparent 360px),
-          linear-gradient(180deg, #12100e 0%, #0d0b0a 54%, #090807 100%);
-        background-color: var(--blog-bg);
-        color: var(--blog-text);
+  <article class="article">
+    <header class="article__header">
+      {
+        isRecordPost ? (
+          <p class="meta article__breadcrumb">
+            <a href={routes.records}>RECORDS</a>
+            <span aria-hidden="true">/</span>
+            <a href={routes.category(categoryEntry.slug)}>{categoryEntry.label}</a>
+          </p>
+        ) : (
+          sectionKicker && <p class="kicker">{sectionKicker}</p>
+        )
       }
-      body.blog-post-shell--record::selection {
-        background: rgba(216, 167, 96, 0.28);
-        color: #fff8ed;
+      <h1 id="article-title" class="article__title">{title}</h1>
+      {
+        isRecordPost && (
+          <p class="meta article__dates">
+            <FormattedDate date={pubDate} />
+            {updatedDate && (
+              <span class="article__updated">
+                UPDATED <FormattedDate date={updatedDate} />
+              </span>
+            )}
+          </p>
+        )
       }
-      .blog-post-shell--record .blog-post-page {
-        box-sizing: border-box;
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        padding: clamp(2.25rem, 5vw, 4rem) 1.25rem clamp(4.5rem, 8vw, 7rem);
-        background: transparent;
+      {showPostMeta && <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />}
+      {
+        isRecordPost && (
+          <RecordSummary
+            recordType={recordType}
+            status={status}
+            problem={problem}
+            lesson={lesson}
+          />
+        )
       }
-      .blog-post-shell--record .hero-image {
-        max-width: 1060px;
-        margin: 0 auto clamp(2.75rem, 5vw, 4.75rem);
-      }
-      .blog-post-shell--record .hero-image__frame {
-        border: 1px solid var(--blog-border);
-        border-radius: 18px;
-        background: var(--blog-bg-soft);
-        box-shadow: var(--box-shadow);
-      }
-      .blog-post-shell--record .blog-post-article {
-        background: transparent;
-      }
-      .blog-post-shell--record .post-content {
-        width: auto;
-        max-width: 760px;
-        padding: 0 0 1rem;
-        overflow-x: hidden;
-        color: var(--blog-text);
-      }
-      .blog-post-shell--record .title {
-        margin-bottom: clamp(2rem, 4vw, 3.25rem);
-        padding: 0 0 clamp(1.75rem, 4vw, 2.75rem);
-        border-bottom: 1px solid var(--blog-border);
-        line-height: 1.15;
-      }
-      .blog-post-shell--record .title h1 {
-        max-width: 16ch;
-        margin: 0 auto 0.65em;
-        color: #fff8ed;
-        font-size: clamp(2.45rem, 6vw, 4.7rem);
-        line-height: 1.08;
-        letter-spacing: 0;
-        text-wrap: balance;
-      }
-      .blog-post-shell--record .date {
-        margin-bottom: 0.85rem;
-        color: var(--blog-text-muted);
-        font-size: 0.98rem;
-        font-variant-numeric: tabular-nums;
-      }
-      :global(.blog-post-shell--record .post-content > section),
-      :global(.blog-post-shell--record .post-content > div:not(.title)) {
-        background: transparent;
-      }
-      :global(.blog-post-shell--record .post-content) {
-        word-break: keep-all;
-        overflow-wrap: normal;
-      }
-      :global(.blog-post-shell--record .post-content a),
-      :global(.blog-post-shell--record .post-content code) {
-        word-break: normal;
-        overflow-wrap: anywhere;
-      }
-      :global(.blog-post-shell--record .post-content > section) {
-        margin: 0;
-        padding: clamp(2.75rem, 5vw, 3.75rem) 0;
-        border-top: 1px solid var(--blog-border);
-      }
-      :global(.blog-post-shell--record .post-content > .title + section),
-      :global(.blog-post-shell--record .post-content > hr + section) {
-        border-top: 0;
-      }
-      :global(.blog-post-shell--record .post-content > section > :first-child) {
-        margin-top: 0;
-      }
-      :global(.blog-post-shell--record .post-content > section > :last-child) {
-        margin-bottom: 0;
-      }
-      :global(.blog-post-shell--record .post-content h1),
-      :global(.blog-post-shell--record .post-content h2),
-      :global(.blog-post-shell--record .post-content h3),
-      :global(.blog-post-shell--record .post-content h4) {
-        color: #fff8ed;
-        letter-spacing: 0;
-        text-wrap: balance;
-      }
-      :global(.blog-post-shell--record .post-content > h1) {
-        margin: 3rem 0 1.25rem;
-        font-size: clamp(2rem, 4.5vw, 3rem);
-        line-height: 1.18;
-      }
-      :global(.blog-post-shell--record .post-content h2) {
-        margin: 4.5rem 0 1.25rem;
-        padding-top: 2.2rem;
-        border-top: 1px solid var(--blog-border);
-        font-size: clamp(1.75rem, 3.7vw, 2.6rem);
-        line-height: 1.24;
-      }
-      :global(.blog-post-shell--record .post-content section h2),
-      :global(.blog-post-shell--record .post-content blockquote h2) {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: 0;
-      }
-      :global(.blog-post-shell--record .post-content h3) {
-        margin: 3rem 0 1rem;
-        color: rgba(255, 248, 237, 0.94);
-        font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-        line-height: 1.3;
-      }
-      :global(.blog-post-shell--record .post-content h4) {
-        margin: 2.25rem 0 0.85rem;
-        font-size: 1.2rem;
-        line-height: 1.35;
-      }
-      :global(.blog-post-shell--record .post-content p),
-      :global(.blog-post-shell--record .post-content li) {
-        color: rgba(243, 238, 231, 0.9);
-        line-height: 1.85;
-      }
-      :global(.blog-post-shell--record .post-content p) {
-        margin: 1rem 0;
-      }
-      :global(.blog-post-shell--record .post-content ul),
-      :global(.blog-post-shell--record .post-content ol) {
-        margin: 1.25rem 0 1.75rem;
-        padding-left: 1.35rem;
-      }
-      :global(.blog-post-shell--record .post-content li + li) {
-        margin-top: 0.45rem;
-      }
-      :global(.blog-post-shell--record .post-content a) {
-        color: var(--blog-accent);
-        text-decoration-line: underline;
-        text-decoration-color: rgba(216, 167, 96, 0.42);
-        text-decoration-thickness: 1px;
-        text-underline-offset: 0.18em;
-        transition:
-          color 0.2s ease,
-          text-decoration-color 0.2s ease;
-      }
-      :global(.blog-post-shell--record .post-content a:hover),
-      :global(.blog-post-shell--record .post-content a:focus-visible) {
-        color: #f0c37f;
-        text-decoration-color: rgba(240, 195, 127, 0.7);
-      }
-      :global(.blog-post-shell--record .post-content strong),
-      :global(.blog-post-shell--record .post-content b) {
-        color: #fff8ed;
-      }
-      :global(.blog-post-shell--record .post-content hr) {
-        width: 100%;
-        margin: clamp(2.25rem, 5vw, 3.75rem) 0;
-        border: 0;
-        border-top: 1px solid var(--blog-border);
-      }
-      :global(.blog-post-shell--record .post-content blockquote) {
-        margin: 2rem 0;
-        padding: 1.5rem 1.75rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-left: 3px solid rgba(216, 167, 96, 0.58);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.045);
-        color: var(--blog-text);
-        font-size: 1.05rem;
-        line-height: 1.78;
-      }
-      :global(.blog-post-shell--record .post-content blockquote > :first-child) {
-        margin-top: 0;
-      }
-      :global(.blog-post-shell--record .post-content blockquote > :last-child) {
-        margin-bottom: 0;
-      }
-      :global(.blog-post-shell--record .post-content :not(pre) > code) {
-        padding: 0.15em 0.35em;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background-color: rgba(255, 255, 255, 0.07);
-        color: #ffe0a8;
-      }
-      :global(.blog-post-shell--record .post-content pre) {
-        margin: 1.75rem 0 2.25rem;
-        padding: 1.35rem 1.45rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.025)),
-          var(--blog-bg-elevated);
-        color: rgba(243, 238, 231, 0.92);
-        overflow-x: auto;
-      }
-      :global(.blog-post-shell--record .post-content pre > code) {
-        color: inherit;
-      }
-      :global(.blog-post-shell--record .post-content img) {
-        display: block;
-        margin: 2rem auto;
-        border: 1px solid var(--blog-border);
-        border-radius: 14px;
-      }
-      :global(.blog-post-shell--record .post-content .wide-image-frame) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        aspect-ratio: 16 / 9;
-        width: 100%;
-        margin: 2rem auto;
-        overflow: hidden;
-        border: 1px solid var(--blog-border);
-        border-radius: 14px;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
-          var(--blog-bg-elevated);
-      }
-      :global(.blog-post-shell--record .post-content .wide-image-frame img) {
-        width: auto;
-        max-width: 100%;
-        height: 100%;
-        margin: 0;
-        border: 0;
-        border-radius: 0;
-        object-fit: contain;
-      }
-      :global(.blog-post-shell--record .post-content table) {
-        display: block;
-        width: 100%;
-        margin: 2rem 0;
-        border-collapse: collapse;
-        overflow-x: auto;
-      }
-      :global(.blog-post-shell--record .post-content th),
-      :global(.blog-post-shell--record .post-content td) {
-        padding: 0.8rem 0.9rem;
-        border-bottom: 1px solid var(--blog-border);
-        color: rgba(243, 238, 231, 0.88);
-        text-align: left;
-      }
-      :global(.blog-post-shell--record .post-content th) {
-        color: #fff8ed;
-        font-weight: 700;
-      }
-      :global(.blog-post-shell--record .post-content th:first-child),
-      :global(.blog-post-shell--record .post-content td:first-child) {
-        min-width: 4.25rem;
-        white-space: nowrap;
-        text-align: center;
-      }
-      :global(.blog-post-shell--record .post-content .callout) {
-        margin: 2rem 0;
-        padding: 1.5rem 1.75rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.045);
-      }
-      :global(.blog-post-shell--record .post-content .series-progress) {
-        margin-top: clamp(3.25rem, 6vw, 4.5rem);
-      }
-      @media (max-width: 640px) {
-        .blog-post-shell--record .blog-post-page {
-          padding: 1.25rem 1rem 4.5rem;
-        }
-        .blog-post-shell--record .hero-image {
-          margin-bottom: 2.5rem;
-        }
-        .blog-post-shell--record .hero-image__frame {
-          border-radius: 14px;
-        }
-        .blog-post-shell--record .title {
-          margin-bottom: 2rem;
-          padding-bottom: 1.65rem;
-          text-align: left;
-        }
-        .blog-post-shell--record .title h1 {
-          max-width: none;
-          margin-right: 0;
-          margin-left: 0;
-          font-size: clamp(2.15rem, 12vw, 3.1rem);
-        }
-        :global(.blog-post-shell--record .post-content > section) {
-          padding: 2.5rem 0;
-        }
-        :global(.blog-post-shell--record .post-content h2) {
-          margin-top: 3.5rem;
-          padding-top: 1.8rem;
-        }
-        :global(.blog-post-shell--record .post-content blockquote),
-        :global(.blog-post-shell--record .post-content .callout) {
-          padding: 1.2rem 1.25rem;
-          border-radius: 14px;
-        }
-        :global(.blog-post-shell--record .post-content pre) {
-          padding: 1.1rem;
-          border-radius: 12px;
-        }
-      }
-    </style>
-  </head>
+    </header>
 
-  <body class:list={['blog-post-shell', { 'blog-post-shell--record': isRecordPost }]}>
-    <Header />
-    <main class="blog-post-page">
-      <article class="blog-post-article">
-        {
-          heroImage && (
-            <div class="hero-image">
-              <div class="hero-image__frame">
-                <Image
-                  src={heroImage}
-                  alt={heroImageAlt}
-                  width={heroBaseWidth}
-                  widths={heroWidths}
-                  sizes="(max-width: 960px) calc(100vw - 2em), 960px"
-                  class="hero-image__media"
-                  loading="eager"
-                  decoding="async"
-                  fetchpriority="high"
-                />
-              </div>
-            </div>
-          )
-        }
-        <div class="post-content">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-            </div>
-            <h1>{title}</h1>
-            {showPostMeta && <PostMeta category={category} tags={tags} seriesSlug={seriesSlug} />}
-            {
-              isRecordPost && (
-                <RecordSummary
-                  recordType={recordType}
-                  status={status}
-                  problem={problem}
-                  lesson={lesson}
-                />
-              )
-            }
-            <hr />
-          </div>
-          <slot />
-        </div>
-      </article>
-    </main>
-    <Footer />
-  </body>
-</html>
+    {
+      showHero && heroImage && (
+        <figure class="hero-image">
+          <Image
+            src={heroImage}
+            alt={heroImageAlt}
+            width={heroBaseWidth}
+            widths={heroWidths}
+            sizes="(max-width: 1048px) calc(100vw - 48px), 1000px"
+            class="hero-image__media"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </figure>
+      )
+    }
+
+    <div class="post-content">
+      <slot />
+    </div>
+  </article>
+</SiteLayout>
+
+<style>
+  .article {
+    padding: 0 24px clamp(120px, 14vw, 180px);
+  }
+
+  .article__header,
+  .post-content {
+    max-width: var(--reading);
+    margin: 0 auto;
+  }
+
+  .article__header {
+    padding: clamp(85px, 12vw, 118px) 0 clamp(48px, 6vw, 70px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .article__breadcrumb {
+    display: flex;
+    gap: 0.6em;
+    margin: 0;
+  }
+
+  .article__breadcrumb a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+
+  .article__breadcrumb a:first-child {
+    letter-spacing: 0.14em;
+  }
+
+  .article__breadcrumb a:hover {
+    color: var(--fg);
+  }
+
+  .article__title {
+    margin: 35px 0;
+    font-size: clamp(2.1rem, 4vw, 3.6rem);
+    line-height: 1.5;
+    letter-spacing: -0.04em;
+  }
+
+  .article__dates {
+    display: flex;
+    gap: 0.5rem 1.5rem;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  .hero-image {
+    max-width: 1000px;
+    margin: clamp(40px, 6vw, 64px) auto 0;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .hero-image :global(.hero-image__media) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .post-content {
+    padding-top: clamp(48px, 6vw, 60px);
+    color: var(--text);
+  }
+
+  /* Rendered Markdown */
+  .post-content :global(.article-body) {
+    font-size: 17px;
+    line-height: 2.1;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .post-content :global(.article-body > :first-child) {
+    margin-top: 0;
+  }
+
+  .post-content :global(.article-body p) {
+    margin: 0 0 1.75em;
+  }
+
+  .post-content :global(.article-body h1),
+  .post-content :global(.article-body h2),
+  .post-content :global(.article-body h3),
+  .post-content :global(.article-body h4) {
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .post-content :global(.article-body h1) {
+    margin: 4rem 0 1.25rem;
+    font-size: clamp(1.75rem, 3.4vw, 2.3rem);
+    line-height: 1.45;
+  }
+
+  .post-content :global(.article-body h2) {
+    margin: 5rem 0 1.4rem;
+    padding-top: 2.2rem;
+    border-top: 1px solid var(--line);
+    font-size: 1.56rem;
+    line-height: 1.55;
+  }
+
+  .post-content :global(.article-body section h2),
+  .post-content :global(.article-body blockquote h2) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .post-content :global(.article-body h3) {
+    margin: 3.25rem 0 1rem;
+    font-size: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .post-content :global(.article-body h4) {
+    margin: 2.5rem 0 0.85rem;
+    font-size: 1.06rem;
+  }
+
+  .post-content :global(.article-body a) {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .post-content :global(.article-body a:hover) {
+    color: var(--fg-strong);
+    text-decoration-color: currentColor;
+  }
+
+  .post-content :global(.article-body ul),
+  .post-content :global(.article-body ol) {
+    margin: 0 0 1.75em;
+    padding-left: 1.35rem;
+  }
+
+  .post-content :global(.article-body li + li) {
+    margin-top: 0.4rem;
+  }
+
+  .post-content :global(.article-body li::marker) {
+    color: var(--dim);
+  }
+
+  .post-content :global(.article-body hr) {
+    margin: 3.5rem 0;
+  }
+
+  .post-content :global(.article-body blockquote) {
+    margin: 2.8rem 0;
+    padding: 0 0 0 1.75rem;
+    border-left: 1px solid var(--rule-accent);
+    color: var(--muted);
+  }
+
+  .post-content :global(.article-body blockquote > :last-child) {
+    margin-bottom: 0;
+  }
+
+  .post-content :global(.article-body :not(pre) > code) {
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .post-content :global(.article-body pre) {
+    margin: 2rem 0 2.5rem;
+    overflow-x: auto;
+    word-break: normal;
+  }
+
+  .post-content :global(.article-body img) {
+    display: block;
+    margin: 2.5rem auto;
+    border: 1px solid var(--line);
+  }
+
+  .post-content :global(.article-body .wide-image-frame) {
+    display: flex;
+    width: 100%;
+    margin: 2.5rem auto;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    overflow: hidden;
+  }
+
+  .post-content :global(.article-body .wide-image-frame img) {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    object-fit: contain;
+  }
+
+  .post-content :global(.article-body table) {
+    display: block;
+    width: 100%;
+    margin: 2.25rem 0;
+    font-size: 0.92rem;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  .post-content :global(.article-body th),
+  .post-content :global(.article-body td) {
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .post-content :global(.article-body th) {
+    border-bottom-color: var(--line-strong);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .post-content :global(.article-body th:first-child),
+  .post-content :global(.article-body td:first-child) {
+    min-width: 4.25rem;
+    white-space: nowrap;
+  }
+
+  .post-content :global(.article-body .callout) {
+    margin: 2.5rem 0;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--line);
+    border-left-color: var(--rule-accent);
+    background: var(--bg-raised);
+  }
+
+  .post-content :global(.article-body > section) {
+    margin: 0;
+    padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .post-content :global(.article-body > section:first-child) {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .post-content :global(.article-body > section > :last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 700px) {
+    .article__title {
+      font-size: 2.1rem;
+    }
+
+    .post-content :global(.article-body) {
+      font-size: 16px;
+      line-height: 2;
+    }
+
+    .post-content :global(.article-body h2) {
+      margin-top: 3.75rem;
+      padding-top: 1.8rem;
+    }
+
+    .post-content :global(.article-body .callout) {
+      padding: 1.2rem 1.25rem;
+    }
+  }
+</style>

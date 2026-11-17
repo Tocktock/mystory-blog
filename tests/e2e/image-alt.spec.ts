@@ -9,17 +9,14 @@ test('record hero images expose contextual alt text', async ({ page }) => {
   );
 });
 
-test('record listing hero images expose contextual alt text', async ({ page }) => {
-  await page.goto('/records');
+test('record pages show contextual hero alt text or no hero image at all', async ({ page }) => {
+  await page.goto('/records/kubernetes-on-mac/k3s-with-multipass/');
 
-  const heroImage = page.locator(
-    '.record-card a[href="/records/kubernetes-on-mac/k3s-with-multipass/"] img',
-  );
+  const heroImage = page.locator('.hero-image img');
   await expect(heroImage).toHaveAttribute('alt', /대표 이미지$/);
   await expect(heroImage).not.toHaveAttribute('alt', 'Image');
 
-  const decorativeCover = page.locator(
-    '.record-card a[href="/records/concern/ai-work-learning-team/"] img',
-  );
-  await expect(decorativeCover).toHaveAttribute('alt', '');
+  // Posts without a hero image render no placeholder image at all.
+  await page.goto('/records/concern/ai-work-learning-team/');
+  await expect(page.locator('.hero-image')).toHaveCount(0);
 });

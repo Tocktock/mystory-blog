@@ -6,7 +6,9 @@ test('records archive keeps category and tag orientation', async ({ page }) => {
   const firstCard = page.locator('.record-card').first();
   await expect(firstCard).toBeVisible();
   await expect(firstCard.locator('.record-card__category')).toBeVisible();
-  await expect(page.locator('.record-card__tags').first()).toBeVisible();
+  // Rows stay text-only; tags live on the article page and the tag index.
+  await expect(page.locator('.record-card__tags')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: '태그로 찾기' })).toHaveAttribute('href', '/tags');
 });
 
 test('records archive exposes record-type orientation and optional card metadata', async ({
@@ -14,7 +16,7 @@ test('records archive exposes record-type orientation and optional card metadata
 }) => {
   await page.goto('/records');
 
-  const recordTypes = page.getByRole('complementary', { name: '기록 갈래' });
+  const recordTypes = page.getByRole('complementary', { name: '글 종류' });
   await expect(recordTypes).toBeVisible();
   await expect(recordTypes.getByText('생각 기록')).toBeVisible();
 
@@ -42,8 +44,17 @@ test('category routes render shared record cards without breaking navigation', a
 
   const firstCard = page.locator('.record-card').first();
   await expect(firstCard).toBeVisible();
-  await expect(firstCard.locator('.record-card__image')).toHaveAttribute(
-    'data-cover-category',
-    'tech',
-  );
+  await expect(firstCard).toHaveAttribute('data-category', 'tech');
+  await expect(
+    page.getByRole('navigation', { name: '기록 카테고리' }).getByRole('link', { name: '기술' }),
+  ).toHaveAttribute('aria-current', 'page');
+});
+
+test('records archive lists observations as text rows without cover thumbnails', async ({
+  page,
+}) => {
+  await page.goto('/records');
+
+  await expect(page.locator('.record-card').first()).toBeVisible();
+  await expect(page.locator('.record-card img')).toHaveCount(0);
 });

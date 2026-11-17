@@ -6,9 +6,17 @@ interface Props {
   external?: boolean;
   class?: string;
   dataExternal?: string;
+  /** Render as a plain anchor (for block links that style themselves). */
+  plain?: boolean;
 }
 
-const { href, external = false, class: className, dataExternal } = Astro.props as Props;
+const {
+  href,
+  external = false,
+  class: className,
+  dataExternal,
+  plain = false,
+} = Astro.props as Props;
 
 if (!isSafeHref(href)) {
   throw new Error(`Unsafe career link href: ${href}`);
@@ -17,10 +25,11 @@ if (!isSafeHref(href)) {
 
 <a
   href={href}
-  class={className}
+  class:list={[{ 'career-link': !plain }, className]}
   data-external={dataExternal}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener noreferrer' : undefined}
 >
   <slot />
+  {!plain && external && <span aria-hidden="true">↗</span>}
 </a>

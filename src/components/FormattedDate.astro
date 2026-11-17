@@ -1,17 +1,19 @@
 ---
 interface Props {
   date: Date;
+  class?: string;
 }
 
-const { date } = Astro.props;
+const { date, class: className } = Astro.props;
+// Observatory date style: 2026.09.29, read in the site's own timezone-agnostic form.
+const parts = new Intl.DateTimeFormat('en-CA', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  timeZone: 'Asia/Seoul',
+}).formatToParts(date);
+const pick = (type: string) => parts.find((part) => part.type === type)?.value ?? '';
+const label = `${pick('year')}.${pick('month')}.${pick('day')}`;
 ---
 
-<time datetime={date.toISOString()}>
-  {
-    date.toLocaleDateString('en-us', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  }
-</time>
+<time class={className} datetime={date.toISOString()}>{label}</time>

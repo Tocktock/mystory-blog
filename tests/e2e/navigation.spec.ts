@@ -1,32 +1,37 @@
 import { test, expect } from '@playwright/test';
 
-test('primary navigation highlights the active page', async ({ page }) => {
+test('INDEX menu opens primary navigation and highlights the active page', async ({ page }) => {
   await page.goto('/');
 
-  const primaryNav = page.getByRole('navigation', { name: 'Primary' });
-  const recordsLink = primaryNav.getByRole('link', { name: '기록', exact: true });
-  await recordsLink.click();
+  const indexButton = page.getByRole('button', { name: 'INDEX' });
+  await expect(indexButton).toHaveAttribute('aria-haspopup', 'dialog');
+  await indexButton.click();
 
+  const primaryNav = page.getByRole('navigation', { name: 'Primary' });
+  await primaryNav.getByRole('link', { name: '기록', exact: true }).click();
   await expect(page).toHaveURL(/\/records\/?$/);
-  await expect(recordsLink).toHaveAttribute('aria-current', 'page');
+
+  await page.getByRole('button', { name: 'INDEX' }).click();
+  await expect(
+    page.getByRole('navigation', { name: 'Primary' }).getByRole('link', {
+      name: '기록',
+      exact: true,
+    }),
+  ).toHaveAttribute('aria-current', 'page');
 });
 
-test('collapsed mobile navigation keeps hidden links out of focus order', async ({ page }) => {
+test('closed INDEX menu keeps hidden links out of focus order on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  const primaryNav = page.getByRole('navigation', { name: 'Primary' });
-  const navToggle = primaryNav.getByRole('button', { name: 'Toggle navigation' });
-  const recordsLink = primaryNav.getByRole('link', {
-    name: '기록',
-    exact: true,
-    includeHidden: true,
-  });
+  const indexButton = page.getByRole('button', { name: 'INDEX' });
+  // A closed <dialog> is out of the accessibility tree, so locate the menu link structurally.
+  const recordsLink = page.locator('#index-dialog nav[aria-label="Primary"] a[href="/records"]');
 
-  await expect(navToggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(indexButton).toHaveAttribute('aria-expanded', 'false');
   await expect(recordsLink).not.toBeVisible();
 
-  const focusedWhileCollapsed = await recordsLink.evaluate((element) => {
+  const focusedWhileClosed = await recordsLink.evaluate((element) => {
     if (!(element instanceof HTMLElement)) {
       return false;
     }
@@ -34,41 +39,54 @@ test('collapsed mobile navigation keeps hidden links out of focus order', async 
     return document.activeElement === element;
   });
 
-  expect(focusedWhileCollapsed).toBe(false);
+  expect(focusedWhileClosed).toBe(false);
 
-  await navToggle.click();
+  await indexButton.click();
 
-  await expect(navToggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(indexButton).toHaveAttribute('aria-expanded', 'true');
   await expect(recordsLink).toBeVisible();
   await recordsLink.focus();
   await expect(recordsLink).toBeFocused();
 });
 
-test('theme toggle switches and persists dark mode state', async ({ page }) => {
+test('Escape closes the INDEX menu and returns focus to its button', async ({ page }) => {
+  await page.goto('/');
+
+  const indexButton = page.getByRole('button', { name: 'INDEX' });
+  await indexButton.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(indexButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(indexButton).toBeFocused();
+});
+
+test('site is dark only and offers no theme toggle', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/');
 
-  const root = page.locator('html');
-  const themeToggle = page.locator('[data-theme-toggle]');
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#020304');
+  await expect(page.locator('[data-theme-toggle]')).toHaveCount(0);
 
-  await expect(root).toHaveAttribute('data-theme', 'light');
-  await expect(themeToggle).toHaveAttribute('aria-label', 'Switch to dark mode');
-  await expect(themeToggle).toHaveAttribute('aria-pressed', 'false');
+  const background = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  expect(background).toBe('rgb(2, 3, 4)');
+});
 
-  await themeToggle.click();
+test('footer navigation keeps every section reachable', async ({ page }) => {
+  await page.goto('/');
 
-  await expect(root).toHaveAttribute('data-theme', 'dark');
-  await expect(themeToggle).toHaveAttribute('aria-label', 'Switch to light mode');
-  await expect(themeToggle).toHaveAttribute('aria-pressed', 'true');
-  await expect
-    .poll(() => page.evaluate(() => localStorage.getItem('preferred-color-scheme')))
-    .toBe('dark');
-
-  await page.reload();
-
-  await expect(root).toHaveAttribute('data-theme', 'dark');
-  await expect(page.locator('[data-theme-toggle]')).toHaveAttribute(
-    'aria-label',
-    'Switch to light mode',
-  );
+  const footerNav = page.getByRole('navigation', { name: '사이트 바로가기' });
+  for (const [name, href] of [
+    ['기록', '/records'],
+    ['시리즈', '/series'],
+    ['창작', '/creations'],
+    ['이력', '/career'],
+    ['소개', '/about'],
+    ['만냥구름', '/manyang-gureum'],
+    ['검색', '/search'],
+  ]) {
+    await expect(footerNav.getByRole('link', { name, exact: true })).toHaveAttribute('href', href);
+  }
 });

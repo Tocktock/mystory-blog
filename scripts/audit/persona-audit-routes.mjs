@@ -3,37 +3,37 @@ export const PERSONA_AUDIT_ROUTES = [
     name: 'home',
     route: '/',
     expectedStatus: 200,
-    requiredText: ['지용의 기록실', 'Backend와 AI Agent 실험', '기록실 책장'],
+    requiredText: ['지용의 기록실', 'AI와 Agent로 이것저것 만들어 본', '주제별로 보기'],
   },
   {
     name: 'records',
     route: '/records/',
     expectedStatus: 200,
-    requiredText: ['기록', '기록 갈래', '생각 기록'],
+    requiredText: ['기록', '글 종류', '생각 기록'],
   },
   {
     name: 'series',
     route: '/series/',
     expectedStatus: 200,
-    requiredText: ['시리즈', '기록실 책장', 'AI와 일하는 방식'],
+    requiredText: ['시리즈', '한 주제로 이어서 쓴 글', 'AI와 일하는 방식'],
   },
   {
     name: 'series-detail',
     route: '/series/ai-working-notes/',
     expectedStatus: 200,
-    requiredText: ['AI와 일하는 방식', '이 선반의 목적', '읽는 길'],
+    requiredText: ['AI와 일하는 방식', '모은 이유', '읽고 나면'],
   },
   {
     name: 'creations',
     route: '/creations/',
     expectedStatus: 200,
-    requiredText: ['My Creations', '음악과 창작 실험', '열려라 별문'],
+    requiredText: ['My Creations', 'AI로 만드는 노래', '열려라 별문'],
   },
   {
     name: 'record-detail-new',
     route: '/records/meta/ai-advisor-writing-partner/',
     expectedStatus: 200,
-    requiredText: ['회사에서 AI Advisor로 보낸 3개월 회고', '기록 갈래', '생각 기록'],
+    requiredText: ['회사에서 AI Advisor로 보낸 3개월 회고', '글 종류', '생각 기록'],
   },
   {
     name: 'record-detail-legacy',
@@ -45,7 +45,7 @@ export const PERSONA_AUDIT_ROUTES = [
     name: 'about',
     route: '/about/',
     expectedStatus: 200,
-    requiredText: ['몰입, 관찰, 그리고 배움', '내가 문제를 보고, 풀고, 다시 기록하는 방식'],
+    requiredText: ['몰입, 관찰, 그리고 배움', '제가 일하고 생각하는 방식'],
   },
   {
     name: 'career',
@@ -57,7 +57,7 @@ export const PERSONA_AUDIT_ROUTES = [
     name: 'manyang',
     route: '/manyang-gureum/',
     expectedStatus: 200,
-    requiredText: ['만냥구름', '관찰과 돌봄으로 남긴 기준'],
+    requiredText: ['만냥구름', '돌보면서 배운 것'],
   },
   {
     name: 'search',
@@ -69,7 +69,7 @@ export const PERSONA_AUDIT_ROUTES = [
     name: 'not-found',
     route: '/missing-record-drawer-for-i09/',
     expectedStatus: 404,
-    requiredText: ['비어 있는 서랍입니다', '기록으로 돌아가기'],
+    requiredText: ['페이지를 찾을 수 없어요', '기록으로 돌아가기'],
   },
 ];
 

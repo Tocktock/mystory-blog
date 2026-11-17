@@ -3,6 +3,6 @@
 
 export const SITE_TITLE = '지용의 기록실';
 export const SITE_DESCRIPTION =
-  'AI, Backend, Agent, 그리고 만냥구름. 배우고 만들고 사랑하는 것들을 기록합니다.';
+  '백엔드 개발자 지용의 블로그예요. 일하며 배운 것, AI로 만들어 본 것, 고양이 만냥이와 구름이 이야기를 적어요.';
 
 export const SITE_AUTHOR = 'Ji Yong';

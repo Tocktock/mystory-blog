@@ -95,7 +95,9 @@ Blog posts now accept an optional `lang` field in frontmatter. When omitted the 
 ### Open Graph Images
 
 - OpenGraph/Twitter previews are generated automatically at build time via [`astro-og-canvas`](https://github.com/delucis/astro-og-canvas).
-- Each blog post renders a card at `/og/<slug>.png`; these URLs are wired into the head metadata and BlogPosting JSON-LD.
+- Each blog post renders a card at `/og/<slug>.png`; these URLs are wired into the head metadata and BlogPosting JSON-LD. Pages that are not posts share `/og/site.png`.
+- Cards draw the title and description in Noto Serif KR (read from the installed `@fontsource/noto-serif-kr` package, so the build needs no font download) over `src/assets/observatory/og-background.jpg`.
+- Regenerate that backdrop with `node scripts/create_observatory_art.mjs og-background`.
 - Customize per-post visuals by adding a `heroImage` in frontmatter (used on-page and as a secondary image in structured data).
 
 ### Comments (Giscus)
@@ -114,7 +116,7 @@ Optional overrides (with defaults in brackets):
 ```
 PUBLIC_GISCUS_MAPPING=title
 PUBLIC_GISCUS_LANG=ko
-PUBLIC_GISCUS_THEME=light
+PUBLIC_GISCUS_THEME=transparent_dark
 PUBLIC_GISCUS_STRICT=1
 PUBLIC_GISCUS_REACTIONS_ENABLED=1
 PUBLIC_GISCUS_EMIT_METADATA=0
@@ -123,6 +125,8 @@ PUBLIC_GISCUS_LOADING=lazy
 ```
 
 If the required variables are not set, the post layout renders a placeholder message so you can merge safely before provisioning credentials.
+
+The site is dark only, so leave `PUBLIC_GISCUS_THEME` unset (or set it to a dark theme); a deployment value such as `light` overrides the `transparent_dark` default.
 
 ## 👀 Want to learn more?
 

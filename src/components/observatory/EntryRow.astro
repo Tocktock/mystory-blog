@@ -1,0 +1,149 @@
+---
+import FormattedDate from '../FormattedDate.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  index?: number;
+  date?: Date;
+  headingLevel?: 2 | 3;
+  class?: string;
+  [key: `data-${string}`]: string | undefined;
+}
+
+const {
+  href,
+  title,
+  index,
+  date,
+  headingLevel = 3,
+  class: className,
+  ...attrs
+} = Astro.props as Props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+const number = typeof index === 'number' ? String(index).padStart(3, '0') : undefined;
+---
+
+<li class:list={['entry', className, { 'entry--numbered': number }]} {...attrs}>
+  {
+    number && (
+      <span class="entry__num" aria-hidden="true">
+        {number}
+      </span>
+    )
+  }
+  <div class="entry__body">
+    <!-- The title link comes first and stretches over the row; secondary links sit above it. -->
+    <Heading class="entry__title">
+      <a class="entry__link" href={href}>{title}</a>
+    </Heading>
+    <slot name="meta" />
+    <slot />
+  </div>
+  {date && <FormattedDate class="entry__date" date={date} />}
+</li>
+
+<style>
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px;
+    gap: 18px;
+    align-items: baseline;
+    padding: 30px 2px;
+    border-bottom: 1px solid var(--line);
+    transition:
+      padding var(--motion-fast) ease,
+      background-color var(--motion-fast) ease;
+  }
+
+  .entry--numbered {
+    grid-template-columns: 70px minmax(0, 1fr) 120px;
+  }
+
+  .entry:hover {
+    padding-left: 13px;
+  }
+
+  .entry__num,
+  .entry :global(.entry__date) {
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: var(--label-xs);
+  }
+
+  .entry__num {
+    letter-spacing: 0.14em;
+  }
+
+  .entry :global(.entry__date) {
+    text-align: right;
+    letter-spacing: 0.04em;
+  }
+
+  .entry__body {
+    min-width: 0;
+  }
+
+  .entry__title {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+
+  .entry__link {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .entry__link::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+  }
+
+  .entry:hover .entry__link {
+    color: var(--fg-strong);
+  }
+
+  .entry__body :global(a:not(.entry__link)),
+  .entry__body :global(button) {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 700px) {
+    .entry,
+    .entry--numbered {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 6px 12px;
+      padding: 22px 0;
+    }
+
+    .entry:hover {
+      padding-left: 0;
+    }
+
+    .entry__num {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .entry :global(.entry__date) {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .entry__body {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .entry:not(.entry--numbered) .entry__body {
+      grid-row: 1;
+      grid-column: 1;
+    }
+  }
+</style>
