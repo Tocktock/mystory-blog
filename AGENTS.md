@@ -60,7 +60,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 ## Components, Layouts, and Pages
 
-- `BaseHead.astro` imports `global.css` and the self-hosted Fontsource fonts (variable Noto Serif KR, DM Mono), and sets canonical/meta/OG/Twitter tags and `theme-color`. Posts pass `article` (og:type `article` plus `article:*` dates and tags); thin pages pass `noindex` (site search, tags with one post). The site is dark only; there is no theme toggle. The default share image is `/og/site.png`.
+- `BaseHead.astro` imports `global.css` and the self-hosted Fontsource fonts (Noto Serif KR 400/500/600, DM Mono), and sets canonical/meta/OG/Twitter tags and `theme-color`. Posts pass `article` (og:type `article` plus `article:*` dates and tags); thin pages pass `noindex` (site search, tags with one post). The site is dark only; there is no theme toggle. The default share image is `/og/site.png`.
 - `Header.astro` renders the `JI YONG` brand and one `INDEX` button that opens a native `<dialog>` menu; `Footer.astro` repeats every nav link so the site works without JS. Both read `src/data/siteNavigation.ts`; update it for new sections (each entry's `hint` is the one-line description shown in the menu). The menu is sized to fit one screen, locks page scroll while open, and supports ↑/↓, Home/End and digit shortcuts.
 - `FormattedDate.astro` formats dates with `Intl.DateTimeFormat` respecting locale.
 - `BlogPost.astro` controls structured data (`BlogPosting` + `BreadcrumbList`), hero image rendering, and `<html lang>` selection.

@@ -1,8 +1,10 @@
 ---
 // Global styles and self-hosted fonts load here so every page gets them through <BaseHead />.
-// The variable Noto Serif KR covers weights 400-600 with one set of @font-face rules, about a third
-// of the render-blocking CSS the three static weights needed. OG cards still read the static files.
-import '@fontsource-variable/noto-serif-kr';
+// Static weights on purpose: the variable Noto Serif KR was measured on a Vercel preview and its
+// files are ~1.5x larger per glyph range, so pages downloaded more font bytes for little CSS saving.
+import '@fontsource/noto-serif-kr/400.css';
+import '@fontsource/noto-serif-kr/500.css';
+import '@fontsource/noto-serif-kr/600.css';
 import '@fontsource/dm-mono/400.css';
 import '@fontsource/dm-mono/500.css';
 import '../styles/global.css';
