@@ -18,7 +18,6 @@
   --line-strong: #3d4549;
   --rule-accent: #5a6a76;
   --accent: #b5c9d8;
-  --accent-rgb: 181, 201, 216;
   --selection: #354551;
 
   /* Type */
@@ -36,36 +35,6 @@
 
   /* Motion */
   --motion-fast: 0.2s;
-  --motion-base: 0.3s;
-
-  /*
-    Legacy aliases for components not yet moved to the Observatory tokens.
-    Triplets stay in `R, G, B` form for rgba(var(--x), a) call sites.
-    Remove once every component reads the tokens above.
-  */
-  --font-body: var(--font-serif);
-  --font-label: var(--font-mono);
-  --accent-dark: var(--fg);
-  --ink-rgb: 181, 201, 216;
-  --sage-rgb: 154, 163, 168;
-  --clay-rgb: 181, 201, 216;
-  --black: 232, 232, 230;
-  --gray: 154, 163, 168;
-  --gray-light: 58, 64, 68;
-  --gray-dark: 199, 203, 205;
-  --surface: var(--bg);
-  --surface-elevated: var(--bg-raised);
-  --color-line: var(--line);
-  --box-shadow: none;
-  --code-bg: var(--bg-raised);
-  --room-surface: var(--bg-raised);
-  --room-accent: var(--accent);
-  --room-accent-rgb: var(--accent-rgb);
-  --room-shadow: none;
-  --ink-text: var(--fg);
-  --ink-muted: var(--muted);
-  --ops-sage-rgb: var(--sage-rgb);
-  --cat-clay-rgb: var(--clay-rgb);
 }
 
 @media (max-width: 700px) {
@@ -150,23 +119,6 @@ h4 {
 h5,
 h6 {
   font-size: 1rem;
-}
-
-/* Legacy label hooks — keeps older eyebrows on the mono face until restyled. */
-:where(
-  .home-hero__eyebrow,
-  .home-hero__index-title,
-  .home-hero__index dt,
-  .bookshelf__eyebrow,
-  .recent-records__eyebrow,
-  .manyang-card__eyebrow,
-  .records-index__eyebrow,
-  .series-page__eyebrow,
-  .series-detail__category,
-  .search-page__eyebrow,
-  .empty-state__eyebrow
-) {
-  font-family: var(--font-label);
 }
 
 p {

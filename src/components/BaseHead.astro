@@ -7,7 +7,6 @@ import '@fontsource/dm-mono/400.css';
 import '@fontsource/dm-mono/500.css';
 import '../styles/global.css';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
-import placeholderOg from '../assets/placeholders/blog-placeholder-1.jpg';
 
 interface Props {
   title: string;
@@ -19,7 +18,7 @@ interface Props {
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL);
 
-const { title, description, image = placeholderOg.src, lang = 'ko' } = Astro.props as Props;
+const { title, description, image = '/og/site.png', lang = 'ko' } = Astro.props as Props;
 const imageURL = new URL(image, siteURL);
 const locale = lang === 'en' ? 'en_US' : 'ko_KR';
 ---

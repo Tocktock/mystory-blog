@@ -4,7 +4,8 @@ This playbook tells any AI helper how to work inside Ji Yong's personal blog rep
 
 ## Operating Mission
 
-- Static Astro 5 site that hosts Ji Yong's bilingual (ko/en) blog plus a cat-photo gallery.
+- Static Astro site that hosts Ji Yong's bilingual (ko/en) blog plus a cat-photo gallery.
+- Visual design is "The Midnight Observatory": dark only, Noto Serif KR body, DM Mono labels, ruled text rows instead of cards.
 - Markdown/MDX lives in `src/content/blog/**`; builds produce static pages served on Vercel at https://ji-yong.com.
 - Search, tags, RSS, sitemap, JSON-LD and Open Graph assets are all generated at build time.
 - Comments rely on GitHub Discussions via Giscus; the UI falls back to a placeholder when env vars are missing.
@@ -36,14 +37,15 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 - `astro.config.mjs` - site URL and enabled integrations (MDX & sitemap).
 - `package.json` - scripts for dev/build/test/audits; `postbuild` runs `npx pagefind --site dist` to emit search assets.
-- `public/` - favicons, fonts, gallery images; anything here is copied verbatim to the build.
-- `src/assets/` - hero artwork (`heroes/`), blog placeholders, gallery JPEGs processed via `astro:assets`.
-- `src/components/` - BaseHead, Header/Footer, FormattedDate, HeaderLink, GiscusComments.
+- `public/` - favicon, robots.txt and post images; anything here is copied verbatim to the build.
+- `src/assets/` - hero artwork (`heroes/`), the deep-field art and OG backdrop (`observatory/`), gallery JPEGs processed via `astro:assets`.
+- `src/components/` - BaseHead, Header/Footer, FormattedDate, HeaderLink, GiscusComments, plus page sections by area and the shared Observatory primitives in `observatory/` (PageHero, SectionHead, EntryList/EntryRow, TextLink).
+- `src/layouts/SiteLayout.astro` - the shell every page uses (BaseHead, skip link, Header, `<main id="main">`, Footer).
 - `src/layouts/BlogPost.astro` - wraps individual posts, emits JSON-LD + breadcrumb data, wires hero/OG images.
 - `src/pages/` - routes for home, about, blog listing/detail, search (`search.astro`), tags index/detail, RSS, and `og/[...slug].ts` for dynamic Open Graph cards.
 - `src/utils/` - helpers for JSON-LD generation, Giscus env parsing, and tag aggregation.
 - `src/styles/` - global CSS plus per-page bundles (`search.css`, `tags.css`, `tag-detail.css`).
-- `scripts/` - `create_hero_image.py` (Pillow-based gradient generator) and audit prep scripts.
+- `scripts/` - `create_observatory_art.mjs` (deep-field hero and OG backdrop renderer), the older `create_hero_image.py` gradient generator, and audit prep scripts.
 - `docs/improvement_documents.md` - long-form roadmap & UI/SEO backlog (worth skimming before major revamps).
 - `tests/` - Playwright smoke tests; `test-results/` stores artifacts from recent runs.
 
@@ -51,19 +53,19 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 - Content schema (`src/content.config.ts`) requires `title`, `description`, `pubDate`; optional `updatedDate`, `heroImage`, `lang` (`'ko' | 'en'`), and `tags: string[]` (defaults to an empty list).
 - Posts live under `src/content/blog/<topic>/<slug>.md[x]`. Keep slugs stable - routes and OG assets key off `id`.
-- Hero images belong in `src/assets/heroes/`; create them with `python3 scripts/create_hero_image.py --slug ...`. Reference from frontmatter as `heroImage: "../../../assets/heroes/<file>.png"`.
-- If no hero is supplied, the layouts use placeholder art and still generate OG cards via `astro-og-canvas`.
+- Hero images belong in `src/assets/heroes/`; create them with `node scripts/create_observatory_art.mjs hero --slug <name> --title <text> [--subtitle <text>]` (add the entry to `scripts/observatory-heroes.json` so `heroes` can re-render the set). Reference from frontmatter as `heroImage: "../../../assets/heroes/<file>.png"`.
+- If no hero is supplied, the article simply has no hero image; OG cards are still generated via `astro-og-canvas`.
 - `tags.ts` auto-generates slugs from the `tags` array; skipping tags falls back to the first path segment.
 
 ## Components, Layouts, and Pages
 
-- `BaseHead.astro` imports `global.css`, sets canonical/meta/OG/Twitter tags, preloads fonts, and toggles light/dark theme via `data-theme`.
-- `Header.astro` / `Footer.astro` render site-wide navigation and social links; update them for new sections.
+- `BaseHead.astro` imports `global.css` and the self-hosted Fontsource fonts (Noto Serif KR, DM Mono), and sets canonical/meta/OG/Twitter tags and `theme-color`. The site is dark only; there is no theme toggle. The default share image is `/og/site.png`.
+- `Header.astro` renders the `JI YONG` brand and one `INDEX` button that opens a native `<dialog>` menu; `Footer.astro` repeats every nav link so the site works without JS. Both read `src/data/siteNavigation.ts`; update it for new sections.
 - `FormattedDate.astro` formats dates with `Intl.DateTimeFormat` respecting locale.
 - `BlogPost.astro` controls structured data (`BlogPosting` + `BreadcrumbList`), hero image rendering, and `<html lang>` selection.
 - `GiscusComments.astro` reads `PUBLIC_GISCUS_*` env vars at runtime; without them it renders an accessible placeholder.
 - `pages/search.astro` loads Pagefind UI from `/pagefind/`; remind users to run `npm run build` so the index exists.
-- `pages/og/[...slug].ts` uses `astro-og-canvas` to generate OG cards (Korean/English aware via `lang`).
+- `pages/og/[...slug].ts` uses `astro-og-canvas` to generate OG cards over the deep-field backdrop, plus a `site` card. It loads the Korean Fontsource `.woff` from `node_modules`; `font.*.lineHeight` is a multiplier (about 1.4), not pixels.
 - `pages/tags/**` relies on `collectTags` helper; ensure new posts either declare tags or sensible directory names.
 
 ## Build & QA Commands
@@ -84,7 +86,8 @@ Inline commands are safe; do not invent new scripts without explaining the ratio
 
 - `scripts/audit/prepare-reports.mjs` clears report folders before Lighthouse/Axe/Linkinator runs.
 - `scripts/audit/run-link-check.mjs` wraps Linkinator against the preview server.
-- `scripts/create_hero_image.py` accepts `--palette`, `--title`, `--subtitle`, `--dry-run`; ensure Pillow is installed if you need it.
+- `scripts/create_observatory_art.mjs` has three commands: `hero`, `heroes` (re-render everything in `observatory-heroes.json`) and `og-background`. It uses `canvaskit-wasm` (already installed via `astro-og-canvas`) and the installed Fontsource files.
+- `scripts/create_hero_image.py` (legacy gradient art) accepts `--palette`, `--title`, `--subtitle`, `--dry-run`; ensure Pillow is installed if you need it.
 
 ## SEO & Metadata
 
@@ -105,20 +108,21 @@ PUBLIC_GISCUS_CATEGORY=<discussion-name>
 PUBLIC_GISCUS_CATEGORY_ID=<discussion-id>
 ```
 
-Optional overrides include `PUBLIC_GISCUS_LANG`, `PUBLIC_GISCUS_THEME`, `PUBLIC_GISCUS_MAPPING`, etc. Without the four required values, posts simply show a placeholder message and builds still succeed.
+Optional overrides include `PUBLIC_GISCUS_LANG`, `PUBLIC_GISCUS_THEME` (defaults to `transparent_dark`; keep it dark), `PUBLIC_GISCUS_MAPPING`, etc. Without the four required values, posts simply show a placeholder message and builds still succeed.
 
 ## Common Tasks
 
 - **Add a blog post**: create `src/content/blog/<topic>/<slug>.md`, include required frontmatter, set `lang` when writing English, add tags, reference hero art if available.
-- **Generate hero art**: run the Python script, commit the output under `src/assets/heroes/`, update the post frontmatter.
+- **Generate hero art**: run `node scripts/create_observatory_art.mjs hero ...`, commit the output under `src/assets/heroes/`, update the post frontmatter.
 - **Update gallery**: drop images into `src/assets/gallery/` and adjust the `galleryImages` array in `src/pages/index.astro`.
-- **Tweak site metadata**: edit `src/consts.ts` for title/description/author, adjust nav links in `Header.astro`, update footer copy as needed.
+- **Tweak site metadata**: edit `src/consts.ts` for title/description/author, adjust nav links in `src/data/siteNavigation.ts`, update footer copy as needed.
 - **Create new routes**: add `.astro`/`.ts` files under `src/pages/`; integrate them into navigation and BaseHead for consistent metadata.
 
 ## Safety + Gotchas
 
 - Content collection validation fails builds if required frontmatter is missing or malformed; match schema types (dates parsed via `z.coerce.date()`).
-- Default language is Korean; set `lang: 'en'` on English posts so OG cards and JSON-LD use the right locale.
+- Default language is Korean; set `lang: 'en'` on English posts so `<html lang>` and JSON-LD use the right locale.
+- Design tokens live at the top of `src/styles/global.css`; use them instead of hex or rgba values in components.
 - Tailwind is not installed; if adding it later, use the supported Tailwind Vite plugin path instead of the deprecated `@astrojs/tailwind` integration.
 - Pagefind assets live under `dist/pagefind/`; missing bundles mean the search page will show a fallback notice.
 - OG generation depends on collection IDs; renaming or moving posts invalidates cached images - clean `dist/` if you change slugs.
