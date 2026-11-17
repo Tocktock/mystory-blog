@@ -1,441 +1,251 @@
 ---
 import { Image } from 'astro:assets';
+import FormattedDate from '../FormattedDate.astro';
+import TextLink from '../observatory/TextLink.astro';
+import deepField from '../../assets/observatory/deep-field.png';
 import { uiCopy } from '../../data/uiCopy';
-import heroImage from '../../assets/gallery/main.jpg';
 import { routes } from '../../utils/routes';
 
 interface Props {
   recordCount: number;
   seriesCount: number;
-  latestDateLabel: string;
   latestRecordTitle: string;
   latestRecordHref?: string;
+  latestRecordDate?: Date;
 }
 
-interface HeroStat {
-  label: string;
-  value: string;
-  detail?: string;
-  href?: string;
-}
-
-const { recordCount, seriesCount, latestDateLabel, latestRecordTitle, latestRecordHref } =
+const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRecordDate } =
   Astro.props as Props;
-
-const heroStats: HeroStat[] = [
-  {
-    label: uiCopy.recentRecord,
-    value: latestRecordTitle,
-    detail: latestDateLabel,
-    href: latestRecordHref,
-  },
-  { label: uiCopy.stackedRecords, value: `${recordCount}편` },
-  { label: uiCopy.ongoingSeries, value: `${seriesCount}개` },
-];
 ---
 
 <section class="home-hero" aria-labelledby="home-hero-title">
-  <div class="home-hero__media">
-    <Image
-      src={heroImage}
-      alt="지용과 고양이들이 함께 머무는 따뜻한 기록실 분위기의 사진"
-      widths={[720, 960, 1184, 1440, 1680]}
-      sizes="(max-width: 960px) 100vw, 1180px"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-      class="home-hero__image"
-    />
-    <div class="home-hero__overlay">
-      <div class="home-hero__layout">
-        <div class="home-hero__content">
-          <p class="home-hero__eyebrow">Ji Yong's Record Room</p>
-          <h1 id="home-hero-title">지용의 기록실</h1>
-          <p class="home-hero__description">
-            문제를 관찰하고 구조를 세운 뒤, Backend와 AI Agent 실험을 작은 도구와 기록으로 남깁니다.
-            만냥구름과 일상의 관찰도 같은 책상 위에 둡니다.
-          </p>
-          <div class="home-hero__actions" aria-label="홈 주요 이동">
-            <a class="home-hero__button home-hero__button--primary" href={routes.records}
-              >기록 보기</a
-            >
-            <a class="home-hero__button" href={routes.series}>시리즈 보기</a>
-            <a class="home-hero__button home-hero__button--soft" href={routes.manyangGureum}>
-              만냥구름 만나기
-              <span aria-hidden="true">›</span>
-            </a>
-          </div>
-        </div>
+  <Image
+    src={deepField}
+    alt=""
+    widths={[720, 1080, 1440, 1672]}
+    sizes="100vw"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+    class="home-hero__image"
+  />
 
-        <aside class="home-hero__index" aria-label={uiCopy.currentDesk}>
-          <p class="home-hero__index-title">{uiCopy.currentDesk}</p>
-          <dl>
-            {
-              heroStats.map((item) => (
-                <div>
-                  <dt>{item.label}</dt>
-                  <dd>
-                    {item.href ? (
-                      <a class="home-hero__index-link" href={item.href}>
-                        {item.value}
-                      </a>
-                    ) : (
-                      item.value
-                    )}
-                    {item.detail && <span class="home-hero__index-detail">{item.detail}</span>}
-                  </dd>
-                </div>
-              ))
-            }
-          </dl>
-        </aside>
-      </div>
+  <div class="home-hero__layout">
+    <div class="home-hero__copy">
+      <p class="kicker">THE MIDNIGHT OBSERVATORY</p>
+      <h1 id="home-hero-title">지용의 기록실</h1>
+      <p class="home-hero__tagline">관찰하고, 실험하고, 이야기한다.</p>
+      <p class="home-hero__description">
+        문제를 관찰하고 구조를 세운 뒤, Backend와 AI Agent 실험을 작은 도구와 기록으로 남깁니다.
+        만냥구름과 일상의 관찰도 같은 책상 위에 둡니다.
+      </p>
+      <nav class="home-hero__links" aria-label="홈 주요 이동">
+        <TextLink href={routes.records}>기록 보기</TextLink>
+        <TextLink href={routes.series}>시리즈 보기</TextLink>
+        <TextLink href={routes.manyangGureum}>만냥구름 만나기</TextLink>
+      </nav>
     </div>
+
+    <aside class="home-hero__desk" aria-label={uiCopy.currentDesk}>
+      <p class="home-hero__desk-title">{uiCopy.currentDesk}</p>
+      <dl>
+        <div class="home-hero__stat home-hero__stat--latest">
+          <dt>{uiCopy.recentRecord}</dt>
+          <dd>
+            {
+              latestRecordHref ? (
+                <a href={latestRecordHref}>{latestRecordTitle}</a>
+              ) : (
+                <span>{latestRecordTitle}</span>
+              )
+            }
+            {latestRecordDate && <FormattedDate class="home-hero__date" date={latestRecordDate} />}
+          </dd>
+        </div>
+        <div class="home-hero__stat">
+          <dt>{uiCopy.stackedRecords}</dt>
+          <dd>{recordCount}편</dd>
+        </div>
+        <div class="home-hero__stat">
+          <dt>{uiCopy.ongoingSeries}</dt>
+          <dd>{seriesCount}개</dd>
+        </div>
+      </dl>
+    </aside>
   </div>
+
+  <p class="kicker home-hero__bottom" aria-hidden="true">
+    A PERSONAL ARCHIVE OF SPACE, MATTER &amp; STORIES
+  </p>
 </section>
 
 <style>
   .home-hero {
-    width: min(1180px, calc(100% - 2rem));
-    margin: 0 auto;
-  }
-
-  .home-hero__media {
     position: relative;
-    min-height: min(78dvh, 720px);
-    overflow: hidden;
-    border-radius: 18px;
-    background: var(--surface-elevated);
-    box-shadow: var(--box-shadow);
+    display: flex;
+    min-height: max(100svh, 720px);
+    margin-top: calc(-1 * var(--header-height));
+    align-items: flex-end;
     isolation: isolate;
+    overflow: hidden;
   }
 
-  .home-hero__image {
+  .home-hero :global(.home-hero__image) {
     position: absolute;
     inset: 0;
+    z-index: -2;
     width: 100%;
     height: 100%;
-    border-radius: 0;
     object-fit: cover;
-    object-position: center center;
-    transform: scale(1.02);
+    object-position: center top;
   }
 
-  .home-hero__overlay {
+  .home-hero::after {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: stretch;
-    background:
-      linear-gradient(
-        90deg,
-        rgba(36, 28, 22, 0.82) 0%,
-        rgba(36, 28, 22, 0.5) 45%,
-        rgba(36, 28, 22, 0.12) 100%
-      ),
-      linear-gradient(180deg, rgba(36, 28, 22, 0.12) 0%, rgba(36, 28, 22, 0.74) 100%);
+    z-index: -1;
+    content: '';
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg) 2%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 12%, transparent) 55%,
+      var(--bg) 99%
+    );
+    pointer-events: none;
   }
 
   .home-hero__layout {
     display: grid;
-    box-sizing: border-box;
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.34fr);
-    gap: 2rem;
-    align-items: end;
     width: 100%;
-    padding: 3.25rem;
-    color: #fff9f0;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 3rem;
+    align-items: end;
+    padding: 0 clamp(24px, 8vw, 135px) clamp(120px, 15vh, 185px);
   }
 
-  .home-hero__content {
-    max-width: 33rem;
-    padding-bottom: 1rem;
+  .home-hero__copy {
+    max-width: 760px;
   }
 
-  .home-hero__eyebrow,
-  .home-hero__index-title {
-    margin: 0 0 0.75rem;
-    color: rgba(255, 249, 240, 0.78);
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0;
-    text-transform: uppercase;
+  .home-hero__copy h1 {
+    margin: 28px 0 16px;
+    font-size: clamp(2.6rem, 4.7vw, 4.5rem);
+    letter-spacing: -0.055em;
   }
 
-  .home-hero h1 {
-    max-width: 6.4ch;
-    margin: 0 0 1rem;
-    color: inherit;
-    font-size: clamp(3.8rem, 5.7vw, 5.4rem);
-    line-height: 0.98;
-    text-wrap: balance;
-    text-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+  .home-hero__tagline {
+    margin: 0 0 1.25rem;
+    color: var(--fg);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
   }
 
   .home-hero__description {
-    max-width: 28rem;
+    max-width: 36rem;
     margin: 0;
-    color: rgba(255, 249, 240, 0.92);
-    font-size: 1.18rem;
-    line-height: 1.78;
-    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
-    text-wrap: balance;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.95;
+    word-break: keep-all;
   }
 
-  .home-hero__actions {
+  .home-hero__links {
     display: flex;
+    gap: 0.75rem 2rem;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.6rem;
+    margin-top: 2.25rem;
   }
 
-  .home-hero__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    min-height: 2.85rem;
-    padding: 0.65rem 1.15rem;
-    border: 1px solid rgba(255, 249, 240, 0.42);
-    border-radius: 999px;
-    background: rgba(255, 249, 240, 0.12);
-    color: #fff9f0;
-    font-weight: 800;
-    text-decoration: none;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(12px);
-    transition:
-      background-color 0.24s ease,
-      color 0.24s ease,
-      transform 0.24s ease;
+  .home-hero__desk {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-strong);
   }
 
-  .home-hero__button:hover,
-  .home-hero__button:focus-visible {
-    background: rgba(255, 249, 240, 0.22);
-    transform: translateY(-2px);
+  .home-hero__desk-title,
+  .home-hero__desk dt {
+    margin: 0;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.69rem;
+    letter-spacing: 0.04em;
   }
 
-  .home-hero__button:active {
-    transform: translateY(0);
+  .home-hero__desk dl {
+    margin: 0.75rem 0 0;
   }
 
-  .home-hero__button--primary {
-    border-color: #fff9f0;
-    background: #fff9f0;
-    color: #4a2f22;
-  }
-
-  .home-hero__button--primary:hover,
-  .home-hero__button--primary:focus-visible {
-    background: #f7f0e6;
-    color: #4a2f22;
-  }
-
-  .home-hero__button--soft span {
-    font-size: 1.2em;
-    line-height: 1;
-  }
-
-  .home-hero__index {
-    padding: 1rem;
-    border: 1px solid rgba(255, 249, 240, 0.18);
-    border-radius: 8px;
-    background: rgba(255, 249, 240, 0.1);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      0 18px 40px rgba(0, 0, 0, 0.18);
-    backdrop-filter: blur(14px);
-  }
-
-  .home-hero__index dl {
+  .home-hero__stat {
     display: grid;
-    gap: 0;
-    margin: 0;
-  }
-
-  .home-hero__index dl > div {
-    display: flex;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0.75rem;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.8rem 0;
-    border-top: 1px solid rgba(255, 249, 240, 0.2);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
   }
 
-  .home-hero__index dt {
-    color: rgba(255, 249, 240, 0.68);
-    font-size: 0.8rem;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  .home-hero__index dd {
+  .home-hero__desk dd {
     margin: 0;
-    color: #fff9f0;
-    font-size: 1.25rem;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 
-  .home-hero__index-link {
-    display: inline;
-    color: inherit;
+  .home-hero__desk dd a {
+    color: var(--fg);
     text-decoration: none;
-    text-wrap: pretty;
   }
 
-  .home-hero__index-link:hover,
-  .home-hero__index-link:focus-visible {
-    text-decoration: underline;
-    text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.18em;
+  .home-hero__desk dd a:hover {
+    color: var(--accent);
   }
 
-  .home-hero__index-detail {
+  .home-hero__desk :global(.home-hero__date) {
     display: block;
-    margin-top: 0.18rem;
-    color: rgba(255, 249, 240, 0.66);
-    font-size: 0.78rem;
-    font-weight: 700;
+    margin-top: 0.25rem;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
   }
 
-  @media (max-width: 920px) {
-    .home-hero {
-      width: min(100% - 1rem, 1180px);
-    }
+  .home-hero__bottom {
+    position: absolute;
+    bottom: 35px;
+    left: clamp(24px, 8vw, 135px);
+    color: var(--dim);
+    font-size: 0.58rem;
+  }
 
-    .home-hero__media {
-      min-height: 78dvh;
-    }
-
+  @media (max-width: 960px) {
     .home-hero__layout {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      align-items: end;
-      padding: 2rem;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2.5rem;
     }
 
-    .home-hero h1 {
-      max-width: 10ch;
-      font-size: 4.3rem;
-    }
-
-    .home-hero__index {
-      max-width: 30rem;
+    .home-hero__desk {
+      max-width: 420px;
     }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 700px) {
     .home-hero {
-      width: 100%;
+      min-height: max(100svh, 640px);
     }
 
-    .home-hero__media {
-      display: grid;
-      min-height: auto;
-      border-radius: 0;
-      box-shadow: none;
-    }
-
-    .home-hero__image {
-      position: relative;
-      inset: auto;
-      display: block;
-      height: clamp(260px, 36svh, 340px);
-      transform: none;
-      object-position: center 32%;
-    }
-
-    .home-hero__overlay {
-      position: relative;
-      inset: auto;
-      display: block;
-      background:
-        linear-gradient(180deg, rgba(36, 28, 22, 0.95) 0%, rgba(36, 28, 22, 1) 100%),
-        var(--accent-dark);
+    .home-hero :global(.home-hero__image) {
+      object-position: 61% top;
     }
 
     .home-hero__layout {
-      gap: 1rem;
-      padding: 1.25rem 1.25rem 1.5rem;
+      padding: 140px 24px 110px;
     }
 
-    .home-hero__content {
-      padding-bottom: 0;
+    .home-hero__copy h1 {
+      font-size: 2.6rem;
     }
 
-    .home-hero__eyebrow {
-      margin-bottom: 0.5rem;
-    }
-
-    .home-hero h1 {
-      max-width: 10ch;
-      margin-bottom: 0.75rem;
-      font-size: clamp(2.8rem, 12vw, 3.2rem);
-    }
-
-    .home-hero__description {
-      font-size: 1rem;
-      line-height: 1.62;
-    }
-
-    .home-hero__actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.6rem;
-      margin-top: 1.05rem;
-    }
-
-    .home-hero__button {
-      min-height: 2.9rem;
-      padding: 0.6rem 0.85rem;
-      font-size: 0.95rem;
-    }
-
-    .home-hero__index {
-      padding: 0;
-      border: 0;
-      background: transparent;
-      box-shadow: none;
-      backdrop-filter: none;
-    }
-
-    .home-hero__index-title {
-      display: none;
-    }
-
-    .home-hero__index dl {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.45rem;
-    }
-
-    .home-hero__index dl > div {
-      display: grid;
-      grid-template-columns: minmax(5.5rem, 0.38fr) minmax(0, 1fr);
-      align-items: start;
-      gap: 0.4rem;
-      padding: 0.5rem 0.65rem;
-      border: 1px solid rgba(255, 249, 240, 0.16);
-      border-radius: 8px;
-      background: rgba(255, 249, 240, 0.08);
-    }
-
-    .home-hero__index dt {
-      color: rgba(255, 249, 240, 0.62);
-      font-size: 0.67rem;
-    }
-
-    .home-hero__index dd {
-      min-width: 0;
-      font-size: 0.84rem;
-      line-height: 1.35;
-    }
-
-    .home-hero__index-detail {
-      margin-top: 0.12rem;
-      font-size: 0.68rem;
+    .home-hero__bottom {
+      left: 24px;
+      right: 24px;
+      letter-spacing: 0.1em;
     }
   }
 </style>

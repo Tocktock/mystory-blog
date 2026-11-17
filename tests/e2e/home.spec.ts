@@ -28,17 +28,21 @@ test('homepage first viewport communicates JiYong identity and current desk', as
   await expect(currentDesk).toContainText(/\d+개/);
 });
 
-test('homepage mobile hero separates image and content without horizontal overflow', async ({
+test('homepage mobile hero keeps the title clear of the desk panel without horizontal overflow', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 360, height: 1200 });
   await page.goto('/');
 
-  const imageBox = await page.locator('.home-hero__image').boundingBox();
-  const overlayBox = await page.locator('.home-hero__overlay').boundingBox();
-  expect(imageBox).not.toBeNull();
-  expect(overlayBox).not.toBeNull();
-  expect(overlayBox!.y).toBeGreaterThanOrEqual(imageBox!.y + imageBox!.height - 1);
+  const titleBox = await page
+    .getByRole('heading', { level: 1, name: '지용의 기록실' })
+    .boundingBox();
+  const deskBox = await page.getByRole('complementary', { name: '지금 책상 위' }).boundingBox();
+  expect(titleBox).not.toBeNull();
+  expect(deskBox).not.toBeNull();
+  expect(titleBox!.x).toBeGreaterThanOrEqual(0);
+  expect(titleBox!.x + titleBox!.width).toBeLessThanOrEqual(360);
+  expect(deskBox!.y).toBeGreaterThanOrEqual(titleBox!.y + titleBox!.height);
 
   const pageOverflow = await page.evaluate(() => {
     const doc = document.documentElement;
