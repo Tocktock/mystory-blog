@@ -1,6 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch 폴더에는 뭐가 있을까??'
 pubDate: 2021-01-14T07:36:45.702Z
+updatedDate: 2026-11-17
 description: 'Elasticsearch 폴더의 bin, config, modules, plugins 구조를 살펴봅니다. elasticsearch.yml의 클러스터, 경로, 네트워크 설정과 jvm.options, log4j2.properties의 역할도 정리합니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'

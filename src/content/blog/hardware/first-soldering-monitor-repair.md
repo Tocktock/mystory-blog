@@ -1,6 +1,7 @@
 ---
 title: '눈으로만 봤던 납땜을 직접 해봤다.'
 pubDate: 2026-06-20
+updatedDate: 2026-11-17
 description: '76만 원에 산 모니터의 수리비가 40만 원대라는 말을 듣고, 유튜브 쇼츠에서만 보던 납땜을 처음으로 직접 해봤다.'
 heroImage: '../../../assets/heroes/first-soldering-monitor-repair.jpeg'
 lang: 'ko'

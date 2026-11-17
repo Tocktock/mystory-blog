@@ -24,7 +24,8 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props as Props;
 const tagPosts = tag.posts as CollectionEntry<'blog'>[];
-// A one-post tag page only repeats its post, so keep it out of search results (links still count).
+// A one-post tag page only repeats its post, so keep it out of search results.
+// `follow` still lets crawlers follow its links to the post.
 const isThinTag = tagPosts.length < 2;
 const sampleTitles = tagPosts
   .slice(0, 3)

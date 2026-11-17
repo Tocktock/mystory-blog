@@ -36,7 +36,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 ## Repository Orientation
 
 - `astro.config.mjs` - site URL and enabled integrations (MDX & sitemap).
-- `package.json` - scripts for dev/build/test/audits; `postbuild` runs `npx pagefind --site dist` to emit search assets.
+- `package.json` - scripts for dev/build/test/audits; `postbuild` runs `node scripts/verify-sitemap.mjs` (fails the build if the sitemap is wrong), then `npx pagefind --site dist` to emit search assets.
 - `public/` - favicon and robots.txt; anything here is copied verbatim to the build. Do not put files under `public/blog/`: Vercel redirects `/blog/*` to `/records/*`, so they would 404.
 - `src/assets/` - hero artwork (`heroes/`), in-post images (`posts/<slug>/`), the deep-field art and OG backdrop (`observatory/`), gallery JPEGs processed via `astro:assets`.
 - `src/components/` - BaseHead, Header/Footer, FormattedDate, HeaderLink, GiscusComments, plus page sections by area and the shared Observatory primitives in `observatory/` (PageHero, SectionHead, EntryList/EntryRow, TextLink).
@@ -52,6 +52,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 ## Content Collections & Media
 
 - Content schema (`src/content.config.ts`) requires `title`, `description`, `pubDate`; optional `updatedDate`, `heroImage`, `lang` (`'ko' | 'en'`), and `tags: string[]` (defaults to an empty list).
+- Set `updatedDate` when a post's body changes (text, images, code, links). It is the visible "UPDATED" date, `article:modified_time`, JSON-LD `dateModified` and the sitemap `lastmod`. Leave it alone for description-only or site-wide markup changes.
 - Posts live under `src/content/blog/<topic>/<slug>.md[x]`. Keep slugs stable - routes and OG assets key off `id`.
 - In-post images belong in `src/assets/posts/<slug>/` and are referenced with relative Markdown paths (`![alt](../../../assets/posts/<slug>/<file>)`) so Astro converts them to WebP with width/height. Write a real alt text for every informational image.
 - Hero images belong in `src/assets/heroes/`; create them with `node scripts/create_observatory_art.mjs hero --slug <name> --title <text> [--subtitle <text>]` (add the entry to `scripts/observatory-heroes.json` so `heroes` can re-render the set). Reference from frontmatter as `heroImage: "../../../assets/heroes/<file>.png"`.
@@ -73,7 +74,7 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 - Install deps: `npm install` (Node 18.14+ or 20+ recommended).
 - Dev server: `npm run dev` (http://localhost:4321).
-- Production build: `npm run build` (writes `dist/`), then auto-runs Pagefind via `postbuild`.
+- Production build: `npm run build` (writes `dist/`), then `postbuild` checks the sitemap and runs Pagefind.
 - Preview build: `npm run preview`.
 - Type checks: `npm run check`.
 - Linting: `npm run lint` / `npm run lint:fix`.
@@ -87,6 +88,7 @@ Inline commands are safe; do not invent new scripts without explaining the ratio
 
 - `scripts/audit/prepare-reports.mjs` clears report folders before Lighthouse/Axe/Linkinator runs.
 - `scripts/audit/run-link-check.mjs` wraps Linkinator against the preview server.
+- `scripts/verify-sitemap.mjs` runs in `postbuild`. It fails the build unless `dist/sitemap-index.xml` exists and the sitemap lists every built page without `noindex` and none with it, because `@astrojs/sitemap` swallows `serialize` errors, skips the sitemap and still exits 0.
 - `scripts/create_observatory_art.mjs` has three commands: `hero`, `heroes` (re-render everything in `observatory-heroes.json`) and `og-background`. It uses `canvaskit-wasm` (already installed via `astro-og-canvas`) and the installed Fontsource files.
 - `scripts/create_hero_image.py` (legacy gradient art) accepts `--palette`, `--title`, `--subtitle`, `--dry-run`; ensure Pillow is installed if you need it.
 
@@ -95,7 +97,7 @@ Inline commands are safe; do not invent new scripts without explaining the ratio
 - `SITE_TITLE`, `SITE_DESCRIPTION`, `SITE_AUTHOR` live in `src/consts.ts`; changes propagate everywhere through BaseHead and JSON-LD helpers.
 - Structured data helpers in `src/utils/jsonld.ts` build `WebSite`, `Person`, `ProfilePage` (About), `BlogPosting`, and `BreadcrumbList` nodes. Every page refers to one Person (`/about/#person`, identity in `src/consts.ts`). Keep these in sync when introducing new page types.
 - RSS lives at `src/pages/rss.xml.js` via `@astrojs/rss`; runs during build.
-- Sitemap is handled by `@astrojs/sitemap` (requires a valid `site` URL in config). Its `serialize` in `astro.config.mjs` reads each built page: `noindex` pages are dropped and posts get `lastmod` from `article:modified_time`.
+- Sitemap is handled by `@astrojs/sitemap` (requires a valid `site` URL in config). Its `serialize` (`src/utils/sitemapSerialize.mjs`) reads each built page: `noindex` pages are dropped and posts get `lastmod` from `article:modified_time`.
 - Internal links use the trailing-slash routes in `src/utils/routes.ts`; slashless URLs 308-redirect on Vercel.
 - OG/Twitter images generated by `astro-og-canvas` are stored under `/og/<slug>.png` at build time.
 
