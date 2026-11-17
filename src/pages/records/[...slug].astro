@@ -27,7 +27,9 @@ const seriesPosts = post.data.series
 ---
 
 <BlogPost {...post.data} slug={post.id} ogImage={`/og/${post.id}.png`}>
-  <Content />
+  <div class="article-body">
+    <Content />
+  </div>
 
   <SeriesProgress seriesSlug={post.data.series} currentId={post.id} posts={seriesPosts} />
 
