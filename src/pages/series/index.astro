@@ -1,10 +1,10 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/observatory/PageHero.astro';
 import SeriesCard from '../../components/records/SeriesCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { seriesList } from '../../data/series';
-import { uiCopy } from '../../data/uiCopy';
 
 const posts = await getCollection('blog');
 const seriesCards = seriesList
@@ -22,66 +22,45 @@ const seriesCards = seriesList
   mainLabelledBy="series-title"
 >
   <div class="series-page">
-    <header class="series-page__header">
-      <p class="series-page__eyebrow">{uiCopy.bookshelf}</p>
-      <h1 id="series-title">시리즈</h1>
-      <p>
-        기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의 이야기를
-        흐름으로 정리합니다.
-      </p>
-    </header>
+    <PageHero
+      kicker="COLLECTION / SERIES"
+      title="시리즈"
+      titleId="series-title"
+      lede="기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의 이야기를 흐름으로 정리합니다."
+    />
 
-    <section aria-label="시리즈 목록">
+    <section class="shell series-page__content" aria-label="시리즈 목록">
+      <p class="kicker series-page__count">{seriesCards.length} SHELVES</p>
       <div class="series-grid">
-        {seriesCards.map((item) => <SeriesCard seriesItem={item} count={item.posts.length} />)}
+        {
+          seriesCards.map((item, index) => (
+            <SeriesCard seriesItem={item} count={item.posts.length} index={index + 1} />
+          ))
+        }
       </div>
     </section>
   </div>
 </SiteLayout>
 
 <style>
-  .series-page {
-    width: 960px;
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 3em 1em;
+  .series-page__content {
+    padding-bottom: clamp(120px, 14vw, 220px);
   }
 
-  .series-page__header {
-    max-width: 42rem;
-    margin: 0 auto 2.5rem;
-    text-align: center;
-  }
-
-  .series-page__eyebrow {
-    margin: 0 0 0.35rem;
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .series-page__header h1 {
-    margin-bottom: 1rem;
-  }
-
-  .series-page__header p {
-    margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.75;
-    text-wrap: balance;
+  .series-page__count {
+    margin: 0 0 1.5rem;
   }
 
   .series-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 75px;
+    border-top: 1px solid var(--line);
   }
 
-  @media (max-width: 960px) {
-    .series-page {
-      width: 100%;
+  @media (max-width: 860px) {
+    .series-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

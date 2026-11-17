@@ -7,11 +7,13 @@ import { routes } from '../../utils/routes';
 interface Props {
   seriesItem: SeriesEntry;
   count: number;
+  index?: number;
 }
 
-const { seriesItem, count } = Astro.props as Props;
+const { seriesItem, count, index } = Astro.props as Props;
 const category = getCategory(seriesItem.category);
 const statusLabel = getSeriesStatusLabel(seriesItem.status);
+const number = typeof index === 'number' ? String(index).padStart(2, '0') : undefined;
 const intentItems = [
   seriesItem.purpose?.trim()
     ? { label: '왜 이 선반인가', value: seriesItem.purpose.trim() }
@@ -27,7 +29,8 @@ const intentItems = [
   href={routes.seriesDetail(seriesItem.slug)}
   data-series-status={seriesItem.status}
 >
-  <div class="series-card__meta" aria-label="시리즈 정보">
+  <div class="meta series-card__meta" aria-label="시리즈 정보">
+    {number && <span class="series-card__number">{number}</span>}
     <span>{category.label}</span>
     <span>{count}개 기록</span>
     {statusLabel && <span class="series-card__status">{statusLabel}</span>}
@@ -46,94 +49,84 @@ const intentItems = [
       </dl>
     )
   }
+  <span class="series-card__link" aria-hidden="true">선반 열기 ↗</span>
 </a>
 
 <style>
   .series-card {
-    display: grid;
-    grid-template-rows: auto auto auto 1fr;
+    display: block;
     height: 100%;
-    padding: 1.25rem;
-    border-radius: 12px;
-    background: var(--room-surface);
-    color: var(--ink-text);
+    padding: 42px 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
     text-decoration: none;
-    box-shadow: 0 0 0 1px rgba(var(--gray-light), 0.24);
-    transition:
-      box-shadow var(--motion-fast) ease,
-      transform var(--motion-fast) ease,
-      background-color var(--motion-fast) ease;
-  }
-
-  .series-card:hover,
-  .series-card:focus-visible {
-    background-color: rgba(var(--room-accent-rgb), 0.06);
-    box-shadow: var(--room-shadow);
-    transform: translateY(-2px);
   }
 
   .series-card__meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-bottom: 0.85rem;
   }
 
-  .series-card__meta span {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.2rem 0.55rem;
-    border-radius: 999px;
-    background: rgba(var(--room-accent-rgb), 0.12);
-    color: var(--accent-dark);
-    font-size: 0.82rem;
-    font-weight: 700;
-    line-height: 1.2;
+  .series-card__meta span + span::before {
+    margin: 0 0.6em;
+    color: var(--line-strong);
+    content: '/';
   }
 
-  .series-card__meta .series-card__status {
-    background: rgba(var(--ops-sage-rgb), 0.14);
-    color: rgb(var(--gray-dark));
+  .series-card__number {
+    color: var(--muted);
+    letter-spacing: 0.14em;
   }
 
   .series-card h2 {
-    margin: 0 0 0.75rem;
-    color: rgb(var(--black));
-    font-size: clamp(1.35rem, 2vw, 1.7rem);
-    line-height: 1.2;
+    margin: 1rem 0 0.75rem;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.5;
+    transition: color var(--motion-fast) ease;
   }
 
   .series-card__description {
-    margin: 0 0 0.9rem;
-    color: var(--ink-muted);
-    line-height: 1.65;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.9;
+    word-break: keep-all;
   }
 
   .series-card__intent {
     display: grid;
-    gap: 0.65rem;
-    align-self: end;
-    margin: 0;
-    padding: 0.8rem;
-    border-radius: 8px;
-    background: rgba(var(--gray-light), 0.14);
-  }
-
-  .series-card__intent div {
-    display: grid;
-    gap: 0.18rem;
+    gap: 1rem;
+    margin: 1.75rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
   }
 
   .series-card__intent dt {
-    color: var(--accent);
-    font-size: 0.76rem;
-    font-weight: 800;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.69rem;
+    letter-spacing: 0.04em;
   }
 
   .series-card__intent dd {
-    margin: 0;
-    color: var(--ink-text);
+    margin: 0.35rem 0 0;
+    color: var(--text);
     font-size: 0.92rem;
-    line-height: 1.55;
+    line-height: 1.85;
+    word-break: keep-all;
+  }
+
+  .series-card__link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.69rem;
+    letter-spacing: 0.14em;
+    transition: color var(--motion-fast) ease;
+  }
+
+  .series-card:hover h2,
+  .series-card:hover .series-card__link {
+    color: var(--fg-strong);
   }
 </style>
