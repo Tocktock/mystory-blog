@@ -120,7 +120,7 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
     gap: 3rem;
     align-items: end;
-    padding: 0 clamp(24px, 8vw, 135px) clamp(120px, 15vh, 185px);
+    padding: calc(var(--header-height) + 56px) clamp(24px, 8vw, 135px) clamp(120px, 15vh, 185px);
   }
 
   .home-hero__copy {
