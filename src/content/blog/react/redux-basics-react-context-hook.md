@@ -1,7 +1,7 @@
 ---
 title: 'Redux 기본서!! (feat. react context hook)'
 pubDate: 2021-02-11T07:45:54.248Z
-description: '기본 Redux 는 간단하게 작용합니다. 중앙화 된 상태저장소가 있고 각각의 컴포넌트들이 그 상태저장소에 접근해서 원하는 것을 가져올 수 있습니다. 자식들에게 상태(state)와 자산(props)을 물려줄 필요는 없습니다.Redux 를 구성하는 3가지 요소가 있습니다.'
+description: 'Redux의 Actions, Reducers, Store 개념과 connect, middleware 사용법을 예제 코드로 정리합니다. React Context hook과 비교해 Redux를 여전히 쓰는 이유도 함께 다룹니다.'
 heroImage: '../../../assets/heroes/redux.png'
 category: 'tech'
 series: 'react-redux'

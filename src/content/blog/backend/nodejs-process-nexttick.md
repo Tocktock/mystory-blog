@@ -1,7 +1,7 @@
 ---
 title: 'Node.js process.Tick() 이란'
 pubDate: 2021-02-15T10:06:18.352Z
-description: 'nextTickQueue는 process.nextTick() API의 콜백들을 가지고 있으며, microTaskQueue는 Resolve된 프로미스의 콜백을 가지고 있습니다.이 두 개의 큐는 이벤트루프에 포함되어있지 않으며 이벤트루프에 앞서 실행하기 위한 것을 목적으로'
+description: 'Node.js process.nextTick()이 동기 코드 이후, 이벤트루프에 앞서 실행되는 원리를 nextTickQueue와 microTaskQueue로 설명합니다. setImmediate()와의 차이, I/O starving 위험도 정리합니다.'
 heroImage: '../../../assets/heroes/nodejs-process-nexttick.png'
 category: 'tech'
 series: 'backend-notes'

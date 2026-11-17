@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][16] 3sum closet 문제풀기!'
 pubDate: 2021-01-15T03:52:09.983Z
-description: '문제풀러가기✈이번에도 숫자를 엄청 줄게!!숫자 3개를 뽑아서 그 숫자들의 합이 내가 원하는 숫자랑 가장 가까워지는 값을 찾아줘!!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기이번에도 숫자 세개를 뽑아서... 더해서 ... 원하는 숫자와 얼마나 가까운지 체크하면'
+description: 'LeetCode 16 3Sum Closest를 정렬과 투포인터로 풀었다. 세 수의 합과 target의 거리를 비교하며 left, right를 옮겨 O(n^2)에 가장 가까운 합을 찾는 JavaScript 풀이를 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

@@ -37,8 +37,8 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 - `astro.config.mjs` - site URL and enabled integrations (MDX & sitemap).
 - `package.json` - scripts for dev/build/test/audits; `postbuild` runs `npx pagefind --site dist` to emit search assets.
-- `public/` - favicon, robots.txt and post images; anything here is copied verbatim to the build.
-- `src/assets/` - hero artwork (`heroes/`), the deep-field art and OG backdrop (`observatory/`), gallery JPEGs processed via `astro:assets`.
+- `public/` - favicon and robots.txt; anything here is copied verbatim to the build. Do not put files under `public/blog/`: Vercel redirects `/blog/*` to `/records/*`, so they would 404.
+- `src/assets/` - hero artwork (`heroes/`), in-post images (`posts/<slug>/`), the deep-field art and OG backdrop (`observatory/`), gallery JPEGs processed via `astro:assets`.
 - `src/components/` - BaseHead, Header/Footer, FormattedDate, HeaderLink, GiscusComments, plus page sections by area and the shared Observatory primitives in `observatory/` (PageHero, SectionHead, EntryList/EntryRow, TextLink).
 - `src/layouts/SiteLayout.astro` - the shell every page uses (BaseHead, skip link, Header, `<main id="main">`, Footer).
 - `src/layouts/BlogPost.astro` - wraps individual posts, emits JSON-LD + breadcrumb data, wires hero/OG images.
@@ -53,13 +53,14 @@ Use this loop consciously: it keeps reasoning transparent and prevents premature
 
 - Content schema (`src/content.config.ts`) requires `title`, `description`, `pubDate`; optional `updatedDate`, `heroImage`, `lang` (`'ko' | 'en'`), and `tags: string[]` (defaults to an empty list).
 - Posts live under `src/content/blog/<topic>/<slug>.md[x]`. Keep slugs stable - routes and OG assets key off `id`.
+- In-post images belong in `src/assets/posts/<slug>/` and are referenced with relative Markdown paths (`![alt](../../../assets/posts/<slug>/<file>)`) so Astro converts them to WebP with width/height. Write a real alt text for every informational image.
 - Hero images belong in `src/assets/heroes/`; create them with `node scripts/create_observatory_art.mjs hero --slug <name> --title <text> [--subtitle <text>]` (add the entry to `scripts/observatory-heroes.json` so `heroes` can re-render the set). Reference from frontmatter as `heroImage: "../../../assets/heroes/<file>.png"`.
 - If no hero is supplied, the article simply has no hero image; OG cards are still generated via `astro-og-canvas`.
 - `tags.ts` auto-generates slugs from the `tags` array; skipping tags falls back to the first path segment.
 
 ## Components, Layouts, and Pages
 
-- `BaseHead.astro` imports `global.css` and the self-hosted Fontsource fonts (Noto Serif KR, DM Mono), and sets canonical/meta/OG/Twitter tags and `theme-color`. The site is dark only; there is no theme toggle. The default share image is `/og/site.png`.
+- `BaseHead.astro` imports `global.css` and the self-hosted Fontsource fonts (Noto Serif KR 400/500/600, DM Mono), and sets canonical/meta/OG/Twitter tags and `theme-color`. Posts pass `article` (og:type `article` plus `article:*` dates and tags); thin pages pass `noindex` (site search, tags with one post). The site is dark only; there is no theme toggle. The default share image is `/og/site.png`.
 - `Header.astro` renders the `JI YONG` brand and one `INDEX` button that opens a native `<dialog>` menu; `Footer.astro` repeats every nav link so the site works without JS. Both read `src/data/siteNavigation.ts`; update it for new sections (each entry's `hint` is the one-line description shown in the menu). The menu is sized to fit one screen, locks page scroll while open, and supports ↑/↓, Home/End and digit shortcuts.
 - `FormattedDate.astro` formats dates with `Intl.DateTimeFormat` respecting locale.
 - `BlogPost.astro` controls structured data (`BlogPosting` + `BreadcrumbList`), hero image rendering, and `<html lang>` selection.
@@ -92,9 +93,10 @@ Inline commands are safe; do not invent new scripts without explaining the ratio
 ## SEO & Metadata
 
 - `SITE_TITLE`, `SITE_DESCRIPTION`, `SITE_AUTHOR` live in `src/consts.ts`; changes propagate everywhere through BaseHead and JSON-LD helpers.
-- Structured data helpers in `src/utils/jsonld.ts` build `WebSite`, `Person`, `BlogPosting`, and `BreadcrumbList` nodes. Keep these in sync when introducing new page types.
+- Structured data helpers in `src/utils/jsonld.ts` build `WebSite`, `Person`, `ProfilePage` (About), `BlogPosting`, and `BreadcrumbList` nodes. Every page refers to one Person (`/about/#person`, identity in `src/consts.ts`). Keep these in sync when introducing new page types.
 - RSS lives at `src/pages/rss.xml.js` via `@astrojs/rss`; runs during build.
-- Sitemap is handled by `@astrojs/sitemap` (requires a valid `site` URL in config).
+- Sitemap is handled by `@astrojs/sitemap` (requires a valid `site` URL in config). Its `serialize` in `astro.config.mjs` reads each built page: `noindex` pages are dropped and posts get `lastmod` from `article:modified_time`.
+- Internal links use the trailing-slash routes in `src/utils/routes.ts`; slashless URLs 308-redirect on Vercel.
 - OG/Twitter images generated by `astro-og-canvas` are stored under `/og/<slug>.png` at build time.
 
 ## Comments & Environment

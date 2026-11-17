@@ -1,7 +1,7 @@
 ---
 import SiteLayout from './SiteLayout.astro';
-import { SITE_AUTHOR, SITE_TITLE } from '../consts';
-import { buildBreadcrumbJsonLd, buildPersonJsonLd } from '../utils/jsonld';
+import { SITE_TITLE } from '../consts';
+import { buildBreadcrumbJsonLd } from '../utils/jsonld';
 import { routes } from '../utils/routes';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
 
@@ -12,12 +12,6 @@ interface Props {
 
 const { title, description } = Astro.props as Props;
 const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
-const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
-const personJsonLd = buildPersonJsonLd({
-  canonicalUrl: canonicalURL,
-  name: SITE_AUTHOR,
-  description,
-});
 const breadcrumbJsonLd = buildBreadcrumbJsonLd({
   items: [
     { position: 1, name: SITE_TITLE, item: siteURL.toString() },
@@ -27,12 +21,6 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 ---
 
 <SiteLayout title={title} description={description} lang="ko" mainLabelledBy="career-title">
-  <script
-    slot="head"
-    type="application/ld+json"
-    is:inline
-    set:html={serializeJsonLd(personJsonLd)}
-  />
   <script
     slot="head"
     type="application/ld+json"

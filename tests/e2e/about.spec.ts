@@ -39,7 +39,7 @@ test('about page exposes JiYong manual and preserves the interview', async ({ pa
 
   await expect(page.locator('#q1')).toContainText('일을 할 때 가장 중요하게 생각하는 원칙');
   await expect(page.locator('#q8')).toContainText('앞으로 어떤 방식으로 성장하고 싶나요');
-  await expect(page.getByRole('link', { name: '이력 보기' })).toHaveAttribute('href', '/career');
+  await expect(page.getByRole('link', { name: '이력 보기' })).toHaveAttribute('href', '/career/');
 });
 
 test('about manual remains contained on narrow mobile', async ({ page }) => {

@@ -1,7 +1,7 @@
 ---
 title: '[📣top interview question] Best Time to Buy and Sell Stock II 문제풀기!'
 pubDate: 2021-01-18T06:35:05.996Z
-description: '문제풀러가기✈어떤 물건의 가격이 매일 달라..매일 달라지는 가격을 줄테니...나를 부자로 만들어줘!!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기가격이 언제 꺾이는지 (하강하다 상승, 상승하다 하강) 에 포인트를 주면 될 것 같다.하강하다가 상승한다면 그 지점'
+description: 'LeetCode Best Time to Buy and Sell Stock II를 풀었다. 가격이 하강하다 상승하는 지점에서 사고 상승하다 하강하는 지점에서 팔아 이익을 누적하는 JavaScript 풀이를 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

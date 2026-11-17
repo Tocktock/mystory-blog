@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch 타입에 대해서 알아보자!'
 pubDate: 2021-01-19T16:54:28.724Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈ElasticSearch 의 다양한 기능들을 둘러보기 전 꼭 알아야 할 타입들에 대해서 알아보겠습니다.!!진짜 진짜 진짜 중요하니 꼭 커피 스윽 마시고 읽어주세요!!Mapping 어떻게 Ela'
+description: 'Elasticsearch Mapping의 Text, Keyword, Numbers, Date, Object, Nested 타입을 정리합니다. 필요한 타입만 지정해 disk 비용을 줄이는 이유와 Object 배열에 Nested가 필요한 경우도 짚습니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

@@ -1,7 +1,7 @@
 ---
 title: 'Node.js Event loop 파헤치기'
 pubDate: 2021-02-15T10:05:45.189Z
-description: '🙄 그래서 Event loop 가 뭘까?  이전 포스트에서 Event loop 는 epoll_wait loop 로서 커널에 관심사를 알려주고 커널에서 알림이 blocking 상태를 해제하고 적절한 javascript API 로 변환하는 과정이라고 했습니다. 쉽게 말하'
+description: 'Node.js Event loop의 timers, poll, check 등 각 단계가 어떤 콜백을 실행하는지 정리합니다. setTimeout이 정확한 시간이 아닌 최소 지연 시간 뒤에 실행되는 이유도 예제로 설명합니다.'
 heroImage: '../../../assets/heroes/nodejs-event-loop.png'
 category: 'tech'
 series: 'backend-notes'
@@ -131,7 +131,7 @@ setImmediate() 는 setTimeout() 와 다른 단계에서 수행이 되며 동일�
 
 [ Bert Belder 의 강연](https://www.youtube.com/watch?v=PNa9OMajw9w&t=596s) 에서는 다음과 같은 그림을 통해 설명하고 있습니다.
 
-![](/blog/nodejs-event-loop/event-loop.png)
+![Node.js 이벤트 루프 단계를 그린 다이어그램. index.js를 실행한 뒤 타이머(setTimeout, setInterval), 네트워크·디스크·자식 프로세스, setImmediate, close 이벤트 순서로 돌고 process#exit로 끝난다.](../../../assets/heroes/nodejs-event-loop.png)
 
 ---
 

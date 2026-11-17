@@ -1,7 +1,7 @@
 ---
 title: '2. NestJS 블로그 만들기 - 리팩토링과 e2e 테스트!!'
 pubDate: 2021-02-09T03:29:56.808Z
-description: '이번에는 이전 포스트에서 다뤘던 내용에 대해서 Refactoring 을 하고 테스트도 해보겠습니다.계속 리팩토링 하다보니 위와 같은 구조가 만들어졌습니다.파일 이름이 바뀐 것도 있고, 내부 구현사항이 바뀐 것도 있습니다.리팩토링 하면서 설계의 중요성을 다시 느낍니다.C'
+description: 'NestJS 블로그의 user 모듈을 리팩토링하며 BadRequestException을 상속한 Custom Exception을 만들고, supertest로 이메일과 username 중복을 확인하는 e2e 테스트를 작성합니다.'
 heroImage: '../../../assets/heroes/nestjs-logo.png'
 category: 'tech'
 series: 'nestjs-blog'

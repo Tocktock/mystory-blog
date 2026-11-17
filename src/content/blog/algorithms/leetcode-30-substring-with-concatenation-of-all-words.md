@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][30] Substring with Concatenation of All Words 문제풀기!'
 pubDate: 2021-01-19T14:41:20.091Z
-description: '문제풀러가기✈문자열과 단어집을 줄테니 단어집의 모오오오든 단어를 포함하는 문자열의 부분 집합을 찾아줘!!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기단순히 Brute force 기법을 쓴다면 시간제한에 걸리게 된다.자료구조 Map을 통해 특정 문자를 logN '
+description: 'LeetCode 30 Substring with Concatenation of All Words를 C++로 풀었다. map으로는 시간 제한을 넘겨 unordered_map으로 바꿔 통과한 과정과 Map과 HashMap의 차이를 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

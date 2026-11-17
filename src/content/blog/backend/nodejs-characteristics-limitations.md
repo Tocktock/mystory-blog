@@ -1,7 +1,7 @@
 ---
 title: 'Node.js 의 특징과 한계'
 pubDate: 2021-02-02T06:02:08.453Z
-description: '초기 웹 페이지는 지금처럼 동적이지 않고 정적이었습니다.그런데 동적으로 좀 움직이면 좋겠는데.. 하고 나온 것이 Javascript 입니다.Javascript Javascript 는 브라우저의 자바스크립트 엔진을 통해 DOM Context 를 제어하며 동적인 웹페이지를'
+description: 'Node.js가 V8 엔진과 CommonJS를 바탕으로 탄생한 배경과, Multi Thread 서버와 비교한 Single Thread 기반 비동기 이벤트 루프의 동작을 정리합니다. 긴 연산에서 Block이 생기는 한계도 다룹니다.'
 category: 'tech'
 series: 'backend-notes'
 tags:

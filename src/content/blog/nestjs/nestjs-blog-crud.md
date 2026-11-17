@@ -1,7 +1,7 @@
 ---
 title: '2. NestJS 블로그 만들기 - CRUD 로 시작하자.'
 pubDate: 2021-01-22T03:27:16.863Z
-description: '저는 NestJS 전문가가 아닙니다.저 또한 NestJS 로 어플리케이션을 만들려고 한지 한달이 채 되지 않았습니다.다만 제가 공부하면서 습득하고 이해한 내용을 바탕으로 간단한 어플리케이션을 만들며 기본적인 지식을여러분께 같이 공유하는 것이 제 목적입니다.대부분의 정보'
+description: 'NestJS 블로그 만들기 시리즈 2편입니다. nest cli로 프로젝트를 만들고 nest g res 명령으로 users CRUD 템플릿을 생성해 실행한 뒤, Controller, Service, Module의 역할과 DI를 살펴봅니다.'
 heroImage: '../../../assets/heroes/nestjs-logo.png'
 category: 'tech'
 series: 'nestjs-blog'

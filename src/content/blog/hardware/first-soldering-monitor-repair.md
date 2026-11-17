@@ -70,10 +70,9 @@ PC를 재부팅하면 다시 소리가 나왔기 때문에 Windows나 드라이�
 - 이상하게 후면 RGB만 켜졌다
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/msi-monitor-back-cover.jpeg"
-    alt="분해를 시작하기 전, 스탠드를 분리한 MSI 모니터 뒷면"
-  />
+
+![분해를 시작하기 전, 스탠드를 분리한 MSI 모니터 뒷면](../../../assets/posts/first-soldering-monitor-repair/msi-monitor-back-cover.jpeg)
+
 </figure>
 
 다른 컴퓨터도 연결해보고, 전원 케이블과 콘센트도 바꿔봤다.  
@@ -200,7 +199,7 @@ PC를 재부팅하면 다시 소리가 나왔기 때문에 Windows나 드라이�
 
 모아놓고 보니 정말 수리할 수 있을 것 같은 준비물처럼 보였다.
 
-![작업대 위에 펼쳐둔 납땜 준비물들. 장갑, 공구 세트, 인두기, 납 흡입기, 솔더윅, USB-A 현미경, 멀티미터가 보인다.](/blog/first-soldering-monitor-repair/soldering-prep-tools.jpeg)
+![작업대 위에 펼쳐둔 납땜 준비물들. 장갑, 공구 세트, 인두기, 납 흡입기, 솔더윅, USB-A 현미경, 멀티미터가 보인다.](../../../assets/posts/first-soldering-monitor-repair/soldering-prep-tools.jpeg)
 
 그런데 요새는 정말 세상이 좋아졌다.
 
@@ -274,7 +273,7 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 
 숫자가 나온다는 것만으로 조금 뿌듯했다.
 
-![콘덴서 다리에 멀티미터 프로브를 대고 전압을 확인하던 장면](/blog/first-soldering-monitor-repair/multimeter-probes-on-capacitor.jpeg)
+![콘덴서 다리에 멀티미터 프로브를 대고 전압을 확인하던 장면](../../../assets/posts/first-soldering-monitor-repair/multimeter-probes-on-capacitor.jpeg)
 
 그중에서 기억에 남는 지점이 있었다.
 
@@ -310,7 +309,7 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 
 평소에는 그냥 모니터 한 대였는데, 열어보니 각자 역할이 다른 여러 부품이 모여 있었다.
 
-![후면 커버를 열고 드러난 모니터 내부 보드 전체](/blog/first-soldering-monitor-repair/monitor-board-overview.jpeg)
+![후면 커버를 열고 드러난 모니터 내부 보드 전체](../../../assets/posts/first-soldering-monitor-repair/monitor-board-overview.jpeg)
 
 증상은 조금 이상했다.
 
@@ -322,9 +321,9 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 
 파워보드에는 `1000µF 35V` 규격으로 보이는 콘덴서가 여러 개 있었다.
 
-![파워보드 한쪽에 나란히 서 있던 파란색 전해콘덴서들](/blog/first-soldering-monitor-repair/power-board-capacitors-front.jpeg)
+![파워보드 한쪽에 나란히 서 있던 파란색 전해콘덴서들](../../../assets/posts/first-soldering-monitor-repair/power-board-capacitors-front.jpeg)
 
-![방열판 옆에 붙어 있던 `1000µF 35V` 전해콘덴서들](/blog/first-soldering-monitor-repair/power-board-capacitors-side.jpeg)
+![방열판 옆에 붙어 있던 `1000µF 35V` 전해콘덴서들](../../../assets/posts/first-soldering-monitor-repair/power-board-capacitors-side.jpeg)
 
 처음에는 용량과 전압만 같으면 되는 줄 알았다.
 
@@ -335,10 +334,9 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 큰 콘덴서도 눈에 띄었다.
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/large-capacitor-on-board.jpeg"
-    alt="보드 가장자리의 큰 전해콘덴서와 주변 전원부 부품들"
-  />
+
+![보드 가장자리의 큰 전해콘덴서와 주변 전원부 부품들](../../../assets/posts/first-soldering-monitor-repair/large-capacitor-on-board.jpeg)
+
 </figure>
 
 지금 생각해보면 콘덴서가 실제로 고장 났는지 정확하게 확인한 것은 아니었다.
@@ -429,10 +427,9 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 콘덴서 하나를 뺐을 뿐인데 거의 수리를 끝낸 기분이었다.
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/replacement-capacitors.jpeg"
-    alt="교체하려고 준비해둔 새 전해콘덴서들"
-  />
+
+![교체하려고 준비해둔 새 전해콘덴서들](../../../assets/posts/first-soldering-monitor-repair/replacement-capacitors.jpeg)
+
 </figure>
 
 ## 겨우 콘덴서를 교체했다
@@ -444,17 +441,15 @@ DC 전압을 측정할 때는 어떤 기호를 선택해야 하는지도 다시 
 다시 납을 녹이고, 흡입하고, 솔더윅을 대고, 구멍이 뚫렸는지 확인했다.
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/desoldered-pads-closeup.jpeg"
-    alt="콘덴서를 빼고 난 뒤 PCB 뒷면에 남은 납땜 흔적"
-  />
+
+![콘덴서를 빼고 난 뒤 PCB 뒷면에 남은 납땜 흔적](../../../assets/posts/first-soldering-monitor-repair/desoldered-pads-closeup.jpeg)
+
 </figure>
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/desoldered-pads-wide.jpeg"
-    alt="반복해서 납을 녹이고 흡입하던 PCB 뒷면 작업 구역"
-  />
+
+![반복해서 납을 녹이고 흡입하던 PCB 뒷면 작업 구역](../../../assets/posts/first-soldering-monitor-repair/desoldered-pads-wide.jpeg)
+
 </figure>
 
 새 콘덴서를 넣을 때는 극성도 몇 번이나 확인했다.
@@ -554,10 +549,9 @@ OSD도 나오지 않았다.
 정말 좋다.
 
 <figure class="wide-image-frame">
-  <img
-    src="/blog/first-soldering-monitor-repair/new-monitor-box-cat.jpeg"
-    alt="새 모니터 박스에 먼저 자리 잡은 만양이"
-  />
+
+![새 모니터 박스에 먼저 자리 잡은 만양이](../../../assets/posts/first-soldering-monitor-repair/new-monitor-box-cat.jpeg)
+
 </figure>
 
 모니터가 고장 나지 않았다면 새 제품을 살 생각도 하지 않았을 텐데, 결과적으로는 최신형 OLED 모니터로 바뀌었다.

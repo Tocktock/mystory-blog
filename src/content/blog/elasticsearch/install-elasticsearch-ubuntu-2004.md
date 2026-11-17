@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch 설치하기 (Ubuntu 20.04)'
 pubDate: 2021-01-13T02:03:22.590Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈다음과 같은 사항이 필요합니다.Ubuntu 20.04 버전이 깔려 있는 OS듀얼코어 이상의 cpu 와 4gb 이상의 램 원활한 실행을 위해 필요하며 필수는 아닙니다.ElasticSearch는 '
+description: 'Ubuntu 20.04에 Elasticsearch 7.x를 APT로 설치하는 과정을 정리합니다. GPG 키와 저장소 등록, network.host 설정, systemctl 실행과 자동 시작, localhost:9200 확인까지 단계별로 다룹니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

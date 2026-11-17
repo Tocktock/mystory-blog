@@ -5,9 +5,9 @@ import SiteLayout from './SiteLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostMeta from '../components/records/PostMeta.astro';
 import RecordSummary from '../components/records/RecordSummary.astro';
-import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
 import { getCategory } from '../data/categories';
-import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../utils/jsonld';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildProfilePageJsonLd } from '../utils/jsonld';
 import { routes } from '../utils/routes';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
 
@@ -19,6 +19,8 @@ type Props = CollectionEntry<'blog'>['data'] & {
   sectionPath?: string;
   sectionKicker?: string;
   showPostMeta?: boolean;
+  /** `profile` marks the About page as a ProfilePage about the author instead of a BlogPosting. */
+  pageType?: 'article' | 'profile';
 };
 
 const {
@@ -39,12 +41,13 @@ const {
   problem,
   lesson,
   sectionName = '기록',
-  sectionPath = '/records',
+  sectionPath = routes.records,
   sectionKicker,
   showPostMeta: providedShowPostMeta,
+  pageType = 'article',
 } = Astro.props as Props;
 const lang = providedLang === 'en' ? 'en' : 'ko';
-const isRecordPost = sectionPath === '/records';
+const isRecordPost = sectionPath === routes.records;
 const showPostMeta = providedShowPostMeta ?? isRecordPost;
 const categoryEntry = getCategory(category);
 const showHero = isRecordPost && Boolean(heroImage);
@@ -70,24 +73,46 @@ const imageCandidates = [ogImageURL, heroImageURL].filter(
   (value): value is string => typeof value === 'string',
 );
 const jsonLdImages = Array.from(new Set(imageCandidates));
-const breadcrumbItems = [
-  { position: 1, name: SITE_TITLE, item: siteURL.toString() },
-  { position: 2, name: sectionName, item: new URL(sectionPath, siteURL).toString() },
-  { position: 3, name: title, item: canonicalURL },
+// Mirror the visible trail: Home / 기록 / category / post. A page that is its own section
+// (About) stops at Home / section so the same URL is not listed twice.
+const sectionURL = new URL(sectionPath, siteURL).toString();
+const breadcrumbTrail = [
+  { name: SITE_TITLE, item: siteURL.toString() },
+  { name: sectionName, item: sectionURL },
+  ...(isRecordPost
+    ? [
+        {
+          name: categoryEntry.label,
+          item: new URL(routes.category(categoryEntry.slug), siteURL).toString(),
+        },
+      ]
+    : []),
+  ...(sectionURL === canonicalURL ? [] : [{ name: title, item: canonicalURL }]),
 ];
-const articleJsonLd = buildArticleJsonLd({
-  canonicalUrl: canonicalURL,
-  title,
-  description,
-  lang,
-  datePublished: publishedISO,
-  dateModified: updatedISO,
-  author: SITE_AUTHOR,
-  imageUrls: jsonLdImages,
-});
 const breadcrumbJsonLd = buildBreadcrumbJsonLd({
-  items: breadcrumbItems,
+  items: breadcrumbTrail.map((crumb, index) => ({ position: index + 1, ...crumb })),
 });
+const pageJsonLd =
+  pageType === 'profile'
+    ? buildProfilePageJsonLd({
+        siteUrl: siteURL.toString(),
+        canonicalUrl: canonicalURL,
+        title,
+        description,
+        lang,
+      })
+    : buildArticleJsonLd({
+        siteUrl: siteURL.toString(),
+        canonicalUrl: canonicalURL,
+        title,
+        description,
+        lang,
+        datePublished: publishedISO,
+        dateModified: updatedISO,
+        imageUrls: jsonLdImages,
+        section: isRecordPost ? categoryEntry.label : undefined,
+        keywords: tags,
+      });
 ---
 
 <SiteLayout
@@ -96,13 +121,16 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
   image={ogImageURL}
   lang={lang}
   mainLabelledBy="article-title"
+  article={isRecordPost
+    ? {
+        publishedTime: publishedISO,
+        modifiedTime: updatedISO,
+        section: categoryEntry.label,
+        tags,
+      }
+    : undefined}
 >
-  <script
-    slot="head"
-    type="application/ld+json"
-    is:inline
-    set:html={serializeJsonLd(articleJsonLd)}
-  />
+  <script slot="head" type="application/ld+json" is:inline set:html={serializeJsonLd(pageJsonLd)} />
   <script
     slot="head"
     type="application/ld+json"
@@ -374,6 +402,16 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     border: 1px solid var(--line);
     background: var(--bg-raised);
     overflow: hidden;
+  }
+
+  /* Markdown images inside the frame arrive wrapped in a <p>; let it fill the frame. */
+  .post-content :global(.article-body .wide-image-frame > p) {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
   }
 
   .post-content :global(.article-body .wide-image-frame img) {

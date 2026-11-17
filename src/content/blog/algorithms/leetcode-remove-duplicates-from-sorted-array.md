@@ -1,7 +1,7 @@
 ---
 title: '[📣top interview question] Remove Duplicates from Sorted Array Solution 문제풀기!'
 pubDate: 2021-01-18T06:34:58.505Z
-description: '문제풀러가기✈정렬된 배열을 하나 줄게!중복된 숫자 없는 배열을 갖게 해줘!!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기문제를 잘 읽어보면, 다른 배열을 만들어서 사용하지 말고 추가 메모리는 하나만 사용하라고 명시되어있다!.이 문제는 채점할 때 다음과 같이 하'
+description: 'LeetCode top interview question의 Remove Duplicates from Sorted Array 풀이입니다. 새 배열 없이 입력 배열 안에서 두 인덱스로 중복 없는 값을 앞으로 채우는 방법을 정리합니다.'
 category: 'tech'
 series: 'algorithms'
 tags:
