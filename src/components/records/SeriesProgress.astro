@@ -37,35 +37,35 @@ const nextPost =
           <h2 id="series-progress-title">{seriesEntry.title}</h2>
           <p>
             이 글은 "{seriesEntry.title}" 시리즈의{' '}
-            {currentPosition ? `${currentPosition}번째` : '한'} 기록입니다.
+            {currentPosition ? `${currentPosition}번째` : '한'} 글이에요.
           </p>
         </div>
         {progressLabel && <span class="series-progress__count">{progressLabel}</span>}
       </header>
 
       {(previousPost || nextPost) && (
-        <nav class="series-progress__nav" aria-label="시리즈 이전 다음 기록">
+        <nav class="series-progress__nav" aria-label="시리즈 이전 글과 다음 글">
           {previousPost ? (
             <a href={routes.record(previousPost.id)} class="series-progress__nav-link">
-              <span>이전 기록</span>
+              <span>이전 글</span>
               <strong>{previousPost.data.title}</strong>
             </a>
           ) : (
             <span class="series-progress__nav-link series-progress__nav-link--empty">
-              <span>이전 기록</span>
-              <strong>첫 번째 기록입니다</strong>
+              <span>이전 글</span>
+              <strong>첫 번째 글이에요</strong>
             </span>
           )}
 
           {nextPost ? (
             <a href={routes.record(nextPost.id)} class="series-progress__nav-link">
-              <span>다음 기록</span>
+              <span>다음 글</span>
               <strong>{nextPost.data.title}</strong>
             </a>
           ) : (
             <span class="series-progress__nav-link series-progress__nav-link--empty">
-              <span>다음 기록</span>
-              <strong>마지막 기록</strong>
+              <span>다음 글</span>
+              <strong>마지막 글이에요</strong>
             </span>
           )}
         </nav>
@@ -131,7 +131,7 @@ const nextPost =
     flex: none;
     color: var(--fg);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--label-md);
     letter-spacing: 0.14em;
   }
 
@@ -160,7 +160,7 @@ const nextPost =
   .series-progress__nav-link > span {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.06em;
   }
 
@@ -202,7 +202,7 @@ const nextPost =
   .series-progress__order {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.1em;
     line-height: 2.2;
   }
@@ -225,7 +225,7 @@ const nextPost =
     flex: none;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--label-xs);
   }
 
   .series-progress__item--current a {
@@ -241,7 +241,7 @@ const nextPost =
     margin-top: 1.75rem;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.06em;
     text-decoration: none;
   }

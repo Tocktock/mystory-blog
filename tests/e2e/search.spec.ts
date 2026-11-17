@@ -41,21 +41,19 @@ test('site search does not index the header, skip link or INDEX menu', async ({ 
 
   expect(indexedContent.length).toBeGreaterThan(0);
   for (const content of indexedContent) {
-    expect(content).not.toMatch(/본문 바로가기|INDEX \+|CLOSE ×|AN ARCHIVE IN DEEP SPACE/);
+    expect(content).not.toMatch(/본문 바로가기|INDEX \+|CLOSE ×|JI-YONG\.COM/);
   }
 });
 
-test('site search no-results copy uses the record-room empty state', async ({ page }) => {
+test('site search no-results copy suggests other ways to browse', async ({ page }) => {
   await page.goto('/search');
 
   await page.waitForSelector('#search input', { timeout: 10000 });
   const searchBox = page.getByLabel('검색어');
   await searchBox.fill('zzzz-no-record-drawer-0000');
 
-  await expect(page.getByText('비어 있는 서랍입니다')).toBeVisible({ timeout: 15000 });
-  await expect(
-    page.getByText('다른 단어로 다시 찾거나 기록과 시리즈를 둘러볼 수 있습니다'),
-  ).toBeVisible();
+  await expect(page.getByText('검색 결과가 없어요')).toBeVisible({ timeout: 15000 });
+  await expect(page.getByText('다른 단어로 찾아보거나 기록과 시리즈를 둘러보세요')).toBeVisible();
 });
 
 test.describe('without JavaScript', () => {
@@ -66,7 +64,7 @@ test.describe('without JavaScript', () => {
 
     await expect(page.getByLabel('검색어')).toBeVisible();
     await expect(page.getByRole('button', { name: '검색' })).toBeVisible();
-    await expect(page.getByText(/검색 결과를 보려면 JavaScript가 필요합니다/)).toBeVisible();
-    await expect(page.getByText(/검색 서랍을 다시 사용할 수 있을 때/)).toBeVisible();
+    await expect(page.getByText(/검색하려면 JavaScript가 필요해요/)).toBeVisible();
+    await expect(page.getByText(/기록 목록이나 시리즈에서 글을 찾아보세요/)).toBeVisible();
   });
 });

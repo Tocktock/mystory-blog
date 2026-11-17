@@ -18,21 +18,21 @@ import { routes } from '../utils/routes';
 
 const PAGE_TITLE = `만냥구름 | ${SITE_TITLE}`;
 const PAGE_DESCRIPTION =
-  '기록실을 함께 쓰는 만냥이와 구름이를 통해 관찰, 돌봄, 원인 이해를 차분히 남기는 공간입니다.';
+  '같이 사는 고양이 만냥이와 구름이 이야기예요. 사진과 함께, 둘을 돌보며 알게 된 것들을 적어요.';
 
 const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
 const observationNotes = [
   {
     title: '먼저 바라보기',
-    description: '행동을 바로 판단하기보다 반복되는 표정, 자리, 움직임을 먼저 봅니다.',
+    description: '바로 혼내기보다 자주 보이는 표정, 자리, 움직임을 먼저 봐요.',
   },
   {
     title: '원인을 이해하기',
-    description: '불편한 행동에도 이유가 있다고 보고, 환경과 습관을 함께 살핍니다.',
+    description: '이상한 행동에도 이유가 있다고 보고, 주변 환경부터 살펴요.',
   },
   {
-    title: '돌봄을 기록으로 남기기',
-    description: '작은 해결과 따뜻한 순간을 기록해 다음 선택의 기준으로 삼습니다.',
+    title: '적어 두기',
+    description: '효과가 있었던 방법과 좋았던 순간을 적어 두고 다음에 참고해요.',
   },
 ] as const;
 
@@ -53,7 +53,7 @@ const observationPosts = (await getCollection('blog'))
       kicker="PERSONAL / MANYANG & GUREUM"
       title="만냥구름"
       titleId="manyang-gureum-title"
-      lede="기록실을 함께 쓰는 두 고양이입니다. 귀여운 장면만 모으기보다, 작은 변화와 불편의 이유를 관찰하고 돌보는 방식을 함께 남깁니다."
+      lede="같이 사는 고양이 만냥이와 구름이예요. 귀여운 사진도 모으고, 둘을 돌보면서 알게 된 것들도 적어 둬요."
     >
       <nav class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
         <TextLink href="#cat-profiles">둘 소개 보기</TextLink>
@@ -69,8 +69,8 @@ const observationPosts = (await getCollection('blog'))
         id="observation-bridge"
       >
         <SectionHead
-          kicker="01 / OBSERVATION & CARE"
-          title="관찰과 돌봄으로 남긴 기준"
+          kicker="01 / CARE"
+          title="돌보면서 배운 것"
           titleId="observation-bridge-title"
         />
 
@@ -91,8 +91,7 @@ const observationPosts = (await getCollection('blog'))
             )
           }
           <p class="observation-bridge__intro">
-            만냥구름은 기록실의 장식이 아니라, 문제를 보기 전에 먼저 살피고 원인을 이해하려는 태도를
-            매일 확인하게 해주는 존재입니다.
+            둘을 키우면서, 행동만 보고 판단하기 전에 이유부터 살피는 습관이 생겼어요.
           </p>
         </div>
 
@@ -112,26 +111,18 @@ const observationPosts = (await getCollection('blog'))
       </section>
 
       <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
-        <SectionHead
-          kicker="02 / ROOMMATES"
-          title="기록실을 함께 쓰는 고양이들"
-          titleId="cat-profiles-title"
-        />
+        <SectionHead kicker="02 / PROFILES" title="만냥이와 구름이" titleId="cat-profiles-title" />
         <div class="cat-profiles__grid">
           {cats.map((cat) => <CatProfileCard cat={cat} />)}
         </div>
       </section>
 
       <div id="cat-gallery" class="manyang-page__gallery">
-        <CatGallery photos={catPhotos} kicker="03 / GALLERY" />
+        <CatGallery photos={catPhotos} kicker="03 / PHOTOS" />
       </div>
 
       <section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
-        <SectionHead
-          kicker="04 / OBSERVATION LOG"
-          title="만냥구름 관찰일지"
-          titleId="cat-notes-title"
-        />
+        <SectionHead kicker="04 / NOTES" title="만냥구름 관찰일지" titleId="cat-notes-title" />
 
         {
           observationPosts.length > 0 ? (
@@ -149,11 +140,11 @@ const observationPosts = (await getCollection('blog'))
             </EntryList>
           ) : (
             <EmptyState
-              eyebrow={uiCopy.emptyDrawer}
-              title={uiCopy.emptyDrawerTitle}
-              description="아직 만냥구름 관찰일지는 꺼낼 기록이 없습니다. 사진첩을 먼저 보거나 전체 기록에서 다른 서랍을 열어볼 수 있습니다."
+              eyebrow={uiCopy.emptyLabel}
+              title={uiCopy.emptyTitle}
+              description="아직 관찰일지에 쓴 글이 없어요. 먼저 사진첩을 구경해 보세요."
               href={routes.records}
-              linkLabel="전체 기록 보기"
+              linkLabel="다른 글 보기"
               compact
             />
           )

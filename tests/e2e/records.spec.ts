@@ -16,7 +16,7 @@ test('records archive exposes record-type orientation and optional card metadata
 }) => {
   await page.goto('/records');
 
-  const recordTypes = page.getByRole('complementary', { name: '기록 갈래' });
+  const recordTypes = page.getByRole('complementary', { name: '글 종류' });
   await expect(recordTypes).toBeVisible();
   await expect(recordTypes.getByText('생각 기록')).toBeVisible();
 

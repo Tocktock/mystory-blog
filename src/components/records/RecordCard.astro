@@ -58,7 +58,7 @@ const metaItems = [
   <p class="record-card__description">{post.data.description}</p>
   {
     intentItems.length > 0 && (
-      <dl class="record-card__intent" aria-label="기록 의도">
+      <dl class="record-card__intent" aria-label="문제와 배운 것">
         {intentItems.map((item) => (
           <div>
             <dt>{item.label}</dt>
@@ -120,7 +120,7 @@ const metaItems = [
   .record-card__intent dt {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
   }
 
@@ -139,7 +139,7 @@ const metaItems = [
     padding: 0;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
     list-style: none;
   }

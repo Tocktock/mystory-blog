@@ -8,20 +8,18 @@ import '../styles/search.css';
 
 <SiteLayout
   title={`기록 찾기 | ${SITE_TITLE}`}
-  description="기술 노트, 일상 기록, 만냥구름 이야기까지 기록실에서 찾아봅니다."
+  description="기술 글, 일상, 고양이 이야기까지 블로그 안의 글을 검색해요."
   lang="ko"
   mainLabelledBy="search-title"
 >
   <link slot="head" rel="stylesheet" href="/pagefind/pagefind-ui.css" />
   <div class="search-page">
     <PageHero
-      kicker="DISCOVERY / SEARCH"
+      kicker="SEARCH"
       title="기록 찾기"
       titleId="search-title"
-      lede="기억나는 단어를 입력해보세요. 기술 노트, 일상 기록, 만냥구름 이야기까지 함께 찾아봅니다."
-    >
-      <p class="meta search-page__eyebrow" slot="top">{uiCopy.searchDrawer}</p>
-    </PageHero>
+      lede="기억나는 단어를 입력해 보세요. 기술 글부터 일상, 고양이 이야기까지 한 번에 찾아 드려요."
+    />
     <div class="shell search-page__body">
       <div
         id="search"
@@ -38,14 +36,13 @@ import '../styles/search.css';
                 id="fallback-search"
                 name="q"
                 type="search"
-                placeholder="기록실에서 찾아볼게요"
+                placeholder="검색어를 입력하세요"
               />
               <button type="submit">검색</button>
             </div>
           </form>
           <p class="search-page__noscript-note">
-            검색 결과를 보려면 JavaScript가 필요합니다. 대신 기록과 시리즈를 열어보거나 검색 서랍을
-            다시 사용할 수 있을 때 찾아볼 수 있습니다.
+            검색하려면 JavaScript가 필요해요. 대신 기록 목록이나 시리즈에서 글을 찾아보세요.
           </p>
         </noscript>
       </div>
@@ -104,13 +101,13 @@ import '../styles/search.css';
           bundlePath: '/pagefind/',
           showImages: false,
           translations: {
-            placeholder: '기록실에서 찾아볼게요…',
+            placeholder: '검색어를 입력하세요',
             zero_results:
               document.querySelector('#search')?.dataset.zeroResults ??
-              '비어 있는 서랍입니다. 다른 단어로 다시 찾아볼 수 있습니다.',
+              '검색 결과가 없어요. 다른 단어로 찾아보세요.',
             clear_search: '검색어 지우기',
             load_more: '더 보기',
-            search_label: '기록 검색',
+            search_label: '글 검색',
           },
         });
 
@@ -145,9 +142,9 @@ import '../styles/search.css';
           const strong = document.createElement('strong');
           const description = document.createElement('p');
           fallback.className = 'search-page__fallback';
-          strong.textContent = container.dataset.fallbackTitle ?? '검색 서랍을 아직 열 수 없어요.';
+          strong.textContent = container.dataset.fallbackTitle ?? '검색을 불러오지 못했어요.';
           description.textContent =
-            container.dataset.fallbackDescription ?? '빌드 후 생성되는 Pagefind 색인이 필요합니다.';
+            container.dataset.fallbackDescription ?? '잠시 후 다시 시도해 주세요.';
           title.append(strong);
           fallback.append(title, description);
           container.replaceChildren(fallback);

@@ -6,48 +6,39 @@ const shelves = [
   {
     title: 'AI & Agent 실험실',
     description:
-      '도구를 직접 만들고 써보며, 어디까지 맡길 수 있고 어디부터 사람이 판단해야 하는지 남긴 기록입니다.',
+      'AI 도구를 직접 만들고 써 보면서, 어디까지 맡기고 어디부터 사람이 판단해야 하는지 적었어요.',
     href: routes.series,
     label: '실험실 보기',
-    kind: 'LAB',
-    note: '실험, 판단, 다시 쓰는 기준을 한곳에 모읍니다.',
+    kind: 'AI',
   },
   {
     title: 'Backend 설계 노트',
-    description:
-      '요구사항과 운영 흐름을 읽고, API와 데이터 구조를 어디에 세울지 정리한 기술 기록입니다.',
+    description: '요구사항을 보고 API와 데이터 구조를 어떻게 잡았는지 정리한 글이에요.',
     href: routes.category('tech'),
     label: '설계 노트 보기',
-    kind: 'NOTES',
-    note: '구조를 먼저 읽고 작은 변경으로 확인합니다.',
+    kind: 'BACKEND',
   },
   {
     title: '문제를 다시 푸는 법',
-    description:
-      '처음 본 현상을 바로 결론내리지 않고, 원인과 선택지를 다시 분해해본 생각의 기록입니다.',
+    description: '막혔던 문제를 다시 들여다보면서 원인과 선택지를 하나씩 정리한 글이에요.',
     href: routes.category('thought'),
     label: '생각 보기',
-    kind: 'THOUGHT',
-    note: '일하는 방식과 생활의 관찰을 같이 둡니다.',
+    kind: 'THINKING',
   },
   {
     title: '만냥구름 관찰일지',
-    description: '기록실 옆자리를 채우는 두 고양이의 표정과 습관을 조용히 모아둡니다.',
+    description: '같이 사는 고양이 만냥이와 구름이를 돌보며 알게 된 것들이에요.',
     href: routes.manyangGureum,
     label: '관찰일지 보기',
-    kind: 'OBSERVATION',
-    note: '돌봄과 관찰도 기록실의 한 층입니다.',
+    kind: 'CATS',
   },
 ];
 ---
 
 <section class="bookshelf" aria-labelledby="bookshelf-title">
   <div class="shell">
-    <SectionHead kicker="02 / SHELVES" title="기록실 책장" titleId="bookshelf-title">
-      <p class="bookshelf__intro">
-        Backend와 AI 실험, 문제를 다시 푸는 습관, 그리고 만냥구름의 관찰이 같은 기록실에서 서로를
-        설명합니다.
-      </p>
+    <SectionHead kicker="02 / TOPICS" title="주제별로 보기" titleId="bookshelf-title">
+      <p class="bookshelf__intro">주로 이런 이야기를 써요.</p>
     </SectionHead>
 
     <div class="bookshelf__grid">
@@ -59,7 +50,6 @@ const shelves = [
             </span>
             <h3>{shelf.title}</h3>
             <p>{shelf.description}</p>
-            <p class="bookshelf__note">{shelf.note}</p>
             <span class="bookshelf__link">
               {shelf.label} <span aria-hidden="true">↗</span>
             </span>
@@ -116,18 +106,12 @@ const shelves = [
     word-break: keep-all;
   }
 
-  .bookshelf__shelf .bookshelf__note {
-    margin-top: 0.75rem;
-    color: var(--dim);
-    font-size: 0.85rem;
-  }
-
   .bookshelf__link {
     display: inline-block;
     margin-top: 1.5rem;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.14em;
   }
 

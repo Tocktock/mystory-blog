@@ -11,12 +11,12 @@
   --bg-raised: #0a0d0f;
   --fg: #e8e8e6;
   --fg-strong: #ffffff;
-  --text: #c7cbcd;
-  --muted: #9aa3a8;
-  --dim: #8a9398;
-  --line: #25292c;
-  --line-strong: #3d4549;
-  --rule-accent: #5a6a76;
+  --text: #d5d8da;
+  --muted: #b3babe;
+  --dim: #a2aaaf;
+  --line: #3c4347;
+  --line-strong: #5a646a;
+  --rule-accent: #718391;
   --accent: #b5c9d8;
   --selection: #354551;
 
@@ -26,6 +26,10 @@
   /* DM Mono has no Hangul; inside code, Korean falls back to a system sans, not the serif. */
   --font-code:
     'DM Mono', ui-monospace, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  /* Mono label sizes: small caps-style kickers, meta lines and pills. */
+  --label-xs: 0.72rem;
+  --label-sm: 0.78rem;
+  --label-md: 0.84rem;
 
   /* Layout */
   --shell: 1190px;
@@ -247,7 +251,7 @@ summary:focus-visible,
   margin: 0;
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: var(--label-xs);
   font-weight: 400;
   letter-spacing: 0.22em;
   line-height: 1.6;
@@ -256,7 +260,7 @@ summary:focus-visible,
 .meta {
   color: var(--dim);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--label-sm);
   letter-spacing: 0.04em;
   line-height: 1.7;
 }
@@ -270,7 +274,7 @@ summary:focus-visible,
   background: var(--bg-raised);
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--label-md);
   letter-spacing: 0.08em;
   text-decoration: none;
 }

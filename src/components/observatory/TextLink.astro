@@ -22,8 +22,9 @@ const arrow = direction === 'back' ? '←' : '↗';
     align-items: baseline;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
-    letter-spacing: 0.14em;
+    font-size: var(--label-sm);
+    /* Most link labels are Hangul, which wide tracking breaks into loose syllables. */
+    letter-spacing: 0.06em;
     text-decoration: none;
   }
 

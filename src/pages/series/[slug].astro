@@ -34,11 +34,9 @@ const { seriesItem, posts } = Astro.props as Props;
 const category = getCategory(seriesItem.category);
 const statusLabel = getSeriesStatusLabel(seriesItem.status);
 const shelfItems = [
-  seriesItem.purpose?.trim()
-    ? { label: '이 선반의 목적', value: seriesItem.purpose.trim() }
-    : undefined,
+  seriesItem.purpose?.trim() ? { label: '모은 이유', value: seriesItem.purpose.trim() } : undefined,
   seriesItem.readingPromise?.trim()
-    ? { label: '읽는 길', value: seriesItem.readingPromise.trim() }
+    ? { label: '읽고 나면', value: seriesItem.readingPromise.trim() }
     : undefined,
 ].filter((item): item is { label: string; value: string } => Boolean(item));
 const recordCount = String(posts.length).padStart(2, '0');
@@ -52,7 +50,7 @@ const recordCount = String(posts.length).padStart(2, '0');
 >
   <div class="series-detail">
     <PageHero
-      kicker={`SERIES / ${recordCount} RECORDS`}
+      kicker={`SERIES / ${recordCount} POSTS`}
       title={seriesItem.title}
       titleId="series-detail-title"
       lede={seriesItem.description}
@@ -64,7 +62,7 @@ const recordCount = String(posts.length).padStart(2, '0');
       </p>
       <div class="meta series-detail__meta" aria-label="시리즈 정보">
         <span>{category.label}</span>
-        <span>{posts.length}개 기록</span>
+        <span>글 {posts.length}편</span>
         {statusLabel && <span>{statusLabel}</span>}
       </div>
     </PageHero>
@@ -72,7 +70,7 @@ const recordCount = String(posts.length).padStart(2, '0');
     <div class="shell series-detail__body">
       {
         shelfItems.length > 0 && (
-          <section class="series-detail__shelf" aria-label="시리즈 선반 안내">
+          <section class="series-detail__shelf" aria-label="시리즈 소개">
             {shelfItems.map((item) => (
               <div class="series-detail__shelf-row">
                 <p class="meta">{item.label}</p>
@@ -84,8 +82,8 @@ const recordCount = String(posts.length).padStart(2, '0');
       }
 
       <section class="series-detail__records" aria-labelledby="series-records-title">
-        <SectionHead kicker="READING ORDER" title="기록 순서" titleId="series-records-title">
-          <p class="meta series-detail__records-note">읽는 순서 · {posts.length}편</p>
+        <SectionHead kicker="READING ORDER" title="읽는 순서" titleId="series-records-title">
+          <p class="meta series-detail__records-note">모두 {posts.length}편</p>
         </SectionHead>
 
         <ol class="series-detail__list">
@@ -207,7 +205,7 @@ const recordCount = String(posts.length).padStart(2, '0');
   .series-detail__item :global(.series-detail__date) {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--label-xs);
   }
 
   .series-detail__order {

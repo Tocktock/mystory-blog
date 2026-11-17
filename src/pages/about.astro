@@ -8,7 +8,7 @@ import { routes } from '../utils/routes';
 const principles = [
   {
     title: '마음가짐과 몰입',
-    summary: '일의 의미는 주어진 역할보다 어떤 마음으로 더 잘 풀어보려는지에서 시작됩니다.',
+    summary: '무슨 일을 하느냐보다 어떤 마음으로 하느냐가 결과를 바꾼다고 믿어요.',
     qHref: '#q1',
     qLabel: 'Q1에서 자세히 보기',
     relatedLinks: [
@@ -17,7 +17,7 @@ const principles = [
   },
   {
     title: '문제를 먼저 정의하기',
-    summary: '바로 만들기보다 내가 진짜 해결하려는 문제가 무엇인지 먼저 좁힙니다.',
+    summary: '바로 만들기 전에, 내가 진짜 풀려는 문제가 뭔지부터 좁혀요.',
     qHref: '#q2',
     qLabel: 'Q2에서 자세히 보기',
     relatedLinks: [
@@ -30,7 +30,7 @@ const principles = [
   },
   {
     title: '유대감과 협업',
-    summary: '같이 일하는 사람의 이유를 이해할수록 판단과 실행이 덜 흔들립니다.',
+    summary: '같이 일하는 사람이 왜 그렇게 하는지 알면, 판단도 실행도 덜 흔들려요.',
     qHref: '#q4',
     qLabel: 'Q4에서 자세히 보기',
     relatedLinks: [
@@ -39,7 +39,7 @@ const principles = [
   },
   {
     title: '실패하면 다시 풀기',
-    summary: '실패를 감정으로 끝내지 않고 다시 풀 수 있는 상태로 돌아오는 일을 중요하게 봅니다.',
+    summary: '안 풀릴 땐 잠깐 쉬더라도, 결국 문제를 다시 푸는 게 가장 확실한 방법이었어요.',
     qHref: '#q5',
     qLabel: 'Q5에서 자세히 보기',
     relatedLinks: [
@@ -52,14 +52,14 @@ const principles = [
   },
   {
     title: '관찰하고 이해하기',
-    summary: '만냥구름을 돌보며 배운 관찰은 사람, 일, 시스템을 대하는 방식으로 이어집니다.',
+    summary: '만냥이와 구름이를 돌보며 배운 관찰이, 사람과 일을 대하는 방식으로 이어졌어요.',
     qHref: '#q7',
     qLabel: 'Q7에서 자세히 보기',
     relatedLinks: [{ href: routes.manyangGureum, label: '만냥구름 보기' }],
   },
   {
     title: '틀릴 수 있음을 인정하기',
-    summary: '배움 앞에서는 열어두고, 아니라고 판단한 것에는 단호하게 기준을 세웁니다.',
+    summary: '배울 때는 마음을 열어 두고, 아니라고 생각하는 건 분명하게 말해요.',
     qHref: '#q8',
     qLabel: 'Q8에서 자세히 보기',
     relatedLinks: [
@@ -83,7 +83,7 @@ const principles = [
   ogImage="/og/site.png"
   sectionName="소개"
   sectionPath="/about"
-  sectionKicker="IDENTITY / ABOUT"
+  sectionKicker="ABOUT"
 >
   <figure class="about-photo">
     <Image
@@ -94,7 +94,7 @@ const principles = [
       loading="eager"
       decoding="async"
     />
-    <figcaption class="meta">기록실의 책상 / 지용과 만냥구름</figcaption>
+    <figcaption class="meta">지용과 만냥구름</figcaption>
   </figure>
 
   <p class="meta about-header">Interview with JiYong</p>
@@ -103,12 +103,11 @@ const principles = [
     <div class="about-manual__intro">
       <p class="kicker">01 / MANUAL</p>
       <p class="meta about-manual__eyebrow">지용 매뉴얼</p>
-      <h2 id="jiyong-manual-title">내가 문제를 보고, 풀고, 다시 기록하는 방식</h2>
+      <h2 id="jiyong-manual-title">제가 일하고 생각하는 방식</h2>
       <p>
-        긴 인터뷰를 읽기 전에 먼저 볼 수 있는 짧은 지도입니다. 마음가짐, 문제 정의, 협업, 실패,
-        관찰, 성장이라는 기준으로 내가 일과 생활을 어떻게 바라보는지 정리했습니다.
+        아래 인터뷰를 여섯 가지로 줄여 봤어요. 궁금한 항목을 누르면 인터뷰의 해당 질문으로 넘어가요.
       </p>
-      <TextLink href="#full-interview">전체 인터뷰로 내려가기</TextLink>
+      <TextLink href="#full-interview">인터뷰 전체 읽기</TextLink>
     </div>
     <ol class="about-manual__grid" aria-label="지용의 원칙">
       {
@@ -136,11 +135,8 @@ const principles = [
   <section class="about-interview-intro" id="full-interview" aria-labelledby="full-interview-title">
     <p class="kicker">02 / INTERVIEW</p>
     <p class="meta about-interview-intro__eyebrow">전체 인터뷰</p>
-    <h2 id="full-interview-title">원칙이 만들어진 배경</h2>
-    <p>
-      아래 문답은 원래의 긴 인터뷰입니다. 앞의 매뉴얼 카드가 요약이라면, 이 영역은 각 원칙이 어떤
-      경험에서 나왔는지 확인하는 기록입니다.
-    </p>
+    <h2 id="full-interview-title">인터뷰 전문</h2>
+    <p>위 내용을 처음 정리했던 인터뷰예요. 각 생각이 어떤 경험에서 나왔는지 담겨 있어요.</p>
   </section>
 
   <div class="article-body about-interview">
@@ -290,8 +286,8 @@ const principles = [
 
   <section class="about-career-link" aria-labelledby="about-career-link-title">
     <p class="kicker">03 / CAREER</p>
-    <h2 id="about-career-link-title">이 생각이 실제 일에서 어떻게 이어졌는지</h2>
-    <p>내가 실제로 해결해 온 문제와 경력이 궁금하다면 별도의 이력 페이지에서 확인할 수 있습니다.</p>
+    <h2 id="about-career-link-title">일에서는 이렇게 해 왔어요</h2>
+    <p>실제로 맡았던 일과 경력은 이력 페이지에 정리해 두었어요.</p>
     <TextLink href={routes.career}>이력 보기</TextLink>
   </section>
 </Layout>
@@ -362,7 +358,7 @@ const principles = [
     padding-top: 0.2rem;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--label-xs);
     letter-spacing: 0.14em;
   }
 
@@ -404,7 +400,7 @@ const principles = [
   .about-principle-card__links a {
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
     text-decoration: underline;
     text-decoration-color: var(--line-strong);

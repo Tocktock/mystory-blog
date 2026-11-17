@@ -46,7 +46,7 @@ const activeCategories = categoryList.filter((candidate) =>
 >
   <div class="category-page">
     <PageHero
-      kicker={`ARCHIVE / ${category.slug.toUpperCase()}`}
+      kicker={`CATEGORY / ${category.slug.toUpperCase()}`}
       title={category.label}
       titleId="category-title"
       lede={category.description}
@@ -60,7 +60,7 @@ const activeCategories = categoryList.filter((candidate) =>
 
     <section class="shell category-page__content" aria-label={`${category.label} 기록 목록`}>
       <RecordFilters categories={activeCategories} activeSlug={category.slug} />
-      <p class="kicker category-page__count">{posts.length} OBSERVATIONS</p>
+      <p class="kicker category-page__count">{posts.length} POSTS</p>
       <EntryList>
         {
           posts.map((post, index) => (

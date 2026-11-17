@@ -7,7 +7,7 @@ test('record detail renders optional summary and series progress when metadata e
 
   const summary = page.locator('.record-summary');
   await expect(summary).toBeVisible();
-  await expect(summary).toContainText('기록 갈래');
+  await expect(summary).toContainText('글 종류');
   await expect(summary).toContainText('생각 기록');
   await expect(summary).toContainText('상태');
   await expect(summary).toContainText('정리됨');

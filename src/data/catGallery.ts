@@ -67,7 +67,7 @@ export const catPhotos: CatPhoto[] = [
   {
     image: galleryImage6,
     alt: '회색 고양이가 눈을 감고 쉬고 뒤쪽에 삼색 고양이가 함께 있는 모습.',
-    caption: '구름이가 눈을 감고 쉬는 동안 만냥이도 뒤쪽에 함께 머문 장면.',
+    caption: '구름이가 눈 감고 쉬는 동안 뒤에서 같이 쉬는 만냥이.',
     cats: ['gureum', 'manyang'],
     mood: 'together',
   },

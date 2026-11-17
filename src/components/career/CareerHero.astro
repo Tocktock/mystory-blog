@@ -4,12 +4,7 @@ import PageHero from '../observatory/PageHero.astro';
 import { careerProfile } from '../../data/career';
 ---
 
-<PageHero
-  class="career-hero"
-  kicker="RECORD / CAREER"
-  title={careerProfile.thesis}
-  titleId="career-title"
->
+<PageHero class="career-hero" kicker="CAREER" title={careerProfile.thesis} titleId="career-title">
   <div class="meta career-hero__identity" slot="top">
     <span class="career-hero__eyebrow">{careerProfile.eyebrow}</span>
     <span class="career-hero__role">{careerProfile.role}</span>
@@ -95,7 +90,7 @@ import { careerProfile } from '../../data/career';
   .career-hero__panel dt {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
     line-height: 1.9;
   }

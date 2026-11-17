@@ -15,9 +15,9 @@ interface Props {
 }
 
 const {
-  eyebrow = uiCopy.emptyDrawer,
-  title = uiCopy.emptyDrawerTitle,
-  description = uiCopy.emptyDrawerDescription,
+  eyebrow = uiCopy.emptyLabel,
+  title = uiCopy.emptyTitle,
+  description = uiCopy.emptyDescription,
   href,
   linkLabel,
   image,
@@ -114,7 +114,7 @@ const hasImage = Boolean(image);
     margin-top: 1.5rem;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.14em;
     text-decoration: none;
   }

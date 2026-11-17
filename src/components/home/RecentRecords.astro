@@ -17,11 +17,7 @@ const { posts } = Astro.props as Props;
 
 <section class="recent-records" aria-labelledby="recent-records-title">
   <div class="shell">
-    <SectionHead
-      kicker="01 / RECENT OBSERVATIONS"
-      title="최근 기록"
-      titleId="recent-records-title"
-    />
+    <SectionHead kicker="01 / RECENT POSTS" title="최근 글" titleId="recent-records-title" />
     {
       posts.length > 0 ? (
         <EntryList>
@@ -44,12 +40,10 @@ const { posts } = Astro.props as Props;
           })}
         </EntryList>
       ) : (
-        <p class="recent-records__empty">
-          아직 보여줄 기록이 없어요. 기록실 책장은 곧 채워질 예정입니다.
-        </p>
+        <p class="recent-records__empty">아직 올린 글이 없어요.</p>
       )
     }
-    <TextLink class="recent-records__all" href={routes.records}>전체 기록 보기</TextLink>
+    <TextLink class="recent-records__all" href={routes.records}>전체 글 보기</TextLink>
   </div>
 </section>
 

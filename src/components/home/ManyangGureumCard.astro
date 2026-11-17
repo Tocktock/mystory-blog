@@ -6,7 +6,7 @@ import { catPhotos } from '../../data/catGallery';
 import { routes } from '../../utils/routes';
 
 const featuredPhoto = catPhotos.find((photo) => photo.featured) ?? catPhotos[0];
-const caption = featuredPhoto?.caption ?? '오늘도 기록실 어딘가를 차지하고 있습니다.';
+const caption = featuredPhoto?.caption ?? '오늘도 집 어딘가에서 자고 있어요.';
 ---
 
 <section class="manyang-card" aria-labelledby="manyang-card-title">
@@ -33,7 +33,7 @@ const caption = featuredPhoto?.caption ?? '오늘도 기록실 어딘가를 차�
         titleId="manyang-card-title"
       />
       <p>
-        {caption} 이불 위에서 쉬거나, 소파에 나란히 머물거나, 조용히 옆자리를 내어주는 순간들을 모아둡니다.
+        {caption} 이불 위에서 자고, 소파에 나란히 누워 있는 평소 모습을 모아 뒀어요.
       </p>
       <TextLink href={routes.manyangGureum}>만냥구름 보러가기</TextLink>
     </div>

@@ -6,9 +6,9 @@ test('series index renders learning shelf metadata for active shelves', async ({
   const card = page.locator('.series-card', { hasText: 'AI와 일하는 방식' });
   await expect(card).toBeVisible();
   await expect(card.locator('.series-card__meta')).toContainText('생각');
-  await expect(card.locator('.series-card__meta')).toContainText('4개 기록');
+  await expect(card.locator('.series-card__meta')).toContainText('글 4편');
   await expect(card.locator('.series-card__status')).toHaveText('진행 중');
-  await expect(card.locator('.series-card__intent')).toContainText('왜 이 선반인가');
+  await expect(card.locator('.series-card__intent')).toContainText('모은 이유');
   await expect(card.locator('.series-card__intent')).toContainText('읽고 나면');
 
   await expect(page.getByRole('link', { name: /AI Agent 실험실/ })).toHaveCount(0);
@@ -22,10 +22,10 @@ test('series detail explains the shelf and preserves seriesOrder reading path', 
 
   await expect(page.getByRole('heading', { level: 1, name: 'AI와 일하는 방식' })).toBeVisible();
   await expect(page.locator('.series-detail__meta')).toContainText('생각');
-  await expect(page.locator('.series-detail__meta')).toContainText('4개 기록');
+  await expect(page.locator('.series-detail__meta')).toContainText('글 4편');
   await expect(page.locator('.series-detail__meta')).toContainText('진행 중');
-  await expect(page.locator('.series-detail__shelf')).toContainText('이 선반의 목적');
-  await expect(page.locator('.series-detail__shelf')).toContainText('읽는 길');
+  await expect(page.locator('.series-detail__shelf')).toContainText('모은 이유');
+  await expect(page.locator('.series-detail__shelf')).toContainText('읽고 나면');
 
   await expect(page.locator('.series-detail__order').nth(0)).toHaveText('01');
   await expect(page.locator('.series-detail__order').nth(1)).toHaveText('02');

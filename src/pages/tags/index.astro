@@ -12,16 +12,16 @@ const tags = collectTags(posts);
 
 <SiteLayout
   title={`태그 | ${SITE_TITLE}`}
-  description="비슷한 기록들을 태그로 모았습니다."
+  description="태그별로 글을 모아 봤어요."
   lang="ko"
   mainLabelledBy="tags-title"
 >
   <div class="tags-page">
     <PageHero
-      kicker="INDEX / TAGS"
+      kicker="TAGS"
       title="태그"
       titleId="tags-title"
-      lede="비슷한 기록들을 태그로 모아봤습니다."
+      lede="태그별로 글을 모아 봤어요. 관심 있는 태그를 눌러 보세요."
     />
     <section class="shell tags-page__content" aria-label="태그 목록">
       <p class="kicker tags-page__total">{tags.length} TAGS</p>
@@ -31,7 +31,7 @@ const tags = collectTags(posts);
             <li>
               <a href={routes.tag(tag.slug)}>
                 <span class="tags-page__label">{tag.label}</span>
-                <span class="tags-page__count" aria-label={`${tag.posts.length}개 기록`}>
+                <span class="tags-page__count" aria-label={`글 ${tag.posts.length}편`}>
                   {String(tag.posts.length).padStart(2, '0')}
                 </span>
               </a>
@@ -82,7 +82,7 @@ const tags = collectTags(posts);
   .tags-page__count {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--label-xs);
     letter-spacing: 0.1em;
   }
 </style>

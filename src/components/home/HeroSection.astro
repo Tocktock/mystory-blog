@@ -34,10 +34,10 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     <div class="home-hero__copy">
       <p class="kicker">THE MIDNIGHT OBSERVATORY</p>
       <h1 id="home-hero-title">지용의 기록실</h1>
-      <p class="home-hero__tagline">관찰하고, 실험하고, 이야기한다.</p>
+      <p class="home-hero__tagline">백엔드 개발자 지용의 블로그예요.</p>
       <p class="home-hero__description">
-        문제를 관찰하고 구조를 세운 뒤, Backend와 AI Agent 실험을 작은 도구와 기록으로 남깁니다.
-        만냥구름과 일상의 관찰도 같은 책상 위에 둡니다.
+        회사에서 백엔드를 만들며 배운 것, AI와 Agent로 이것저것 만들어 본 이야기, 그리고 고양이
+        만냥이와 구름이의 일상을 적어요.
       </p>
       <nav class="home-hero__links" aria-label="홈 주요 이동">
         <TextLink href={routes.records}>기록 보기</TextLink>
@@ -46,8 +46,8 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
       </nav>
     </div>
 
-    <aside class="home-hero__desk" aria-label={uiCopy.currentDesk}>
-      <p class="home-hero__desk-title">{uiCopy.currentDesk}</p>
+    <aside class="home-hero__desk" aria-label={uiCopy.atAGlance}>
+      <p class="home-hero__desk-title">{uiCopy.atAGlance}</p>
       <dl>
         <div class="home-hero__stat home-hero__stat--latest">
           <dt>{uiCopy.recentRecord}</dt>
@@ -74,9 +74,7 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     </aside>
   </div>
 
-  <p class="kicker home-hero__bottom" aria-hidden="true">
-    A PERSONAL ARCHIVE OF SPACE, MATTER &amp; STORIES
-  </p>
+  <p class="kicker home-hero__bottom" aria-hidden="true">BACKEND · AI · MUSIC · CATS</p>
 </section>
 
 <style>
@@ -165,7 +163,7 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     margin: 0;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
   }
 
@@ -203,7 +201,7 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     margin-top: 0.25rem;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--label-xs);
   }
 
   .home-hero__bottom {
@@ -211,7 +209,7 @@ const { recordCount, seriesCount, latestRecordTitle, latestRecordHref, latestRec
     bottom: 35px;
     left: clamp(24px, 8vw, 135px);
     color: var(--dim);
-    font-size: 0.58rem;
+    font-size: var(--label-xs);
   }
 
   @media (max-width: 960px) {

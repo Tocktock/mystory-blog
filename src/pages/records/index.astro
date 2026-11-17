@@ -28,28 +28,28 @@ const recordTypeSummary = Array.from(recordTypeCounts.entries());
 
 <SiteLayout
   title={`기록 | ${SITE_TITLE}`}
-  description="기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다."
+  description="기술, 일상, 생각, 프로젝트, 고양이 이야기까지 지금까지 쓴 글을 모았어요."
   lang="ko"
   mainLabelledBy="records-title"
 >
   <div class="records-page">
     <PageHero
-      kicker="ARCHIVE / OBSERVATIONS"
+      kicker="ALL POSTS"
       title="기록"
       titleId="records-title"
-      lede="관찰하고, 실험하고, 생각한 것들. 기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다."
+      lede="기술, 일상, 생각, 프로젝트, 고양이 이야기까지 지금까지 쓴 글을 모두 모았어요."
     />
 
     <section class="shell records-page__content" aria-label="기록 목록">
       <RecordFilters categories={activeCategories} />
 
       <div class="records-page__summary">
-        <p class="kicker">{posts.length} OBSERVATIONS</p>
+        <p class="kicker">{posts.length} POSTS</p>
         <TextLink class="records-page__tags-link" href={routes.tags}>태그로 찾기</TextLink>
         {
           recordTypeSummary.length > 0 && (
-            <aside class="records-page__types" aria-label="기록 갈래">
-              <p class="meta">기록 갈래</p>
+            <aside class="records-page__types" aria-label="글 종류">
+              <p class="meta">글 종류</p>
               <ul>
                 {recordTypeSummary.map(([label, count]) => (
                   <li class="meta">

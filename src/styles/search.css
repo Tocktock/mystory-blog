@@ -1,10 +1,5 @@
 /* Search page: PageHero intro, then the prototype's large underline input and entry-row results. */
 
-.search-page__eyebrow {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-}
-
 .search-page__body {
   padding-bottom: clamp(120px, 14vw, 220px);
 }
@@ -25,7 +20,7 @@
 #search .search-page__input-label {
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--label-sm);
   letter-spacing: 0.04em;
 }
 
@@ -62,7 +57,7 @@
   background: var(--accent);
   color: var(--bg);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--label-md);
   letter-spacing: 0.14em;
   cursor: pointer;
 }
@@ -161,7 +156,7 @@
   background: transparent;
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--label-sm);
   letter-spacing: 0.04em;
 }
 
@@ -174,7 +169,7 @@
   padding: 1.75rem 0 1.25rem;
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--label-sm);
   font-weight: 400;
   letter-spacing: 0.04em;
 }
@@ -236,7 +231,7 @@
   background: transparent;
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--label-sm);
   font-weight: 400;
   letter-spacing: 0.14em;
 }

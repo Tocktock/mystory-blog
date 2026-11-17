@@ -15,9 +15,7 @@ const category = getCategory(seriesItem.category);
 const statusLabel = getSeriesStatusLabel(seriesItem.status);
 const number = typeof index === 'number' ? String(index).padStart(2, '0') : undefined;
 const intentItems = [
-  seriesItem.purpose?.trim()
-    ? { label: '왜 이 선반인가', value: seriesItem.purpose.trim() }
-    : undefined,
+  seriesItem.purpose?.trim() ? { label: '모은 이유', value: seriesItem.purpose.trim() } : undefined,
   seriesItem.readingPromise?.trim()
     ? { label: '읽고 나면', value: seriesItem.readingPromise.trim() }
     : undefined,
@@ -32,14 +30,14 @@ const intentItems = [
   <div class="meta series-card__meta" aria-label="시리즈 정보">
     {number && <span class="series-card__number">{number}</span>}
     <span>{category.label}</span>
-    <span>{count}개 기록</span>
+    <span>글 {count}편</span>
     {statusLabel && <span class="series-card__status">{statusLabel}</span>}
   </div>
   <h2>{seriesItem.title}</h2>
   <p class="series-card__description">{seriesItem.description}</p>
   {
     intentItems.length > 0 && (
-      <dl class="series-card__intent" aria-label="시리즈 선반 안내">
+      <dl class="series-card__intent" aria-label="시리즈 소개">
         {intentItems.map((item) => (
           <div>
             <dt>{item.label}</dt>
@@ -49,7 +47,7 @@ const intentItems = [
       </dl>
     )
   }
-  <span class="series-card__link" aria-hidden="true">선반 열기 ↗</span>
+  <span class="series-card__link" aria-hidden="true">시리즈 보기 ↗</span>
 </a>
 
 <style>
@@ -103,7 +101,7 @@ const intentItems = [
   .series-card__intent dt {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
   }
 
@@ -120,7 +118,7 @@ const intentItems = [
     margin-top: 1.5rem;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.69rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.14em;
     transition: color var(--motion-fast) ease;
   }

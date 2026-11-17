@@ -28,16 +28,16 @@ const tagPosts = tag.posts as CollectionEntry<'blog'>[];
 
 <SiteLayout
   title={`${tag.label} 기록 | ${SITE_TITLE}`}
-  description={`${tag.label} 태그가 붙은 기록입니다.`}
+  description={`${tag.label} 태그가 붙은 글이에요.`}
   lang="ko"
   mainLabelledBy="tag-detail-title"
 >
   <div class="tag-detail">
     <PageHero
-      kicker="INDEX / TAG"
+      kicker="TAG"
       title={tag.label}
       titleId="tag-detail-title"
-      lede={`${tagPosts.length}개 기록`}
+      lede={`글 ${tagPosts.length}편`}
     >
       <p class="meta tag-detail__breadcrumbs" slot="top">
         <a href={routes.tags}>태그</a>

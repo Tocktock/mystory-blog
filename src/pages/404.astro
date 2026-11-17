@@ -5,24 +5,23 @@ import PageHero from '../components/observatory/PageHero.astro';
 import TextLink from '../components/observatory/TextLink.astro';
 import { SITE_TITLE } from '../consts';
 import { catPhotos } from '../data/catGallery';
-import { uiCopy } from '../data/uiCopy';
 import { routes } from '../utils/routes';
 
-const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catPhotos[0];
+const notFoundPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catPhotos[0];
 ---
 
 <SiteLayout
-  title={`비어 있는 서랍 | ${SITE_TITLE}`}
-  description="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍과 기록 목록에서 다시 찾을 수 있습니다."
+  title={`페이지를 찾을 수 없어요 | ${SITE_TITLE}`}
+  description="주소가 바뀌었거나 없는 페이지예요. 검색하거나 기록 목록에서 다시 찾아보세요."
   lang="ko"
 >
   <div class="not-found-page">
-    <h1 class="sr-only">비어 있는 서랍입니다</h1>
+    <h1 class="sr-only">페이지를 찾을 수 없어요</h1>
     <PageHero
-      kicker="404 / LOST SIGNAL"
-      title={uiCopy.emptyDrawerTitle}
+      kicker="404 / NOT FOUND"
+      title="페이지를 찾을 수 없어요"
       headingLevel={2}
-      lede="주소가 바뀌었거나 아직 공개되지 않은 기록입니다. 검색 서랍에서 다시 찾거나 기록실의 다른 서랍을 열어볼 수 있습니다."
+      lede="주소가 바뀌었거나 없는 페이지예요. 검색해 보거나 아래 링크로 이동해 주세요."
     >
       <div class="not-found-page__primary">
         <TextLink href={routes.records} direction="back">기록으로 돌아가기</TextLink>
@@ -31,25 +30,25 @@ const emptyDrawerPhoto = catPhotos.find((photo) => photo.mood === 'nap') ?? catP
 
     <div class="shell not-found-page__body">
       {
-        emptyDrawerPhoto && (
+        notFoundPhoto && (
           <figure class="not-found-page__photo">
             <Image
-              src={emptyDrawerPhoto.image}
-              alt={emptyDrawerPhoto.alt}
+              src={notFoundPhoto.image}
+              alt={notFoundPhoto.alt}
               widths={[320, 480, 640, 920]}
               sizes="(max-width: 760px) calc(100vw - 48px), 460px"
               loading="lazy"
               decoding="async"
             />
-            <figcaption class="meta">{emptyDrawerPhoto.caption}</figcaption>
+            <figcaption class="meta">{notFoundPhoto.caption}</figcaption>
           </figure>
         )
       }
       <nav class="not-found-page__links" aria-label="도움 링크">
-        <p class="kicker">OTHER DRAWERS</p>
+        <p class="kicker">ELSEWHERE</p>
         <ul>
           <li>
-            <a href={routes.search}>검색 서랍 열기</a>
+            <a href={routes.search}>검색하러 가기</a>
             <span class="meta" aria-hidden="true">/search</span>
           </li>
           <li>

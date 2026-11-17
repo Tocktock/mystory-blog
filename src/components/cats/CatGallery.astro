@@ -21,9 +21,7 @@ const moodGroups = (Object.entries(catMoodLabels) as [CatMood, string][])
 
 <section class="cat-gallery" aria-labelledby="cat-gallery-title">
   <SectionHead kicker={kicker} title="사진첩" titleId="cat-gallery-title">
-    <p class="cat-gallery__lede">
-      이불 위 휴식, 낮잠, 나란히 머무는 순간처럼 관찰과 돌봄으로 이어진 시간을 모았습니다.
-    </p>
+    <p class="cat-gallery__lede">이불 위에서 쉬고, 낮잠 자고, 나란히 붙어 있는 모습들이에요.</p>
   </SectionHead>
 
   <nav class="cat-gallery__nav" aria-label="사진첩 분류">
@@ -77,7 +75,7 @@ const moodGroups = (Object.entries(catMoodLabels) as [CatMood, string][])
   .cat-gallery__nav a {
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--label-sm);
     letter-spacing: 0.04em;
     text-decoration: none;
   }
