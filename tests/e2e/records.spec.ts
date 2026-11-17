@@ -6,7 +6,9 @@ test('records archive keeps category and tag orientation', async ({ page }) => {
   const firstCard = page.locator('.record-card').first();
   await expect(firstCard).toBeVisible();
   await expect(firstCard.locator('.record-card__category')).toBeVisible();
-  await expect(page.locator('.record-card__tags').first()).toBeVisible();
+  // Rows stay text-only; tags live on the article page and the tag index.
+  await expect(page.locator('.record-card__tags')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: '태그로 찾기' })).toHaveAttribute('href', '/tags');
 });
 
 test('records archive exposes record-type orientation and optional card metadata', async ({
