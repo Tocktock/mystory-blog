@@ -1,0 +1,29 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  titleId?: string;
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const { kicker, title, titleId, headingLevel = 2, class: className } = Astro.props as Props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+---
+
+<div class:list={['section-head', className]}>
+  <p class="kicker">{kicker}</p>
+  <Heading class="section-head__title" id={titleId}>{title}</Heading>
+  <slot />
+</div>
+
+<style>
+  .section-head {
+    margin-bottom: 35px;
+  }
+
+  .section-head__title {
+    margin: 14px 0 0;
+    font-size: 1.75rem;
+  }
+</style>

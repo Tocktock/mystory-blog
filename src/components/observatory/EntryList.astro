@@ -1,0 +1,22 @@
+---
+interface Props {
+  class?: string;
+  ordered?: boolean;
+}
+
+const { class: className, ordered = true } = Astro.props as Props;
+const List = ordered ? 'ol' : 'ul';
+---
+
+<List class:list={['entry-list', className]}>
+  <slot />
+</List>
+
+<style>
+  .entry-list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+</style>
