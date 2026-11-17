@@ -42,8 +42,17 @@ test('category routes render shared record cards without breaking navigation', a
 
   const firstCard = page.locator('.record-card').first();
   await expect(firstCard).toBeVisible();
-  await expect(firstCard.locator('.record-card__image')).toHaveAttribute(
-    'data-cover-category',
-    'tech',
-  );
+  await expect(firstCard).toHaveAttribute('data-category', 'tech');
+  await expect(
+    page.getByRole('navigation', { name: '기록 카테고리' }).getByRole('link', { name: '기술' }),
+  ).toHaveAttribute('aria-current', 'page');
+});
+
+test('records archive lists observations as text rows without cover thumbnails', async ({
+  page,
+}) => {
+  await page.goto('/records');
+
+  await expect(page.locator('.record-card').first()).toBeVisible();
+  await expect(page.locator('.record-card img')).toHaveCount(0);
 });

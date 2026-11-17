@@ -1,0 +1,60 @@
+---
+import type { Category } from '../../data/categories';
+import { routes } from '../../utils/routes';
+
+interface Props {
+  categories: Category[];
+  activeSlug?: string;
+}
+
+const { categories, activeSlug } = Astro.props as Props;
+---
+
+<nav class="record-filters" aria-label="기록 카테고리">
+  <a
+    class="record-filters__link"
+    href={routes.records}
+    aria-current={activeSlug ? undefined : 'page'}
+  >
+    전체
+  </a>
+  {
+    categories.map((category) => (
+      <a
+        class="record-filters__link"
+        href={routes.category(category.slug)}
+        aria-current={category.slug === activeSlug ? 'page' : undefined}
+      >
+        {category.label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .record-filters {
+    display: flex;
+    gap: 0.5rem 1.6rem;
+    flex-wrap: wrap;
+    padding: 0 0 1.75rem;
+  }
+
+  .record-filters__link {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid transparent;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .record-filters__link:hover {
+    color: var(--fg);
+  }
+
+  .record-filters__link[aria-current='page'] {
+    border-bottom-color: var(--accent);
+    color: var(--fg-strong);
+  }
+</style>

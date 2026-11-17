@@ -1,6 +1,9 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import EntryList from '../../components/observatory/EntryList.astro';
+import PageHero from '../../components/observatory/PageHero.astro';
 import RecordCard from '../../components/records/RecordCard.astro';
+import RecordFilters from '../../components/records/RecordFilters.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { categoryList, type Category } from '../../data/categories';
@@ -29,6 +32,10 @@ export async function getStaticPaths() {
 }
 
 const { category, posts } = Astro.props as Props;
+const allPosts = await getCollection('blog');
+const activeCategories = categoryList.filter((candidate) =>
+  allPosts.some((post) => post.data.category === candidate.slug),
+);
 ---
 
 <SiteLayout
@@ -38,75 +45,52 @@ const { category, posts } = Astro.props as Props;
   mainLabelledBy="category-title"
 >
   <div class="category-page">
-    <header class="category-page__header">
-      <p class="category-page__breadcrumbs">
+    <PageHero
+      kicker={`ARCHIVE / ${category.slug.toUpperCase()}`}
+      title={category.label}
+      titleId="category-title"
+      lede={category.description}
+    >
+      <p class="meta category-page__breadcrumbs" slot="top">
         <a href={routes.records}>기록</a>
         <span aria-hidden="true">/</span>
         <span>{category.label}</span>
       </p>
-      <h1 id="category-title">{category.label}</h1>
-      <p>{category.description}</p>
-    </header>
+    </PageHero>
 
-    <ul class="category-page__list">
-      {
-        posts.map((post) => (
-          <li>
-            <RecordCard post={post} showCategory={false} showTags={false} />
-          </li>
-        ))
-      }
-    </ul>
+    <section class="shell category-page__content" aria-label={`${category.label} 기록 목록`}>
+      <RecordFilters categories={activeCategories} activeSlug={category.slug} />
+      <p class="kicker category-page__count">{posts.length} OBSERVATIONS</p>
+      <EntryList>
+        {
+          posts.map((post, index) => (
+            <RecordCard post={post} index={index + 1} showCategory={false} showTags={false} />
+          ))
+        }
+      </EntryList>
+    </section>
   </div>
 </SiteLayout>
 
 <style>
-  .category-page {
-    width: 960px;
-  }
-
-  .category-page__header {
-    max-width: 42rem;
-    margin: 0 auto 2rem;
-    text-align: center;
-  }
-
   .category-page__breadcrumbs {
-    display: inline-flex;
-    gap: 0.5rem;
-    margin: 0 0 0.75rem;
-    color: rgb(var(--gray));
-    font-size: 0.95rem;
+    margin: 0;
   }
 
   .category-page__breadcrumbs a {
-    color: var(--accent);
+    color: var(--muted);
     text-decoration: none;
   }
 
-  .category-page__header h1 {
-    margin-bottom: 1rem;
+  .category-page__breadcrumbs span[aria-hidden] {
+    margin: 0 0.6em;
   }
 
-  .category-page__header p:last-child {
-    margin: 0;
-    color: rgb(var(--gray));
-    line-height: 1.75;
-    text-wrap: balance;
+  .category-page__count {
+    margin: 0.5rem 0 1.5rem;
   }
 
-  .category-page__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  @media (max-width: 960px) {
-    .category-page {
-      width: 100%;
-    }
+  .category-page__content {
+    padding-bottom: clamp(120px, 14vw, 220px);
   }
 </style>

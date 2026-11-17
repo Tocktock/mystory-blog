@@ -1,10 +1,10 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageHero from '../../components/observatory/PageHero.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import { collectTags } from '../../utils/tags';
 import { routes } from '../../utils/routes';
-import '../../styles/tags.css';
 
 const posts = await getCollection('blog');
 const tags = collectTags(posts);
@@ -17,23 +17,72 @@ const tags = collectTags(posts);
   mainLabelledBy="tags-title"
 >
   <div class="tags-page">
-    <section class="tags-page__intro">
-      <h1 id="tags-title">태그</h1>
-      <p>비슷한 기록들을 태그로 모아봤습니다.</p>
+    <PageHero
+      kicker="INDEX / TAGS"
+      title="태그"
+      titleId="tags-title"
+      lede="비슷한 기록들을 태그로 모아봤습니다."
+    />
+    <section class="shell tags-page__content" aria-label="태그 목록">
+      <p class="kicker tags-page__total">{tags.length} TAGS</p>
+      <ul class="tags-page__list">
+        {
+          tags.map((tag) => (
+            <li>
+              <a href={routes.tag(tag.slug)}>
+                <span class="tags-page__label">{tag.label}</span>
+                <span class="tags-page__count" aria-label={`${tag.posts.length}개 기록`}>
+                  {String(tag.posts.length).padStart(2, '0')}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </section>
-    <ul class="tags-page__list">
-      {
-        tags.map((tag) => (
-          <li>
-            <a href={routes.tag(tag.slug)}>
-              <span class="tags-page__label">{tag.label}</span>
-              <span class="tags-page__count" aria-label={`${tag.posts.length} records`}>
-                {tag.posts.length}
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
   </div>
 </SiteLayout>
+
+<style>
+  .tags-page__content {
+    padding-bottom: clamp(120px, 14vw, 220px);
+  }
+
+  .tags-page__total {
+    margin: 0 0 1.5rem;
+  }
+
+  .tags-page__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    column-gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .tags-page__list a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg);
+    text-decoration: none;
+    transition: padding var(--motion-fast) ease;
+  }
+
+  .tags-page__list a:hover {
+    padding-left: 0.5rem;
+    color: var(--fg-strong);
+  }
+
+  .tags-page__count {
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+  }
+</style>
