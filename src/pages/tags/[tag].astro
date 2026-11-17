@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
@@ -27,42 +25,35 @@ const { tag } = Astro.props as Props;
 const tagPosts = tag.posts as CollectionEntry<'blog'>[];
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`${tag.label} 기록 | ${SITE_TITLE}`}
-      description={`${tag.label} 태그가 붙은 기록입니다.`}
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main class="tag-detail" aria-labelledby="tag-detail-title">
-      <header class="tag-detail__header">
-        <p class="tag-detail__breadcrumbs">
-          <a href={routes.tags}>태그</a>
-          <span aria-hidden="true">/</span>
-          <span>{tag.label}</span>
-        </p>
-        <h1 id="tag-detail-title">{tag.label}</h1>
-        <p class="tag-detail__count">{tagPosts.length}개 기록</p>
-      </header>
+<SiteLayout
+  title={`${tag.label} 기록 | ${SITE_TITLE}`}
+  description={`${tag.label} 태그가 붙은 기록입니다.`}
+  lang="ko"
+  mainLabelledBy="tag-detail-title"
+>
+  <div class="tag-detail">
+    <header class="tag-detail__header">
+      <p class="tag-detail__breadcrumbs">
+        <a href={routes.tags}>태그</a>
+        <span aria-hidden="true">/</span>
+        <span>{tag.label}</span>
+      </p>
+      <h1 id="tag-detail-title">{tag.label}</h1>
+      <p class="tag-detail__count">{tagPosts.length}개 기록</p>
+    </header>
 
-      <ul class="tag-detail__list">
-        {
-          tagPosts.map((post) => (
-            <li>
-              <a href={routes.record(post.id)}>
-                <h2>{post.data.title}</h2>
-                <p>{post.data.description}</p>
-                <FormattedDate date={post.data.pubDate} />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </main>
-    <Footer />
-  </body>
-</html>
+    <ul class="tag-detail__list">
+      {
+        tagPosts.map((post) => (
+          <li>
+            <a href={routes.record(post.id)}>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+              <FormattedDate date={post.data.pubDate} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</SiteLayout>

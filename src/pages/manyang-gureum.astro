@@ -1,9 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import EmptyState from '../components/common/EmptyState.astro';
 import CatGallery from '../components/cats/CatGallery.astro';
@@ -40,122 +38,119 @@ const observationPosts = (await getCollection('blog'))
   .slice(0, 4);
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead title={PAGE_TITLE} description={PAGE_DESCRIPTION} lang="ko" />
-  </head>
-  <body>
-    <Header />
-    <main class="manyang-page" aria-labelledby="manyang-gureum-title">
-      <header class="manyang-hero">
-        <div class="manyang-hero__content">
-          <p class="manyang-hero__eyebrow">Manyang & Gureum</p>
-          <h1 id="manyang-gureum-title">만냥구름</h1>
-          <p>
-            기록실을 함께 쓰는 두 고양이입니다. 귀여운 장면만 모으기보다, 작은 변화와 불편의 이유를
-            관찰하고 돌보는 방식을 함께 남깁니다.
-          </p>
-          <div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
-            <a href="#cat-profiles">둘 소개 보기</a>
-            <a href="#cat-gallery">사진첩 보기</a>
-            <a href="#cat-notes">관찰일지 보기</a>
-          </div>
-        </div>
-
-        {
-          featuredPhoto && (
-            <figure class="manyang-hero__photo">
-              <Image
-                src={featuredPhoto.image}
-                alt={featuredPhoto.alt}
-                widths={[420, 640, 820, 960, 1280]}
-                sizes="(max-width: 860px) 100vw, 520px"
-                loading="eager"
-                decoding="async"
-              />
-              <figcaption>{featuredPhoto.caption}</figcaption>
-            </figure>
-          )
-        }
-      </header>
-
-      <section
-        class="observation-bridge"
-        aria-labelledby="observation-bridge-title"
-        id="observation-bridge"
-      >
-        <div class="section-heading">
-          <p>Observation & Care</p>
-          <h2 id="observation-bridge-title">관찰과 돌봄으로 남긴 기준</h2>
-        </div>
-        <p class="observation-bridge__intro">
-          만냥구름은 기록실의 장식이 아니라, 문제를 보기 전에 먼저 살피고 원인을 이해하려는 태도를
-          매일 확인하게 해주는 존재입니다.
+<SiteLayout
+  title={PAGE_TITLE}
+  description={PAGE_DESCRIPTION}
+  lang="ko"
+  mainLabelledBy="manyang-gureum-title"
+>
+  <div class="manyang-page">
+    <header class="manyang-hero">
+      <div class="manyang-hero__content">
+        <p class="manyang-hero__eyebrow">Manyang & Gureum</p>
+        <h1 id="manyang-gureum-title">만냥구름</h1>
+        <p>
+          기록실을 함께 쓰는 두 고양이입니다. 귀여운 장면만 모으기보다, 작은 변화와 불편의 이유를
+          관찰하고 돌보는 방식을 함께 남깁니다.
         </p>
-        <div class="observation-bridge__grid">
-          {
-            observationNotes.map((note) => (
-              <article>
-                <h3>{note.title}</h3>
-                <p>{note.description}</p>
-              </article>
-            ))
-          }
+        <div class="manyang-hero__actions" aria-label="만냥구름 페이지 섹션 이동">
+          <a href="#cat-profiles">둘 소개 보기</a>
+          <a href="#cat-gallery">사진첩 보기</a>
+          <a href="#cat-notes">관찰일지 보기</a>
         </div>
-      </section>
-
-      <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
-        <div class="section-heading">
-          <p>Roommates</p>
-          <h2 id="cat-profiles-title">기록실을 함께 쓰는 고양이들</h2>
-        </div>
-        <div class="cat-profiles__grid">
-          {cats.map((cat) => <CatProfileCard cat={cat} />)}
-        </div>
-      </section>
-
-      <div id="cat-gallery">
-        <CatGallery photos={catPhotos} />
       </div>
 
-      <section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
-        <div class="section-heading">
-          <p>Observation Log</p>
-          <h2 id="cat-notes-title">만냥구름 관찰일지</h2>
-        </div>
-
-        {
-          observationPosts.length > 0 ? (
-            <ul class="cat-notes__list">
-              {observationPosts.map((post) => (
-                <li>
-                  <a href={routes.record(post.id)}>
-                    <h3>{post.data.title}</h3>
-                    <p>{post.data.description}</p>
-                    <time datetime={post.data.pubDate.toISOString()}>
-                      <FormattedDate date={post.data.pubDate} />
-                    </time>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState
-              eyebrow={uiCopy.emptyDrawer}
-              title={uiCopy.emptyDrawerTitle}
-              description="아직 만냥구름 관찰일지는 꺼낼 기록이 없습니다. 사진첩을 먼저 보거나 전체 기록에서 다른 서랍을 열어볼 수 있습니다."
-              href={routes.records}
-              linkLabel="전체 기록 보기"
-              compact
+      {
+        featuredPhoto && (
+          <figure class="manyang-hero__photo">
+            <Image
+              src={featuredPhoto.image}
+              alt={featuredPhoto.alt}
+              widths={[420, 640, 820, 960, 1280]}
+              sizes="(max-width: 860px) 100vw, 520px"
+              loading="eager"
+              decoding="async"
             />
-          )
+            <figcaption>{featuredPhoto.caption}</figcaption>
+          </figure>
+        )
+      }
+    </header>
+
+    <section
+      class="observation-bridge"
+      aria-labelledby="observation-bridge-title"
+      id="observation-bridge"
+    >
+      <div class="section-heading">
+        <p>Observation & Care</p>
+        <h2 id="observation-bridge-title">관찰과 돌봄으로 남긴 기준</h2>
+      </div>
+      <p class="observation-bridge__intro">
+        만냥구름은 기록실의 장식이 아니라, 문제를 보기 전에 먼저 살피고 원인을 이해하려는 태도를
+        매일 확인하게 해주는 존재입니다.
+      </p>
+      <div class="observation-bridge__grid">
+        {
+          observationNotes.map((note) => (
+            <article>
+              <h3>{note.title}</h3>
+              <p>{note.description}</p>
+            </article>
+          ))
         }
-      </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+      </div>
+    </section>
+
+    <section id="cat-profiles" class="cat-profiles" aria-labelledby="cat-profiles-title">
+      <div class="section-heading">
+        <p>Roommates</p>
+        <h2 id="cat-profiles-title">기록실을 함께 쓰는 고양이들</h2>
+      </div>
+      <div class="cat-profiles__grid">
+        {cats.map((cat) => <CatProfileCard cat={cat} />)}
+      </div>
+    </section>
+
+    <div id="cat-gallery">
+      <CatGallery photos={catPhotos} />
+    </div>
+
+    <section id="cat-notes" class="cat-notes" aria-labelledby="cat-notes-title">
+      <div class="section-heading">
+        <p>Observation Log</p>
+        <h2 id="cat-notes-title">만냥구름 관찰일지</h2>
+      </div>
+
+      {
+        observationPosts.length > 0 ? (
+          <ul class="cat-notes__list">
+            {observationPosts.map((post) => (
+              <li>
+                <a href={routes.record(post.id)}>
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    <FormattedDate date={post.data.pubDate} />
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState
+            eyebrow={uiCopy.emptyDrawer}
+            title={uiCopy.emptyDrawerTitle}
+            description="아직 만냥구름 관찰일지는 꺼낼 기록이 없습니다. 사진첩을 먼저 보거나 전체 기록에서 다른 서랍을 열어볼 수 있습니다."
+            href={routes.records}
+            linkLabel="전체 기록 보기"
+            compact
+          />
+        )
+      }
+    </section>
+  </div>
+</SiteLayout>
 
 <style>
   .manyang-page {

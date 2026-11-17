@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import RecordCard from '../../components/records/RecordCard.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 import { getCollection } from 'astro:content';
@@ -25,83 +23,73 @@ const recordTypeCounts = posts.reduce((counts, post) => {
 const recordTypeSummary = Array.from(recordTypeCounts.entries());
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`기록 | ${SITE_TITLE}`}
-      description="기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다."
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <section class="records-index" aria-labelledby="records-title">
-        <header class="records-index__header">
-          <p class="records-index__eyebrow">{uiCopy.records}</p>
-          <h1 id="records-title" class="page-title">기록</h1>
-          <p class="records-index__description">
-            기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다.
-            {SITE_DESCRIPTION}
-          </p>
-        </header>
+<SiteLayout
+  title={`기록 | ${SITE_TITLE}`}
+  description="기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다."
+  lang="ko"
+>
+  <div class="records-page">
+    <section class="records-index" aria-labelledby="records-title">
+      <header class="records-index__header">
+        <p class="records-index__eyebrow">{uiCopy.records}</p>
+        <h1 id="records-title" class="page-title">기록</h1>
+        <p class="records-index__description">
+          기술, 일상, 생각, 프로젝트, 만냥구름의 기록을 모았습니다.
+          {SITE_DESCRIPTION}
+        </p>
+      </header>
 
-        <nav class="records-index__categories" aria-label="기록 카테고리">
-          <a
-            class="records-index__category-link records-index__category-link--active"
-            href={routes.records}
-          >
-            전체
-          </a>
-          {
-            activeCategories.map((category) => (
-              <a class="records-index__category-link" href={routes.category(category.slug)}>
-                {category.label}
-              </a>
-            ))
-          }
-        </nav>
-
+      <nav class="records-index__categories" aria-label="기록 카테고리">
+        <a
+          class="records-index__category-link records-index__category-link--active"
+          href={routes.records}
+        >
+          전체
+        </a>
         {
-          recordTypeSummary.length > 0 && (
-            <aside class="records-index__types" aria-label="기록 갈래">
-              <p>기록 갈래</p>
-              <ul>
-                {recordTypeSummary.map(([label, count]) => (
-                  <li>
-                    <span>{label}</span>
-                    <strong>{count}편</strong>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          )
+          activeCategories.map((category) => (
+            <a class="records-index__category-link" href={routes.category(category.slug)}>
+              {category.label}
+            </a>
+          ))
         }
+      </nav>
 
-        <ul class="record-grid">
-          {
-            posts.map((post, index) => {
-              const isFeatured = index === 0;
-
-              return (
-                <li
-                  class:list={['record-grid__item', { 'record-grid__item--featured': isFeatured }]}
-                >
-                  <RecordCard post={post} featured={isFeatured} />
+      {
+        recordTypeSummary.length > 0 && (
+          <aside class="records-index__types" aria-label="기록 갈래">
+            <p>기록 갈래</p>
+            <ul>
+              {recordTypeSummary.map(([label, count]) => (
+                <li>
+                  <span>{label}</span>
+                  <strong>{count}편</strong>
                 </li>
-              );
-            })
-          }
-        </ul>
-      </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+
+      <ul class="record-grid">
+        {
+          posts.map((post, index) => {
+            const isFeatured = index === 0;
+
+            return (
+              <li class:list={['record-grid__item', { 'record-grid__item--featured': isFeatured }]}>
+                <RecordCard post={post} featured={isFeatured} />
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+  </div>
+</SiteLayout>
 
 <style>
-  main {
+  .records-page {
     width: 960px;
   }
 
@@ -231,7 +219,7 @@ const recordTypeSummary = Array.from(recordTypeCounts.entries());
   }
 
   @media (max-width: 960px) {
-    main {
+    .records-page {
       width: 100%;
     }
 

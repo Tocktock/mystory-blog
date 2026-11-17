@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
@@ -43,80 +41,73 @@ const shelfItems = [
 ].filter((item): item is { label: string; value: string } => Boolean(item));
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`${seriesItem.title} | ${SITE_TITLE}`}
-      description={seriesItem.description}
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main class="series-detail" aria-labelledby="series-detail-title">
-      <header class="series-detail__header">
-        <p class="series-detail__breadcrumbs">
-          <a href={routes.series}>시리즈</a>
-          <span aria-hidden="true">/</span>
-          <span>{seriesItem.title}</span>
-        </p>
-        <div class="series-detail__meta" aria-label="시리즈 정보">
-          <span>{category.label}</span>
-          <span>{posts.length}개 기록</span>
-          {statusLabel && <span>{statusLabel}</span>}
-        </div>
-        <h1 id="series-detail-title">{seriesItem.title}</h1>
-        <p>{seriesItem.description}</p>
+<SiteLayout
+  title={`${seriesItem.title} | ${SITE_TITLE}`}
+  description={seriesItem.description}
+  lang="ko"
+  mainLabelledBy="series-detail-title"
+>
+  <div class="series-detail">
+    <header class="series-detail__header">
+      <p class="series-detail__breadcrumbs">
+        <a href={routes.series}>시리즈</a>
+        <span aria-hidden="true">/</span>
+        <span>{seriesItem.title}</span>
+      </p>
+      <div class="series-detail__meta" aria-label="시리즈 정보">
+        <span>{category.label}</span>
+        <span>{posts.length}개 기록</span>
+        {statusLabel && <span>{statusLabel}</span>}
+      </div>
+      <h1 id="series-detail-title">{seriesItem.title}</h1>
+      <p>{seriesItem.description}</p>
+    </header>
+
+    {
+      shelfItems.length > 0 && (
+        <section class="series-detail__shelf" aria-label="시리즈 선반 안내">
+          {shelfItems.map((item) => (
+            <div>
+              <p>{item.label}</p>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    <section class="series-detail__records" aria-labelledby="series-records-title">
+      <header class="series-detail__records-header">
+        <p>읽는 순서</p>
+        <h2 id="series-records-title">기록 순서</h2>
       </header>
 
-      {
-        shelfItems.length > 0 && (
-          <section class="series-detail__shelf" aria-label="시리즈 선반 안내">
-            {shelfItems.map((item) => (
-              <div>
-                <p>{item.label}</p>
-                <strong>{item.value}</strong>
-              </div>
-            ))}
-          </section>
-        )
-      }
+      <ol class="series-detail__list">
+        {
+          posts.map((post, index) => {
+            const orderLabel = post.data.seriesOrder ?? index + 1;
 
-      <section class="series-detail__records" aria-labelledby="series-records-title">
-        <header class="series-detail__records-header">
-          <p>읽는 순서</p>
-          <h2 id="series-records-title">기록 순서</h2>
-        </header>
-
-        <ol class="series-detail__list">
-          {
-            posts.map((post, index) => {
-              const orderLabel = post.data.seriesOrder ?? index + 1;
-
-              return (
-                <li
-                  class="series-detail__item"
-                  data-series-order={String(orderLabel).padStart(2, '0')}
-                >
-                  <a href={routes.record(post.id)}>
-                    <span class="series-detail__order">{String(orderLabel).padStart(2, '0')}</span>
-                    <div>
-                      <h3>{post.data.title}</h3>
-                      <p>{post.data.description}</p>
-                      <FormattedDate date={post.data.pubDate} />
-                    </div>
-                  </a>
-                </li>
-              );
-            })
-          }
-        </ol>
-      </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+            return (
+              <li
+                class="series-detail__item"
+                data-series-order={String(orderLabel).padStart(2, '0')}
+              >
+                <a href={routes.record(post.id)}>
+                  <span class="series-detail__order">{String(orderLabel).padStart(2, '0')}</span>
+                  <div>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                    <FormattedDate date={post.data.pubDate} />
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+  </div>
+</SiteLayout>
 
 <style>
   .series-detail {

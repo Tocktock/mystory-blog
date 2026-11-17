@@ -486,7 +486,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd({
 
   <body class:list={['blog-post-shell', { 'blog-post-shell--record': isRecordPost }]}>
     <Header />
-    <main class="blog-post-page">
+    <main id="main" tabindex="-1" class="blog-post-page">
       <article class="blog-post-article">
         {
           heroImage && (

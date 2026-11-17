@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import SeriesCard from '../../components/records/SeriesCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
@@ -17,36 +15,29 @@ const seriesCards = seriesList
   .filter((item) => item.posts.length > 0);
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`시리즈 | ${SITE_TITLE}`}
-      description="기록실 책장에 꽂아둔 긴 기록들을 모았습니다."
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main class="series-page" aria-labelledby="series-title">
-      <header class="series-page__header">
-        <p class="series-page__eyebrow">{uiCopy.bookshelf}</p>
-        <h1 id="series-title">시리즈</h1>
-        <p>
-          기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의 이야기를
-          흐름으로 정리합니다.
-        </p>
-      </header>
+<SiteLayout
+  title={`시리즈 | ${SITE_TITLE}`}
+  description="기록실 책장에 꽂아둔 긴 기록들을 모았습니다."
+  lang="ko"
+  mainLabelledBy="series-title"
+>
+  <div class="series-page">
+    <header class="series-page__header">
+      <p class="series-page__eyebrow">{uiCopy.bookshelf}</p>
+      <h1 id="series-title">시리즈</h1>
+      <p>
+        기록실 책장에 꽂아둔 긴 기록들입니다. AI, Backend, Agent, 그리고 만냥구름의 이야기를
+        흐름으로 정리합니다.
+      </p>
+    </header>
 
-      <section aria-label="시리즈 목록">
-        <div class="series-grid">
-          {seriesCards.map((item) => <SeriesCard seriesItem={item} count={item.posts.length} />)}
-        </div>
-      </section>
-      <Footer />
-    </main>
-  </body>
-</html>
+    <section aria-label="시리즈 목록">
+      <div class="series-grid">
+        {seriesCards.map((item) => <SeriesCard seriesItem={item} count={item.posts.length} />)}
+      </div>
+    </section>
+  </div>
+</SiteLayout>
 
 <style>
   .series-page {

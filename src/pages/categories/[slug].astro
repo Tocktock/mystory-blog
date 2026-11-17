@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import RecordCard from '../../components/records/RecordCard.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
@@ -33,41 +31,34 @@ export async function getStaticPaths() {
 const { category, posts } = Astro.props as Props;
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <BaseHead
-      title={`${category.label} 기록 | ${SITE_TITLE}`}
-      description={category.description}
-      lang="ko"
-    />
-  </head>
-  <body>
-    <Header />
-    <main class="category-page" aria-labelledby="category-title">
-      <header class="category-page__header">
-        <p class="category-page__breadcrumbs">
-          <a href={routes.records}>기록</a>
-          <span aria-hidden="true">/</span>
-          <span>{category.label}</span>
-        </p>
-        <h1 id="category-title">{category.label}</h1>
-        <p>{category.description}</p>
-      </header>
+<SiteLayout
+  title={`${category.label} 기록 | ${SITE_TITLE}`}
+  description={category.description}
+  lang="ko"
+  mainLabelledBy="category-title"
+>
+  <div class="category-page">
+    <header class="category-page__header">
+      <p class="category-page__breadcrumbs">
+        <a href={routes.records}>기록</a>
+        <span aria-hidden="true">/</span>
+        <span>{category.label}</span>
+      </p>
+      <h1 id="category-title">{category.label}</h1>
+      <p>{category.description}</p>
+    </header>
 
-      <ul class="category-page__list">
-        {
-          posts.map((post) => (
-            <li>
-              <RecordCard post={post} showCategory={false} showTags={false} />
-            </li>
-          ))
-        }
-      </ul>
-      <Footer />
-    </main>
-  </body>
-</html>
+    <ul class="category-page__list">
+      {
+        posts.map((post) => (
+          <li>
+            <RecordCard post={post} showCategory={false} showTags={false} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</SiteLayout>
 
 <style>
   .category-page {

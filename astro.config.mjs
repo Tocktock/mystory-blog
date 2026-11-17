@@ -9,4 +9,9 @@ export default defineConfig({
 
   site: 'https://ji-yong.com',
   integrations: [mdx(), sitemap()],
+  markdown: {
+    shikiConfig: {
+      theme: 'vitesse-black',
+    },
+  },
 });
