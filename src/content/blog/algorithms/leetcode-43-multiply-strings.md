@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][43] Multiply Strings 문제풀기!'
 pubDate: 2021-01-25T01:12:12.839Z
-description: '문제풀러가기✈숫자 두개를 문자열로 줄테니 곱해줘!근데 숫자가 엄청 커 ㅎㅎ;;;자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기BigInteger 를 쓰면 매우 쉽지만, 그러라고 문제 푸는거 아니잖아 ? ? ?나는 우리가 학창시절 때 배웠던 곱셈 방식을 이용했다.'
+description: 'LeetCode 43 Multiply Strings를 BigInteger 없이 JavaScript로 풀었다. 학창 시절 배운 세로 곱셈처럼 한 자리씩 곱한 중간 결과를 자릿수에 맞춰 문자열 덧셈으로 더해 가는 방식을 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

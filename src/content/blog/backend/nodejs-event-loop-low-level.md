@@ -1,7 +1,7 @@
 ---
 title: 'Node.js Event loop 저수준에서 파헤치기'
 pubDate: 2021-02-13T13:12:41.545Z
-description: '시작하기 앞서 이 포스트는 Node.js 유튜브 영상 을 참조하고 만든 것을 알려드립니다.!!Node.js 의 Event Loop 가 Scale 측면에서 우수하다 라는 말을 알기 위해서는기존에는 요청을 어떻게 처리 했는지를 이해하면 도움이 많이 됩니다.TCP Conne'
+description: 'Node.js 유튜브 영상을 바탕으로 Event loop를 저수준에서 정리합니다. 블로킹 accept와 Multi Thread 방식의 한계, Epoll 기반 루프의 동작, Thread pool로 넘어가는 None Pollable 작업을 다룹니다.'
 heroImage: '../../../assets/heroes/nodejs-event-loop-low-level.png'
 category: 'tech'
 series: 'backend-notes'

@@ -26,7 +26,7 @@ test('closed INDEX menu keeps hidden links out of focus order on mobile', async 
 
   const indexButton = page.getByRole('button', { name: 'INDEX' });
   // A closed <dialog> is out of the accessibility tree, so locate the menu link structurally.
-  const recordsLink = page.locator('#index-dialog nav[aria-label="Primary"] a[href="/records"]');
+  const recordsLink = page.locator('#index-dialog nav[aria-label="Primary"] a[href="/records/"]');
 
   await expect(indexButton).toHaveAttribute('aria-expanded', 'false');
   await expect(recordsLink).not.toBeVisible();
@@ -79,13 +79,13 @@ test('footer navigation keeps every section reachable', async ({ page }) => {
 
   const footerNav = page.getByRole('navigation', { name: '사이트 바로가기' });
   for (const [name, href] of [
-    ['기록', '/records'],
-    ['시리즈', '/series'],
-    ['창작', '/creations'],
-    ['이력', '/career'],
-    ['소개', '/about'],
-    ['만냥구름', '/manyang-gureum'],
-    ['검색', '/search'],
+    ['기록', '/records/'],
+    ['시리즈', '/series/'],
+    ['창작', '/creations/'],
+    ['이력', '/career/'],
+    ['소개', '/about/'],
+    ['만냥구름', '/manyang-gureum/'],
+    ['검색', '/search/'],
   ]) {
     await expect(footerNav.getByRole('link', { name, exact: true })).toHaveAttribute('href', href);
   }

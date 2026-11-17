@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][32] Longest Valid Parentheses 문제풀기'
 pubDate: 2021-01-20T14:13:42.177Z
-description: '문제풀러가기✈"(" 또는 ")" 로만 구성되어 있는 문자열을 줄거야!!유효한 괄호들의 가장 긴 길이를 구해줘!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기유효한 괄호의 조건은 ")" 가 나왔을 때 "(" 의 개수와 대조해보면 된다!!"()()" -> 유효하다!'
+description: 'LeetCode 32 Longest Valid Parentheses의 가장 긴 유효 괄호 길이를 Dynamic Programming으로 구했다. 유효한 '')''마다 직전 길이에 2와 앞 유효 구간 길이를 더해 가는 JavaScript 풀이를 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

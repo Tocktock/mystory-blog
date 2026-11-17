@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] search query 집중탐구 - 1 전처리 과정'
 pubDate: 2021-01-26T15:10:50.566Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈Elasticsearch 는 "text" 로 매핑된 필드의 경우 그 안에 데이터를 Inverted Index 라는 구조로 저장합니다.직역하자면 역 색인, 반대 색인 이런 뜻인데 대충 감이 오시'
+description: 'Elasticsearch가 text 필드를 Inverted Index로 저장하는 원리를 정리합니다. Character Filter부터 Tokenizer, Token Filter, Stemming까지의 전처리 과정과 한글용 Nori 분석기도 다룹니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

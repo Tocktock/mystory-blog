@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][31] Next Permutation 문제풀기!'
 pubDate: 2021-01-20T14:13:07.388Z
-description: '문제풀러가기✈다음 순열 구해라.자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기솔직히 말해서 다음 순열이 뭔데? 뭔데? 하면서 한 5분은 찾아봤다.다음 순열은 예를 들면 다음과 같다.숫자 1,2,3,4 각각 하나씩 있다. 이를 통해 순열을 만들어보면1,2,3,44'
+description: 'LeetCode 31 Next Permutation을 탐욕기법으로 풀었다. 마지막으로 증가하는 두 수 중 앞의 값을 오른쪽에서 그보다 크면서 가장 작은 값과 바꾸고, 뒤쪽을 뒤집어 사전순 다음 순열을 만드는 규칙을 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

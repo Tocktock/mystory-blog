@@ -1,7 +1,7 @@
 ---
 title: '1. NestJS 블로그 만들기 -이거는 알고 시작하자.'
 pubDate: 2021-01-15T10:50:58.812Z
-description: 'NestJS를 시작하기전 이거만큼은 알고 시작하자!!🚨🚨🚨 본 포스트와 이후 nestjs 시리즈에서는 Javascript, Typescript 를 배우기 위한 내용은 다루지 않습니다. 🚨🚨🚨Javascript 는 FrontEnd 를 공부중이시거나 NodeJS'
+description: 'NestJS 블로그 만들기에 앞서 알아 둘 Typescript, 의존성주입(Dependency Injection), HTTP, 데이터베이스 기초를 짚습니다. 생성자 주입 예제로 NestJS에 Typescript가 필요한 이유를 설명합니다.'
 heroImage: '../../../assets/heroes/nestjs-logo.png'
 category: 'tech'
 series: 'nestjs-blog'

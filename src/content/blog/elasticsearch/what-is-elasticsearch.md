@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch이란?'
 pubDate: 2021-01-10T19:21:38.130Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈네이버 및 구글에서 원하는 문서를 검색하면 잘 나옵니다.어떻게 이런게 가능할까요 ???전문검색(Full-Text-Search 이하 FTS)은 검색 단어를 입력하면 해당하는 문서와 "관련 깊은"'
+description: '전문검색(Full-Text-Search)이 단순 문자열 일치와 어떻게 다른지 설명하고, Apache Lucene 기반 오픈소스 검색·분석 엔진인 Elasticsearch의 특징과 공식 지원 클라이언트 언어를 소개합니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

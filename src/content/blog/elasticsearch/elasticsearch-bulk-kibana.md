@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch bulk 기본사용법 (feat. Kibana)'
 pubDate: 2021-01-13T08:56:37.743Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈이번에는 쉬어가는 타임으로 bulk 기능을 알아보죠~!하지만 반드시 필수 요소라는것 !!ElasticSearch 의 여러 명령을 실행하기 위해서는 bulk 기능이 정말 편리합니다.bulk 는 '
+description: 'Elasticsearch의 bulk 기능으로 index, create, update, delete 명령을 한 번에 실행하는 요청 형식을 정리합니다. 최적의 명령 개수를 벤치마크로 찾는 방법과 메모리 과부하 주의점도 다룹니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

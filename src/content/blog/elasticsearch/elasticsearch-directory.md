@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch 폴더에는 뭐가 있을까??'
 pubDate: 2021-01-14T07:36:45.702Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈쉬어가는 느낌으로 ElasticSearch 의 directory 구조를 한번 살펴보도록 하겠습니다.ElasticSearch의 폴더로 한번 가보죠!저는 elk라는 폴더에 elasticsearch'
+description: 'Elasticsearch 폴더의 bin, config, modules, plugins 구조를 살펴봅니다. elasticsearch.yml의 클러스터, 경로, 네트워크 설정과 jvm.options, log4j2.properties의 역할도 정리합니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'
@@ -24,7 +24,7 @@ tags:
 
 ElasticSearch의 폴더로 한번 가보죠!
 
-![](/blog/elasticsearch-directory/532a2785-c54b-4f6a-b81c-1ad9cb92b0b0-전체화면.png)
+![elasticsearch-7.10.1 폴더를 연 윈도우 탐색기. bin, config, data, jdk, lib, logs, modules, plugins 폴더와 LICENSE.txt, NOTICE.txt, README.asciidoc 파일이 보인다.](../../../assets/posts/elasticsearch-directory/full-screen.png)
 
 > 저는 elk라는 폴더에 elasticsearch 와 관련된 폴더들을 모아두었습니다.
 

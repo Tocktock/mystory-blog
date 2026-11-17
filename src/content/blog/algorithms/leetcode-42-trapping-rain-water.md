@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][42] Trapping Rain Water 문제풀기!'
 pubDate: 2021-01-25T01:10:42.382Z
-description: '문제풀러가기✈내가 말이야.. 특이한 목욕탕을 만들고 싶거든.. 근데 물이 얼마나 필요할지 잘 모르겠어.. 니가 좀 구해줄래?자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기대표적으로 이런 문제는 대부분 2 pointer 문제더라!!일단 물 높이를 생각해보자. 인풋'
+description: 'LeetCode 42 Trapping Rain Water를 2 pointer로 풀었다. 양쪽 기둥 중 낮은 높이로 물 높이를 갱신하며 낮은 쪽부터 한 칸씩 물을 채우는 JavaScript 풀이를 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

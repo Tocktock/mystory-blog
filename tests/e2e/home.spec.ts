@@ -9,15 +9,15 @@ test('homepage first viewport communicates JiYong identity and current desk', as
   const hero = page.locator('.home-hero');
   await expect(hero.getByRole('link', { name: '기록 보기', exact: true })).toHaveAttribute(
     'href',
-    '/records',
+    '/records/',
   );
   await expect(hero.getByRole('link', { name: '시리즈 보기', exact: true })).toHaveAttribute(
     'href',
-    '/series',
+    '/series/',
   );
   await expect(hero.getByRole('link', { name: /만냥구름 만나기/ })).toHaveAttribute(
     'href',
-    '/manyang-gureum',
+    '/manyang-gureum/',
   );
 
   const atAGlance = page.getByRole('complementary', { name: '한눈에 보기' });
@@ -77,6 +77,6 @@ test('homepage introduces the creations studio', async ({ page }) => {
   await expect(creations).toBeVisible();
   await expect(creations.getByRole('link', { name: /노래 들으러 가기/ })).toHaveAttribute(
     'href',
-    '/creations',
+    '/creations/',
   );
 });

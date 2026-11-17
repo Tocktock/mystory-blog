@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { existsSync, readFileSync } from 'node:fs';
 
 /*
   vitesse-black suits the near-black reading surface, but a few of its token colours
@@ -32,10 +33,30 @@ const raiseLowContrastCodeColors = {
   },
 };
 
+/*
+  The sitemap reads each page's built HTML so the page stays the single source of truth:
+  pages marked `noindex` (site search, one-post tags) are left out, and posts get `lastmod`
+  from their `article:modified_time`. It runs after every page is written to `dist/`.
+*/
+const outDir = new URL('./dist/', import.meta.url);
+
+/** @param {import('@astrojs/sitemap').SitemapItem} item */
+function serializeSitemapItem(item) {
+  const { pathname } = new URL(item.url);
+  const htmlFile = new URL(`.${decodeURIComponent(pathname)}index.html`, outDir);
+  if (!existsSync(htmlFile)) return item;
+
+  const html = readFileSync(htmlFile, 'utf8');
+  if (/<meta name="robots" content="[^"]*noindex/.test(html)) return undefined;
+
+  const modified = html.match(/<meta property="article:modified_time" content="([^"]+)"/);
+  return modified ? { ...item, lastmod: modified[1] } : item;
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ji-yong.com',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ serialize: serializeSitemapItem })],
   markdown: {
     shikiConfig: {
       theme: 'vitesse-black',

@@ -6,7 +6,7 @@ import BookshelfSection from '../components/home/BookshelfSection.astro';
 import RecentRecords from '../components/home/RecentRecords.astro';
 import ManyangGureumCard from '../components/home/ManyangGureumCard.astro';
 import CreationsCard from '../components/home/CreationsCard.astro';
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { buildPersonJsonLd, buildWebsiteJsonLd } from '../utils/jsonld';
 import { routes } from '../utils/routes';
 import { serializeJsonLd } from '../utils/serializeJsonLd';
@@ -22,19 +22,13 @@ const latestPost = allPosts[0];
 const latestRecordTitle = latestPost?.data.title ?? '아직 글이 없어요';
 const latestRecordHref = latestPost ? routes.record(latestPost.id) : undefined;
 
-const siteURL = Astro.site ? new URL(Astro.site) : Astro.url;
-const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const siteURL = (Astro.site ?? Astro.url).toString();
 const websiteJsonLd = buildWebsiteJsonLd({
-  canonicalUrl: canonicalURL,
+  siteUrl: siteURL,
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  author: SITE_AUTHOR,
 });
-const personJsonLd = buildPersonJsonLd({
-  canonicalUrl: canonicalURL,
-  name: SITE_AUTHOR,
-  description: SITE_DESCRIPTION,
-});
+const personJsonLd = buildPersonJsonLd(siteURL);
 ---
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} lang="ko">

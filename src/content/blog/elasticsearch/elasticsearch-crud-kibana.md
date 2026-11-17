@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch CRUD 기본사용법 (feat. Kibana)'
 pubDate: 2021-01-13T02:17:55.587Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈ElasticSearch 의 search 와 Bulk 기능은 이후 포스트에서 다루겠습니다.CreateReadUpdateDeleteElasticSearch 에서는 REST APIs 안의 Docu'
+description: 'Kibana Dev Tools 콘솔에서 Elasticsearch 인덱스와 문서를 생성, 조회, 수정, 삭제하는 기본 CRUD 사용법을 실습합니다. Index Pattern을 만들어 Discover 탭에서 결과를 확인하는 방법도 다룹니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'
@@ -53,17 +53,17 @@ ElasticSearch 에서는 REST APIs 안의 Document APIs 에서 해당 내용을 �
 
 정상적으로 Kibana 가 설치되고 실행이 되고 있다면 <http://localhost:5601> 에 접속하면 Kibana 어플리케이션 메인화면이 기다리고 있어요!!
 
-![](/blog/elasticsearch-crud-kibana/91773fb6-7a7d-4fe0-bc56-17d1a9d977b8-kibana_main.png)
+![localhost:5601에 접속하면 보이는 Kibana 홈 화면. Enterprise Search, Observability, Security, Kibana 카드가 있다.](../../../assets/posts/elasticsearch-crud-kibana/kibana-main.png)
 
 좌측 상단의 메뉴 버튼을 누른후 아래쪽의 Dev Tools 로 들어가줍니다.
 
 <br>
 
-![](/blog/elasticsearch-crud-kibana/4db7b8d4-4e41-4736-b137-dfd1e528ed48-stack_management.png)
+![Kibana 왼쪽 메뉴의 Management 항목. Dev Tools, Fleet, Stack Monitoring, Stack Management가 보인다.](../../../assets/posts/elasticsearch-crud-kibana/stack-management.png)
 
 <br><br>
 
-![](/blog/elasticsearch-crud-kibana/1b97356d-df81-4c9e-9c9c-bdd8c069a084-devTools_main.png)
+![비어 있는 Kibana Dev Tools 콘솔. 왼쪽에 요청을 입력하고 오른쪽에서 응답을 본다.](../../../assets/posts/elasticsearch-crud-kibana/dev-tools-main.png)
 
 Dev Tools 콘솔에서 좌측에서 Curl 과 비슷한 기능을 수행하고 우측에서 그 결과를 볼 수 있습니다.
 
@@ -94,7 +94,7 @@ mydoc 이라는 Index 를 생성해봅시다.
 
 우측에 바로
 
-![](/blog/elasticsearch-crud-kibana/94ae8113-ade6-4e26-a39d-7eb01a3b8de5-fourth_result.png)
+![문서를 추가한 응답. mydoc 인덱스에 result가 created로 나온다.](../../../assets/posts/elasticsearch-crud-kibana/fourth-result.png)
 
 위와 같은 형식의 결과 데이터가 보인다면 성공입니다. 우측상단에 201 status 코드와 해당 요청을 수행하는데 걸린 시간 또한 표시가 됩니다.
 
@@ -108,16 +108,16 @@ mydoc 이라는 Index 를 생성해봅시다.
 
 좌측 상단의 메뉴 - 하단의 Stack Management 를 클릭합니다.
 
-![](/blog/elasticsearch-crud-kibana/4db7b8d4-4e41-4736-b137-dfd1e528ed48-stack_management.png)
+![Kibana 왼쪽 메뉴의 Management 항목. Dev Tools, Fleet, Stack Monitoring, Stack Management가 보인다.](../../../assets/posts/elasticsearch-crud-kibana/stack-management.png)
 
 좌측 중간즈음 Kibana 카테고리 아래 Index Patterns 를 클릭합니다.
 우리가 보려는 Index 를 명시하기 위해 Create Index pattern 을 클릭합니다.
 
-![](/blog/elasticsearch-crud-kibana/79d7d790-12a3-45a1-a5df-195a459a6087-index_pattern_mydoc.png)
+![Kibana Create index pattern 1단계 화면. 인덱스 패턴 이름 입력칸 아래에 mydoc 인덱스가 하나 보인다.](../../../assets/posts/elasticsearch-crud-kibana/index-pattern-mydoc.png)
 
 Index pattern name 칸에 mydoc 을 입력하고 Next Step 을 클릭합니다.
 
-![](/blog/elasticsearch-crud-kibana/47918dd5-350a-4349-bd53-7c906a6924de-index_pattern_step2.png)
+![Create index pattern 2단계 화면. mydoc* 인덱스 패턴 설정과 Create index pattern 버튼이 보인다.](../../../assets/posts/elasticsearch-crud-kibana/index-pattern-step2.png)
 
 우리가 만든 데이터에는 시간 데이터가 없기 때문에 아무것도 선택하지 않아도 생성됩니다.
 시간 데이터가 한 개 이상이라면 시간별로 데이터를 추적할 수 있습니다.
@@ -127,7 +127,7 @@ Create Index Pattern 을 클릭합시다.
 
 여기서 우리가 위에서 입력했던 Index 의 데이터들이 나타나게 됩니다.
 
-![](/blog/elasticsearch-crud-kibana/b8af6dd6-0e1b-4ef4-b21e-e6d855236790-three_hits.png)
+![Kibana Discover에서 mydoc 인덱스를 본 결과. first, second, third 세 문서가 나온다.](../../../assets/posts/elasticsearch-crud-kibana/three-hits.png)
 
 데이터를 생성하는 것은 이제 끝났습니다.
 
@@ -140,7 +140,7 @@ Read 는 매우 단순합니다!
 위와 같이 `GET <인덱스>/_doc/<아이디>` 형식으로 요청을 하게 되면 해당하는 데이터가
 결과값으로 나오게 됩니다.!!
 
-![](/blog/elasticsearch-crud-kibana/befc0aa8-6cd4-4332-b62b-92bd6ccba362-get_firstdoc.png)
+![GET mydoc/_doc/<아이디> 요청의 응답. found가 true이고 _source에 first Title과 first contents가 있다.](../../../assets/posts/elasticsearch-crud-kibana/get-firstdoc.png)
 
 우하우하!우하!
 자료가 없으면 not found가 뜨게 됩니다!! 여기까지 하느라 고생많으셨습니다.
@@ -164,11 +164,11 @@ second Title 자료의 id를 복사하여 다음과 같은 형태의 요청을 �
 
 성공하면 아래과 같이 result 에 updated 라는 결과값이 표시됩니다.
 
-![](/blog/elasticsearch-crud-kibana/8284f550-f689-4543-805e-d42a05821d4c-updateDoc_result.png)
+![문서를 수정한 응답. result가 updated이고 _version이 2로 올라갔다.](../../../assets/posts/elasticsearch-crud-kibana/update-doc-result.png)
 
 Kibana 의 Discover 탭을 보게 되면
 
-![](/blog/elasticsearch-crud-kibana/2d23baf8-3775-4837-a7ae-fd0e2e55aa0f-updated_second_discover.png)
+![수정 후 Kibana Discover 결과. 두 번째 문서가 updated second title, updated second contents로 바뀌었다.](../../../assets/posts/elasticsearch-crud-kibana/updated-second-discover.png)
 
 우하! 행복하군요 Update 가 성공된 것을 확인할 수 있습니다.!!
 
@@ -180,7 +180,7 @@ Kibana 의 Discover 탭을 보게 되면
 
 바로 실행!!
 
-![](/blog/elasticsearch-crud-kibana/b1f1d141-938a-4377-9212-1f77da1ae6b2-remove_fourthDoc_result.png)
+![문서 하나를 삭제한 응답. result가 deleted로 나온다.](../../../assets/posts/elasticsearch-crud-kibana/remove-fourth-doc-result.png)
 
 > 삭제 결과 연산을 캡처 하는 것을 깜빡해서 데이터를 하나 더 만들고 다시 삭제해서 이전과 아이디가 다릅니다. ㅜㅜ
 
@@ -194,9 +194,9 @@ Kibana 의 Discover 탭을 보게 되면
 
 삭제... 요청...
 
-![](/blog/elasticsearch-crud-kibana/b6ed1fff-d256-464d-a4aa-1222b70c55df-deleteDoc.png)
+![Dev Tools 콘솔에 입력한 DELETE mydoc 요청](../../../assets/posts/elasticsearch-crud-kibana/delete-doc.png)
 
-![](/blog/elasticsearch-crud-kibana/dd86f2b1-d279-4b15-8795-08efa4adb9c6-deleteDoc_result.png)
+![인덱스를 삭제한 응답. acknowledged가 true로 나온다.](../../../assets/posts/elasticsearch-crud-kibana/delete-doc-result.png)
 
 성공...
 

@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][40] Combination Sum II 문제풀기!'
 pubDate: 2021-01-22T11:57:36.829Z
-description: '문제풀러가기✈숫자들을 줄게. 그 숫자들을 조합해서 내가 원하는 숫자가 나오는 조합을 찾아줘!단, 그 찾은 조합끼리 중복이 있으면 안돼!! 그리고 특정 숫자를 내가 준 개수보다 더 많이 쓰면 안돼!!!!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기모든 경우를 다'
+description: 'LeetCode 40 Combination Sum II를 DFS로 풀었다. 후보를 정렬한 뒤 같은 숫자로 가는 경로는 한 번만 탐색하게 해서 중복 조합을 막는 방법을 JavaScript 코드와 함께 정리했다.'
 category: 'tech'
 series: 'algorithms'
 tags:

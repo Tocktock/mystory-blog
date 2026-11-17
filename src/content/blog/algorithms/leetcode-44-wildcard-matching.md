@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][44] Wildcard Matching 문제풀기!'
 pubDate: 2021-01-30T12:40:30.995Z
-description: "문제풀러가기✈간단한 정규식 패턴을 줄게.'?' 이건 하나의 문자를 대체할 수 있는 놈이야.'\\*' 임마 이거는 빈 문자를 포함해서 문자열을 대체할 수 있는 놈이야.자 이제 내가 문자열을 줄테니까 이전에 준 패턴으로 만들 수 있는 놈인지 판단해줘!자세한 문제 설명과 릿코"
+description: 'LeetCode 44 Wildcard Matching 문제를 DP로 풉니다. dp[i][j]를 패턴 i개로 문자열 j개를 만족하는지로 정의하고, ''*''인 경우와 ''?'' 또는 알파벳 문자인 경우로 나눈 점화식과 JavaScript 풀이를 정리합니다.'
 category: 'tech'
 series: 'algorithms'
 tags:

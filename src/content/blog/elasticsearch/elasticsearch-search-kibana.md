@@ -1,7 +1,7 @@
 ---
 title: '[🌎elasticsearch] Elasticsearch search 기본사용법 (feat. Kibana)'
 pubDate: 2021-01-13T08:57:23.946Z
-description: 'Elasticsearch 가이드북 ✈Elasticsearch 홈페이지 가기 ✈이번에는 ElasticSearch 를 쓰는 이유중 하나인 전문검색 (Full Text Search) 의 간단한 기능을 알아보고자 합니다.이 부분에 대해서는 내용이 워낙 방대하다보니 제 글은 맛'
+description: 'Kibana DevTools에서 Elasticsearch 전문검색(Full Text Search)의 기본 사용법을 실습합니다. bulk로 예제 데이터를 넣고 URI 검색, match, match_all 쿼리로 hits와 _score를 확인합니다.'
 heroImage: '../../../assets/heroes/elasticsearch-overview.png'
 category: 'tech'
 series: 'elasticsearch'

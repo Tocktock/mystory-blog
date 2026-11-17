@@ -24,13 +24,20 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props as Props;
 const tagPosts = tag.posts as CollectionEntry<'blog'>[];
+// A one-post tag page only repeats its post, so keep it out of search results (links still count).
+const isThinTag = tagPosts.length < 2;
+const sampleTitles = tagPosts
+  .slice(0, 3)
+  .map((post) => post.data.title)
+  .join(', ');
 ---
 
 <SiteLayout
   title={`${tag.label} 기록 | ${SITE_TITLE}`}
-  description={`${tag.label} 태그가 붙은 글이에요.`}
+  description={`${tag.label} 태그가 붙은 글 ${tagPosts.length}편이에요. ${sampleTitles}`}
   lang="ko"
   mainLabelledBy="tag-detail-title"
+  noindex={isThinTag}
 >
   <div class="tag-detail">
     <PageHero

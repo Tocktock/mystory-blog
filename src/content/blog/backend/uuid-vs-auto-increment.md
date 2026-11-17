@@ -1,7 +1,7 @@
 ---
 title: '[DevTip] UUID vs Auto Increment'
 pubDate: 2021-01-25T11:18:47.149Z
-description: 'UUID 는 간단하게 범용 고유 식별자라고 생각하면 편할것 같습니다.예를 들어 내가 뭔가 만들 때마다 식별할 수 있는 고유값을 만들고 싶다면 사용하면 됩니다.문서를 만들고 문서의 고유 식별자를 만들 때도,회원가입을 하고 유저의 고유 식별자를 만들 때도UUID 를 만드는'
+description: 'UUID와 Auto Increment primary key를 비교합니다. 정렬 성능, 저장 공간, 가독성, 분산 시스템 적합성 측면에서 각 방식의 장단점을 정리하고, 꼭 UUID일 필요 없이 상황에 맞게 쓰면 된다고 말합니다.'
 category: 'tech'
 series: 'backend-notes'
 tags:

@@ -1,7 +1,7 @@
 ---
 title: '[leetcode][45] Jump Game II 문제풀기!'
 pubDate: 2021-01-30T12:41:09.364Z
-description: '문제풀러가기✈처음 인덱스에서 마지막 인덱스에 도달하려면 몇 번 점프해야할까?해당 인덱스에서 최대 얼마나 뛸 수 있는지는 알려줄게!자세한 문제 설명과 릿코드 홈페이지 참고. 문제풀러가기주어지는 인풋의 길이가 최대 30,000 이기 때문에 최소 O(nlgn) 기법을 써야 '
+description: 'LeetCode 45 Jump Game II를 탐욕 기법으로 풉니다. 각 위치에서 뛸 수 있는 칸 중 다음 점프로 가장 멀리 갈 수 있는 칸을 골라 마지막 인덱스까지의 점프 횟수를 구하는 JavaScript 풀이입니다.'
 category: 'tech'
 series: 'algorithms'
 tags:

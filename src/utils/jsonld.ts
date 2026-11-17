@@ -1,72 +1,122 @@
+import {
+  SITE_AUTHOR,
+  SITE_AUTHOR_ALTERNATE_NAMES,
+  SITE_AUTHOR_JOB_TITLE,
+  SITE_AUTHOR_PROFILES,
+} from '../consts';
+import { routes } from './routes';
+
 type JsonLdNode = Record<string, unknown>;
 
+/*
+  The site has one author. Every page points at the same Person node through a stable
+  `@id` on the About page, so search engines see one identity instead of several
+  anonymous names.
+*/
+const personId = (siteUrl: string) => new URL(`${routes.about}#person`, siteUrl).toString();
+const websiteId = (siteUrl: string) => new URL('/#website', siteUrl).toString();
+
+/** A short reference to the author, for `author` and `publisher` fields. */
+export function buildPersonReference(siteUrl: string): JsonLdNode {
+  return {
+    '@type': 'Person',
+    '@id': personId(siteUrl),
+    name: SITE_AUTHOR,
+    url: new URL(routes.about, siteUrl).toString(),
+  };
+}
+
+/** The full author node. Emit it on the home page and inside the About page's ProfilePage. */
+export function buildPersonJsonLd(siteUrl: string): JsonLdNode {
+  return {
+    '@context': 'https://schema.org',
+    ...buildPersonReference(siteUrl),
+    alternateName: SITE_AUTHOR_ALTERNATE_NAMES,
+    jobTitle: SITE_AUTHOR_JOB_TITLE,
+    sameAs: SITE_AUTHOR_PROFILES,
+  };
+}
+
 export interface WebsiteJsonLdInput {
-  canonicalUrl: string;
+  siteUrl: string;
   title: string;
   description: string;
-  author: string;
 }
 
 export function buildWebsiteJsonLd({
-  canonicalUrl,
+  siteUrl,
   title,
   description,
-  author,
 }: WebsiteJsonLdInput): JsonLdNode {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    url: canonicalUrl,
+    '@id': websiteId(siteUrl),
+    url: new URL('/', siteUrl).toString(),
     name: title,
     description,
-    publisher: {
-      '@type': 'Person',
-      name: author,
-    },
+    inLanguage: 'ko',
+    publisher: { '@id': personId(siteUrl) },
   };
 }
 
-export interface PersonJsonLdInput {
+export interface ProfilePageJsonLdInput {
+  siteUrl: string;
   canonicalUrl: string;
-  name: string;
+  title: string;
   description: string;
+  lang: string;
 }
 
-export function buildPersonJsonLd({
+export function buildProfilePageJsonLd({
+  siteUrl,
   canonicalUrl,
-  name,
+  title,
   description,
-}: PersonJsonLdInput): JsonLdNode {
+  lang,
+}: ProfilePageJsonLdInput): JsonLdNode {
+  const person = { ...buildPersonJsonLd(siteUrl) };
+  delete person['@context'];
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name,
-    description,
+    '@type': 'ProfilePage',
     url: canonicalUrl,
+    name: title,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': websiteId(siteUrl) },
+    mainEntity: person,
   };
 }
 
 export interface ArticleJsonLdInput {
+  siteUrl: string;
   canonicalUrl: string;
   title: string;
   description: string;
   lang: string;
   datePublished: string;
   dateModified: string;
-  author: string;
   imageUrls: readonly string[];
+  section?: string;
+  keywords?: readonly string[];
 }
 
 export function buildArticleJsonLd({
+  siteUrl,
   canonicalUrl,
   title,
   description,
   lang,
   datePublished,
   dateModified,
-  author,
   imageUrls,
+  section,
+  keywords,
 }: ArticleJsonLdInput): JsonLdNode {
+  const author = buildPersonReference(siteUrl);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -75,20 +125,17 @@ export function buildArticleJsonLd({
     inLanguage: lang,
     datePublished,
     dateModified,
-    author: {
-      '@type': 'Person',
-      name: author,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: author,
-    },
+    author,
+    publisher: author,
     url: canonicalUrl,
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': canonicalUrl,
     },
+    isPartOf: { '@id': websiteId(siteUrl) },
     image: imageUrls,
+    ...(section ? { articleSection: section } : {}),
+    ...(keywords && keywords.length > 0 ? { keywords: keywords.join(', ') } : {}),
   };
 }
 

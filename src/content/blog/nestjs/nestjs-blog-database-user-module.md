@@ -1,7 +1,7 @@
 ---
 title: '2. NestJS 블로그 만들기 - 데이터베이스 연결 (Postgresql)과 User 모듈'
 pubDate: 2021-02-01T06:02:31.132Z
-description: '저는 오늘 포스팅할 분량의 앱을 만든 후 블로그 포스팅하기 때문에 중간에 오류가 생길 수도 있습니다.오류 내용과 함께 댓글을 달아주시면 저도 알아보겠습니다!!여러분 드디어 데이터베이스에 연결할 시간이 왔습니다!!.실제 연습할 때는 배열 같은 임의 적인 놈을 만들고 나서'
+description: 'NestJS 블로그에 TypeORM으로 PostgreSQL을 연결하고 User Entity, Repository, DTO, Service를 작성합니다. argon2 비밀번호 해시와 중복 가입 검사를 구현하고 응답에 비밀번호가 노출되는 문제도 고칩니다.'
 heroImage: '../../../assets/heroes/nestjs-logo.png'
 category: 'tech'
 series: 'nestjs-blog'
