@@ -2,6 +2,7 @@ import type { ImageMetadata } from 'astro';
 
 import bureunKyeoDwoCover from '../assets/creations/bureun-kyeo-dwo.jpg';
 import dalWieseoCover from '../assets/creations/dal-wieseo.jpg';
+import danHanSaramUiBomCover from '../assets/creations/dan-han-saram-ui-bom.jpg';
 import hanBakjaNeutgeCover from '../assets/creations/han-bakja-neutge.jpg';
 import jeoHaneulWiroCover from '../assets/creations/jeo-haneul-wiro.jpg';
 import lowMoonCover from '../assets/creations/low-moon.jpg';
@@ -29,6 +30,17 @@ export interface Creation {
 export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/channel/UC41i7l-rQ_VWZjxoLnKROIQ';
 
 export const creations: readonly Creation[] = [
+  {
+    slug: 'dan-han-saram-ui-bom',
+    title: '단 한 사람의 봄 (Un seul printemps)',
+    subtitle: 'Korean Orchestral Rock',
+    description:
+      '봄이 오면 아이와 함께 언덕을 넘기로 약속한 아버지의 이야기입니다. 아이와 마을 사이에서 갈등하는 순간을 오케스트럴 록에 담았습니다.',
+    image: danHanSaramUiBomCover,
+    imageAlt: '잔설이 남은 언덕에 새순이 돋은 나무 한 그루',
+    href: 'https://www.youtube.com/watch?v=Wb8npxdQ_fI',
+    tags: ['AI Song', 'Orchestral Rock', 'Lyric Video'],
+  },
   {
     slug: 'bureun-kyeo-dwo',
     title: '불은 켜 둬',
