@@ -6,8 +6,16 @@ test('creations page connects finished work with its creation journal', async ({
   await expect(page.getByRole('heading', { level: 1, name: 'AI로 만드는 노래' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '열려라 별문' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '전체 발매곡' })).toBeVisible();
-  await expect(page.getByText('지금까지 공개한 11곡이에요.')).toBeVisible();
-  await expect(page.locator('.creation-card')).toHaveCount(10);
+  await expect(page.getByText('지금까지 공개한 12곡이에요.')).toBeVisible();
+  const tracks = page.locator('.creation-card');
+  await expect(tracks).toHaveCount(11);
+  const latestTrack = tracks.first();
+  await expect(
+    latestTrack.getByRole('heading', { name: '단 한 사람의 봄 (Un seul printemps)' }),
+  ).toBeVisible();
+  await expect(
+    latestTrack.getByRole('link', { name: 'YouTube에서 듣기', exact: true }),
+  ).toHaveAttribute('href', 'https://www.youtube.com/watch?v=Wb8npxdQ_fI');
   await expect(page.getByRole('heading', { name: '불은 켜 둬' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '별의 문을 열어' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '한 박자 늦게' })).toBeVisible();
